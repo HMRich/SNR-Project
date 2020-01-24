@@ -9,15 +9,18 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javafx.version>8</javafx.version>
 	</properties>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.5.1</version>
 			<scope>test</scope>
 		</dependency>
+		
 	</dependencies>
 
 
