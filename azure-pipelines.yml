@@ -16,9 +16,9 @@ steps:
     azureResourceManagerEndpoint: getjdkinstall
     azureStorageAccountName: snrprojectgamedev4012720
     azureContainerName: jdk18241install
-    azureCommonVirtualFile: 'jdk1.6.0_45.zip'
-    jdkDestinationDirectory: '$(agent.toolsDirectory)/jdk6'
-    cleanDestinationDirectory: false
+    azureCommonVirtualFile: 'jdk-8u241-linux-x64.tar.gz'
+    jdkDestinationDirectory: '/builds/binaries/externals'
+    cleanDestinationDirectory: true
       
 - task: Maven@3
   inputs:
