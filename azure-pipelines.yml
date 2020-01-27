@@ -8,14 +8,17 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: "1.8"
-      jdkArchitectureOption: x64
-      jdkSourceOption: LocalDirectory
-      jdkFile: "/jdk-8u241-linux-x64.tar.gz"
-      jdkDestinationDirectory: "/builds/binaries/externals"
-      cleanDestinationDirectory: true
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '1.8'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: AzureStorage
+    azureResourceManagerEndpoint: getjdkinstall
+    azureStorageAccountName: snrprojectgamedev4012720
+    azureContainerName: jdk18241install
+    azureCommonVirtualFile: 'jdk1.6.0_45.zip'
+    jdkDestinationDirectory: '$(agent.toolsDirectory)/jdk6'
+    cleanDestinationDirectory: false
       
 - task: Maven@3
   inputs:
