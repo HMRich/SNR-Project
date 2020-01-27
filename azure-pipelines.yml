@@ -26,7 +26,7 @@ steps:
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'Path'
     jdkVersionOption: '1.8'
-    jdkDirectory: '/builds/binaries/externals'
+    jdkDirectory: '/builds/binaries/externals/jdk1.8.0_241'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
