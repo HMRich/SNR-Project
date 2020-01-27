@@ -1,8 +1,5 @@
-pr:
-#- master
-#- test
-#- develop
-- projectFiles
+trigger:
+- *
 
 pool:
   vmImage: 'ubuntu-latest'
