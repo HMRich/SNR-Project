@@ -1,7 +1,6 @@
 pr:
   autoCancel: true
   branches:
-    include:
     - '*'
 
 pool:
