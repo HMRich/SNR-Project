@@ -1,5 +1,8 @@
 pr:
-- develop
+  autoCancel: true
+  branches:
+    include:
+    - '*'
 
 pool:
   vmImage: 'ubuntu-latest'
