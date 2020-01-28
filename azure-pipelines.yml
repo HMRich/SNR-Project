@@ -1,7 +1,7 @@
 pr:
   autoCancel: true
   branches:
-    - '*'
+  - '*'
 
 pool:
   vmImage: 'ubuntu-latest'
