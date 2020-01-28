@@ -1,19 +1,29 @@
 pr:
-#- master
-#- test
-#- develop
-- projectFiles
+- develop
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '1.8'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: AzureStorage
+    azureResourceManagerEndpoint: getjdkinstall
+    azureStorageAccountName: snrprojectgamedev4012720
+    azureContainerName: jdk18241install
+    azureCommonVirtualFile: 'jdk-8u241-linux-x64.tar.gz'
+    jdkDestinationDirectory: '/builds/binaries/externals'
+    cleanDestinationDirectory: true
+      
 - task: Maven@3
   inputs:
     mavenPomFile: 'Blankmon/pom.xml'
     mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
+    javaHomeOption: 'Path'
     jdkVersionOption: '1.8'
+    jdkDirectory: '/builds/binaries/externals/jdk1.8.0_241'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
