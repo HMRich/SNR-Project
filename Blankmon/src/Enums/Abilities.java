@@ -1,5 +1,5 @@
 package Enums;
 
-public enum Ability {
+public enum Abilities {
 
 }
