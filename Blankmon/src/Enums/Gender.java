@@ -1,5 +1,5 @@
 package Enums;
 
 public enum Gender {
-	MALE, FEMALE, TRANS
+	Male, Female, Trans
 }

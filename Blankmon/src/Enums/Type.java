@@ -1,7 +1,7 @@
 package Enums;
 
 public enum Type {
-	NORMAL, FIRE, FIGHTING, WATER, FLYING, GRASS, POISON,
-	ELECTRIC, GROUND, PSYCHIC, ROCK, ICE, BUG, DRAGON, GHOST,
-	DARK, STEEL, FAIRY
+	Normal, Fire, Fighting, Water, Flying, Grass, Poison,
+	Electric, Ground, Psychic, Rock, Ice, Bug, Dragon, Ghost,
+	Dark, Steel, Fairy
 }
