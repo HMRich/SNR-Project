@@ -1,4 +1,4 @@
-package Enums;
+package application.enums;
 
 public enum Type {
 	Normal, Fire, Fighting, Water, Flying, Grass, Poison,
