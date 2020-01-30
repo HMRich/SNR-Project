@@ -1,6 +1,6 @@
 package application;
 
-import Enums.MoveIds;
+import application.enums.MoveIds;
 
 public abstract class Move {
 	
