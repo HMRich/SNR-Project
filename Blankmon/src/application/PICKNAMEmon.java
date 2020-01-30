@@ -1,9 +1,6 @@
 package application;
 
-import Enums.Abilities;
-import Enums.Gender;
-import Enums.Species;
-import Enums.Type;
+import application.enums.*;
 
 public class PICKNAMEmon
 {
@@ -14,7 +11,7 @@ public class PICKNAMEmon
 	private Type mPrimaryType, mSecondaryType;
 	private Species mSpecies;
 	private boolean mIsShiny;
-	private Abilities mAbility;
+	private Ability mAbility;
 	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mHp;
 	
 	public MoveSet getMoves()
