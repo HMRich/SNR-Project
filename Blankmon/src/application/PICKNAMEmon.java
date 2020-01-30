@@ -29,25 +29,25 @@ public class PICKNAMEmon
 		else if(types.length > 2 || types.length == 0)
 			throw new IllegalArgumentException("Invalid types.");
 		
-		this.mName = name;
-		this.mOwner = owner;
-		this.mLevel = level;
-		this.mCurrentXp = currentXp;
-		this.mGender = gender;
-		this.mMoves = moves;
-		this.mPrimaryType = types[0];
+		mName = name;
+		mOwner = owner;
+		mLevel = level;
+		mCurrentXp = currentXp;
+		mGender = gender;
+		mMoves = moves;
+		mPrimaryType = types[0];
 		
 		if(types.length == 2)
-			this.mSecondaryType = types[1];
+			mSecondaryType = types[1];
 		
-		this.mSpecies = species;
-		this.mIsShiny = isShiny;
-		this.mAbility = ability;
-		this.mAttack = attack;
-		this.mSpecialAttack = specialAttack;
-		this.mDefense = defense;
-		this.mSpecialDefense = specialDefense;
-		this.mHp = hp;
+		mSpecies = species;
+		mIsShiny = isShiny;
+		mAbility = ability;
+		mAttack = attack;
+		mSpecialAttack = specialAttack;
+		mDefense = defense;
+		mSpecialDefense = specialDefense;
+		mHp = hp;
 	}
 
 	public MoveSet getMoves()
@@ -55,37 +55,37 @@ public class PICKNAMEmon
 		return mMoves;
 	}
 
-	public String getmName()
+	public String getName()
 	{
 		return mName;
 	}
 
-	public String getmOwner()
+	public String getOwner()
 	{
 		return mOwner;
 	}
 
-	public int getmLevel()
+	public int getLevel()
 	{
 		return mLevel;
 	}
 
-	public int getmCurrentXp()
+	public int getCurrentXp()
 	{
 		return mCurrentXp;
 	}
 
-	public Gender getmGender()
+	public Gender getGender()
 	{
 		return mGender;
 	}
 
-	public Type getmPrimaryType()
+	public Type getPrimaryType()
 	{
 		return mPrimaryType;
 	}
 
-	public Type getmSecondaryType()
+	public Type getSecondaryType()
 	{
 		return mSecondaryType;
 	}
@@ -95,40 +95,38 @@ public class PICKNAMEmon
 		return mSpecies;
 	}
 
-	public boolean ismIsShiny()
+	public boolean isShiny()
 	{
 		return mIsShiny;
 	}
 
-	public Ability getmAbility()
+	public Ability getAbility()
 	{
 		return mAbility;
 	}
 
-	public int getmAttack()
+	public int getAttack()
 	{
 		return mAttack;
 	}
 
-	public int getmSpecialAttack()
+	public int getSpecialAttack()
 	{
 		return mSpecialAttack;
 	}
 
-	public int getmDefense()
+	public int getDefense()
 	{
 		return mDefense;
 	}
 
-	public int getmSpecialDefense()
+	public int getSpecialDefense()
 	{
 		return mSpecialDefense;
 	}
 
-	public int getmHp()
+	public int getHp()
 	{
 		return mHp;
 	}
-	
-	
 }
