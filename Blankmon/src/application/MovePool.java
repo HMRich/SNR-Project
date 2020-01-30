@@ -2,20 +2,21 @@ package application;
 
 import java.util.HashMap;
 
+import application.enums.MoveIds;
+
 public class MovePool {
 	
-	private static HashMap<MoveTpye, Move> moves;
+	private static HashMap<MoveIds, Move> mMoves;
 	
-	public static getMove(MoveType move) {
-		if(moves == null) {
+	public static Move getMove(MoveIds moveId) {
+		if(mMoves == null) {
 			generateMoves();
 		}
-		return moves.
+		return mMoves.get(moveId);
 	}
 	
-	public static void generateMoves() {
-		moves = HashMap<MoveType, Move>();
-		moves.
+	private static void generateMoves() {
+		mMoves = new HashMap<MoveIds, Move>();
 	}
 
 }
