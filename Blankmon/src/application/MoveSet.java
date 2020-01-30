@@ -2,92 +2,92 @@ package application;
 
 public class MoveSet {
 
-	private int movePoints1;
-	private Move move1;
-	private int movePoints2;
-	private Move move2;
-	private int movePoints3;
-	private Move move3;
-	private int movePoints4;
-	private Move move4;
-	
+	private int mMove1MovePoints;
+	private Move mMove1;
+	private int mMove2MovePoints;
+	private Move mMove2;
+	private int mMove3MovePoints;
+	private Move mMove3;
+	private int mMove4MovePoints;
+	private Move mMove4;
+
 	public MoveSet(Move move1, Move move2, Move move3, Move move4) {
-		this.move1 = move1;
-		this.move2 = move2;
-		this.move3 = move3;
-		this.move4 = move4;
+		mMove1 = move1;
+		mMove2 = move2;
+		mMove3 = move3;
+		mMove4 = move4;
 		generateMovePointTotals();
 	}
-	
+
 	private void generateMovePointTotals() {
-		this.movePoints1 = this.move1.getTotalMp();
-		this.movePoints2 = this.move2.getTotalMp();
-		this.movePoints3 = this.move3.getTotalMp();
-		this.movePoints4 = this.move4.getTotalMp();
+		mMove1MovePoints = mMove1.getTotalMovePoints();
+		mMove2MovePoints = mMove2.getTotalMovePoints();
+		mMove3MovePoints = mMove3.getTotalMovePoints();
+		mMove4MovePoints = mMove4.getTotalMovePoints();
 	}
-	
+
 	public Move getMove1() {
-		return this.move1;
+		return mMove1;
 	}
-	
+
 	public Move getMove2() {
-		return this.move2;
+		return mMove2;
 	}
-	
+
 	public Move getMove3() {
-		return this.move3;
+		return mMove3;
 	}
-	
+
 	public Move getMove4() {
-		return this.move4;
+		return mMove4;
 	}
-	
-	public Move setMove1() {
-		return this.move1;
+
+	public void setMove1(Move move) {
+		mMove1 = move;
 	}
-	
-	public Move setMove2() {
-		return this.move2;
+
+	public void setMove2(Move move) {
+		mMove2 = move;
 	}
-	
-	public Move setMove3() {
-		return this.move3;
+
+	public void setMove3(Move move) {
+		mMove3 = move;
 	}
-	
-	public Move setMove4() {
-		return this.move4;
+
+	public void setMove4(Move move) {
+		mMove4 = move;
 	}
-	
-	public boolean hasMove1() {
-		return this.move1 != null;
+
+	public int getMove1MovePoints() {
+		return mMove1MovePoints;
 	}
-	
-	public boolean hasMove2() {
-		return this.move2 != null;
+
+	public int getMove2MovePoints() {
+		return mMove2MovePoints;
 	}
-	
-	public boolean hasMove3() {
-		return this.move3 != null;
+
+	public int getMove3MovePoints() {
+		return mMove3MovePoints;
 	}
-	
-	public boolean hasMove4() {
-		return this.move4 != null;
+
+	public int getMove4MovePoints() {
+		return mMove4MovePoints;
 	}
-	
-	public boolean canUseMove1() {
-		return this.move1 > 0;
+
+	public void setMove1MovePoints(int value) {
+		mMove1MovePoints = value;
 	}
-	
-	public boolean canUseMove2() {
-		return this.move2 > 0;
+
+	public void setMove2MovePoints(int value) {
+		mMove2MovePoints = value;
 	}
-	
-	public boolean canUseMove3() {
-		return this.move3 > 0;
+
+	public void setMove3MovePoints(int value) {
+		mMove3MovePoints = value;
 	}
-	
-	public boolean canUseMove4() {
-		return this.move4 > 0;
+
+	public void setMove4MovePoints(int value) {
+		mMove4MovePoints = value;
 	}
-	
+
 }
