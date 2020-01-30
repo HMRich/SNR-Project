@@ -1,4 +1,4 @@
-package Enums;
+package application.enums;
 
 public enum MoveIds
 {
