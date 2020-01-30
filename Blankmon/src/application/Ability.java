@@ -2,7 +2,7 @@ package application;
 
 import application.enums.AbilityIds;
 
-public class Ability {
+public abstract class Ability {
 
 	private AbilityIds mAbilityId;
 
@@ -14,6 +14,6 @@ public class Ability {
 		return mAbilityId;
 	}
 
-	// public abstract void activateAbility(Pokemon target);
+	public abstract void activateAbility(PICKNAMEmon target);
 
 }
