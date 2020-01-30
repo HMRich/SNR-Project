@@ -6,8 +6,8 @@ public class Ability {
 
 	private AbilityIds mAbilityId;
 
-	public Ability(AbilityIds ability) {
-		mAbilityId = ability;
+	public Ability(AbilityIds abilityId) {
+		mAbilityId = abilityId;
 	}
 
 	public AbilityIds getAbilityId() {

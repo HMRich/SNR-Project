@@ -8,11 +8,11 @@ public class AbilityPool {
 
 	private static HashMap<AbilityIds, Ability> mAbilities;
 
-	public static Ability getAbility(AbilityIds ability) {
+	public static Ability getAbility(AbilityIds abilityId) {
 		if (mAbilities == null) {
 			generateAbilities();
 		}
-		return mAbilities.get(ability);
+		return mAbilities.get(abilityId);
 	}
 
 	private static void generateAbilities() {
