@@ -4,7 +4,7 @@ import application.enums.Abilities;
 
 public class Ability {
 
-	private Abilities ability;
+	private Abilities mAbility;
 
 	// public abstract void activateAbility(Pokemon target);
 
