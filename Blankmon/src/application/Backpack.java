@@ -1,6 +1,5 @@
 package application;
 
-public class Backpack 
-{
+public class Backpack {
 
 }

@@ -3,10 +3,22 @@ package application;
 import application.enums.MoveIds;
 
 public abstract class Move {
-	
+
 	private int mTotalMovePoints;
 	private MoveIds mMoveId;
-	
-	// public abstract void attack (Pokemon source, Pokemon target);
 
+	public Move(int totalMovePoints, MoveIds moveId) {
+		mTotalMovePoints = totalMovePoints;
+		mMoveId = moveId;
+	}
+
+	public int getTotalMovePoints() {
+		return mTotalMovePoints;
+	}
+
+	public MoveIds getMoveId() {
+		return mMoveId;
+	}
+
+	// public abstract void activateMove(Pokemon source, Pokemon target);
 }

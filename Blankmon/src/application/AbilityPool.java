@@ -2,21 +2,21 @@ package application;
 
 import java.util.HashMap;
 
-import application.enums.Abilities;
+import application.enums.AbilityIds;
 
 public class AbilityPool {
-	
-	private static HashMap<Abilities, Ability> mAbilities;
-	
-	public static Ability getAbility(Abilities ability) {
-		if(mAbilities == null) {
+
+	private static HashMap<AbilityIds, Ability> mAbilities;
+
+	public static Ability getAbility(AbilityIds abilityId) {
+		if (mAbilities == null) {
 			generateAbilities();
 		}
-		return mAbilities.get(ability);
+		return mAbilities.get(abilityId);
 	}
-	
+
 	private static void generateAbilities() {
-		mAbilities = new HashMap<Abilities, Ability>();
+		mAbilities = new HashMap<AbilityIds, Ability>();
 	}
 
 }
