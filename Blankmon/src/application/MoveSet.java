@@ -2,14 +2,8 @@ package application;
 
 public class MoveSet {
 
-	private int mMove1MovePoints;
-	private Move mMove1;
-	private int mMove2MovePoints;
-	private Move mMove2;
-	private int mMove3MovePoints;
-	private Move mMove3;
-	private int mMove4MovePoints;
-	private Move mMove4;
+	private int mMove1MovePoints, mMove2MovePoints, mMove3MovePoints, mMove4MovePoints;
+	private Move mMove1, mMove2, mMove3, mMove4;
 
 	public MoveSet(Move move1, Move move2, Move move3, Move move4) {
 		mMove1 = move1;
@@ -20,74 +14,74 @@ public class MoveSet {
 	}
 
 	private void generateMovePointTotals() {
-		mMove1MovePoints = mMove1.getTotalMovePoints();
-		mMove2MovePoints = mMove2.getTotalMovePoints();
-		mMove3MovePoints = mMove3.getTotalMovePoints();
-		mMove4MovePoints = mMove4.getTotalMovePoints();
+		mMove1MovePoints = mMove1 != null ? mMove1.getTotalMovePoints(): 0;
+		mMove2MovePoints = mMove2 != null ? mMove2.getTotalMovePoints(): 0;
+		mMove3MovePoints = mMove3 != null ? mMove3.getTotalMovePoints(): 0;
+		mMove4MovePoints = mMove4 != null ? mMove4.getTotalMovePoints(): 0;
 	}
-
-	public Move getMove1() {
-		return mMove1;
+	
+	public Move getMove(int index) {
+		switch(index) {
+			case 0:
+				return mMove1;
+			case 1:
+				return mMove2;
+			case 2:
+				return mMove3;
+			case 3:
+				return mMove4;
+			default:
+				throw new IllegalStateException("index was not in a vaild state.");
+		}
 	}
-
-	public Move getMove2() {
-		return mMove2;
+	
+	public Move setMove(int index, Move move) {
+		switch(index) {
+			case 0:
+				mMove1 = move;
+			case 1:
+				mMove2 = move;
+			case 2:
+				mMove3 = move;
+			case 3:
+				mMove4 = move;
+			default:
+				throw new IllegalStateException("index was not in a valid value.");
+		}
 	}
-
-	public Move getMove3() {
-		return mMove3;
+	
+	public int getMovePoints(int index) {
+		switch(index) {
+			case 0:
+				return mMove1MovePoints;
+			case 1:
+				return mMove2MovePoints;
+			case 2:
+				return mMove3MovePoints;
+			case 3:
+				return mMove4MovePoints;
+			default:
+				throw new IllegalStateException("index was not in a vaild state.");
+		}
 	}
-
-	public Move getMove4() {
-		return mMove4;
+	
+	public Move setMovePoints(int index, int movePoints) {
+		switch(index) {
+			case 0:
+				mMove1MovePoints = movePoints;
+			case 1:
+				mMove2MovePoints = movePoints;
+			case 2:
+				mMove3MovePoints = movePoints;
+			case 3:
+				mMove4MovePoints = movePoints;
+			default:
+				throw new IllegalStateException("index was not in a valid value.");
+		}
 	}
-
-	public void setMove1(Move move) {
-		mMove1 = move;
+	
+	public void refreshAllMovePoints() {
+		generateMovePointTotals();
 	}
-
-	public void setMove2(Move move) {
-		mMove2 = move;
-	}
-
-	public void setMove3(Move move) {
-		mMove3 = move;
-	}
-
-	public void setMove4(Move move) {
-		mMove4 = move;
-	}
-
-	public int getMove1MovePoints() {
-		return mMove1MovePoints;
-	}
-
-	public int getMove2MovePoints() {
-		return mMove2MovePoints;
-	}
-
-	public int getMove3MovePoints() {
-		return mMove3MovePoints;
-	}
-
-	public int getMove4MovePoints() {
-		return mMove4MovePoints;
-	}
-
-	public void setMove1MovePoints(int value) {
-		mMove1MovePoints = value;
-	}
-
-	public void setMove2MovePoints(int value) {
-		mMove2MovePoints = value;
-	}
-
-	public void setMove3MovePoints(int value) {
-		mMove3MovePoints = value;
-	}
-
-	public void setMove4MovePoints(int value) {
-		mMove4MovePoints = value;
-	}
-
+	
 }
