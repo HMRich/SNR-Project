@@ -3,7 +3,7 @@ package application;
 
 import java.util.ArrayList;
 
-import Enums.*;
+import enums.*;
 
 public class Player {
 	private String name;
