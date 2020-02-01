@@ -19,7 +19,7 @@ steps:
     azureStorageAccountName: snrprojectgamedev4012720
     azureContainerName: jdk18241install
     azureCommonVirtualFile: 'jdk-8u241-linux-x64.tar.gz'
-    jdkDestinationDirectory: '/myJava/container'
+    jdkDestinationDirectory: '/'
     cleanDestinationDirectory: false
       
 - task: Maven@3
@@ -28,8 +28,7 @@ steps:
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'Path'
     jdkVersionOption: '1.8'
-    jdkDirectory: '/myJava/container/jdk1.8.0_241'
-    jdkArchitectureOption: 'x64'
+    jdkDirectory: '/myJava/containertion: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'test'
