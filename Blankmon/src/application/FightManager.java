@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class FightManager 
 {
-	//private ArrayList<Pokemon> playerTeam;
-	//private ArrayList<Pokemon> enemyTeam;
+	private ArrayList<PICKNAMEmon> playerTeam;
+	private ArrayList<PICKNAMEmon> enemyTeam;
 	
 	public void attackEnemy(int indexOfPlayer, int indexOfEnemy, int indexOfMove) 
 	{
@@ -21,15 +21,15 @@ public class FightManager
 	{
 		
 	}
-/*	
-	public ArrayList<Pokemon> getPlayerTeam() 
+	
+	public ArrayList<PICKNAMEmon> getPlayerTeam() 
 	{
 		return playerTeam;
 	}
 	
-	public ArrayList<Pokemon> getenemyTeam() 
+	public ArrayList<PICKNAMEmon> getenemyTeam() 
 	{
 		return playerTeam;
 	}
-	*/
+	
 }
