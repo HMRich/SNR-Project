@@ -1,9 +1,8 @@
-
 package application;
 
 import java.util.ArrayList;
-
-import enums.*;
+import application.enums.*;
+import javafx.scene.image.Image;
 
 public class Player {
 	private String name;
