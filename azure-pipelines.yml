@@ -20,7 +20,7 @@ steps:
     azureContainerName: jdk18241install
     azureCommonVirtualFile: 'jdk-8u241-linux-x64.tar.gz'
     jdkDestinationDirectory: '/myJava/container'
-    cleanDestinationDirectory: true
+    cleanDestinationDirectory: false
       
 - task: Maven@3
   inputs:
