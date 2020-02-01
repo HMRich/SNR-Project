@@ -28,7 +28,8 @@ steps:
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'Path'
     jdkVersionOption: '1.8'
-    jdkDirectory: '/myJava/containertion: 'x64'
+    jdkArchitectureOption:'x64'
+    jdkDirectory: '/myJava/containertion'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'test'
