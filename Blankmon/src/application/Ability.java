@@ -14,6 +14,6 @@ public abstract class Ability {
 		return mAbilityId;
 	}
 
-	public abstract void activateAbility(PICKNAMEmon target);
+	public abstract void activateAbility(Anature target);
 
 }

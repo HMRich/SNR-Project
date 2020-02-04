@@ -20,5 +20,5 @@ public abstract class Move {
 		return mMoveId;
 	}
 
-	public abstract void activateMove(PICKNAMEmon source, PICKNAMEmon target);
+	public abstract void activateMove(Anature source, Anature target);
 }
