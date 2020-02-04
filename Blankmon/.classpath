@@ -14,5 +14,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_241"/>
 	<classpathentry kind="lib" path="src/resources/jars/sqlite-jdbc-3.27.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/XxRic/Code/SNR-Project/Blankmon/src/resources/jars/jfxrt.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
