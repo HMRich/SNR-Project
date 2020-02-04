@@ -10,7 +10,7 @@ public class Player {
 	private ArrayList<Boolean> badges; 
 	private Backpack backpack; 
 	private Image sprite; 
-	private ArrayList <PICKNAMEmon> partyBlankmon; 
+	private ArrayList <Anature> partyBlankmon; 
 
 	public Player() {
 		

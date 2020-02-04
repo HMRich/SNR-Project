@@ -1,7 +1,7 @@
 package application.abillities;
 
 import application.Ability;
-import application.PICKNAMEmon;
+import application.Anature;
 import application.enums.AbilityIds;
 
 public class Intimidate extends Ability
@@ -11,7 +11,7 @@ public class Intimidate extends Ability
 		super(AbilityIds.Intimidate);
 	}
 	
-	public void activateAbility(PICKNAMEmon target)
+	public void activateAbility(Anature target)
 	{
 		System.out.println("Ability Intimidate"); // TODO
 	}

@@ -6,18 +6,18 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class FightManager {
 
-	private ArrayList<PICKNAMEmon> mPlayerTeam;
-	private ArrayList<PICKNAMEmon> mEnemyTeam;
+	private ArrayList<Anature> mPlayerTeam;
+	private ArrayList<Anature> mEnemyTeam;
 
-	public FightManager(ArrayList<PICKNAMEmon> playerTeam, ArrayList<PICKNAMEmon> enemyTeam) {
+	public FightManager(ArrayList<Anature> playerTeam, ArrayList<Anature> enemyTeam) {
 		mPlayerTeam = playerTeam;
 		mEnemyTeam = enemyTeam;
 	}
 
 	public String attackEnemy(int indexOfPlayer, int indexOfEnemy, int indexOfMove) {
 		checkNulls(indexOfPlayer, indexOfEnemy, indexOfMove);
-		PICKNAMEmon playerPICKNAMEmon = mPlayerTeam.get(indexOfPlayer);
-		PICKNAMEmon enemyPICKNAMEmon = mEnemyTeam.get(indexOfEnemy);
+		Anature playerPICKNAMEmon = mPlayerTeam.get(indexOfPlayer);
+		Anature enemyPICKNAMEmon = mEnemyTeam.get(indexOfEnemy);
 		Move playerPICKNAMEmonMove = mPlayerTeam.get(indexOfPlayer).getMoves().getMove(indexOfMove);
 		playerPICKNAMEmonMove.activateMove(playerPICKNAMEmon, enemyPICKNAMEmon);
 		return "Player attacked Enemy Pokemon";
@@ -25,8 +25,8 @@ public class FightManager {
 
 	public String attackPlayer(int indexOfPlayer, int indexOfEnemy, int indexOfMove) {
 		checkNulls(indexOfPlayer, indexOfEnemy, indexOfMove);
-		PICKNAMEmon playerPICKNAMEmon = mPlayerTeam.get(indexOfPlayer);
-		PICKNAMEmon enemyPICKNAMEmon = mEnemyTeam.get(indexOfEnemy);
+		Anature playerPICKNAMEmon = mPlayerTeam.get(indexOfPlayer);
+		Anature enemyPICKNAMEmon = mEnemyTeam.get(indexOfEnemy);
 		Move enemyPICKNAMEmonMove = mEnemyTeam.get(indexOfEnemy).getMoves().getMove(indexOfMove);
 		enemyPICKNAMEmonMove.activateMove(enemyPICKNAMEmon, playerPICKNAMEmon);
 		return "Enemy attacked player Pokemon";
@@ -36,11 +36,11 @@ public class FightManager {
 		throw new NotImplementedException();
 	}
 
-	public ArrayList<PICKNAMEmon> getPlayerTeam() {
+	public ArrayList<Anature> getPlayerTeam() {
 		return mPlayerTeam;
 	}
 
-	public ArrayList<PICKNAMEmon> getEnemyTeam() {
+	public ArrayList<Anature> getEnemyTeam() {
 		return mEnemyTeam;
 	}
 
