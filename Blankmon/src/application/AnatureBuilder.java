@@ -41,7 +41,7 @@ public class AnatureBuilder
 		{
 			Connection connect = DatabaseConnection.dbConnector(DatabaseType.AnatureDatabase);
 
-			String query = "Select * from Pokemon Where SpeciesName=?";
+			String query = "Select * from Anature Where SpeciesName=?";
 			PreparedStatement pst = connect.prepareStatement(query);
 			pst.setString(1, species.toString());
 

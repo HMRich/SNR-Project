@@ -16,20 +16,20 @@ public class FightManager {
 
 	public String attackEnemy(int indexOfPlayer, int indexOfEnemy, int indexOfMove) {
 		checkNulls(indexOfPlayer, indexOfEnemy, indexOfMove);
-		Anature playerPICKNAMEmon = mPlayerTeam.get(indexOfPlayer);
-		Anature enemyPICKNAMEmon = mEnemyTeam.get(indexOfEnemy);
-		Move playerPICKNAMEmonMove = mPlayerTeam.get(indexOfPlayer).getMoves().getMove(indexOfMove);
-		playerPICKNAMEmonMove.activateMove(playerPICKNAMEmon, enemyPICKNAMEmon);
-		return "Player attacked Enemy Pokemon";
+		Anature playerAnature = mPlayerTeam.get(indexOfPlayer);
+		Anature enemyAnature = mEnemyTeam.get(indexOfEnemy);
+		Move playerAnatureMove = mPlayerTeam.get(indexOfPlayer).getMoves().getMove(indexOfMove);
+		playerAnatureMove.activateMove(playerAnature, enemyAnature);
+		return "Player attacked Enemy Anature";
 	}
 
 	public String attackPlayer(int indexOfPlayer, int indexOfEnemy, int indexOfMove) {
 		checkNulls(indexOfPlayer, indexOfEnemy, indexOfMove);
-		Anature playerPICKNAMEmon = mPlayerTeam.get(indexOfPlayer);
-		Anature enemyPICKNAMEmon = mEnemyTeam.get(indexOfEnemy);
-		Move enemyPICKNAMEmonMove = mEnemyTeam.get(indexOfEnemy).getMoves().getMove(indexOfMove);
-		enemyPICKNAMEmonMove.activateMove(enemyPICKNAMEmon, playerPICKNAMEmon);
-		return "Enemy attacked player Pokemon";
+		Anature playerAnature = mPlayerTeam.get(indexOfPlayer);
+		Anature enemyAnature = mEnemyTeam.get(indexOfEnemy);
+		Move enemyAnatureMove = mEnemyTeam.get(indexOfEnemy).getMoves().getMove(indexOfMove);
+		enemyAnatureMove.activateMove(enemyAnature, playerAnature);
+		return "Enemy attacked player Anature";
 	}
 
 	public void itemUse(boolean isPlayer, int indexOfTeam, Enum<?> item) {
@@ -46,16 +46,16 @@ public class FightManager {
 
 	private void checkNulls(int indexOfPlayer, int indexOfEnemy, int indexOfMove) {
 		if (mPlayerTeam.get(indexOfPlayer) == null) {
-			throw new NullPointerException("Player Pokemon was null, String or Result Object?");
+			throw new NullPointerException("Player Anature was null, String or Result Object?");
 		}
 		if (mEnemyTeam.get(indexOfEnemy) == null) {
-			throw new NullPointerException("Enemy Pokemon was null, String or Result Object?");
+			throw new NullPointerException("Enemy Anature was null, String or Result Object?");
 		}
 		if (mPlayerTeam.get(indexOfEnemy).getMoves() == null) {
-			throw new NullPointerException("Player Pokemon Move was null, String or Result Object?");
+			throw new NullPointerException("Player Anature Move was null, String or Result Object?");
 		}
 		if (mPlayerTeam.get(indexOfPlayer).getMoves().getMove(indexOfMove) == null) {
-			throw new NullPointerException("PlayerTeam Pokemomn Move was null, String or Result Object?");
+			throw new NullPointerException("PlayerTeam Anature Move was null, String or Result Object?");
 		}
 	}
 
