@@ -7,20 +7,20 @@ pr:
     - develop
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 steps:
 - task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '1.8'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: AzureStorage
-    azureResourceManagerEndpoint: getjdkinstall
-    azureStorageAccountName: snrprojectgamedev4012720
-    azureContainerName: jdk18241install
-    azureCommonVirtualFile: 'jdk-8u241-linux-x64.tar.gz'
-    jdkDestinationDirectory: '/java/versions'
-    cleanDestinationDirectory: false
+#  inputs:
+#    versionSpec: '1.8'
+#   jdkArchitectureOption: 'x64'
+#    jdkSourceOption: AzureStorage
+#    azureResourceManagerEndpoint: getjdkinstall
+#   azureStorageAccountName: snrprojectgamedev4012720
+#    azureContainerName: jdk18241install
+#    azureCommonVirtualFile: 'jdk-8u241-linux-x64.tar.gz'
+#    jdkDestinationDirectory: '/java/versions'
+#    cleanDestinationDirectory: false
       
 - task: Maven@3
   inputs:
@@ -28,8 +28,7 @@ steps:
     goals: 'test'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'path'
+    javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
-    jdkDirectory: '/java/versions/jdk1.8.0_241'
     jdkArchitectureOption: 'x64'
     mavenOptions: '-Xmx3072m'
