@@ -17,6 +17,16 @@
                   <Image url="@../../resources/images/battle/BattleScreen_BG.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="mPlayerGroundImage" fitHeight="72.0" fitWidth="200.0" layoutX="881.0" layoutY="479.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/Ground_Player.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mTrainerGroundImage" fitHeight="58.0" fitWidth="200.0" layoutX="560.0" layoutY="642.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/Ground_Trainer.png" />
+               </image>
+            </ImageView>
             <ImageView fx:id="mAnatureFront" fitHeight="150.0" fitWidth="200.0" layoutX="460.0" layoutY="142.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/anatures/Null_Front.png" />
@@ -25,6 +35,16 @@
             <ImageView fx:id="mAnatureBack" fitHeight="150.0" fitWidth="200.0" layoutX="164.0" layoutY="285.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/anatures/Null_Front.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mPlayerImage" fitHeight="425.0" fitWidth="444.0" layoutX="748.0" layoutY="27.0" pickOnBounds="true" smooth="false">
+               <image>
+                  <Image url="@../../resources/images/player/Player_Female_1.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mTrainerImage" fitHeight="425.0" fitWidth="444.0" layoutX="418.0" layoutY="240.0" pickOnBounds="true" smooth="false">
+               <image>
+                  <Image url="@../../resources/images/trainers/Kelly.png" />
                </image>
             </ImageView>
             <ImageView fx:id="mDialogueImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true">
