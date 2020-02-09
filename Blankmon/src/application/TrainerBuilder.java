@@ -9,69 +9,62 @@ import java.util.Arrays;
 import java.util.Random;
 
 import application.enums.AbilityIds;
+import application.enums.AiIds;
 import application.enums.DatabaseType;
 import application.enums.Gender;
 import application.enums.MoveIds;
 import application.enums.Species;
+import application.enums.TrainerIds;
 import application.enums.Type;
 
-public class AnatureBuilder
+public class TrainerBuilder
 {
-	public Anature createAnature(Species species, int level)
+	public Trainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
 	{
-		MoveSet moves = generateMoveSet(species, level);
-		Gender gender = null;
-		Type[] types = new Type[2];
-		boolean isShiny = false;
-		Ability ability = null;
-		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0;
-
-		Random r = new Random();
-
-		if (r.nextInt(2) == 0)
-			gender = Gender.Male;
-
-		else
-			gender = Gender.Female;
-
-		if (r.nextInt(4200) == 420)
-			isShiny = true;
-
+		ArrayList<Item> items = new ArrayList<Items>(); ;
+		ArrayList<Anature> party = new ArrayList<Anature>(); ;
+		BaseAI ai;
+		int switchThreshold, healthThreshold;
+		String name;
+		
 		try
 		{
-			Connection connect = DatabaseConnection.dbConnector(DatabaseType.AnatureDatabase);
+			Connection connect = DatabaseConnection.dbConnector(DatabaseType.TrainerDatabase);
 
-			String query = "Select * from Anature Where SpeciesName=?";
+			String query = "Select * from Trainers Where TrainerID=?";
 			PreparedStatement pst = connect.prepareStatement(query);
-			pst.setString(1, species.toString());
+			pst.setString(1, id.toString());
 
 			ResultSet results = pst.executeQuery();
 			if (results.next())
 			{
-				String hpStr = results.getString("BaseHp");
-				String atkStr = results.getString("BaseAttack");
-				String spAtkStr = results.getString("BaseSpecialAttack");
-				String defStr = results.getString("BaseDefense");
-				String spDefStr = results.getString("BaseSpecialDefense");
-				String abilitiesStr = results.getString("PossibleAbilities");
-				String speedStr = results.getString("BaseSpeed");
-				String typesStr = results.getString("Types");
+				String itemsStr = results.getString("ItemList");
+				String partyStr = results.getString("Anatures");
+				String aiStr = results.getString("AI_ID");
+				String switchStr = results.getString("SwitchThreshold");
+				String healthStr = results.getString("HealthThreshold");
+				name = results.getString("Name");
 
-				hp = Integer.parseInt(hpStr);
-				attack = Integer.parseInt(atkStr);
-				specialAttack = Integer.parseInt(spAtkStr);
-				defense = Integer.parseInt(defStr);
-				specialDefense = Integer.parseInt(spDefStr);
-				speed = Integer.parseInt(speedStr);
+				if(itemsStr.length() != 0)
+				{
+					ArrayList<String> itemsStrAra = new ArrayList<String>(Arrays.asList(itemsStr.split(",")));
+					// TODO use Item pool or generate items based on id.
+				}
 
-				ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(abilitiesStr.split(",")));
-				AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
-				ability = AbilityPool.getAbility(chosenAbility);
+				ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyStr.split(",")));
+				AnatureBuilder builder = new AnatureBuilder();
+				Random levelGen = new Random();
 				
-				String[] typesStrAra = typesStr.split(",");
-				for(int i = 0; i < typesStrAra.length && i < 2; i++)
-					types[i] = Type.valueOf(typesStrAra[i]);
+				for(String anatureStr : partyStrAra)
+				{
+					int level = levelGen.nextInt(maxLevel - minLevel) + minLevel;
+					party.add(builder.createAnature(Species.valueOf(anatureStr), level));
+				}
 				
+				ai = AiPool.getAi(AiIds.valueOf(aiStr));
+				
+				switchThreshold = Integer.parseInt(switchStr);
+				healthThreshold = Integer.parseInt(healthStr);				
 			}
 
 			results.close();
@@ -84,8 +77,7 @@ public class AnatureBuilder
 			return null;
 		}
 
-		return new Anature(species.toString(), "TODO PLAYER NAME HERE", level, 0, gender, moves, types, species, isShiny, ability,
-				attack, specialAttack, defense, specialDefense, hp, speed);
+		return new Trainer(party, items, party.get(0), ai);
 	}
 
 	private MoveSet generateMoveSet(Species species, int level)
