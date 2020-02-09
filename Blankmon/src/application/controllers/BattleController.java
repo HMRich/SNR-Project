@@ -1,5 +1,9 @@
 package application.controllers;
 
+import application.animations.OpacityAnimation;
+import application.animations.PlayerAnimation;
+import application.animations.XSlideAnimation;
+import application.animations.TrainerAnimation;
 import application.views.HpBar;
 import application.views.ResizableImage;
 import application.views.XpBar;
@@ -11,6 +15,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,11 +33,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 public class BattleController
 {
 	@FXML private Pane mPane;
 	@FXML private ImageView mBgImage, mDialogueImage, mHpImage;
+	@FXML private ImageView mPlayerImage, mTrainerImage;
+	@FXML private ImageView mPlayerGroundImage, mTrainerGroundImage;
 	@FXML private ImageView mAnatureFront, mAnatureBack;
 	@FXML private Text mPlayerNameTxt, mEnemyNameTxt, mPlayerHpTxt, mEnemyHpTxt, mPlayerLvlTxt, mEnemyLvlTxt;
 	@FXML private ImageView mPlayerGender, mEnemyGender;
@@ -70,6 +79,9 @@ public class BattleController
 		setUpBtnGrid(scene);
 		setUpDialogue(scene);
 		setUpTestBtn(scene);
+		
+		setUpGround(scene);
+		setUpSprites(scene);
 	}
 	
 	private void setUpBgImages(Scene scene)
@@ -84,17 +96,71 @@ public class BattleController
 		mHpImage.fitHeightProperty().bind(scene.heightProperty());
 	}
 	
-	private void setUpAnatureImgs(Scene scene)
+	private void setUpSprites(Scene scene)
 	{
+		PlayerAnimation playerAnimation = new PlayerAnimation(mPlayerImage);
+		playerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			{
+				OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200));
+				back.play();
+			}
+		});
+		playerAnimation.play();
+
+		mPlayerImage.layoutYProperty().bind(scene.heightProperty().divide(4.5));
+		mPlayerImage.fitWidthProperty().bind(scene.widthProperty().divide(3));
+		mPlayerImage.fitHeightProperty().bind(scene.heightProperty().divide(1.9));
+
+		TrainerAnimation trainerAnimation = new TrainerAnimation(mTrainerImage);
+		trainerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			{
+				OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200));
+				back.play();
+			}
+		});
+		trainerAnimation.play();
+		
+		mTrainerImage.layoutYProperty().bind(scene.heightProperty().divide(13));
+		mTrainerImage.fitWidthProperty().bind(scene.widthProperty().divide(5));
+		mTrainerImage.fitHeightProperty().bind(scene.heightProperty().divide(3));
+	}
+	
+	private void setUpGround(Scene scene)
+	{
+		XSlideAnimation xPlayerGroundSlide = new XSlideAnimation(mPlayerGroundImage, Duration.millis(1500), 1.1, 8);
+		xPlayerGroundSlide.play();
+		
+		mPlayerGroundImage.layoutYProperty().bind(scene.heightProperty().divide(1.65));
+		mPlayerGroundImage.fitWidthProperty().bind(scene.widthProperty().divide(2.4));
+		mPlayerGroundImage.fitHeightProperty().bind(scene.heightProperty().divide(5));
+
+		XSlideAnimation xTrainerGroundSlide = new XSlideAnimation(mTrainerGroundImage, Duration.millis(1500), 1.05, 2.05);
+		xTrainerGroundSlide.play();
+
+		mTrainerGroundImage.layoutYProperty().bind(scene.heightProperty().divide(3.5));
+		mTrainerGroundImage.fitWidthProperty().bind(scene.widthProperty().divide(3));
+		mTrainerGroundImage.fitHeightProperty().bind(scene.heightProperty().divide(6));
+	}
+	
+	private void setUpAnatureImgs(Scene scene)
+	{		
 		mAnatureFront.layoutXProperty().bind(scene.widthProperty().divide(1.75));
 		mAnatureFront.layoutYProperty().bind(scene.heightProperty().divide(7.5));
 		mAnatureFront.fitWidthProperty().bind(scene.widthProperty().divide(5.5));
 		mAnatureFront.fitHeightProperty().bind(scene.heightProperty().divide(3.5));
+		mAnatureFront.setOpacity(0);
 
 		mAnatureBack.layoutXProperty().bind(scene.widthProperty().divide(5));
 		mAnatureBack.layoutYProperty().bind(scene.heightProperty().divide(2.9));
 		mAnatureBack.fitWidthProperty().bind(scene.widthProperty().divide(4));
 		mAnatureBack.fitHeightProperty().bind(scene.heightProperty().divide(2.5));
+		mAnatureBack.setOpacity(0);
 	}
 	
 	private void setUpAnatureNames(Scene scene)
@@ -260,10 +326,23 @@ public class BattleController
 			@Override
 			public void handle(ActionEvent event)
 			{
-				mEnemyHp.set(mEnemyHp.subtract(10).doubleValue());
-				mPlayerHp.set(mPlayerHp.subtract(10).doubleValue());
-				mPlayerXp.set(mPlayerXp.add(10).doubleValue());
-				System.out.println("Height: " + scene.getHeight() + " Width: " + scene.getWidth());
+				if(mEnemyHp.get() > 0)
+					mEnemyHp.set(mEnemyHp.subtract(10).doubleValue());
+				
+				else
+					mEnemyHp.set(100);
+				
+				if(mPlayerHp.get() > 0)
+					mPlayerHp.set(mPlayerHp.subtract(10).doubleValue());
+				
+				else
+					mPlayerHp.set(100);
+
+				if(mPlayerXp.get() < 100)
+					mPlayerXp.set(mPlayerXp.add(10).doubleValue());
+				
+				else
+					mPlayerXp.set(0);
 			}
 		});
 	}
