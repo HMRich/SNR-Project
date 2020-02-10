@@ -14,10 +14,12 @@ import application.enums.Gender;
 import application.enums.MoveIds;
 import application.enums.Species;
 import application.enums.Type;
+import application.moves.Move;
+import application.moves.MovePool;
 
 public class AnatureBuilder
 {
-	public Anature createAnature(Species species, int level)
+	public static Anature createAnature(Species species, int level)
 	{
 		MoveSet moves = generateMoveSet(species, level);
 		Gender gender = null;
@@ -88,7 +90,7 @@ public class AnatureBuilder
 				attack, specialAttack, defense, specialDefense, hp, speed);
 	}
 
-	private MoveSet generateMoveSet(Species species, int level)
+	private static MoveSet generateMoveSet(Species species, int level)
 	{
 		ArrayList<MoveIds> availableMoves = new ArrayList<MoveIds>();
 
@@ -103,7 +105,7 @@ public class AnatureBuilder
 			while(results.next())
 			{
 				String minLevelStr = results.getString("Level");
-				String moveNameStr = results.getString("moveName");
+				String moveNameStr = results.getString("MoveName");
 
 				int minLevel = Integer.parseInt(minLevelStr);
 
@@ -166,7 +168,7 @@ public class AnatureBuilder
 		return new MoveSet(move1, move2, move3, move4);
 	}
 
-	private int generateRandomUniqueIndex(int max, int toGenerate, int otherIndex1, int otherIndex2, int otherIndex3)
+	private static int generateRandomUniqueIndex(int max, int toGenerate, int otherIndex1, int otherIndex2, int otherIndex3)
 	{
 		Random r = new Random();
 		toGenerate = r.nextInt(max);

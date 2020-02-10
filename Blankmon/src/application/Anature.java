@@ -12,16 +12,16 @@ public class Anature
 	private Species mSpecies;
 	private boolean mIsShiny;
 	private Ability mAbility;
-	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mHp, mSpeed;
+	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
 			Species species, boolean isShiny, Ability ability, int attack, int specialAttack, int defense, int specialDefense,
-			int hp, int speed)
+			int totalHp, int speed)
 	{
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
 
-		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || hp < 0 || level <= 0 || currentXp < 0)
+		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0 || currentXp < 0)
 			throw new IllegalArgumentException("Invalid int values.");
 
 		else if(types.length > 2 || types.length == 0)
@@ -31,7 +31,7 @@ public class Anature
 		mOwner = owner;
 		mLevel = level;
 		mCurrentXp = currentXp;
-		mCurrHp = hp;
+		mCurrHp = totalHp;
 		mGender = gender;
 		mMoves = moves;
 		mPrimaryType = types[0];
@@ -46,7 +46,7 @@ public class Anature
 		mSpecialAttack = specialAttack;
 		mDefense = defense;
 		mSpecialDefense = specialDefense;
-		mHp = hp;
+		mTotalHp = totalHp;
 	}
 
 	public MoveSet getMoves()
@@ -129,13 +129,21 @@ public class Anature
 		return mSpecialDefense;
 	}
 
-	public int getHp()
+	public int getTotalHp()
 	{
-		return mHp;
+		return mTotalHp;
 	}
 
 	public int getSpeed()
 	{
 		return mSpeed;
+	}
+	
+	public void takeDamage(double damage)
+	{
+		mCurrHp -= damage;
+		
+		if(mCurrHp < 0)
+			mCurrHp = 0;
 	}
 }

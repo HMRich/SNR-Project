@@ -1,10 +1,10 @@
-package application;
+package application.moves;
 
+import application.Anature;
 import application.enums.MoveIds;
 
 public abstract class Move
 {
-
 	private int mTotalMovePoints;
 	private MoveIds mMoveId;
 	private boolean mDoesDamage;
