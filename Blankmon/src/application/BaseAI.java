@@ -5,10 +5,10 @@ import application.enums.*;
 
 public class BaseAI {
 	public BaseAI() {
-		super(); 
+		
 	}
 	
-	private final String useItem(ArrayList<Item> items, Anature currentAnature, int healthThreshold) {
+	public final String useItem(ArrayList<Item> items, Anature currentAnature, int healthThreshold) {
 		if(items.isEmpty()) {
 			return "Cannot use Item because there are none";
 		} else if(currentAnature.getHp() < healthThreshold) {
@@ -20,8 +20,8 @@ public class BaseAI {
 		 
 	}
 	
-	public final String switchAnature(ArrayList<Anature> anatures, Type type, int switchThreshold ) {
-		if(!anatures.isEmpty() && isAnatureAtTypeDisadvantage(type) && willSwitch(switchThreshold)) {
+	public String switchAnature(ArrayList<Anature> anatures, Type[] types, int switchThreshold, Anature currentAnature) {
+		if(!anatures.isEmpty() && isAnatureAtTypeDisadvantage(types) && willSwitch(switchThreshold)) {
 			return "Switch Anature"; 
 		}
 		
@@ -46,7 +46,7 @@ public class BaseAI {
 		return isAnatureAtThreshold(switchThreshold); 
 	}
 
-	public boolean isAnatureAtTypeDisadvantage(Type type) {
+	private boolean isAnatureAtTypeDisadvantage(Type[] types) {
 		System.out.println("Checking to see if Anature is at a Type Disadvantage"); 
 		return false;
 	}
