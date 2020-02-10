@@ -2,8 +2,6 @@ package application;
 
 import java.util.HashMap;
 
-import application.abillities.Intimidate;
-import application.enums.AbilityIds;
 import application.enums.AiIds;
 
 public class AiPool
@@ -22,7 +20,7 @@ public class AiPool
 
 	private static void generateAis()
 	{
-		aiId = new HashMap<AiIds, BaseAI>();
-		aiId.put(AiIds.Base, new BaseAI());
+		mAis = new HashMap<AiIds, BaseAI>();
+		mAis.put(AiIds.Base, new BaseAI());
 	}
 }

@@ -13,7 +13,7 @@ public class Player {
 	private ArrayList <Anature> mPartyAnature; 
 
 	public Player(Image sprite) {
-		mName = "Demo Player!";
+		mName = "Example_Player";
 		mGender = Gender.Trans;
 		mBadges = new ArrayList<Boolean>();
 		mBackpack = new Backpack();
@@ -21,7 +21,7 @@ public class Player {
 		mPartyAnature = new ArrayList<Anature>();
 	}
 	
-	public String getPlayerName()
+	public String getName()
 	{
 		return mName;
 	}
@@ -51,4 +51,14 @@ public class Player {
 		return mPartyAnature;
 	}
 
+	public void addAnatures(Anature toAdd)
+	{
+		if(toAdd == null)
+			throw new IllegalArgumentException("toAdd was Null.");
+		
+		else if(mPartyAnature.size() == 6)
+			throw new IllegalArgumentException("The Player's Anature Party already has 6.");
+		
+		mPartyAnature.add(toAdd);
+	}
 }
