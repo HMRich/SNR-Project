@@ -8,10 +8,10 @@ public class Intimidate extends Ability
 {
 	public Intimidate()
 	{
-		super(AbilityIds.Intimidate);
+		super(AbilityIds.Intimidate, "Intimidate", false);
 	}
 	
-	public void activateAbility(Anature target)
+	public void activateAbility(Anature user, Anature target)
 	{
 		System.out.println("Ability Intimidate"); // TODO
 	}
