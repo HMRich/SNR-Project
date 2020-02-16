@@ -1,6 +1,6 @@
 package application;
 
-public class AnatureBattleStats
+public abstract class AnatureBattleStats
 {
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed;
 
