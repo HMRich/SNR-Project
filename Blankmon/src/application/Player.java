@@ -68,7 +68,7 @@ public class Player
 
 	public void setBadge(int badgePosition)
 	{
-		if(badgePosition > mBadges.length)
+		if(badgePosition >= mBadges.length)
 		{
 			throw new IllegalArgumentException("The badgePosition does not exsist.");
 		}
