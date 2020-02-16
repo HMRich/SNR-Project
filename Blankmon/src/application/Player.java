@@ -71,7 +71,6 @@ public class Player
 		if(badgePosition > mBadges.length)
 		{
 			throw new IllegalArgumentException("The badgePosition does not exsist.");
-
 		}
 		mBadges[badgePosition] = true;
 	}
@@ -90,7 +89,7 @@ public class Player
 	{
 		return mPartyAnature;
 	}
-	
+
 	public void setAnature(int position, Anature anature)
 	{
 		mPartyAnature.set(position, anature);
