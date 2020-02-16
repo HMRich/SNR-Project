@@ -2,7 +2,7 @@ package application;
 
 import application.enums.*;
 
-public class Anature
+public class Anature extends AnatureBattleStats
 {
 	private String mName, mOwner;
 	private int mLevel, mCurrentXp, mCurrHp;
@@ -21,7 +21,8 @@ public class Anature
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
 
-		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0 || currentXp < 0)
+		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0
+				|| currentXp < 0)
 			throw new IllegalArgumentException("Invalid int values.");
 
 		else if(types.length > 2 || types.length == 0)
@@ -59,9 +60,19 @@ public class Anature
 		return mName;
 	}
 
+	public void setName(String name)
+	{
+		mName = name;
+	}
+
 	public String getOwner()
 	{
 		return mOwner;
+	}
+
+	public void setOwner(String owner)
+	{
+		mOwner = owner;
 	}
 
 	public int getLevel()
@@ -69,9 +80,19 @@ public class Anature
 		return mLevel;
 	}
 
+	public void setLevel(int level)
+	{
+		mLevel = level;
+	}
+
 	public int getCurrentXp()
 	{
 		return mCurrentXp;
+	}
+
+	public void setCurrentXp(int currentXp)
+	{
+		mCurrentXp = currentXp;
 	}
 
 	public int getCurrHp()
@@ -79,9 +100,19 @@ public class Anature
 		return mCurrHp;
 	}
 
+	public void setCurrHp(int currHp)
+	{
+		mCurrHp = currHp;
+	}
+
 	public Gender getGender()
 	{
 		return mGender;
+	}
+
+	public void setGender(Gender gender)
+	{
+		mGender = gender;
 	}
 
 	public Type getPrimaryType()
@@ -89,9 +120,19 @@ public class Anature
 		return mPrimaryType;
 	}
 
+	public void setPrimaryType(Type primaryType)
+	{
+		mPrimaryType = primaryType;
+	}
+
 	public Type getSecondaryType()
 	{
 		return mSecondaryType;
+	}
+
+	public void setSecondaryType(Type secondaryType)
+	{
+		mSecondaryType = secondaryType;
 	}
 
 	public Species getmSpecies()
@@ -99,9 +140,19 @@ public class Anature
 		return mSpecies;
 	}
 
+	public void setSpecies(Species species)
+	{
+		mSpecies = species;
+	}
+
 	public boolean isShiny()
 	{
 		return mIsShiny;
+	}
+
+	public void setShiny(boolean isShiny)
+	{
+		mIsShiny = isShiny;
 	}
 
 	public Ability getAbility()
@@ -109,9 +160,19 @@ public class Anature
 		return mAbility;
 	}
 
+	public void setAbility(Ability ability)
+	{
+		mAbility = ability;
+	}
+
 	public int getAttack()
 	{
 		return mAttack;
+	}
+
+	public void setAttack(int attack)
+	{
+		mAttack = attack;
 	}
 
 	public int getSpecialAttack()
@@ -119,9 +180,19 @@ public class Anature
 		return mSpecialAttack;
 	}
 
+	public void setSpecialAttack(int specialAttack)
+	{
+		mSpecialAttack = specialAttack;
+	}
+
 	public int getDefense()
 	{
 		return mDefense;
+	}
+
+	public void setDefense(int defense)
+	{
+		mDefense = defense;
 	}
 
 	public int getSpecialDefense()
@@ -129,20 +200,35 @@ public class Anature
 		return mSpecialDefense;
 	}
 
+	public void setSpecialDefense(int specialDefense)
+	{
+		mSpecialDefense = specialDefense;
+	}
+
 	public int getTotalHp()
 	{
 		return mTotalHp;
+	}
+
+	public void setTotalHp(int totalHp)
+	{
+		mTotalHp = totalHp;
 	}
 
 	public int getSpeed()
 	{
 		return mSpeed;
 	}
-	
+
+	public void setSpeed(int speed)
+	{
+		mSpeed = speed;
+	}
+
 	public void takeDamage(double damage)
 	{
 		mCurrHp -= damage;
-		
+
 		if(mCurrHp < 0)
 			mCurrHp = 0;
 	}
