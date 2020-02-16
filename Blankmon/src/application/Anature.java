@@ -135,7 +135,7 @@ public class Anature extends AnatureBattleStats
 		mSecondaryType = secondaryType;
 	}
 
-	public Species getmSpecies()
+	public Species getSpecies()
 	{
 		return mSpecies;
 	}
