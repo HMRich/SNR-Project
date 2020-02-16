@@ -2,7 +2,7 @@ package application;
 
 import application.enums.*;
 
-public class Anature extends AnatureBattleStats
+public class Anature
 {
 	private String mName, mOwner;
 	private int mLevel, mCurrentXp, mCurrHp;
@@ -13,6 +13,7 @@ public class Anature extends AnatureBattleStats
 	private boolean mIsShiny;
 	private Ability mAbility;
 	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed;
+	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
 			Species species, boolean isShiny, Ability ability, int attack, int specialAttack, int defense, int specialDefense,
@@ -48,6 +49,7 @@ public class Anature extends AnatureBattleStats
 		mDefense = defense;
 		mSpecialDefense = specialDefense;
 		mTotalHp = totalHp;
+		resetTempStats();
 	}
 
 	public MoveSet getMoves()
@@ -223,6 +225,65 @@ public class Anature extends AnatureBattleStats
 	public void setSpeed(int speed)
 	{
 		mSpeed = speed;
+	}
+
+	public int getTempAttack()
+	{
+		return mTempAttack;
+	}
+
+	public void setTempAttack(int tempAttack)
+	{
+		mTempAttack = tempAttack;
+	}
+
+	public int getTempSpecialAttack()
+	{
+		return mTempSpecialAttack;
+	}
+
+	public void setTempSpecialAttack(int tempSpecialAttack)
+	{
+		mTempSpecialAttack = tempSpecialAttack;
+	}
+
+	public int getTempDefense()
+	{
+		return mTempDefense;
+	}
+
+	public void setTempDefense(int tempDefense)
+	{
+		mTempDefense = tempDefense;
+	}
+
+	public int getTempSpecialDefense()
+	{
+		return mTempSpecialDefense;
+	}
+
+	public void setTempSpecialDefense(int tempSpecialDefense)
+	{
+		mTempSpecialDefense = tempSpecialDefense;
+	}
+
+	public int getTempSpeed()
+	{
+		return mTempSpeed;
+	}
+
+	public void setTempSpeed(int tempSpeed)
+	{
+		mTempSpeed = tempSpeed;
+	}
+
+	public void resetTempStats()
+	{
+		mTempAttack = 0;
+		mTempSpecialAttack = 0;
+		mTempDefense = 0;
+		mTempSpecialDefense = 0;
+		mTempSpeed = 0;
 	}
 
 	public void takeDamage(double damage)
