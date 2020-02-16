@@ -13,6 +13,7 @@ public class Anature
 	private boolean mIsShiny;
 	private Ability mAbility;
 	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed;
+	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
 			Species species, boolean isShiny, Ability ability, int attack, int specialAttack, int defense, int specialDefense,
@@ -21,7 +22,8 @@ public class Anature
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
 
-		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0 || currentXp < 0)
+		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0
+				|| currentXp < 0)
 			throw new IllegalArgumentException("Invalid int values.");
 
 		else if(types.length > 2 || types.length == 0)
@@ -47,6 +49,7 @@ public class Anature
 		mDefense = defense;
 		mSpecialDefense = specialDefense;
 		mTotalHp = totalHp;
+		resetTempStats();
 	}
 
 	public MoveSet getMoves()
@@ -59,9 +62,19 @@ public class Anature
 		return mName;
 	}
 
+	public void setName(String name)
+	{
+		mName = name;
+	}
+
 	public String getOwner()
 	{
 		return mOwner;
+	}
+
+	public void setOwner(String owner)
+	{
+		mOwner = owner;
 	}
 
 	public int getLevel()
@@ -69,9 +82,19 @@ public class Anature
 		return mLevel;
 	}
 
+	public void setLevel(int level)
+	{
+		mLevel = level;
+	}
+
 	public int getCurrentXp()
 	{
 		return mCurrentXp;
+	}
+
+	public void setCurrentXp(int currentXp)
+	{
+		mCurrentXp = currentXp;
 	}
 
 	public int getCurrHp()
@@ -79,9 +102,19 @@ public class Anature
 		return mCurrHp;
 	}
 
+	public void setCurrHp(int currHp)
+	{
+		mCurrHp = currHp;
+	}
+
 	public Gender getGender()
 	{
 		return mGender;
+	}
+
+	public void setGender(Gender gender)
+	{
+		mGender = gender;
 	}
 
 	public Type getPrimaryType()
@@ -89,14 +122,29 @@ public class Anature
 		return mPrimaryType;
 	}
 
+	public void setPrimaryType(Type primaryType)
+	{
+		mPrimaryType = primaryType;
+	}
+
 	public Type getSecondaryType()
 	{
 		return mSecondaryType;
 	}
 
-	public Species getmSpecies()
+	public void setSecondaryType(Type secondaryType)
+	{
+		mSecondaryType = secondaryType;
+	}
+
+	public Species getSpecies()
 	{
 		return mSpecies;
+	}
+
+	public void setSpecies(Species species)
+	{
+		mSpecies = species;
 	}
 
 	public boolean isShiny()
@@ -104,9 +152,19 @@ public class Anature
 		return mIsShiny;
 	}
 
+	public void setShiny(boolean isShiny)
+	{
+		mIsShiny = isShiny;
+	}
+
 	public Ability getAbility()
 	{
 		return mAbility;
+	}
+
+	public void setAbility(Ability ability)
+	{
+		mAbility = ability;
 	}
 
 	public int getAttack()
@@ -114,9 +172,19 @@ public class Anature
 		return mAttack;
 	}
 
+	public void setAttack(int attack)
+	{
+		mAttack = attack;
+	}
+
 	public int getSpecialAttack()
 	{
 		return mSpecialAttack;
+	}
+
+	public void setSpecialAttack(int specialAttack)
+	{
+		mSpecialAttack = specialAttack;
 	}
 
 	public int getDefense()
@@ -124,9 +192,19 @@ public class Anature
 		return mDefense;
 	}
 
+	public void setDefense(int defense)
+	{
+		mDefense = defense;
+	}
+
 	public int getSpecialDefense()
 	{
 		return mSpecialDefense;
+	}
+
+	public void setSpecialDefense(int specialDefense)
+	{
+		mSpecialDefense = specialDefense;
 	}
 
 	public int getTotalHp()
@@ -134,15 +212,84 @@ public class Anature
 		return mTotalHp;
 	}
 
+	public void setTotalHp(int totalHp)
+	{
+		mTotalHp = totalHp;
+	}
+
 	public int getSpeed()
 	{
 		return mSpeed;
 	}
-	
+
+	public void setSpeed(int speed)
+	{
+		mSpeed = speed;
+	}
+
+	public int getTempAttack()
+	{
+		return mTempAttack;
+	}
+
+	public void setTempAttack(int tempAttack)
+	{
+		mTempAttack = tempAttack;
+	}
+
+	public int getTempSpecialAttack()
+	{
+		return mTempSpecialAttack;
+	}
+
+	public void setTempSpecialAttack(int tempSpecialAttack)
+	{
+		mTempSpecialAttack = tempSpecialAttack;
+	}
+
+	public int getTempDefense()
+	{
+		return mTempDefense;
+	}
+
+	public void setTempDefense(int tempDefense)
+	{
+		mTempDefense = tempDefense;
+	}
+
+	public int getTempSpecialDefense()
+	{
+		return mTempSpecialDefense;
+	}
+
+	public void setTempSpecialDefense(int tempSpecialDefense)
+	{
+		mTempSpecialDefense = tempSpecialDefense;
+	}
+
+	public int getTempSpeed()
+	{
+		return mTempSpeed;
+	}
+
+	public void setTempSpeed(int tempSpeed)
+	{
+		mTempSpeed = tempSpeed;
+	}
+
+	public void resetTempStats()
+	{
+		mTempAttack = 0;
+		mTempSpecialAttack = 0;
+		mTempDefense = 0;
+		mTempSpecialDefense = 0;
+		mTempSpeed = 0;
+	}
+
 	public void takeDamage(double damage)
 	{
 		mCurrHp -= damage;
-		
+
 		if(mCurrHp < 0)
 			mCurrHp = 0;
 	}
