@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 public class Player {
 	private String mName;
 	private Gender mGender;
+	private int mTokens;
 	private ArrayList<Boolean> mBadges; 
 	private Backpack mBackpack; 
 	private Image mSprite; 
@@ -15,6 +16,7 @@ public class Player {
 	public Player(Image sprite) {
 		mName = "Example_Player";
 		mGender = Gender.Trans;
+		mTokens = 0;
 		mBadges = new ArrayList<Boolean>();
 		mBackpack = new Backpack();
 		mSprite = sprite;
@@ -29,6 +31,11 @@ public class Player {
 	public Gender getGender()
 	{
 		return mGender;
+	}
+	
+	public int getTokens()
+	{
+		return mTokens;
 	}
 	
 	public int getNumberOfBadges()
