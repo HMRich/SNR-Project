@@ -1,0 +1,40 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.progress-bar > .bar 
+{
+    -fx-background-insets: 0;
+    -fx-padding: 0.1em;
+}
+
+.green-bar  { -fx-accent: green;  }
+.yellow-bar { -fx-accent: yellow; }
+.orange-bar { -fx-accent: orange; }
+.red-bar    { -fx-accent: red;    }
+.deep-sky-blue-bar    { -fx-accent: cyan;    }
+
+.text-area 
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: black ;
+}
+
+.text-area .scroll-pane 
+{
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport
+{
+    -fx-background-color: transparent;
+}
+
+
+.text-area .scroll-pane .content
+{
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-bar:vertical 
+{
+    -fx-opacity: 0;
+}
