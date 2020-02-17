@@ -32,6 +32,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -59,12 +60,17 @@ public class BattleController
 	@FXML private TextArea mDialogueTxtArea;
 	@FXML private Button mTestBtn;
 	
+	@FXML private ImageView mAttackDialogue, mAttackSeOne, mAttackSeTwo, mAttackSeThree, mAttackSeFour, mAttackBackBtn;
+	@FXML private ImageView mAttackImgOne, mAttackImgTwo, mAttackImgThree, mAttackImgFour;
+	@FXML private Text mAttackNameOne, mAttackMpOne, mAttackNameTwo, mAttackMpTwo, mAttackNameThree, mAttackMpThree, mAttackNameFour, mAttackMpFour;
+	@FXML private Group mMoveSeGroup;
+	
 	private DoubleProperty mEnemyHp, mEnemyHpTotal;
 	private DoubleProperty mPlayerHp, mPlayerHpTotal;
 	private DoubleProperty mPlayerXp, mPlayerXpTotal;
 	private IntegerProperty mEnemyLvl, mPlayerLvl;
 	private StringProperty mDialogueTxt, mPlayerName, mEnemyName;
-	private BooleanProperty mShowBtns;
+	private BooleanProperty mShowBtns, mShowMoveSelection, mShowMoveSe, mShowMoveSeOne, mShowMoveSeTwo, mShowMoveSeThree, mShowMoveSeFour;
 	
 	private FightManager mFightManager;
 	private Trainer mEnemyTrainer;
@@ -86,6 +92,13 @@ public class BattleController
 		
 		mEnemyLvl = new SimpleIntegerProperty(100);
 		mPlayerLvl = new SimpleIntegerProperty(100);
+		
+		mShowMoveSelection = new SimpleBooleanProperty(false);
+		mShowMoveSe = new SimpleBooleanProperty(true);
+		mShowMoveSeOne = new SimpleBooleanProperty(false);
+		mShowMoveSeTwo = new SimpleBooleanProperty(false);
+		mShowMoveSeThree = new SimpleBooleanProperty(false);
+		mShowMoveSeFour = new SimpleBooleanProperty(false);
 		
 		mShowBtns = new SimpleBooleanProperty(false);
 		mFightManager = null;
@@ -110,6 +123,8 @@ public class BattleController
 		
 		setUpGround(scene);
 		setUpSprites(scene);
+		
+		setUpMoveSelection(scene);
 	}
 	
 	private void setUpBgImages(Scene scene)
@@ -345,7 +360,7 @@ public class BattleController
 		mPane.getChildren().add(grid);
 		
 		ResizableImage atkImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Attack_Btn.png").toExternalForm()));
-		atkImage.setOnAction(event -> activateTurn(BattleChoice.Attack));
+		atkImage.setOnAction(event -> onAttackBtn());
 		grid.addColumn(0, atkImage);
 		
 		ResizableImage anatureImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Anature_Btn.png").toExternalForm()));
@@ -468,6 +483,132 @@ public class BattleController
 				}
 			}
 		});
+	}
+	
+	private void setUpMoveSelection(Scene scene)
+	{
+		mAttackDialogue.fitWidthProperty().bind(scene.widthProperty());
+		mAttackDialogue.fitHeightProperty().bind(scene.heightProperty());
+		mAttackDialogue.visibleProperty().bind(mShowMoveSelection);
+
+		mAttackSeOne.fitWidthProperty().bind(scene.widthProperty());
+		mAttackSeOne.fitHeightProperty().bind(scene.heightProperty());
+		mAttackSeOne.visibleProperty().bind(mShowMoveSeOne);
+
+		mAttackSeTwo.fitWidthProperty().bind(scene.widthProperty());
+		mAttackSeTwo.fitHeightProperty().bind(scene.heightProperty());
+		mAttackSeTwo.visibleProperty().bind(mShowMoveSeTwo);
+
+		mAttackSeThree.fitWidthProperty().bind(scene.widthProperty());
+		mAttackSeThree.fitHeightProperty().bind(scene.heightProperty());
+		mAttackSeThree.visibleProperty().bind(mShowMoveSeThree);
+
+		mAttackSeFour.fitWidthProperty().bind(scene.widthProperty());
+		mAttackSeFour.fitHeightProperty().bind(scene.heightProperty());
+		mAttackSeFour.visibleProperty().bind(mShowMoveSeFour);
+		
+		mMoveSeGroup.visibleProperty().bind(mShowMoveSe);
+		
+		mAttackBackBtn.layoutXProperty().bind(scene.widthProperty().divide(2.25));
+		mAttackBackBtn.layoutYProperty().bind(scene.heightProperty().divide(1.16));
+		mAttackBackBtn.fitWidthProperty().bind(scene.widthProperty().divide(9));
+		mAttackBackBtn.fitHeightProperty().bind(scene.heightProperty().divide(11));
+		mAttackBackBtn.visibleProperty().bind(mShowMoveSelection);
+		mAttackBackBtn.setOnMouseClicked(event -> onBackBtn());
+		
+		Font moveNameFont = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), 25);
+		ObjectProperty<Font> moveNameFontTracking = new SimpleObjectProperty<Font>(moveNameFont);
+
+		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> 
+		moveNameFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 75)));
+
+		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> 
+		moveNameFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 75)));
+		
+		Font moveMpFont = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), 25);
+		ObjectProperty<Font> moveMpFontTracking = new SimpleObjectProperty<Font>(moveMpFont);
+
+		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> 
+		moveMpFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 95)));
+
+		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> 
+		moveMpFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 95)));
+		
+		mAttackImgOne.layoutXProperty().bind(scene.widthProperty().divide(4.5));
+		mAttackImgOne.layoutYProperty().bind(scene.heightProperty().divide(1.31));
+		mAttackImgOne.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
+		mAttackImgOne.fitHeightProperty().bind(scene.heightProperty().divide(11));
+		mAttackImgOne.visibleProperty().bind(mShowMoveSelection);
+		mAttackImgOne.setOnMouseClicked(event -> mShowMoveSeOne.set(true));
+		
+		mAttackNameOne.layoutXProperty().bind(scene.widthProperty().divide(4.9));
+		mAttackNameOne.layoutYProperty().bind(scene.heightProperty().divide(1.24));
+		mAttackNameOne.fontProperty().bind(moveNameFontTracking);
+		mAttackNameOne.visibleProperty().bind(mShowMoveSelection);
+		mAttackNameOne.setOnMouseClicked(event -> mShowMoveSeOne.set(true));
+		
+		mAttackMpOne.layoutXProperty().bind(scene.widthProperty().divide(4.9));
+		mAttackMpOne.layoutYProperty().bind(scene.heightProperty().divide(1.19));
+		mAttackMpOne.fontProperty().bind(moveMpFontTracking);
+		mAttackMpOne.visibleProperty().bind(mShowMoveSelection);
+		mAttackMpOne.setOnMouseClicked(event -> mShowMoveSeOne.set(true));
+		
+		mAttackImgTwo.layoutXProperty().bind(scene.widthProperty().divide(4.5));
+		mAttackImgTwo.layoutYProperty().bind(scene.heightProperty().divide(1.158));
+		mAttackImgTwo.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
+		mAttackImgTwo.fitHeightProperty().bind(scene.heightProperty().divide(11));
+		mAttackImgTwo.visibleProperty().bind(mShowMoveSelection);
+		mAttackImgTwo.setOnMouseClicked(event -> System.out.println("Move 2"));
+		
+		mAttackNameTwo.layoutXProperty().bind(scene.widthProperty().divide(4.9));
+		mAttackNameTwo.layoutYProperty().bind(scene.heightProperty().divide(1.103));
+		mAttackNameTwo.fontProperty().bind(moveNameFontTracking);
+		mAttackNameTwo.visibleProperty().bind(mShowMoveSelection);
+		mAttackNameTwo.setOnMouseClicked(event -> System.out.println("Move 2"));
+		
+		mAttackMpTwo.layoutXProperty().bind(scene.widthProperty().divide(4.9));
+		mAttackMpTwo.layoutYProperty().bind(scene.heightProperty().divide(1.063));
+		mAttackMpTwo.fontProperty().bind(moveMpFontTracking);
+		mAttackMpTwo.visibleProperty().bind(mShowMoveSelection);
+		mAttackMpTwo.setOnMouseClicked(event -> System.out.println("Move 2"));
+		
+		mAttackImgThree.layoutXProperty().bind(scene.widthProperty().divide(1.515));
+		mAttackImgThree.layoutYProperty().bind(scene.heightProperty().divide(1.31));
+		mAttackImgThree.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
+		mAttackImgThree.fitHeightProperty().bind(scene.heightProperty().divide(11));
+		mAttackImgThree.visibleProperty().bind(mShowMoveSelection);
+		mAttackImgThree.setOnMouseClicked(event -> System.out.println("Move 3"));
+		
+		mAttackNameThree.layoutXProperty().bind(scene.widthProperty().divide(1.557));
+		mAttackNameThree.layoutYProperty().bind(scene.heightProperty().divide(1.24));
+		mAttackNameThree.fontProperty().bind(moveNameFontTracking);
+		mAttackNameThree.visibleProperty().bind(mShowMoveSelection);
+		mAttackNameThree.setOnMouseClicked(event -> System.out.println("Move 3"));
+		
+		mAttackMpThree.layoutXProperty().bind(scene.widthProperty().divide(1.557));
+		mAttackMpThree.layoutYProperty().bind(scene.heightProperty().divide(1.19));
+		mAttackMpThree.fontProperty().bind(moveMpFontTracking);
+		mAttackMpThree.visibleProperty().bind(mShowMoveSelection);
+		mAttackMpThree.setOnMouseClicked(event -> System.out.println("Move 3"));
+		
+		mAttackImgFour.layoutXProperty().bind(scene.widthProperty().divide(1.515));
+		mAttackImgFour.layoutYProperty().bind(scene.heightProperty().divide(1.158));
+		mAttackImgFour.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
+		mAttackImgFour.fitHeightProperty().bind(scene.heightProperty().divide(11));
+		mAttackImgFour.visibleProperty().bind(mShowMoveSelection);
+		mAttackImgFour.setOnMouseClicked(event -> System.out.println("Move 4"));
+		
+		mAttackNameFour.layoutXProperty().bind(scene.widthProperty().divide(1.557));
+		mAttackNameFour.layoutYProperty().bind(scene.heightProperty().divide(1.103));
+		mAttackNameFour.fontProperty().bind(moveNameFontTracking);
+		mAttackNameFour.visibleProperty().bind(mShowMoveSelection);
+		mAttackNameFour.setOnMouseClicked(event -> System.out.println("Move 4"));
+		
+		mAttackMpFour.layoutXProperty().bind(scene.widthProperty().divide(1.557));
+		mAttackMpFour.layoutYProperty().bind(scene.heightProperty().divide(1.063));
+		mAttackMpFour.fontProperty().bind(moveMpFontTracking);
+		mAttackMpFour.visibleProperty().bind(mShowMoveSelection);
+		mAttackMpFour.setOnMouseClicked(event -> System.out.println("Move 4"));
 	}
 	
 	private void activateTurn(BattleChoice choice)
@@ -594,5 +735,19 @@ public class BattleController
 		});
 		
 		decrease.play();
+	}
+	
+	private void onAttackBtn()
+	{
+		mShowMoveSelection.set(true);
+		mShowMoveSe.set(true);
+		mShowBtns.set(false);
+	}
+	
+	private void onBackBtn()
+	{
+		mShowMoveSelection.set(false);
+		mShowMoveSe.set(false);
+		mShowBtns.set(true);
 	}
 }
