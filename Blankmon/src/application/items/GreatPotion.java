@@ -5,6 +5,7 @@ import application.Item;
 import application.enums.ItemIds;
 
 public class GreatPotion extends Item{
+	private int mHealthPoints = 50; 
 
 	public GreatPotion() {
 		super(ItemIds.Great_Potion, "Great Potion"); 
