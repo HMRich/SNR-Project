@@ -28,6 +28,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -35,6 +36,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,6 +45,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -60,6 +63,12 @@ public class BattleController
 	@FXML private TextArea mDialogueTxtArea;
 	@FXML private Button mTestBtn;
 	
+	@FXML private ImageView mItemSelectionBg, mItemDialogue, mSelectedItem, mItemBackBtn, mItemUseBtn, mItemPotionsTab, mItemAnaCubeTab;
+	@FXML private ListView<String> mItemList;
+	@FXML private Rectangle mItemListBg;
+	@FXML private ImageView mItemPotionTabImg, mItemAnaCubeTabImg, mSelectedItemImg;
+	@FXML private Text mSelectedItemName;
+	
 	@FXML private ImageView mAttackDialogue, mAttackSeOne, mAttackSeTwo, mAttackSeThree, mAttackSeFour, mAttackBackBtn;
 	@FXML private ImageView mAttackImgOne, mAttackImgTwo, mAttackImgThree, mAttackImgFour;
 	@FXML private Text mAttackNameOne, mAttackMpOne, mAttackNameTwo, mAttackMpTwo, mAttackNameThree, mAttackMpThree, mAttackNameFour, mAttackMpFour;
@@ -69,6 +78,7 @@ public class BattleController
 	private DoubleProperty mPlayerHp, mPlayerHpTotal;
 	private DoubleProperty mPlayerXp, mPlayerXpTotal;
 	private IntegerProperty mEnemyLvl, mPlayerLvl;
+	private BooleanProperty mShowBtns, mShowItemSelection;
 	private StringProperty mDialogueTxt, mPlayerName, mEnemyName;
 	private BooleanProperty mShowBtns, mShowMoveSelection, mShowMoveSe, mShowMoveSeOne, mShowMoveSeTwo, mShowMoveSeThree, mShowMoveSeFour;
 	
@@ -89,9 +99,13 @@ public class BattleController
 		mDialogueTxt = new SimpleStringProperty("1\n2\n3");
 		mPlayerName = new SimpleStringProperty("Player Name");
 		mEnemyName = new SimpleStringProperty("Enemy Name");
+
+		mSelectedItemTxt = new SimpleStringProperty("Item Name");
 		
 		mEnemyLvl = new SimpleIntegerProperty(100);
 		mPlayerLvl = new SimpleIntegerProperty(100);
+
+		mShowItemSelection = new SimpleBooleanProperty(false);
 		
 		mShowMoveSelection = new SimpleBooleanProperty(false);
 		mShowMoveSe = new SimpleBooleanProperty(true);
@@ -123,6 +137,8 @@ public class BattleController
 		
 		setUpGround(scene);
 		setUpSprites(scene);
+		
+		setUpItemElements(scene);
 		
 		setUpMoveSelection(scene);
 	}
@@ -368,7 +384,7 @@ public class BattleController
 		grid.addColumn(1, anatureImage);
 		
 		ResizableImage bagImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Bag_Btn.png").toExternalForm()));
-		bagImage.setOnAction(event -> activateTurn(BattleChoice.Bag));
+		bagImage.setOnAction(event -> onBagBtn());
 		grid.add(bagImage, 0, 1);
 		
 		ResizableImage escapeImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
@@ -483,6 +499,103 @@ public class BattleController
 				}
 			}
 		});
+	}
+	
+	private void setUpItemElements(Scene scene)
+	{
+		mItemSelectionBg.fitWidthProperty().bind(scene.widthProperty());
+		mItemSelectionBg.fitHeightProperty().bind(scene.heightProperty());
+		mItemSelectionBg.visibleProperty().bind(mShowItemSelection);
+		
+		mItemDialogue.fitWidthProperty().bind(scene.widthProperty());
+		mItemDialogue.fitHeightProperty().bind(scene.heightProperty());
+		mItemDialogue.visibleProperty().bind(mShowItemSelection);
+		
+		mSelectedItem.fitWidthProperty().bind(scene.widthProperty());
+		mSelectedItem.fitHeightProperty().bind(scene.heightProperty());
+		mSelectedItem.visibleProperty().bind(mShowItemSelection);
+		
+		mItemBackBtn.layoutXProperty().bind(scene.widthProperty().divide(2.3));
+		mItemBackBtn.layoutYProperty().bind(scene.heightProperty().divide(1.19));
+		mItemBackBtn.fitWidthProperty().bind(scene.widthProperty().divide(7));
+		mItemBackBtn.fitHeightProperty().bind(scene.heightProperty().divide(9));
+		mItemBackBtn.visibleProperty().bind(mShowItemSelection);
+		mItemBackBtn.setOnMouseClicked(event -> onBackBtn());
+		
+		mItemUseBtn.layoutXProperty().bind(scene.widthProperty().divide(20));
+		mItemUseBtn.layoutYProperty().bind(scene.heightProperty().divide(1.52));
+		mItemUseBtn.fitWidthProperty().bind(scene.widthProperty().divide(7));
+		mItemUseBtn.fitHeightProperty().bind(scene.heightProperty().divide(17));
+		mItemUseBtn.visibleProperty().bind(mShowItemSelection);
+		mItemUseBtn.setOnMouseClicked(event -> System.out.println("USE ITEM"));
+		
+		mItemPotionsTab.layoutXProperty().bind(scene.widthProperty().divide(4.07));
+		mItemPotionsTab.layoutYProperty().bind(scene.heightProperty().divide(4.71));
+		mItemPotionsTab.fitWidthProperty().bind(scene.widthProperty().divide(23));
+		mItemPotionsTab.fitHeightProperty().bind(scene.heightProperty().divide(13));
+		mItemPotionsTab.visibleProperty().bind(mShowItemSelection);
+		mItemPotionsTab.setOnMouseClicked(event -> System.out.println("POTION"));
+		
+		mItemPotionTabImg.layoutXProperty().bind(scene.widthProperty().divide(4.03));
+		mItemPotionTabImg.layoutYProperty().bind(scene.heightProperty().divide(4.71));
+		mItemPotionTabImg.fitWidthProperty().bind(scene.widthProperty().divide(26));
+		mItemPotionTabImg.fitHeightProperty().bind(scene.heightProperty().divide(13));
+		mItemPotionTabImg.visibleProperty().bind(mShowItemSelection);
+		mItemPotionTabImg.setOnMouseClicked(event -> System.out.println("POTION"));
+		
+		mItemAnaCubeTab.layoutXProperty().bind(scene.widthProperty().divide(4.06));
+		mItemAnaCubeTab.layoutYProperty().bind(scene.heightProperty().divide(3.5));
+		mItemAnaCubeTab.fitWidthProperty().bind(scene.widthProperty().divide(23));
+		mItemAnaCubeTab.fitHeightProperty().bind(scene.heightProperty().divide(13));
+		mItemAnaCubeTab.visibleProperty().bind(mShowItemSelection);
+		mItemAnaCubeTab.setOnMouseClicked(event -> System.out.println("ANACUBE"));
+		
+		mItemAnaCubeTabImg.layoutXProperty().bind(scene.widthProperty().divide(4.07));
+		mItemAnaCubeTabImg.layoutYProperty().bind(scene.heightProperty().divide(3.5));
+		mItemAnaCubeTabImg.fitWidthProperty().bind(scene.widthProperty().divide(23));
+		mItemAnaCubeTabImg.fitHeightProperty().bind(scene.heightProperty().divide(13));
+		mItemAnaCubeTabImg.visibleProperty().bind(mShowItemSelection);
+		mItemAnaCubeTabImg.setOnMouseClicked(event -> System.out.println("ANACUBE"));
+		
+		mItemList.layoutXProperty().bind(scene.widthProperty().divide(32));
+		mItemList.layoutYProperty().bind(scene.heightProperty().divide(2.23));
+		mItemList.prefWidthProperty().bind(scene.widthProperty().divide(5.5));
+		mItemList.prefHeightProperty().bind(scene.heightProperty().divide(5));
+		mItemList.visibleProperty().bind(mShowItemSelection);
+		
+		ObservableList<String> items = mItemList.getItems();
+		items.add("Potions 1x");
+		
+		mItemList.setItems(items);
+		
+		mItemListBg.layoutXProperty().bind(scene.widthProperty().divide(32));
+		mItemListBg.layoutYProperty().bind(scene.heightProperty().divide(2.23));
+		mItemListBg.widthProperty().bind(scene.widthProperty().divide(5.5));
+		mItemListBg.heightProperty().bind(scene.heightProperty().divide(5));
+		mItemListBg.visibleProperty().bind(mShowItemSelection);
+		
+		Font selectedItemFont = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), 25);
+		ObjectProperty<Font> selectedItemFontTracking = new SimpleObjectProperty<Font>(selectedItemFont);
+		
+		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> 
+		selectedItemFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85)));
+		
+		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> 
+		selectedItemFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85)));
+		
+		mSelectedItemName.fontProperty().bind(selectedItemFontTracking);
+		mSelectedItemName.layoutXProperty().bind(scene.widthProperty().divide(12.5));
+		mSelectedItemName.layoutYProperty().bind(scene.heightProperty().divide(4));
+		mSelectedItemName.visibleProperty().bind(mShowItemSelection);
+		mSelectedItemName.textProperty().bind(mSelectedItemTxt);
+		
+		mSelectedItemImg.layoutXProperty().bind(scene.widthProperty().divide(14.1));
+		mSelectedItemImg.layoutYProperty().bind(scene.heightProperty().divide(4));
+		mSelectedItemImg.fitWidthProperty().bind(scene.widthProperty().divide(10));
+		mSelectedItemImg.fitHeightProperty().bind(scene.heightProperty().divide(5));
+		mSelectedItemImg.visibleProperty().bind(mShowItemSelection);
+		
+		mShowItemSelection.set(false);
 	}
 	
 	private void setUpMoveSelection(Scene scene)
@@ -735,6 +848,18 @@ public class BattleController
 		});
 		
 		decrease.play();
+	}
+	
+	private void onBagBtn()
+	{
+		mShowItemSelection.set(true);
+		mShowBtns.set(false);
+	}
+	
+	private void onBackBtn()
+	{
+		mShowItemSelection.set(false);
+		mShowBtns.set(true);
 	}
 	
 	private void onAttackBtn()
