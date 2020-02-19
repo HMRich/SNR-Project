@@ -13,13 +13,13 @@ public abstract class Move
 	private double mAccuracyStat;
 	private Type mType;
 
-	public Move(int totalMovePoints, MoveIds moveId, boolean DoesDamage, boolean isPhysicalAttack, double AccuracyStat, Type enumType)
+	public Move(int totalMovePoints, MoveIds moveId, boolean doesDamage, boolean isPhysicalAttack, double accuracyStat, Type enumType)
 	{
 		mTotalMovePoints = totalMovePoints;
 		mMoveId = moveId;
-		mDoesDamage = DoesDamage;
+		mDoesDamage = doesDamage;
 		mIsPhysicalAttack = isPhysicalAttack;
-		mAccuracyStat = AccuracyStat;
+		mAccuracyStat = accuracyStat;
 		mType = enumType;
 				
 	}
@@ -34,10 +34,20 @@ public abstract class Move
 		return mMoveId;
 	}
 
-	public boolean getDoesDamage()
+	public boolean doesDamage()
 	{
 		return mDoesDamage;
 	}
 
+	public double getAccuracy() 
+	{
+		return mAccuracyStat;
+	}
+	
+	public Type getType() 
+	{
+		return mType;
+	}
+	
 	public abstract void activateMove(Anature source, Anature target);
 }
