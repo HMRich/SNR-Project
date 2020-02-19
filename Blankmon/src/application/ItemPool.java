@@ -10,7 +10,7 @@ public class ItemPool
 {
 	private static HashMap<ItemIds, Item> mItems;
 
-	public static Item getItems(ItemIds itemId)
+	public static Item getItems(Enum<ItemIds> itemId)
 	{
 		if (mItems == null)
 		{

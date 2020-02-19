@@ -4,16 +4,16 @@ import application.Anature;
 import application.enums.MoveIds;
 import application.enums.Type;
 
-public class Tackle extends Move
+public class Flamethrower extends Move
 {
-	private static int mDamageDone = 30;
+	private static int mDamageDone = 50;
 	private static double mAccuracyStat = 75; 
 	private static boolean mDoesDamage = true;
-	private static boolean mIsPhysicalAttack = true;
+	private static boolean mIsPhysicalAttack = false;
 	
-	public Tackle()
+	public Flamethrower()
 	{
-		super(mDamageDone, MoveIds.Tackle, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Fighting);
+		super(mDamageDone, MoveIds.Tackle, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Fire);
 		
 	}
 

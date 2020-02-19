@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 
+import application.enums.ItemIds;
 import application.moves.Move;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -47,9 +48,18 @@ public class FightManager
 																+ mPlayerName + "'s " + playerAnature.getName() + "!");
 	}
 
-	public void itemUse(boolean isPlayer, int indexOfTeam, Enum<?> item)
+	public void itemUse(boolean isPlayer, int indexOfTeam, Enum<ItemIds> itemId)
 	{
-		throw new NotImplementedException();
+		Item item = ItemPool.getItems(itemId); 
+		Anature target; 
+		
+		if(isPlayer) {
+			target = mPlayerTeam.get(indexOfTeam);
+			item.useItem(target);
+		} else {
+			target = mEnemyTeam.get(indexOfTeam);
+			item.useItem(target);
+		}
 	}
 
 	public ArrayList<Anature> getPlayerTeam()
