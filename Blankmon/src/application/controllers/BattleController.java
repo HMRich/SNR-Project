@@ -78,8 +78,8 @@ public class BattleController
 	private DoubleProperty mPlayerHp, mPlayerHpTotal;
 	private DoubleProperty mPlayerXp, mPlayerXpTotal;
 	private IntegerProperty mEnemyLvl, mPlayerLvl;
-	private BooleanProperty mShowBtns, mShowItemSelection;
-	private StringProperty mDialogueTxt, mPlayerName, mEnemyName;
+	private BooleanProperty mShowItemSelection;
+	private StringProperty mDialogueTxt, mPlayerName, mEnemyName, mSelectedItemTxt;
 	private BooleanProperty mShowBtns, mShowMoveSelection, mShowMoveSe, mShowMoveSeOne, mShowMoveSeTwo, mShowMoveSeThree, mShowMoveSeFour;
 	
 	private FightManager mFightManager;
@@ -856,12 +856,6 @@ public class BattleController
 		mShowBtns.set(false);
 	}
 	
-	private void onBackBtn()
-	{
-		mShowItemSelection.set(false);
-		mShowBtns.set(true);
-	}
-	
 	private void onAttackBtn()
 	{
 		mShowMoveSelection.set(true);
@@ -871,6 +865,7 @@ public class BattleController
 	
 	private void onBackBtn()
 	{
+		mShowItemSelection.set(false);
 		mShowMoveSelection.set(false);
 		mShowMoveSe.set(false);
 		mShowBtns.set(true);
