@@ -12,7 +12,9 @@ import application.animations.ProgressBarDecrease;
 import application.animations.TrainerAnimation;
 import application.animations.XSlideAnimation;
 import application.enums.BattleChoice;
+import application.enums.Gender;
 import application.trainers.Trainer;
+import application.views.AnatureSlot;
 import application.views.HpBar;
 import application.views.ResizableImage;
 import application.views.XpBar;
@@ -540,48 +542,52 @@ public class BattleController
 		nameFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85)));
 		
 		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> 
-		nameFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85)));		
+		nameFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85)));
 		
-		mSwitchBgOne.layoutXProperty().bind(scene.widthProperty().divide(85));
-		mSwitchBgOne.layoutYProperty().bind(scene.heightProperty().divide(4.2));
-		mSwitchBgOne.fitWidthProperty().bind(scene.widthProperty().divide(3.7));
-		mSwitchBgOne.fitHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSwitchBgOne.visibleProperty().bind(mShowSwitch);
+		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
+		AnatureSlot slot = new AnatureSlot(scene, true, anatureImg, Gender.Female, new SimpleStringProperty("Null"), new SimpleStringProperty("Lvl5"), new SimpleStringProperty("20/20"), mShowSwitch);
+		mPane.getChildren().add(slot);
+//		slot.setLayoutY(40);
+//		slot.setLayoutX(40);
 		
-		mSwitchImgOne.layoutXProperty().bind(scene.widthProperty().divide(84.8));
-		mSwitchImgOne.layoutYProperty().bind(scene.heightProperty().divide(4.2));
-		mSwitchImgOne.fitWidthProperty().bind(scene.widthProperty().divide(26.3));
-		mSwitchImgOne.fitHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSwitchImgOne.visibleProperty().bind(mShowSwitch);
-		
-		mSwitchHpOne.layoutXProperty().bind(scene.widthProperty().divide(20));
-		mSwitchHpOne.layoutYProperty().bind(scene.heightProperty().divide(3.65));
-		mSwitchHpOne.fitWidthProperty().bind(scene.widthProperty().divide(6.7));
-		mSwitchHpOne.fitHeightProperty().bind(scene.heightProperty().divide(38.5));
-		mSwitchHpOne.visibleProperty().bind(mShowSwitch);
-		
-		mSwitchGenderOne.layoutXProperty().bind(scene.widthProperty().divide(3.786));
-		mSwitchGenderOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
-		mSwitchGenderOne.fitWidthProperty().bind(scene.widthProperty().divide(67.368));
-		mSwitchGenderOne.fitHeightProperty().bind(scene.heightProperty().divide(32));
-		mSwitchGenderOne.visibleProperty().bind(mShowSwitch);
-		
-		mSwitchNameOne.layoutXProperty().bind(scene.widthProperty().divide(19.69));
-		mSwitchNameOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
-		mSwitchNameOne.fontProperty().bind(nameFontTracking);
-		mSwitchNameOne.visibleProperty().bind(mShowSwitch);
-		
-		mSwitchLvlOne.layoutXProperty().bind(scene.widthProperty().divide(4.8));
-		mSwitchLvlOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
-		mSwitchLvlOne.fontProperty().bind(nameFontTracking);
-		mSwitchLvlOne.visibleProperty().bind(mShowSwitch);
-		
-		mSwitchHpNumOne.layoutXProperty().bind(scene.widthProperty().divide(4.8));
-		mSwitchHpNumOne.layoutYProperty().bind(scene.heightProperty().divide(3.35));
-		mSwitchHpNumOne.fontProperty().bind(nameFontTracking);
-		mSwitchHpNumOne.visibleProperty().bind(mShowSwitch);
-		
-		
+//		mSwitchBgOne.layoutXProperty().bind(scene.widthProperty().divide(85));
+//		mSwitchBgOne.layoutYProperty().bind(scene.heightProperty().divide(4.2));
+//		mSwitchBgOne.fitWidthProperty().bind(scene.widthProperty().divide(3.7));
+//		mSwitchBgOne.fitHeightProperty().bind(scene.heightProperty().divide(15.1));
+//		mSwitchBgOne.visibleProperty().bind(mShowSwitch);
+//		
+//		mSwitchImgOne.layoutXProperty().bind(scene.widthProperty().divide(84.8));
+//		mSwitchImgOne.layoutYProperty().bind(scene.heightProperty().divide(4.2));
+//		mSwitchImgOne.fitWidthProperty().bind(scene.widthProperty().divide(26.3));
+//		mSwitchImgOne.fitHeightProperty().bind(scene.heightProperty().divide(15.1));
+//		mSwitchImgOne.visibleProperty().bind(mShowSwitch);
+//		
+//		mSwitchHpOne.layoutXProperty().bind(scene.widthProperty().divide(20));
+//		mSwitchHpOne.layoutYProperty().bind(scene.heightProperty().divide(3.65));
+//		mSwitchHpOne.fitWidthProperty().bind(scene.widthProperty().divide(6.7));
+//		mSwitchHpOne.fitHeightProperty().bind(scene.heightProperty().divide(38.5));
+//		mSwitchHpOne.visibleProperty().bind(mShowSwitch);
+//		
+//		mSwitchGenderOne.layoutXProperty().bind(scene.widthProperty().divide(3.786));
+//		mSwitchGenderOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
+//		mSwitchGenderOne.fitWidthProperty().bind(scene.widthProperty().divide(67.368));
+//		mSwitchGenderOne.fitHeightProperty().bind(scene.heightProperty().divide(32));
+//		mSwitchGenderOne.visibleProperty().bind(mShowSwitch);
+//		
+//		mSwitchNameOne.layoutXProperty().bind(scene.widthProperty().divide(19.69));
+//		mSwitchNameOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
+//		mSwitchNameOne.fontProperty().bind(nameFontTracking);
+//		mSwitchNameOne.visibleProperty().bind(mShowSwitch);
+//		
+//		mSwitchLvlOne.layoutXProperty().bind(scene.widthProperty().divide(4.8));
+//		mSwitchLvlOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
+//		mSwitchLvlOne.fontProperty().bind(nameFontTracking);
+//		mSwitchLvlOne.visibleProperty().bind(mShowSwitch);
+//		
+//		mSwitchHpNumOne.layoutXProperty().bind(scene.widthProperty().divide(4.8));
+//		mSwitchHpNumOne.layoutYProperty().bind(scene.heightProperty().divide(3.35));
+//		mSwitchHpNumOne.fontProperty().bind(nameFontTracking);
+//		mSwitchHpNumOne.visibleProperty().bind(mShowSwitch);		
 	}
 	
 	private void setUpItemElements(Scene scene)
