@@ -193,6 +193,44 @@
             </ImageView>
             <Text fx:id="mAttackNameFour" layoutX="996.0" layoutY="653.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attack 4" textAlignment="CENTER" wrappingWidth="195.869140625" />
             <Text fx:id="mAttackMpFour" layoutX="996.0" layoutY="675.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15/15 mp" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <ImageView fx:id="mSwitchSelection" fitHeight="242.0" fitWidth="421.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Selection_Panel.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchDialogue" fitHeight="242.0" fitWidth="421.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Dialogue_Panel.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchBackBtn" fitHeight="55.0" fitWidth="140.0" layoutX="294.0" layoutY="445.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Back_Button.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchBgOne" fitHeight="26.0" fitWidth="135.0" layoutX="415.0" layoutY="509.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Anature_Slot_Selected.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchImgOne" fitHeight="41.0" fitWidth="44.0" layoutX="294.0" layoutY="521.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/anatures/Null_Front.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchHpOne" fitHeight="13.0" fitWidth="139.0" layoutX="303.0" layoutY="567.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Hp_Bar.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchGenderOne" fitHeight="35.0" fitWidth="30.0" layoutX="445.0" layoutY="542.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/Female_Symbol.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mSwitchNameOne" fill="WHITE" layoutX="336.0" layoutY="533.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Name 1" wrappingWidth="195.44921875" />
+            <Text fx:id="mSwitchLvlOne" fill="WHITE" layoutX="394.0" layoutY="512.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Lvl" wrappingWidth="66.44921875" />
+            <Text fx:id="mSwitchHpNumOne" fill="WHITE" layoutX="391.0" layoutY="533.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="1/1" wrappingWidth="80.44921875" />
          </children>
       </Pane>
    </center>

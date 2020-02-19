@@ -63,6 +63,10 @@ public class BattleController
 	@FXML private TextArea mDialogueTxtArea;
 	@FXML private Button mTestBtn;
 	
+	@FXML private ImageView mSwitchSelection, mSwitchDialogue, mSwitchBackBtn;
+	@FXML private ImageView mSwitchBgOne, mSwitchImgOne, mSwitchHpOne, mSwitchGenderOne;
+	@FXML private Text mSwitchNameOne, mSwitchLvlOne, mSwitchHpNumOne;
+	
 	@FXML private ImageView mItemSelectionBg, mItemDialogue, mSelectedItem, mItemBackBtn, mItemUseBtn, mItemPotionsTab, mItemAnaCubeTab;
 	@FXML private ListView<String> mItemList;
 	@FXML private Rectangle mItemListBg;
@@ -78,6 +82,8 @@ public class BattleController
 	private DoubleProperty mPlayerHp, mPlayerHpTotal;
 	private DoubleProperty mPlayerXp, mPlayerXpTotal;
 	private IntegerProperty mEnemyLvl, mPlayerLvl;
+	private StringProperty mDialogueTxt, mPlayerName, mEnemyName;
+	private BooleanProperty mShowBtns, mShowSwitch;
 	private BooleanProperty mShowItemSelection;
 	private StringProperty mDialogueTxt, mPlayerName, mEnemyName, mSelectedItemTxt;
 	private BooleanProperty mShowBtns, mShowMoveSelection, mShowMoveSe, mShowMoveSeOne, mShowMoveSeTwo, mShowMoveSeThree, mShowMoveSeFour;
@@ -104,6 +110,8 @@ public class BattleController
 		
 		mEnemyLvl = new SimpleIntegerProperty(100);
 		mPlayerLvl = new SimpleIntegerProperty(100);
+
+		mShowSwitch = new SimpleBooleanProperty(true);
 
 		mShowItemSelection = new SimpleBooleanProperty(false);
 		
@@ -137,6 +145,8 @@ public class BattleController
 		
 		setUpGround(scene);
 		setUpSprites(scene);
+		
+		setUpSwitchElements(scene);
 		
 		setUpItemElements(scene);
 		
@@ -501,6 +511,79 @@ public class BattleController
 		});
 	}
 	
+	private void setUpSwitchElements(Scene scene)
+	{
+		mSwitchSelection.fitWidthProperty().bind(scene.widthProperty());
+		mSwitchSelection.fitHeightProperty().bind(scene.heightProperty());
+		mSwitchSelection.visibleProperty().bind(mShowSwitch);
+
+		mSwitchDialogue.fitWidthProperty().bind(scene.widthProperty());
+		mSwitchDialogue.fitHeightProperty().bind(scene.heightProperty());
+		mSwitchDialogue.visibleProperty().bind(mShowSwitch);
+		
+		mSwitchBackBtn.layoutXProperty().bind(scene.widthProperty().divide(2.25));
+		mSwitchBackBtn.layoutYProperty().bind(scene.heightProperty().divide(1.16));
+		mSwitchBackBtn.fitWidthProperty().bind(scene.widthProperty().divide(9));
+		mSwitchBackBtn.fitHeightProperty().bind(scene.heightProperty().divide(11));
+		mSwitchBackBtn.visibleProperty().bind(mShowSwitch);
+		mSwitchBackBtn.setOnMouseClicked(event -> onBackBtn());
+		
+		setUpAnatureTabs(scene);
+	}
+	
+	private void setUpAnatureTabs(Scene scene)
+	{
+		Font nameFont = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85);
+		ObjectProperty<Font> nameFontTracking = new SimpleObjectProperty<Font>(nameFont);
+		
+		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> 
+		nameFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85)));
+		
+		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> 
+		nameFontTracking.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85)));		
+		
+		mSwitchBgOne.layoutXProperty().bind(scene.widthProperty().divide(85));
+		mSwitchBgOne.layoutYProperty().bind(scene.heightProperty().divide(4.2));
+		mSwitchBgOne.fitWidthProperty().bind(scene.widthProperty().divide(3.7));
+		mSwitchBgOne.fitHeightProperty().bind(scene.heightProperty().divide(15.1));
+		mSwitchBgOne.visibleProperty().bind(mShowSwitch);
+		
+		mSwitchImgOne.layoutXProperty().bind(scene.widthProperty().divide(84.8));
+		mSwitchImgOne.layoutYProperty().bind(scene.heightProperty().divide(4.2));
+		mSwitchImgOne.fitWidthProperty().bind(scene.widthProperty().divide(26.3));
+		mSwitchImgOne.fitHeightProperty().bind(scene.heightProperty().divide(15.1));
+		mSwitchImgOne.visibleProperty().bind(mShowSwitch);
+		
+		mSwitchHpOne.layoutXProperty().bind(scene.widthProperty().divide(20));
+		mSwitchHpOne.layoutYProperty().bind(scene.heightProperty().divide(3.65));
+		mSwitchHpOne.fitWidthProperty().bind(scene.widthProperty().divide(6.7));
+		mSwitchHpOne.fitHeightProperty().bind(scene.heightProperty().divide(38.5));
+		mSwitchHpOne.visibleProperty().bind(mShowSwitch);
+		
+		mSwitchGenderOne.layoutXProperty().bind(scene.widthProperty().divide(3.786));
+		mSwitchGenderOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
+		mSwitchGenderOne.fitWidthProperty().bind(scene.widthProperty().divide(67.368));
+		mSwitchGenderOne.fitHeightProperty().bind(scene.heightProperty().divide(32));
+		mSwitchGenderOne.visibleProperty().bind(mShowSwitch);
+		
+		mSwitchNameOne.layoutXProperty().bind(scene.widthProperty().divide(19.69));
+		mSwitchNameOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
+		mSwitchNameOne.fontProperty().bind(nameFontTracking);
+		mSwitchNameOne.visibleProperty().bind(mShowSwitch);
+		
+		mSwitchLvlOne.layoutXProperty().bind(scene.widthProperty().divide(4.8));
+		mSwitchLvlOne.layoutYProperty().bind(scene.heightProperty().divide(3.75));
+		mSwitchLvlOne.fontProperty().bind(nameFontTracking);
+		mSwitchLvlOne.visibleProperty().bind(mShowSwitch);
+		
+		mSwitchHpNumOne.layoutXProperty().bind(scene.widthProperty().divide(4.8));
+		mSwitchHpNumOne.layoutYProperty().bind(scene.heightProperty().divide(3.35));
+		mSwitchHpNumOne.fontProperty().bind(nameFontTracking);
+		mSwitchHpNumOne.visibleProperty().bind(mShowSwitch);
+		
+		
+	}
+	
 	private void setUpItemElements(Scene scene)
 	{
 		mItemSelectionBg.fitWidthProperty().bind(scene.widthProperty());
@@ -848,6 +931,18 @@ public class BattleController
 		});
 		
 		decrease.play();
+	}
+	
+	private void onSwitchBtn()
+	{
+		mShowSwitch.set(true);
+		mShowBtns.set(false);
+	}
+	
+	private void onBackBtn()
+	{
+		mShowSwitch.set(false);
+		mShowBtns.set(true);
 	}
 	
 	private void onBagBtn()
