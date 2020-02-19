@@ -49,5 +49,10 @@ public abstract class Move
 		return mType;
 	}
 	
+	public boolean isPhysicalAttack()
+	{
+		return mIsPhysicalAttack;
+	}
+	
 	public abstract void activateMove(Anature source, Anature target);
 }
