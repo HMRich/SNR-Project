@@ -519,7 +519,7 @@ public class BattleController
 		mSwitchPageLeft.fitHeightProperty().bind(scene.heightProperty().divide(18.46));
 		mSwitchPageLeft.visibleProperty().bind(mShowSwitch);
 		
-		mSwitchPageRight.layoutXProperty().bind(scene.widthProperty().divide(1.04));
+		mSwitchPageRight.layoutXProperty().bind(scene.widthProperty().divide(1.043));
 		mSwitchPageRight.layoutYProperty().bind(scene.heightProperty().divide(6.99));
 		mSwitchPageRight.fitWidthProperty().bind(scene.widthProperty().divide(46.23));
 		mSwitchPageRight.fitHeightProperty().bind(scene.heightProperty().divide(18.46));
