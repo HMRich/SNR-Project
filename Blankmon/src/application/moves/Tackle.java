@@ -2,6 +2,7 @@ package application.moves;
 
 import application.Anature;
 import application.enums.MoveIds;
+import application.enums.Type;
 
 public class Tackle extends Move
 {
@@ -9,7 +10,7 @@ public class Tackle extends Move
 	
 	public Tackle()
 	{
-		super(25, MoveIds.Tackle, true);
+		super(25, MoveIds.Tackle, true, true, 100, Type.Normal);
 		mDamageDone = 30;
 	}
 
