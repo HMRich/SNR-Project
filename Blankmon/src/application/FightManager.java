@@ -2,6 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import application.abillities.*;
+import application.enums.AbilityIds;
 import application.enums.ItemIds;
 import application.moves.Move;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -31,6 +33,7 @@ public class FightManager
 		double oldHp = enemyAnature.getCurrHp();
 		
 		playerAnatureMove.activateMove(playerAnature, enemyAnature);
+		abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
 		return new MoveResult(oldHp - enemyAnature.getCurrHp(), mPlayerName + "'s " + playerAnature.getName() + " attacked "
 																+ mEnemyName + "'s " + enemyAnature.getName() + "!");
 	}
@@ -44,6 +47,7 @@ public class FightManager
 		double oldHp = playerAnature.getCurrHp();
 		
 		enemyAnatureMove.activateMove(enemyAnature, playerAnature);		
+		abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp); 
 		return new MoveResult(oldHp - playerAnature.getCurrHp(), mEnemyName + "'s " + enemyAnature.getName() + " attacked "
 																+ mPlayerName + "'s " + playerAnature.getName() + "!");
 	}
@@ -59,6 +63,20 @@ public class FightManager
 		} else {
 			target = mEnemyTeam.get(indexOfTeam);
 			item.useItem(target);
+		}
+	}
+	
+	public void abilityUse(AbilityIds abilityId, Anature attackingAnature, Anature targetAnature, 
+							Move move, double oldHp) {
+		
+		if(abilityId == AbilityIds.Determined) {
+			Determined.activateAbility(targetAnature, move, oldHp); 
+		}else if(abilityId == AbilityIds.Dry_Skin) {
+			
+		}else if(abilityId == AbilityIds.Intimidate) {
+			
+		}else if(abilityId == AbilityIds.Spiky) {
+			Spiky.activateAbility(attackingAnature, targetAnature, move);
 		}
 	}
 

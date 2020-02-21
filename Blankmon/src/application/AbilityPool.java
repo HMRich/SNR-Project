@@ -2,7 +2,7 @@ package application;
 
 import java.util.HashMap;
 
-import application.abillities.Intimidate;
+import application.abillities.*;
 import application.enums.AbilityIds;
 
 public class AbilityPool
@@ -22,5 +22,7 @@ public class AbilityPool
 	{
 		mAbilities = new HashMap<AbilityIds, Ability>();
 		mAbilities.put(AbilityIds.Intimidate, new Intimidate());
+		mAbilities.put(AbilityIds.Spiky, new Spiky()); 
+		mAbilities.put(AbilityIds.Determined, new Determined()); 
 	}
 }
