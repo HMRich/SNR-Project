@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.BattleController">
@@ -75,6 +78,175 @@
             </ImageView>
             <TextArea fx:id="mDialogueTxtArea" editable="false" layoutX="64.0" layoutY="494.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
             <Button fx:id="mTestBtn" layoutX="38.0" layoutY="309.0" mnemonicParsing="false" text="Test Button" />
+            <ImageView fx:id="mItemSelectionBg" fitHeight="237.0" fitWidth="399.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/items/Item_View_Panel.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mItemDialogue" fitHeight="237.0" fitWidth="399.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/items/Item_Dialogue_Panel.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSelectedItem" fitHeight="237.0" fitWidth="399.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/items/Item_Selection_Box.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mItemBackBtn" fitHeight="75.0" fitWidth="194.0" layoutX="1054.0" layoutY="247.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/items/Back_Button.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mItemUseBtn" fitHeight="41.0" fitWidth="194.0" layoutX="1072.0" layoutY="374.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/items/Use_Item_Button.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mItemPotionsTab" fitHeight="61.0" fitWidth="57.0" layoutX="828.0" layoutY="544.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/items/White_Tab.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mItemAnaCubeTab" fitHeight="61.0" fitWidth="57.0" layoutX="903.0" layoutY="575.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/items/Grey_Tab.png" />
+               </image>
+            </ImageView>
+            <Rectangle fx:id="mItemListBg" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="77.0" layoutX="372.0" layoutY="34.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="3.0" width="86.0" />
+            <ListView fx:id="mItemList" layoutX="328.0" layoutY="451.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-insets: 6;" />
+            <ImageView fx:id="mItemAnaCubeTabImg" fitHeight="61.0" fitWidth="57.0" layoutX="771.0" layoutY="34.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/items/AnaCube.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mItemPotionTabImg" fitHeight="61.0" fitWidth="57.0" layoutX="853.0" layoutY="34.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/items/Potion.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mSelectedItemName" layoutX="528.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Item Name" />
+            <ImageView fx:id="mSelectedItemImg" fitHeight="61.0" fitWidth="57.0" layoutX="632.0" layoutY="26.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/items/Potion.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mAttackDialogue" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/moves/Move_Dialogue_Panel.png" />
+               </image>
+            </ImageView>
+            <Group fx:id="mMoveSeGroup">
+               <children>
+                  <ImageView fx:id="mAttackSeOne" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../resources/images/battle/moves/Move_SE_1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="mAttackSeTwo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../resources/images/battle/moves/Move_SE_2.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="mAttackSeThree" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../resources/images/battle/moves/Move_SE_3.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="mAttackSeFour" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../resources/images/battle/moves/Move_SE_4.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <ImageView fx:id="mAttackBackBtn" fitHeight="68.0" fitWidth="169.0" layoutX="259.0" layoutY="29.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/moves/Back_Button.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mAttackImgOne" fitHeight="68.0" fitWidth="169.0" layoutX="634.0" layoutY="27.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/moves/Move_Red_Btn.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mAttackNameOne" layoutX="621.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attack 1" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <Text fx:id="mAttackMpOne" layoutX="621.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15/15 mp" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <ImageView fx:id="mAttackImgTwo" fitHeight="68.0" fitWidth="169.0" layoutX="453.0" layoutY="63.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/moves/Move_Red_Btn.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mAttackNameTwo" layoutX="440.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attack 2" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <Text fx:id="mAttackMpTwo" layoutX="440.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15/15 mp" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <ImageView fx:id="mAttackImgThree" fitHeight="68.0" fitWidth="169.0" layoutX="796.0" layoutY="626.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/moves/Move_Red_Btn.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mAttackNameThree" layoutX="783.0" layoutY="653.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attack 3" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <Text fx:id="mAttackMpThree" layoutX="783.0" layoutY="675.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15/15 mp" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <ImageView fx:id="mAttackImgFour" fitHeight="68.0" fitWidth="169.0" layoutX="1009.0" layoutY="626.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/moves/Move_Red_Btn.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mAttackNameFour" layoutX="996.0" layoutY="653.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attack 4" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <Text fx:id="mAttackMpFour" layoutX="996.0" layoutY="675.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15/15 mp" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <ImageView fx:id="mSwitchSelection" fitHeight="242.0" fitWidth="421.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Selection_Panel_Page1.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchDialogue" fitHeight="242.0" fitWidth="421.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Dialogue_Panel.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchBackBtn" fitHeight="55.0" fitWidth="140.0" layoutX="294.0" layoutY="445.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Back_Button.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchSelectedImg" fitHeight="125.0" fitWidth="134.0" layoutX="270.0" layoutY="515.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/anatures/Null_Front.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mSwitchSelectedCatalogNum" layoutX="408.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedName" layoutX="408.0" layoutY="562.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Null" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedOwner" layoutX="408.0" layoutY="576.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player_Null" wrappingWidth="473.13671875" />
+            <Text fx:id="mSwitchSelectedCurrXp" layoutX="408.0" layoutY="626.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9001" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedNextXp" layoutX="408.0" layoutY="645.0" strokeType="OUTSIDE" strokeWidth="0.0" text="999" wrappingWidth="239.13671875" />
+            <ImageView fx:id="mSwitchSelectedTypeOne" fitHeight="43.0" fitWidth="121.0" layoutX="298.0" layoutY="657.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Type_Normal.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchSelectedTypeTwo" fitHeight="43.0" fitWidth="121.0" layoutX="428.0" layoutY="657.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Type_Normal.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mSwitchPageTxt" layoutX="416.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Page 1" wrappingWidth="182.13671875" />
+            <ImageView fx:id="mSwitchPageLeft" fitHeight="34.0" fitWidth="18.0" layoutX="519.0" layoutY="436.0" onMouseClicked="#onPageChange" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Page_Left.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mSwitchPageRight" fitHeight="34.0" fitWidth="18.0" layoutX="551.0" layoutY="436.0" onMouseClicked="#onPageChange" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Page_Right.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="mSwitchSelectedHp" layoutX="1026.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedAtk" layoutX="1026.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="120" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedSpAtk" layoutX="1026.0" layoutY="519.0" strokeType="OUTSIDE" strokeWidth="0.0" text="132" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedDef" layoutX="1029.0" layoutY="534.0" strokeType="OUTSIDE" strokeWidth="0.0" text="94" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedSpDef" layoutX="1029.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="94" wrappingWidth="239.13671875" />
+            <Text fx:id="mSwitchSelectedAbilityName" layoutX="952.0" layoutY="577.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Intimidate" wrappingWidth="321.13671875" />
+            <Text fx:id="mSwitchSelectedAbilityDesc" layoutX="836.0" layoutY="596.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ability Description" wrappingWidth="438.13671875" />
+            <Text fx:id="mSwitchSelectedSpeed" layoutX="1026.0" layoutY="561.0" strokeType="OUTSIDE" strokeWidth="0.0" text="129" wrappingWidth="239.13671875" />
          </children>
       </Pane>
    </center>
