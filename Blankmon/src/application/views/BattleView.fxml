@@ -193,6 +193,10 @@
             </ImageView>
             <Text fx:id="mAttackNameFour" layoutX="996.0" layoutY="653.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attack 4" textAlignment="CENTER" wrappingWidth="195.869140625" />
             <Text fx:id="mAttackMpFour" layoutX="996.0" layoutY="675.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15/15 mp" textAlignment="CENTER" wrappingWidth="195.869140625" />
+            <ImageView fx:id="mClickIndicatorImg" fitHeight="62.0" fitWidth="69.0" layoutX="15.0" layoutY="237.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/BattleScreen_ClickIndicator.png" />
+               </image></ImageView>
             <ImageView fx:id="mSwitchSelection" fitHeight="242.0" fitWidth="421.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/battle/switching/Switch_Selection_Panel_Page1.png" />

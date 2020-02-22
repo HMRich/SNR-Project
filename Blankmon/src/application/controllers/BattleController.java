@@ -6,10 +6,10 @@ import application.Anature;
 import application.FightManager;
 import application.MoveResult;
 import application.Player;
+import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
 import application.animations.ProgressBarDecrease;
-import application.animations.TrainerAnimation;
 import application.animations.XSlideAnimation;
 import application.enums.BattleChoice;
 import application.enums.Gender;
@@ -63,6 +63,7 @@ public class BattleController
 	@FXML private Text mPlayerNameTxt, mEnemyNameTxt, mPlayerHpTxt, mEnemyHpTxt, mPlayerLvlTxt, mEnemyLvlTxt;
 	@FXML private ImageView mPlayerGender, mEnemyGender;
 	@FXML private TextArea mDialogueTxtArea;
+	@FXML private ImageView mClickIndicatorImg;
 	@FXML private Button mTestBtn;
 	
 	@FXML private ImageView mSwitchSelection, mSwitchDialogue, mSwitchBackBtn, mSwitchSelectedImg, 
@@ -86,7 +87,7 @@ public class BattleController
 	private DoubleProperty mPlayerHp, mPlayerHpTotal;
 	private DoubleProperty mPlayerXp, mPlayerXpTotal;
 	private IntegerProperty mEnemyLvl, mPlayerLvl;
-	private BooleanProperty mShowItemSelection, mShowSwitch, mShowPlayerBars, mShowSwitchPageOne;
+	private BooleanProperty mShowItemSelection, mShowSwitch, mShowPlayerBars, mShowSwitchPageOne, mCanClick;
 	private StringProperty mDialogueTxt, mPlayerName, mEnemyName, mSelectedItemTxt;
 	private BooleanProperty mShowBtns, mShowMoveSelection, mShowMoveSe, mShowMoveSeOne, mShowMoveSeTwo, mShowMoveSeThree, mShowMoveSeFour;
 	
@@ -94,7 +95,6 @@ public class BattleController
 	private Trainer mEnemyTrainer;
 	private ClickQueue mClickQueue;
 	private int mSwitchPageNum;
-	private boolean mCanClick;
 	
 	public void initialize()
 	{
@@ -128,7 +128,7 @@ public class BattleController
 		mFightManager = null;
 		mEnemyTrainer = null;
 		mClickQueue = new ClickQueue();
-		mCanClick = false;
+		mCanClick = new SimpleBooleanProperty(false);
 		mSwitchPageNum = 1;
 		
 		mSwitchPageOneImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page1.png").toExternalForm());
@@ -167,38 +167,64 @@ public class BattleController
 		
 		mHpImage.fitWidthProperty().bind(scene.widthProperty());
 		mHpImage.fitHeightProperty().bind(scene.heightProperty());
+		
+		mClickIndicatorImg.layoutXProperty().bind(scene.widthProperty().divide(2.03));
+		mClickIndicatorImg.layoutYProperty().bind(scene.heightProperty().divide(1.095));
+		mClickIndicatorImg.fitWidthProperty().bind(scene.widthProperty().divide(40));
+		mClickIndicatorImg.fitHeightProperty().bind(scene.heightProperty().divide(30));
+		mClickIndicatorImg.visibleProperty().bind(mCanClick);
+		
+		BlinkingAnimation blinkAnimation = new BlinkingAnimation(mClickIndicatorImg, Duration.seconds(1.5));
+		blinkAnimation.play();
 	}
 	
 	private void setUpSprites(Scene scene)
 	{
-		PlayerAnimation playerAnimation = new PlayerAnimation(mPlayerImage);
-		playerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
+		XSlideAnimation playerSlide = new XSlideAnimation(mPlayerImage, Duration.millis(1500), 1, 7);
+		playerSlide.setOnFinished(event -> mCanClick.set(true));
+		playerSlide.play();
+		
+		mClickQueue.enqueue(new Runnable()
 		{
 			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			public void run()
 			{
-				OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200));
-				back.play();
+				PlayerAnimation playerAnimation = new PlayerAnimation(mPlayerImage);
+				playerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
+				{
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+					{
+						OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200), true);
+						back.play();
+					}
+				});
+				
+				playerAnimation.play();
+				
+				OpacityAnimation trainerFade = new OpacityAnimation(mTrainerImage, Duration.millis(1000), false);
+				trainerFade.setOnFinished(new EventHandler<ActionEvent>()
+				{
+					@Override
+					public void handle(ActionEvent actionEvent)
+					{
+						OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200), true);
+						back.setOnFinished(event -> mShowBtns.set(true));
+						back.play();
+					}
+				});
+				
+				trainerFade.play();
 			}
 		});
-		playerAnimation.play();
 
+		mPlayerImage.layoutYProperty().bind(scene.heightProperty());
 		mPlayerImage.layoutYProperty().bind(scene.heightProperty().divide(4.5));
 		mPlayerImage.fitWidthProperty().bind(scene.widthProperty().divide(3));
 		mPlayerImage.fitHeightProperty().bind(scene.heightProperty().divide(1.9));
 
-		TrainerAnimation trainerAnimation = new TrainerAnimation(mTrainerImage);
-		trainerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
-			{
-				OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200));
-				back.setOnFinished(event -> mShowBtns.set(true));
-				back.play();
-			}
-		});
-		trainerAnimation.play();
+		XSlideAnimation trainerSlide = new XSlideAnimation(mTrainerImage, Duration.millis(1500), 1, 1.8);
+		trainerSlide.play();
 		
 		mTrainerImage.layoutYProperty().bind(scene.heightProperty().divide(13));
 		mTrainerImage.fitWidthProperty().bind(scene.widthProperty().divide(5));
@@ -451,26 +477,26 @@ public class BattleController
 			@Override
 			public void handle(Event event)
 			{
-				if(mCanClick)
+				if(mCanClick.get())
 				{
 					Runnable toRun = mClickQueue.dequeue();
 					
 					if(toRun != null)
 					{
-						mCanClick = false;
+						mCanClick.set(false);
 						toRun.run();
 						
 						if(mPlayerHp.get() == 0) // TODO Just for Demo. Change to do swapping here.
 						{
 							mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
-							mCanClick = false;
+							mCanClick.set(false);
 							mShowBtns.set(false);
 						}
 						
 						else if(mEnemyHp.get() == 0)
 						{
 							mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-							mCanClick = false;
+							mCanClick.set(false);
 							mShowBtns.set(false);
 						}
 					}
@@ -961,7 +987,7 @@ public class BattleController
 					public void run()
 					{
 						mDialogueTxt.set("You clicked on the Bag!\nThat has yet to be implemented!");
-						mCanClick = true;
+						mCanClick.set(true);
 					}
 				});
 				break;
@@ -973,7 +999,7 @@ public class BattleController
 					public void run()
 					{
 						mDialogueTxt.set("You clicked on Escape!\nThat has yet to be implemented!");
-						mCanClick = true;
+						mCanClick.set(true);
 					}
 				});
 				break;
@@ -985,7 +1011,7 @@ public class BattleController
 					public void run()
 					{
 						mDialogueTxt.set("You clicked on Anature!\nThat has yet to be implemented!");
-						mCanClick = true;
+						mCanClick.set(true);
 					}
 				});
 				break;			
@@ -1017,7 +1043,7 @@ public class BattleController
 			@Override
 			public void handle(ActionEvent event)
 			{
-				mCanClick = true;
+				mCanClick.set(true);
 			}
 		});
 		
