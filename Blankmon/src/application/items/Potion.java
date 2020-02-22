@@ -13,6 +13,6 @@ public class Potion extends Item{
 
 	public void useItem(Anature target)
 	{
-		System.out.println("Use Item Potion"); // TODO
+		target.healAnature(mHealthPoints);
 	}
 }

@@ -1,18 +1,27 @@
 package application.abillities;
 
-import application.Ability;
 import application.Anature;
 import application.enums.AbilityIds;
 
-public class Intimidate extends Ability
+public class Intimidate
 {
-	public Intimidate()
-	{
-		super(AbilityIds.Intimidate, "Intimidate", false);
-	}
-	
-	public void activateAbility(Anature user, Anature target)
+	public static void activateAbility(Anature user, Anature target)
 	{
 		System.out.println("Ability Intimidate"); // TODO
+	}
+
+	public static AbilityIds getAbilityId()
+	{
+		return AbilityIds.Intimidate;
+	}
+
+	public static String getAbilityName()
+	{
+		return "Intimidate";
+	}
+
+	public static boolean happensEveryTurn()
+	{
+		return false;
 	}
 }

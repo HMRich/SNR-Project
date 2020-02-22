@@ -13,7 +13,7 @@ public class UltraPotion extends Item{
 
 	public void useItem(Anature target)
 	{
-		System.out.println("Use Item Ultra Potion"); // TODO
+		target.healAnature(mHealthPoints);
 	}
 
 }
