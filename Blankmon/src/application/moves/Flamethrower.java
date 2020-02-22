@@ -13,7 +13,7 @@ public class Flamethrower extends Move
 	
 	public Flamethrower()
 	{
-		super(mDamageDone, MoveIds.Tackle, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Fire);
+		super("Flamethrower", mDamageDone, MoveIds.Tackle, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Fire);
 	}
 
 	@Override

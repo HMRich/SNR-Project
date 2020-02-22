@@ -1,6 +1,9 @@
 package application;
 
-import application.enums.*;
+import application.abillities.Ability;
+import application.enums.Gender;
+import application.enums.Species;
+import application.enums.Type;
 
 public class Anature
 {
@@ -11,16 +14,16 @@ public class Anature
 	private Type mPrimaryType, mSecondaryType;
 	private Species mSpecies;
 	private boolean mIsShiny;
-	private AbilityIds mAbilityId;
+	private Ability mAbility;
 	private int mIndexNum;
 	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed;
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
-			Species species, boolean isShiny, int indexNum, AbilityIds abilityId, int attack, int specialAttack, int defense, int specialDefense,
-			int totalHp, int speed)
+			Species species, boolean isShiny, int indexNum, Ability ability, int attack, int specialAttack, int defense,
+			int specialDefense, int totalHp, int speed)
 	{
-		if(name == null || owner == null || moves == null || abilityId == null || types == null)
+		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
 
 		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0
@@ -45,7 +48,7 @@ public class Anature
 		mSpecies = species;
 		mIsShiny = isShiny;
 		mIndexNum = indexNum;
-		mAbilityId = abilityId;
+		mAbility = ability;
 		mAttack = attack;
 		mSpecialAttack = specialAttack;
 		mDefense = defense;
@@ -159,14 +162,14 @@ public class Anature
 		mIsShiny = isShiny;
 	}
 
-	public AbilityIds getAbilityId()
+	public Ability getAbility()
 	{
-		return mAbilityId;
+		return mAbility;
 	}
 
-	public void setAbilityId(AbilityIds ability)
+	public void setAbility(Ability ability)
 	{
-		mAbilityId = ability;
+		mAbility = ability;
 	}
 
 	public int getAttack()
@@ -278,6 +281,11 @@ public class Anature
 	{
 		mTempSpeed = tempSpeed;
 	}
+	
+	public int getIndexNum()
+	{
+		return mIndexNum;
+	}
 
 	public void resetTempStats()
 	{
@@ -295,13 +303,14 @@ public class Anature
 		if(mCurrHp < 0)
 			mCurrHp = 0;
 	}
-	
-	public void healAnature(int healAmount) {
-		
+
+	public void healAnature(int healAmount)
+	{
 		mCurrHp += healAmount;
-		
-		if(mCurrHp > mTotalHp) {
-			mCurrHp = mTotalHp; 
+
+		if(mCurrHp > mTotalHp)
+		{
+			mCurrHp = mTotalHp;
 		}
 	}
 }

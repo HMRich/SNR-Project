@@ -80,6 +80,7 @@ public class Startup extends Application
 					Parent introRoot = introLoader.load();
 					Scene intro = new Scene(introRoot);
 					intro.setOnKeyReleased(mKeyListener);
+					
 					mStage.setScene(intro);
 					break;
 
@@ -111,9 +112,17 @@ public class Startup extends Application
 	public static void createDemo()
 	{
 		mPlayer.addAnatures(AnatureBuilder.createAnature(Species.Null, 15));
+		
+		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
+		second.setName("Other Null");
+		mPlayer.addAnatures(second);
 		mTrainer = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 
 		changeScene(SceneType.Battle);
 	}
-
+	
+	public static String getPlayerName()
+	{
+		return mPlayer.getName();
+	}
 }

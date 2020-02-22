@@ -3,24 +3,29 @@ package application.abillities;
 import application.Anature;
 import application.enums.AbilityIds;
 
-public class Intimidate
+public class Intimidate implements Ability
 {
-	public static void activateAbility(Anature user, Anature target)
+	public void activateAbility(Anature user, Anature target)
 	{
 		System.out.println("Ability Intimidate"); // TODO
 	}
 
-	public static AbilityIds getAbilityId()
+	public AbilityIds getAbilityId()
 	{
 		return AbilityIds.Intimidate;
 	}
 
-	public static String getAbilityName()
+	public String getAbilityName()
 	{
 		return "Intimidate";
 	}
 
-	public static boolean happensEveryTurn()
+	public String getAbilityDescription()
+	{
+		return "Lowers the opposing Anature's Attack stat.";
+	}
+
+	public boolean happensEveryTurn()
 	{
 		return false;
 	}

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import application.abillities.Ability;
+import application.abillities.AbilityPool;
 import application.enums.AbilityIds;
 import application.enums.DatabaseType;
 import application.enums.Gender;
@@ -25,7 +27,7 @@ public class AnatureBuilder
 		Gender gender = null;
 		Type[] types = new Type[2];
 		boolean isShiny = false;
-		AbilityIds ability = null;
+		Ability ability = null;
 		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0, indexNum = 0;
 
 		Random r = new Random();
@@ -69,7 +71,8 @@ public class AnatureBuilder
 				indexNum = Integer.parseInt(indexNumStr);
 
 				ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(abilitiesStr.split(",")));
-				ability = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
+				AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
+				ability = AbilityPool.getAbility(chosenAbility);
 				
 				String[] typesStrAra = typesStr.split(",");
 				for(int i = 0; i < typesStrAra.length && i < 2; i++)
@@ -88,7 +91,7 @@ public class AnatureBuilder
 			return null;
 		}
 		
-		return new Anature(species.toString(), "TODO PLAYER NAME HERE", level, 0, gender, moves, types, species, isShiny, indexNum, ability,
+		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability,
 				attack, specialAttack, defense, specialDefense, hp, speed);
 	}
 

@@ -4,7 +4,7 @@ import application.Anature;
 import application.enums.AbilityIds;
 import application.moves.Move;
 
-public class Determined
+public class Determined implements Ability
 {
 	public static void activateAbility(Anature targetAnature, Move move, double oldHp)
 	{
@@ -14,17 +14,22 @@ public class Determined
 		}
 	}
 
-	public static AbilityIds getAbilityId()
+	public AbilityIds getAbilityId()
 	{
 		return AbilityIds.Determined;
 	}
 
-	public static String getAbilityName()
+	public String getAbilityName()
 	{
 		return "Determined";
 	}
 
-	public static boolean happensEveryTurn()
+	public String getAbilityDescription()
+	{
+		return "Makes the Anature unable to be defeated in a single attack.";
+	}
+
+	public boolean happensEveryTurn()
 	{
 		return false;
 	}

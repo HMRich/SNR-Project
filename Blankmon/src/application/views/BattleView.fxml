@@ -103,12 +103,12 @@
                   <Image url="@../../resources/images/battle/items/Use_Item_Button.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="mItemPotionsTab" fitHeight="61.0" fitWidth="57.0" layoutX="828.0" layoutY="544.0" pickOnBounds="true">
+            <ImageView fx:id="mItemPotionsTab" fitHeight="61.0" fitWidth="57.0" layoutX="775.0" layoutY="507.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/battle/items/White_Tab.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="mItemAnaCubeTab" fitHeight="61.0" fitWidth="57.0" layoutX="903.0" layoutY="575.0" pickOnBounds="true">
+            <ImageView fx:id="mItemAnaCubeTab" fitHeight="61.0" fitWidth="57.0" layoutX="768.0" layoutY="423.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/battle/items/Grey_Tab.png" />
                </image>
@@ -249,8 +249,13 @@
             <Text fx:id="mSwitchSelectedDef" layoutX="1029.0" layoutY="534.0" strokeType="OUTSIDE" strokeWidth="0.0" text="94" wrappingWidth="239.13671875" />
             <Text fx:id="mSwitchSelectedSpDef" layoutX="1029.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="94" wrappingWidth="239.13671875" />
             <Text fx:id="mSwitchSelectedAbilityName" layoutX="952.0" layoutY="577.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Intimidate" wrappingWidth="321.13671875" />
-            <Text fx:id="mSwitchSelectedAbilityDesc" layoutX="836.0" layoutY="596.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ability Description" wrappingWidth="438.13671875" />
+            <Text fx:id="mSwitchSelectedAbilityDesc" layoutX="836.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ability Description" wrappingWidth="344.13671875" />
             <Text fx:id="mSwitchSelectedSpeed" layoutX="1026.0" layoutY="561.0" strokeType="OUTSIDE" strokeWidth="0.0" text="129" wrappingWidth="239.13671875" />
+            <ImageView fx:id="mSwitchBtn" fitHeight="31.0" fitWidth="140.0" layoutX="76.0" layoutY="449.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/switching/Switch_Button.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </center>

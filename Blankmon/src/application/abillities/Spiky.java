@@ -4,7 +4,7 @@ import application.Anature;
 import application.enums.AbilityIds;
 import application.moves.Move;
 
-public class Spiky
+public class Spiky implements Ability
 {
 	public static void activateAbility(Anature attackingAnature, Anature targetAnature, Move move)
 	{
@@ -13,17 +13,22 @@ public class Spiky
 		}
 	}
 
-	public static AbilityIds getAbilityId()
+	public AbilityIds getAbilityId()
 	{
 		return AbilityIds.Spiky;
 	}
 
-	public static String getAbilityName()
+	public String getAbilityName()
 	{
 		return "Spiky";
 	}
 
-	public static boolean happensEveryTurn()
+	public String getAbilityDescription()
+	{
+		return "The opposing Anature takes damage whenever they come into physical contact with this Anature.";
+	}
+
+	public boolean happensEveryTurn()
 	{
 		return true;
 	}
