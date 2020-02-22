@@ -1,30 +1,26 @@
 package application.abillities;
 
-import application.Ability;
 import application.Anature;
 import application.enums.AbilityIds;
 
-public class Intimidate implements Ability
+public class Intimidate
 {
-	public void activateAbility(Anature user, Anature target)
+	public static void activateAbility(Anature user, Anature target)
 	{
 		System.out.println("Ability Intimidate"); // TODO
 	}
 
-	@Override
-	public AbilityIds getAbilityId()
+	public static AbilityIds getAbilityId()
 	{
 		return AbilityIds.Intimidate;
 	}
 
-	@Override
-	public String getAbilityName()
+	public static String getAbilityName()
 	{
 		return "Intimidate";
 	}
 
-	@Override
-	public boolean happensEveryTurn()
+	public static boolean happensEveryTurn()
 	{
 		return false;
 	}

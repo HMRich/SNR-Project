@@ -1,11 +1,10 @@
 package application.abillities;
 
-import application.Ability;
 import application.Anature;
 import application.enums.AbilityIds;
 import application.moves.Move;
 
-public class Spiky implements Ability
+public class Spiky
 {
 	public static void activateAbility(Anature attackingAnature, Anature targetAnature, Move move)
 	{
@@ -14,20 +13,17 @@ public class Spiky implements Ability
 		}
 	}
 
-	@Override
-	public AbilityIds getAbilityId()
+	public static AbilityIds getAbilityId()
 	{
 		return AbilityIds.Spiky;
 	}
 
-	@Override
-	public String getAbilityName()
+	public static String getAbilityName()
 	{
 		return "Spiky";
 	}
 
-	@Override
-	public boolean happensEveryTurn()
+	public static boolean happensEveryTurn()
 	{
 		return true;
 	}

@@ -1,11 +1,10 @@
 package application.abillities;
 
-import application.Ability;
 import application.Anature;
 import application.enums.AbilityIds;
 import application.moves.Move;
 
-public class Determined implements Ability
+public class Determined
 {
 	public static void activateAbility(Anature targetAnature, Move move, double oldHp)
 	{
@@ -15,20 +14,17 @@ public class Determined implements Ability
 		}
 	}
 
-	@Override
-	public AbilityIds getAbilityId()
+	public static AbilityIds getAbilityId()
 	{
 		return AbilityIds.Determined;
 	}
 
-	@Override
-	public String getAbilityName()
+	public static String getAbilityName()
 	{
 		return "Determined";
 	}
 
-	@Override
-	public boolean happensEveryTurn()
+	public static boolean happensEveryTurn()
 	{
 		return false;
 	}
