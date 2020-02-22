@@ -11,16 +11,16 @@ public class Anature
 	private Type mPrimaryType, mSecondaryType;
 	private Species mSpecies;
 	private boolean mIsShiny;
-	private Ability mAbility;
+	private AbilityIds mAbilityId;
 	private int mIndexNum;
 	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed;
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
-			Species species, boolean isShiny, int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense,
+			Species species, boolean isShiny, int indexNum, AbilityIds abilityId, int attack, int specialAttack, int defense, int specialDefense,
 			int totalHp, int speed)
 	{
-		if(name == null || owner == null || moves == null || ability == null || types == null)
+		if(name == null || owner == null || moves == null || abilityId == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
 
 		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0
@@ -45,7 +45,7 @@ public class Anature
 		mSpecies = species;
 		mIsShiny = isShiny;
 		mIndexNum = indexNum;
-		mAbility = ability;
+		mAbilityId = abilityId;
 		mAttack = attack;
 		mSpecialAttack = specialAttack;
 		mDefense = defense;
@@ -159,14 +159,14 @@ public class Anature
 		mIsShiny = isShiny;
 	}
 
-	public Ability getAbility()
+	public AbilityIds getAbilityId()
 	{
-		return mAbility;
+		return mAbilityId;
 	}
 
-	public void setAbility(Ability ability)
+	public void setAbilityId(AbilityIds ability)
 	{
-		mAbility = ability;
+		mAbilityId = ability;
 	}
 
 	public int getAttack()

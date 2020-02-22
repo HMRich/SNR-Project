@@ -5,13 +5,8 @@ import application.Anature;
 import application.enums.AbilityIds;
 import application.moves.Move;
 
-public class Spiky extends Ability
+public class Spiky implements Ability
 {
-	public Spiky()
-	{
-		super(AbilityIds.Spiky, "Spiky", true);
-	}
-	
 	public static void activateAbility(Anature attackingAnature, Anature targetAnature, Move move)
 	{
 		if(move.isPhysicalAttack()) {
@@ -20,8 +15,20 @@ public class Spiky extends Ability
 	}
 
 	@Override
-	public void activateAbility(Anature user, Anature target) {
-		// TODO Auto-generated method stub
-		
+	public AbilityIds getAbilityId()
+	{
+		return AbilityIds.Spiky;
+	}
+
+	@Override
+	public String getAbilityName()
+	{
+		return "Spiky";
+	}
+
+	@Override
+	public boolean happensEveryTurn()
+	{
+		return true;
 	}
 }

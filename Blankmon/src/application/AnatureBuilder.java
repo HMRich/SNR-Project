@@ -25,7 +25,7 @@ public class AnatureBuilder
 		Gender gender = null;
 		Type[] types = new Type[2];
 		boolean isShiny = false;
-		Ability ability = null;
+		AbilityIds ability = null;
 		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0, indexNum = 0;
 
 		Random r = new Random();
@@ -69,8 +69,7 @@ public class AnatureBuilder
 				indexNum = Integer.parseInt(indexNumStr);
 
 				ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(abilitiesStr.split(",")));
-				AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
-				ability = AbilityPool.getAbility(chosenAbility);
+				ability = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
 				
 				String[] typesStrAra = typesStr.split(",");
 				for(int i = 0; i < typesStrAra.length && i < 2; i++)

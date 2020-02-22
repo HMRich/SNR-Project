@@ -6,7 +6,6 @@ import application.abillities.*;
 import application.enums.AbilityIds;
 import application.enums.ItemIds;
 import application.moves.Move;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class FightManager
 {
@@ -17,7 +16,7 @@ public class FightManager
 	{
 		if(playerTeam == null || enemyTeam == null || playerName == null || enemyName == null)
 			throw new IllegalArgumentException("Passed in parameter was null.");
-		
+
 		mPlayerTeam = playerTeam;
 		mEnemyTeam = enemyTeam;
 		mPlayerName = playerName;
@@ -31,11 +30,11 @@ public class FightManager
 		Anature enemyAnature = mEnemyTeam.get(0);
 		Move playerAnatureMove = mPlayerTeam.get(0).getMoves().getMove(indexOfMove);
 		double oldHp = enemyAnature.getCurrHp();
-		
+
 		playerAnatureMove.activateMove(playerAnature, enemyAnature);
-		abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
-		return new MoveResult(oldHp - enemyAnature.getCurrHp(), mPlayerName + "'s " + playerAnature.getName() + " attacked "
-																+ mEnemyName + "'s " + enemyAnature.getName() + "!");
+		abilityUse(enemyAnature.getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
+		return new MoveResult(oldHp - enemyAnature.getCurrHp(),
+				mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!");
 	}
 
 	public MoveResult attackPlayer(int indexOfMove)
@@ -45,38 +44,54 @@ public class FightManager
 		Anature enemyAnature = mEnemyTeam.get(0);
 		Move enemyAnatureMove = mEnemyTeam.get(0).getMoves().getMove(indexOfMove);
 		double oldHp = playerAnature.getCurrHp();
-		
-		enemyAnatureMove.activateMove(enemyAnature, playerAnature);		
-		abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp); 
-		return new MoveResult(oldHp - playerAnature.getCurrHp(), mEnemyName + "'s " + enemyAnature.getName() + " attacked "
-																+ mPlayerName + "'s " + playerAnature.getName() + "!");
+
+		enemyAnatureMove.activateMove(enemyAnature, playerAnature);
+		abilityUse(playerAnature.getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
+		return new MoveResult(oldHp - playerAnature.getCurrHp(),
+				mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!");
 	}
 
-	public void itemUse(boolean isPlayer, int indexOfTeam, Enum<ItemIds> itemId)
+	public void itemUse(boolean isPlayer, int indexOfTeam, ItemIds itemId)
 	{
-		Item item = ItemPool.getItems(itemId); 
-		Anature target; 
-		
-		if(isPlayer) {
+		Item item = ItemPool.getItems(itemId);
+		Anature target;
+
+		if(isPlayer)
+		{
 			target = mPlayerTeam.get(indexOfTeam);
 			item.useItem(target);
-		} else {
+		}
+		
+		else
+		{
 			target = mEnemyTeam.get(indexOfTeam);
 			item.useItem(target);
 		}
 	}
-	
-	public void abilityUse(AbilityIds abilityId, Anature attackingAnature, Anature targetAnature, 
-							Move move, double oldHp) {
-		
-		if(abilityId == AbilityIds.Determined) {
-			Determined.activateAbility(targetAnature, move, oldHp); 
-		}else if(abilityId == AbilityIds.Dry_Skin) {
-			
-		}else if(abilityId == AbilityIds.Intimidate) {
-			
-		}else if(abilityId == AbilityIds.Spiky) {
-			Spiky.activateAbility(attackingAnature, targetAnature, move);
+
+	public void abilityUse(AbilityIds abilityId, Anature attackingAnature, Anature targetAnature, Move move, double oldHp)
+	{
+		switch(abilityId)
+		{
+			case Determined:
+				Determined.activateAbility(targetAnature, move, oldHp);
+				break;
+				
+			case Dry_Skin:
+				
+				break;
+				
+			case Intimidate:
+				
+				break;
+				
+			case Iron_Barbs:
+				
+				break;
+				
+			case Spiky:
+				Spiky.activateAbility(attackingAnature, targetAnature, move);
+				break;
 		}
 	}
 
@@ -96,17 +111,17 @@ public class FightManager
 		{
 			throw new NullPointerException("Player Anature was null, String or Result Object?");
 		}
-		
+
 		if(mEnemyTeam.get(0) == null)
 		{
 			throw new NullPointerException("Enemy Anature was null, String or Result Object?");
 		}
-		
+
 		if(team.get(0).getMoves() == null)
 		{
 			throw new NullPointerException("Anature's MoveSet was null, String or Result Object?");
 		}
-		
+
 		if(team.get(0).getMoves().getMove(indexOfMove) == null)
 		{
 			throw new NullPointerException("Anature's Move was null, String or Result Object?");
