@@ -6,6 +6,7 @@ import application.Anature;
 import application.FightManager;
 import application.MoveResult;
 import application.Player;
+import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
 import application.animations.ProgressBarDecrease;
@@ -63,6 +64,7 @@ public class BattleController
 	@FXML private Text mPlayerNameTxt, mEnemyNameTxt, mPlayerHpTxt, mEnemyHpTxt, mPlayerLvlTxt, mEnemyLvlTxt;
 	@FXML private ImageView mPlayerGender, mEnemyGender;
 	@FXML private TextArea mDialogueTxtArea;
+	@FXML private ImageView mClickIndicatorImg;
 	@FXML private Button mTestBtn;
 	
 	@FXML private ImageView mSwitchSelection, mSwitchDialogue, mSwitchBackBtn, mSwitchSelectedImg, 
@@ -167,6 +169,14 @@ public class BattleController
 		
 		mHpImage.fitWidthProperty().bind(scene.widthProperty());
 		mHpImage.fitHeightProperty().bind(scene.heightProperty());
+		
+		mClickIndicatorImg.layoutXProperty().bind(scene.widthProperty().divide(2.03));
+		mClickIndicatorImg.layoutYProperty().bind(scene.heightProperty().divide(1.095));
+		mClickIndicatorImg.fitWidthProperty().bind(scene.widthProperty().divide(40));
+		mClickIndicatorImg.fitHeightProperty().bind(scene.heightProperty().divide(30));
+		
+		BlinkingAnimation blinkAnimation = new BlinkingAnimation(mClickIndicatorImg, Duration.seconds(1.5));
+		blinkAnimation.play();
 	}
 	
 	private void setUpSprites(Scene scene)
