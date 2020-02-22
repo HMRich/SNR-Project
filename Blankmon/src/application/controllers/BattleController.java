@@ -10,7 +10,6 @@ import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
 import application.animations.ProgressBarDecrease;
-import application.animations.TrainerAnimation;
 import application.animations.XSlideAnimation;
 import application.enums.BattleChoice;
 import application.enums.Gender;
@@ -181,34 +180,51 @@ public class BattleController
 	
 	private void setUpSprites(Scene scene)
 	{
-		PlayerAnimation playerAnimation = new PlayerAnimation(mPlayerImage);
-		playerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
+		XSlideAnimation playerSlide = new XSlideAnimation(mPlayerImage, Duration.millis(1500), 1, 7);
+		playerSlide.setOnFinished(event -> mCanClick.set(true));
+		playerSlide.play();
+		
+		mClickQueue.enqueue(new Runnable()
 		{
 			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			public void run()
 			{
-				OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200));
-				back.play();
+				PlayerAnimation playerAnimation = new PlayerAnimation(mPlayerImage);
+				playerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
+				{
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+					{
+						OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200), true);
+						back.play();
+					}
+				});
+				
+				playerAnimation.play();
+				
+				OpacityAnimation trainerFade = new OpacityAnimation(mTrainerImage, Duration.millis(1000), false);
+				trainerFade.setOnFinished(new EventHandler<ActionEvent>()
+				{
+					@Override
+					public void handle(ActionEvent actionEvent)
+					{
+						OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200), true);
+						back.setOnFinished(event -> mShowBtns.set(true));
+						back.play();
+					}
+				});
+				
+				trainerFade.play();
 			}
 		});
-		playerAnimation.play();
 
+		mPlayerImage.layoutYProperty().bind(scene.heightProperty());
 		mPlayerImage.layoutYProperty().bind(scene.heightProperty().divide(4.5));
 		mPlayerImage.fitWidthProperty().bind(scene.widthProperty().divide(3));
 		mPlayerImage.fitHeightProperty().bind(scene.heightProperty().divide(1.9));
 
-		TrainerAnimation trainerAnimation = new TrainerAnimation(mTrainerImage);
-		trainerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
-			{
-				OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200));
-				back.setOnFinished(event -> mShowBtns.set(true));
-				back.play();
-			}
-		});
-		trainerAnimation.play();
+		XSlideAnimation trainerSlide = new XSlideAnimation(mTrainerImage, Duration.millis(1500), 1, 1.8);
+		trainerSlide.play();
 		
 		mTrainerImage.layoutYProperty().bind(scene.heightProperty().divide(13));
 		mTrainerImage.fitWidthProperty().bind(scene.widthProperty().divide(5));

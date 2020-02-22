@@ -7,10 +7,12 @@ import javafx.util.Duration;
 public class OpacityAnimation extends Transition
 {
 	private ImageView mImageView;
+	private boolean mIsReversed;
 	
-	public OpacityAnimation(ImageView imageView, Duration duration)
+	public OpacityAnimation(ImageView imageView, Duration duration, boolean isReversed)
 	{
 		mImageView = imageView;
+		mIsReversed = isReversed;
 		setCycleDuration(duration);
 	}
 	
@@ -18,6 +20,9 @@ public class OpacityAnimation extends Transition
 	@Override
 	protected void interpolate(double frac)
 	{
+		if(!mIsReversed)
+			frac = 1 - frac;
+		
 		mImageView.setOpacity(frac);
 	}
 }
