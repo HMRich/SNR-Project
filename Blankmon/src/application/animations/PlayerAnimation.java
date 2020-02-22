@@ -23,7 +23,7 @@ public class PlayerAnimation extends Transition
 		mImages = new ArrayList<Image>();
 		mOpacity = 1;
 		
-		setCycleDuration(Duration.millis(4000));
+		setCycleDuration(Duration.millis(1000));
 		isFinished = new SimpleBooleanProperty(false);
 		
 		mImages.add(new Image(getClass().getResource("/resources/images/player/Player_Female_1.png").toExternalForm()));
@@ -37,28 +37,12 @@ public class PlayerAnimation extends Transition
 	@Override
 	protected void interpolate(double frac)
 	{
-		if(frac >= 0.7)
-			mImageView.setImage(mImages.get(4));
+		int index = (int) (frac * 2 * (mImages.size()-1));
 		
-		else if(frac >= 0.6)
-			mImageView.setImage(mImages.get(3));
+		if(index < mImages.size())
+			mImageView.setImage(mImages.get(index));
 		
-		else if(frac >= 0.5)
-			mImageView.setImage(mImages.get(2));
-		
-		else if(frac >= 0.4)
-			mImageView.setImage(mImages.get(1));
-		
-		else
-			mImageView.setImage(mImages.get(0));
-		
-//		int index = (int) (frac*(mImages.size()-1));
-//		mImageView.setImage(mImages.get(index));
-		
-		if(frac <= 0.7)
-			mImageView.layoutXProperty().bind(mImageView.getScene().widthProperty().divide((frac / 0.8) * 8));
-		
-		else if(frac > 0.8)
+		if(frac > 0.7)
 		{
 			mImageView.setOpacity(mOpacity);
 			mOpacity -= 0.2;
