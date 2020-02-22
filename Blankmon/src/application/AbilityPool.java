@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 import application.abillities.Intimidate;
 import application.enums.AbilityIds;
-import resources.logger.GameLogger;
+import application.enums.LoggingTypes;
+import application.controllers.LoggerController;;
 
 public class AbilityPool
 {
@@ -12,10 +13,10 @@ public class AbilityPool
 
 	public static Ability getAbility(AbilityIds abilityId)
 	{
-		if (mAbilities == null)
+		if(mAbilities == null)
 		{
 			generateAbilities();
-			GameLogger.logEvent("The AbilityPool has been Generated");
+			LoggerController.logEvent(LoggingTypes.Default, "The AbilityPool has been Generated.");
 		}
 		return mAbilities.get(abilityId);
 	}
