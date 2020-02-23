@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import application.Anature;
+import application.Backpack;
 import application.FightManager;
+import application.ItemResult;
 import application.MoveResult;
 import application.MoveSet;
 import application.Player;
@@ -12,10 +14,13 @@ import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
 import application.animations.ProgressBarDecrease;
+import application.animations.ProgressBarIncrease;
 import application.animations.XSlideAnimation;
 import application.enums.BattleChoice;
 import application.enums.Gender;
 import application.enums.LoggingTypes;
+import application.items.Item;
+import application.items.ItemPool;
 import application.moves.Move;
 import application.trainers.Trainer;
 import application.views.AnatureSlot;
@@ -75,7 +80,7 @@ public class BattleController
 	mSwitchSelectedTypeOne, mSwitchSelectedTypeTwo, mSwitchPageLeft, mSwitchPageRight;
 	@FXML private Text mSwitchSelectedCatalogNum, mSwitchSelectedName, mSwitchSelectedOwner, mSwitchSelectedCurrXp, mSwitchSelectedNextXp, mSwitchPageTxt;
 	@FXML private Text mSwitchSelectedHp, mSwitchSelectedAtk, mSwitchSelectedSpAtk, mSwitchSelectedDef, mSwitchSelectedSpDef, mSwitchSelectedSpeed, mSwitchSelectedAbilityName, mSwitchSelectedAbilityDesc;
-	private Image mSwitchPageOneImg, mSwitchPageTwoImg, mItemTabSelected, mItemTabDeselected;
+	private Image mSwitchPageOneImg, mSwitchPageTwoImg, mItemTabSelected, mItemTabDeselected, mItemPotion, mItemGreatPotion, mItemUltraPotion, mItemMasterPotion;
 	
 	@FXML private ImageView mItemSelectionBg, mItemDialogue, mSelectedItem, mItemBackBtn, mItemUseBtn, mItemPotionsTab, mItemAnaCubeTab;
 	@FXML private ListView<String> mItemList;
@@ -170,6 +175,11 @@ public class BattleController
 
 		mItemTabSelected = new Image(getClass().getResource("/resources/images/battle/items/White_Tab.png").toExternalForm());
 		mItemTabDeselected = new Image(getClass().getResource("/resources/images/battle/items/Grey_Tab.png").toExternalForm());
+		
+		mItemPotion = new Image(getClass().getResource("/resources/images/items/Potion.png").toExternalForm());
+		mItemGreatPotion = new Image(getClass().getResource("/resources/images/items/Great_Potion.png").toExternalForm());
+		mItemUltraPotion = new Image(getClass().getResource("/resources/images/items/Ultra_Potion.png").toExternalForm());
+		mItemMasterPotion = new Image(getClass().getResource("/resources/images/items/Master_Potion.png").toExternalForm());
 	}
 	
 	public void setUpBindingsAndElements(Scene scene)
@@ -703,7 +713,7 @@ public class BattleController
 		slots.add(mSlotFive);
 		slots.add(mSlotSix);
 		
-		mPane.getChildren().addAll(mPane.getChildren().size() - 10, slots);
+		mPane.getChildren().addAll(mPane.getChildren().size() - 15, slots);
 	}
 	
 	private void setUpItemElements(Scene scene)
@@ -732,7 +742,7 @@ public class BattleController
 		mItemUseBtn.fitWidthProperty().bind(scene.widthProperty().divide(7));
 		mItemUseBtn.fitHeightProperty().bind(scene.heightProperty().divide(17));
 		mItemUseBtn.visibleProperty().bind(mShowItemSelection);
-		mItemUseBtn.setOnMouseClicked(event -> System.out.println("USE ITEM"));
+		mItemUseBtn.setOnMouseClicked(event -> activateTurn(BattleChoice.Item));
 		
 		mItemPotionsTab.layoutXProperty().bind(scene.widthProperty().divide(4.07));
 		mItemPotionsTab.layoutYProperty().bind(scene.heightProperty().divide(4.71));
@@ -767,11 +777,7 @@ public class BattleController
 		mItemList.prefWidthProperty().bind(scene.widthProperty().divide(5.5));
 		mItemList.prefHeightProperty().bind(scene.heightProperty().divide(5));
 		mItemList.visibleProperty().bind(mShowItemSelection);
-		
-		ObservableList<String> items = mItemList.getItems();
-		items.add("Potions 1x");
-		
-		mItemList.setItems(items);
+		mItemList.setOnMouseClicked(event -> onItemSelect());
 		
 		mItemListBg.layoutXProperty().bind(scene.widthProperty().divide(32));
 		mItemListBg.layoutYProperty().bind(scene.heightProperty().divide(2.23));
@@ -782,9 +788,10 @@ public class BattleController
 		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
 		
 		mSelectedItemName.fontProperty().bind(fontProperty);
-		mSelectedItemName.layoutXProperty().bind(scene.widthProperty().divide(12.5));
+		mSelectedItemName.layoutXProperty().bind(scene.widthProperty().divide(28.44));
 		mSelectedItemName.layoutYProperty().bind(scene.heightProperty().divide(4));
 		mSelectedItemName.visibleProperty().bind(mShowItemSelection);
+		mSelectedItemName.wrappingWidthProperty().bind(scene.widthProperty().divide(5.8479));
 		mSelectedItemName.textProperty().bind(mSelectedItemTxt);
 		
 		mSelectedItemImg.layoutXProperty().bind(scene.widthProperty().divide(14.1));
@@ -955,6 +962,7 @@ public class BattleController
 		updatePlayerAnature(playerCurr);
 		updateMoves(playerCurr);
 		updateSwitch(player.getAnatures(), player.getSelectedIndex());
+		updateBagMenu();
 		
 		mDialogueTxt.set(enemyTrainer.getName() + " has started a battle with " + player.getName() + "!");
 
@@ -1130,6 +1138,68 @@ public class BattleController
 				curr.getCurrHp() + "/" + curr.getTotalHp(), mShowSwitch.get(), visibleProp.get(), curr.getCurrHp());
 	}
 	
+	private void updateBagMenu()
+	{
+		ObservableList<String> items = mItemList.getItems();
+		items.clear();
+		
+		Backpack backpack = mPlayer.getBackpack();
+		
+		int potionCount = backpack.getPotionCount();
+		int greatPotionCount = backpack.getGreatPotionCount();
+		int ultraPotionCount = backpack.getUltraPotionCount();
+		int masterPotionCount = backpack.getMasterPotionCount();
+		
+		if(potionCount > 0)
+			items.add("Potions " + potionCount + "x");
+		
+		if(greatPotionCount > 0)
+			items.add("Great Potions " + greatPotionCount + "x");
+		
+		if(ultraPotionCount > 0)
+			items.add("Ultra Potions " + ultraPotionCount + "x");
+		
+		if(masterPotionCount > 0)
+			items.add("Master Potions " + masterPotionCount + "x");
+		
+		mItemList.getSelectionModel().select(0);
+		onItemSelect();
+		
+		mItemList.setItems(items);
+	}
+	
+	private void onItemSelect()
+	{
+		String selectedItem = mItemList.getSelectionModel().getSelectedItem();
+		
+		if(selectedItem == null)
+			return;
+		
+		if(selectedItem.startsWith("Potions"))
+		{
+			mSelectedItemImg.setImage(mItemPotion);
+			mSelectedItemTxt.set("Potion");
+		}
+		
+		else if(selectedItem.startsWith("Great"))
+		{
+			mSelectedItemImg.setImage(mItemGreatPotion);
+			mSelectedItemTxt.set("Great Potion");
+		}
+		
+		else if(selectedItem.startsWith("Ultra"))
+		{
+			mSelectedItemImg.setImage(mItemUltraPotion);
+			mSelectedItemTxt.set("Ultra Potion");
+		}
+		
+		else if(selectedItem.startsWith("Master"))
+		{
+			mSelectedItemImg.setImage(mItemMasterPotion);
+			mSelectedItemTxt.set("Master Potion");
+		}
+	}
+	
 	@FXML
 	public void onPageChange()
 	{
@@ -1182,7 +1252,7 @@ public class BattleController
 			whoGoesFirst += r.nextInt(2);
 		}
 		
-		if(choice == BattleChoice.Switch)
+		if(choice == BattleChoice.Switch || choice == BattleChoice.Item)
 		{
 			whoGoesFirst = 0;
 		}
@@ -1219,29 +1289,34 @@ public class BattleController
 		switch(choice)
 		{
 			case Attack_1:
-				mClickQueue.enqueue(() -> healthDrain(mFightManager.attackEnemy(0), mEnemyHp));
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(0), mEnemyHp));
 				break;
 
 			case Attack_2:
-				mClickQueue.enqueue(() -> healthDrain(mFightManager.attackEnemy(1), mEnemyHp));
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp));
 				break;
 
 			case Attack_3:
-				mClickQueue.enqueue(() -> healthDrain(mFightManager.attackEnemy(2), mEnemyHp));
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp));
 				break;
 
 			case Attack_4:
-				mClickQueue.enqueue(() -> healthDrain(mFightManager.attackEnemy(3), mEnemyHp));
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp));
 				break;
 				
-			case Bag:
+			case Item:
 				mClickQueue.enqueue(new Runnable()
 				{
 					@Override
 					public void run()
 					{
-						mDialogueTxt.set("You clicked on the Bag!\nThat has yet to be implemented!");
-						mCanClick.set(true);
+						Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
+						
+						ItemResult result = mFightManager.itemUse(true, 0, selectedItem); // TODO Change it so u can use items on other anatures
+						healthGain(result, mPlayerHp);
+						
+						mPlayer.getBackpack().removeItem(selectedItem.getItemId());
+						updateBagMenu();
 					}
 				});
 				break;
@@ -1312,15 +1387,15 @@ public class BattleController
 				public void run()
 				{
 //					healthDrain(mFightManager.attackPlayer(Integer.parseInt(enemyTurn.charAt(4) + "")), mPlayerHp);
-					healthDrain(mFightManager.attackPlayer(0), mPlayerHp); // TODO Change to above when Demo is Done! 
+					healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp); // TODO Change to above when Demo is Done! 
 				}
 			});
 		}
 	}
 	
-	private void healthDrain(MoveResult result, DoubleProperty toChange)
+	private void healthDrainMove(MoveResult result, DoubleProperty toChange)
 	{
-		mDialogueTxt.set(result.getDialogueTxt());
+		mDialogueTxt.set(result.getDialogue());
 		ProgressBarDecrease decrease = new ProgressBarDecrease(toChange, Duration.millis(3000), result.getDamageDone());
 		decrease.setOnFinished(event -> mCanClick.set(true));
 		decrease.play();
@@ -1352,6 +1427,14 @@ public class BattleController
 			
 			mpTxt.set(result.getMpTxt());
 		}
+	}
+	
+	private void healthGain(ItemResult result, DoubleProperty toChange)
+	{
+		mDialogueTxt.set(result.getDialogue());
+		ProgressBarIncrease increase = new ProgressBarIncrease(toChange, Duration.millis(2000), result.getHpGained());
+		increase.setOnFinished(event -> mCanClick.set(true));
+		increase.play();
 	}
 	
 	private void onSwitchBtn()

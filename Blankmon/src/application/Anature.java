@@ -304,13 +304,18 @@ public class Anature
 			mCurrHp = 0;
 	}
 
-	public void healAnature(int healAmount)
+	public String healAnature(int healAmount)
 	{
+		String result = " was healed " + healAmount + " hp.";
+		
 		mCurrHp += healAmount;
 
 		if(mCurrHp > mTotalHp)
 		{
 			mCurrHp = mTotalHp;
+			result = mName + " was healed completely!";
 		}
+		
+		return mName + result;
 	}
 }

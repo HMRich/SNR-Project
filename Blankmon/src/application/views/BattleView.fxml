@@ -99,9 +99,8 @@
                </image>
             </ImageView>
             <Rectangle fx:id="mItemListBg" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="77.0" layoutX="372.0" layoutY="34.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="3.0" width="86.0" />
-            <ListView fx:id="mItemList" layoutX="328.0" layoutY="451.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-insets: 6;" />
-            <Text fx:id="mSelectedItemName" layoutX="528.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Item Name" />
-            <ImageView fx:id="mSelectedItemImg" fitHeight="61.0" fitWidth="57.0" layoutX="632.0" layoutY="26.0" pickOnBounds="true">
+            <Text fx:id="mSelectedItemName" layoutX="528.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Item Name" textAlignment="CENTER" />
+            <ImageView fx:id="mSelectedItemImg" fitHeight="61.0" fitWidth="57.0" layoutX="660.0" layoutY="120.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/items/Potion.png" />
                </image>
@@ -226,6 +225,7 @@
             <Text fx:id="mSwitchSelectedAbilityName" layoutX="952.0" layoutY="577.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Intimidate" wrappingWidth="321.13671875" />
             <Text fx:id="mSwitchSelectedAbilityDesc" layoutX="836.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ability Description" wrappingWidth="344.13671875" />
             <Text fx:id="mSwitchSelectedSpeed" layoutX="1026.0" layoutY="561.0" strokeType="OUTSIDE" strokeWidth="0.0" text="129" wrappingWidth="239.13671875" />
+            <ListView fx:id="mItemList" layoutX="1065.0" layoutY="15.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-insets: 6;" />
             <ImageView fx:id="mSwitchBtn" fitHeight="31.0" fitWidth="140.0" layoutX="76.0" layoutY="449.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/battle/switching/Switch_Button.png" />

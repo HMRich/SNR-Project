@@ -8,6 +8,10 @@ import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.TrainerIds;
+import application.items.GreatPotion;
+import application.items.MasterPotion;
+import application.items.Potion;
+import application.items.UltraPotion;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
 import javafx.application.Application;
@@ -116,6 +120,12 @@ public class Startup extends Application
 		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.setName("Other Null");
 		mPlayer.addAnatures(second);
+		
+		mPlayer.getBackpack().addItem(new Potion());
+		mPlayer.getBackpack().addItem(new GreatPotion());
+		mPlayer.getBackpack().addItem(new UltraPotion());
+		mPlayer.getBackpack().addItem(new MasterPotion());
+		
 		mTrainer = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 
 		changeScene(SceneType.Battle);

@@ -13,11 +13,11 @@ import application.Anature;
 import application.AnatureBuilder;
 import application.BaseAI;
 import application.DatabaseConnection;
-import application.Item;
 import application.enums.AiIds;
 import application.enums.DatabaseType;
 import application.enums.Species;
 import application.enums.TrainerIds;
+import application.items.Item;
 
 public class TrainerBuilder
 {

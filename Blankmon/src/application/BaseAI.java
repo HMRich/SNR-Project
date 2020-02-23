@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.Random;
 import application.enums.*;
+import application.items.Item;
 
 public class BaseAI
 {

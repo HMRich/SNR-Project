@@ -2,9 +2,10 @@ package application;
 
 import java.util.ArrayList;
 
-import application.abillities.*;
+import application.abillities.Determined;
+import application.abillities.Spiky;
 import application.enums.AbilityIds;
-import application.enums.ItemIds;
+import application.items.Item;
 import application.moves.Move;
 
 public class FightManager
@@ -87,21 +88,20 @@ public class FightManager
 				moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
 	}
 
-	public void itemUse(boolean isPlayer, int indexOfTeam, ItemIds itemId)
+	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, Item item)
 	{
-		Item item = ItemPool.getItems(itemId);
 		Anature target;
 
 		if(isPlayer)
 		{
 			target = mPlayerTeam.get(indexOfTeam);
-			item.useItem(target);
+			return item.useItem(target);
 		}
 		
 		else
 		{
 			target = mEnemyTeam.get(indexOfTeam);
-			item.useItem(target);
+			return item.useItem(target);
 		}
 	}
 
