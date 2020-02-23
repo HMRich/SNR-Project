@@ -5,7 +5,7 @@ import application.enums.AbilityIds;
 
 public class Tyrannize implements Ability
 {
-	public void activateAbility(Anature user, Anature target)
+	public static void activateAbility(Anature target)
 	{
 		target.setTempAttack((int)(target.getTempAttack() * .9));
 	}

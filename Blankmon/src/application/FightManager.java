@@ -7,6 +7,7 @@ import application.abillities.Grumble;
 import application.abillities.SleepDeprived;
 import application.abillities.Spiky;
 import application.abillities.ToughSkin;
+import application.abillities.Tyrannize;
 import application.enums.AbilityIds;
 import application.items.Item;
 import application.moves.Move;
@@ -122,8 +123,8 @@ public class FightManager
 
 				break;
 
-			case Intimidate:
-
+			case Tyrannize:
+				Tyrannize.activateAbility(targetAnature);
 				break;
 
 			case Iron_Barbs:
