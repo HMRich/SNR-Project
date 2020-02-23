@@ -69,8 +69,8 @@ public class AnatureSlot extends Pane
 		mLvlProperty = new SimpleStringProperty(lvlTxt);
 		mHpProperty = new SimpleStringProperty(hpTxt);
 		
-		mNameTxt = createText(mNameProperty, scene, 55);
-		mLvlTxt = createText(mLvlProperty, scene, 55);
+		mNameTxt = createText(mNameProperty, scene, 65);
+		mLvlTxt = createText(mLvlProperty, scene, 65);
 		mHpTxt = createText(mHpProperty, scene, 85);
 		
 		mHpBar = new AnatureSlotHpBar(hpNum, hpNum, this);

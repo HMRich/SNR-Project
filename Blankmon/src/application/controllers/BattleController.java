@@ -240,6 +240,9 @@ public class BattleController
 						OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200), true);
 						back.setOnFinished(event -> mShowBtns.set(true));
 						back.play();
+						
+						mPlayerImage.setVisible(false);
+						mTrainerImage.setVisible(false);
 					}
 				});
 				
@@ -435,6 +438,8 @@ public class BattleController
 							mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
 							mCanClick.set(false);
 							mShowBtns.set(false);
+							
+							mClickQueue.clear();
 						}
 						
 						else if(mEnemyHp.get() == 0)
@@ -442,6 +447,8 @@ public class BattleController
 							mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
 							mCanClick.set(false);
 							mShowBtns.set(false);
+							
+							mClickQueue.clear();
 						}
 					}
 				}
@@ -451,7 +458,7 @@ public class BattleController
 	
 	private void setUpSwitchElements(Scene scene)
 	{
-		ObjectProperty<Font> fontProperty = getFontProperty(45, scene);
+		ObjectProperty<Font> fontProperty = getFontProperty(65, scene);
 		ObjectProperty<Font> pageFontProperty = getFontProperty(65, scene);
 		
 		createBindsImageView(mSwitchSelection, scene, 1, 1, mShowSwitch);
@@ -1010,7 +1017,7 @@ public class BattleController
 					{
 						Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
 						
-						ItemResult result = mFightManager.itemUse(true, 0, selectedItem); // TODO Change it so u can use items on other anatures
+						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other anatures
 						healthGain(result, mPlayerHp);
 						
 						mPlayer.getBackpack().removeItem(selectedItem.getItemId());

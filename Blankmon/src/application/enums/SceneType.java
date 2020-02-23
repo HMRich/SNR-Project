@@ -2,5 +2,6 @@ package application.enums;
 
 public enum SceneType
 {
-	Intro, Battle
+	Intro, Battle,
+	Starter_Town
 }

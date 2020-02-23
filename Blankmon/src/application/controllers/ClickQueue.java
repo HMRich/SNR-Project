@@ -69,4 +69,11 @@ public class ClickQueue
 		
 		return val;
 	}
+
+	public void clear()
+	{
+		mSize = 0;
+		mHead = null;
+		mTail = null;	
+	}
 }
