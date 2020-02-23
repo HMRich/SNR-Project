@@ -3,7 +3,10 @@ package application;
 import java.util.ArrayList;
 
 import application.abillities.Determined;
+import application.abillities.Grumble;
+import application.abillities.SleepDeprived;
 import application.abillities.Spiky;
+import application.abillities.ToughSkin;
 import application.enums.AbilityIds;
 import application.items.Item;
 import application.moves.Move;
@@ -23,7 +26,7 @@ public class FightManager
 		mEnemyTeam = enemyTeam;
 		mPlayerName = playerName;
 		mEnemyName = enemyName;
-		
+
 		mPlayerIndex = 0;
 		mEnemyIndex = 0;
 		mTurnCount = 0;
@@ -36,28 +39,27 @@ public class FightManager
 		Anature playerAnature = mPlayerTeam.get(mPlayerIndex);
 		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
 		double oldHp = enemyAnature.getCurrHp();
-		
+
 		MoveSet moves = mPlayerTeam.get(mPlayerIndex).getMoves();
 		if(moves.getMovePoints(indexOfMove) <= 0) // TODO Fully implement Struggle
 		{
 			playerAnature.takeDamage(10);
 			enemyAnature.takeDamage(20);
-			
-			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1,
-					"1", true);
+
+			return new MoveResult(oldHp - enemyAnature.getCurrHp(), mPlayerName + "'s " + playerAnature.getName() + " Flaied at "
+					+ mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true);
 		}
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
 
 		playerAnatureMove.activateMove(playerAnature, enemyAnature);
 		moves.useMp(indexOfMove);
-		
+
 		abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
-		
+
 		return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-				mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!", indexOfMove,
-				moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
+				mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!",
+				indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
 	}
 
 	public MoveResult attackPlayer(int indexOfMove)
@@ -67,28 +69,27 @@ public class FightManager
 		Anature playerAnature = mPlayerTeam.get(mPlayerIndex);
 		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
 		double oldHp = playerAnature.getCurrHp();
-		
+
 		MoveSet moves = mEnemyTeam.get(mEnemyIndex).getMoves();
 		if(moves.getMovePoints(indexOfMove) <= 0) // TODO Fully implement Struggle
 		{
 			enemyAnature.takeDamage(10);
 			playerAnature.takeDamage(20);
-			
-			return new MoveResult(oldHp - playerAnature.getCurrHp(),
-					mEnemyName + "'s " + enemyAnature.getName() + " Flaied at " + mPlayerName + "'s " + playerAnature.getName() + "!", -1,
-					"1", false);
+
+			return new MoveResult(oldHp - playerAnature.getCurrHp(), mEnemyName + "'s " + enemyAnature.getName() + " Flaied at "
+					+ mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false);
 		}
-		
+
 		Move enemyAnatureMove = moves.getMove(indexOfMove);
 
 		enemyAnatureMove.activateMove(enemyAnature, playerAnature);
 		moves.useMp(indexOfMove);
-		
+
 		abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
-		
+
 		return new MoveResult(oldHp - playerAnature.getCurrHp(),
-				mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!", indexOfMove,
-				moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+				mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!",
+				indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
 	}
 
 	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, Item item)
@@ -101,7 +102,7 @@ public class FightManager
 			target = mPlayerTeam.get(indexOfTeam);
 			return item.useItem(target);
 		}
-		
+
 		else
 		{
 			target = mEnemyTeam.get(indexOfTeam);
@@ -116,19 +117,30 @@ public class FightManager
 			case Determined:
 				Determined.activateAbility(targetAnature, move, oldHp);
 				break;
-				
+
 			case Dry_Skin:
-				
+
 				break;
-				
+
 			case Intimidate:
-				
+
 				break;
-				
+
 			case Iron_Barbs:
-				
+
 				break;
-				
+
+			case SleepDeprived:
+				SleepDeprived.activateAbility(); // TODO add functionality
+				break;
+
+			case ToughSkin:
+				ToughSkin.activateAbility(attackingAnature, targetAnature, move, oldHp);
+				break;
+
+			case Grumble:
+				Grumble.activateAbility(targetAnature, getTurnNumber());
+				break;
 			case Spiky:
 				Spiky.activateAbility(attackingAnature, targetAnature, move);
 				break;
@@ -144,8 +156,8 @@ public class FightManager
 	{
 		return mEnemyTeam;
 	}
-	
-	private int getTurnCount()
+
+	private int getTurnNumber()
 	{
 		return mTurnCount % 2;
 	}
@@ -172,13 +184,13 @@ public class FightManager
 			throw new NullPointerException("Anature's Move was null, String or Result Object?");
 		}
 	}
-	
+
 	public void setPlayerSelectedIndex(int index)
 	{
 		if(index > -1 && index < 7)
 			mPlayerIndex = index;
 	}
-	
+
 	public void setEnemySelectedIndex(int index)
 	{
 		if(index > -1 && index < 7)
