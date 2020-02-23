@@ -40,6 +40,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -694,7 +695,15 @@ public class BattleController
 		mSlotSix.prefHeightProperty().bind(scene.heightProperty().divide(15.1));
 		mSlotSix.setOnMouseClick(event -> updateSwitchSelected(5));
 		
-		mPane.getChildren().addAll(mSlotOne, mSlotTwo, mSlotThree, mSlotFour, mSlotFive, mSlotSix);
+		ArrayList<Node> slots = new ArrayList<Node>();
+		slots.add(mSlotOne);
+		slots.add(mSlotTwo);
+		slots.add(mSlotThree);
+		slots.add(mSlotFour);
+		slots.add(mSlotFive);
+		slots.add(mSlotSix);
+		
+		mPane.getChildren().addAll(mPane.getChildren().size() - 10, slots);
 	}
 	
 	private void setUpItemElements(Scene scene)
@@ -1140,18 +1149,6 @@ public class BattleController
 		}
 		
 		mSwitchPageTxt.setText("Page " + mSwitchPageNum);
-	}
-	
-	@FXML
-	public void onPotionTab() 
-	{
-		onItemTab(true);
-	}
-	
-	@FXML
-	public void onAnaCubeTab()
-	{
-		onItemTab(false);
 	}
 	
 	private void onItemTab(boolean isPotion)
