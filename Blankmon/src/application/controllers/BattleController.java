@@ -10,15 +10,8 @@ import application.ItemResult;
 import application.MoveResult;
 import application.MoveSet;
 import application.Player;
-import application.animations.BlinkingAnimation;
-import application.animations.OpacityAnimation;
-import application.animations.PlayerAnimation;
-import application.animations.ProgressBarDecrease;
-import application.animations.ProgressBarIncrease;
-import application.animations.XSlideAnimation;
-import application.enums.BattleChoice;
-import application.enums.Gender;
-import application.enums.LoggingTypes;
+import application.animations.*;
+import application.enums.*;
 import application.items.Item;
 import application.items.ItemPool;
 import application.moves.Move;
@@ -27,6 +20,7 @@ import application.views.AnatureSlot;
 import application.views.HpBar;
 import application.views.ResizableImage;
 import application.views.XpBar;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -56,11 +50,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class BattleController
@@ -206,20 +198,10 @@ public class BattleController
 	
 	private void setUpBgImages(Scene scene)
 	{
-		mBgImage.fitWidthProperty().bind(scene.widthProperty());
-		mBgImage.fitHeightProperty().bind(scene.heightProperty());
-
-		mDialogueImage.fitWidthProperty().bind(scene.widthProperty());
-		mDialogueImage.fitHeightProperty().bind(scene.heightProperty());
-		
-		mHpImage.fitWidthProperty().bind(scene.widthProperty());
-		mHpImage.fitHeightProperty().bind(scene.heightProperty());
-		
-		mClickIndicatorImg.layoutXProperty().bind(scene.widthProperty().divide(2.03));
-		mClickIndicatorImg.layoutYProperty().bind(scene.heightProperty().divide(1.095));
-		mClickIndicatorImg.fitWidthProperty().bind(scene.widthProperty().divide(40));
-		mClickIndicatorImg.fitHeightProperty().bind(scene.heightProperty().divide(30));
-		mClickIndicatorImg.visibleProperty().bind(mCanClick);
+		createBindsImageView(mBgImage, scene, 1, 1);
+		createBindsImageView(mDialogueImage, scene, 1, 1);
+		createBindsImageView(mHpImage, scene, 1, 1);
+		createBindsImageView(mClickIndicatorImg, scene, 2.03, 1.095, 40, 30, mCanClick);
 		
 		BlinkingAnimation blinkAnimation = new BlinkingAnimation(mClickIndicatorImg, Duration.seconds(1.5));
 		blinkAnimation.play();
@@ -265,48 +247,33 @@ public class BattleController
 			}
 		});
 
-		mPlayerImage.layoutYProperty().bind(scene.heightProperty());
-		mPlayerImage.layoutYProperty().bind(scene.heightProperty().divide(4.5));
-		mPlayerImage.fitWidthProperty().bind(scene.widthProperty().divide(3));
-		mPlayerImage.fitHeightProperty().bind(scene.heightProperty().divide(1.9));
+		createBindsImageView(mPlayerImage, scene, 4.5, 3, 1.9);
 
 		XSlideAnimation trainerSlide = new XSlideAnimation(mTrainerImage, Duration.millis(1500), 1, 1.8);
 		trainerSlide.play();
 		
-		mTrainerImage.layoutYProperty().bind(scene.heightProperty().divide(13));
-		mTrainerImage.fitWidthProperty().bind(scene.widthProperty().divide(5));
-		mTrainerImage.fitHeightProperty().bind(scene.heightProperty().divide(3));
+		createBindsImageView(mTrainerImage, scene, 13, 5, 3);
 	}
 	
 	private void setUpGround(Scene scene)
 	{
 		XSlideAnimation xPlayerGroundSlide = new XSlideAnimation(mPlayerGroundImage, Duration.millis(1500), 1.1, 8);
 		xPlayerGroundSlide.play();
-		
-		mPlayerGroundImage.layoutYProperty().bind(scene.heightProperty().divide(1.65));
-		mPlayerGroundImage.fitWidthProperty().bind(scene.widthProperty().divide(2.4));
-		mPlayerGroundImage.fitHeightProperty().bind(scene.heightProperty().divide(5));
+
+		createBindsImageView(mPlayerGroundImage, scene, 1.65, 2.4, 5);
 
 		XSlideAnimation xTrainerGroundSlide = new XSlideAnimation(mTrainerGroundImage, Duration.millis(1500), 1.05, 2.05);
 		xTrainerGroundSlide.play();
 
-		mTrainerGroundImage.layoutYProperty().bind(scene.heightProperty().divide(3.5));
-		mTrainerGroundImage.fitWidthProperty().bind(scene.widthProperty().divide(3));
-		mTrainerGroundImage.fitHeightProperty().bind(scene.heightProperty().divide(6));
+		createBindsImageView(mTrainerGroundImage, scene, 3.5, 3, 6);
 	}
 	
 	private void setUpAnatureImgs(Scene scene)
-	{		
-		mAnatureFront.layoutXProperty().bind(scene.widthProperty().divide(1.75));
-		mAnatureFront.layoutYProperty().bind(scene.heightProperty().divide(7.5));
-		mAnatureFront.fitWidthProperty().bind(scene.widthProperty().divide(5.5));
-		mAnatureFront.fitHeightProperty().bind(scene.heightProperty().divide(3.5));
+	{
+		createBindsImageView(mAnatureFront, scene, 1.75, 7.5, 5.5, 3.5);
 		mAnatureFront.setOpacity(0);
 
-		mAnatureBack.layoutXProperty().bind(scene.widthProperty().divide(5));
-		mAnatureBack.layoutYProperty().bind(scene.heightProperty().divide(2.9));
-		mAnatureBack.fitWidthProperty().bind(scene.widthProperty().divide(4));
-		mAnatureBack.fitHeightProperty().bind(scene.heightProperty().divide(2.5));
+		createBindsImageView(mAnatureBack, scene, 5, 2.9, 4, 2.5);
 		mAnatureBack.setOpacity(0);
 	}
 	
@@ -314,15 +281,8 @@ public class BattleController
 	{
 		ObjectProperty<Font> fontProperty = getFontProperty(55, scene);
 
-		mPlayerNameTxt.layoutYProperty().bind(scene.heightProperty().divide(2.08));
-		mPlayerNameTxt.layoutXProperty().bind(scene.widthProperty().divide(1.75));
-		mPlayerNameTxt.fontProperty().bind(fontProperty);
-		mPlayerNameTxt.textProperty().bind(mPlayerName);
-		
-		mEnemyNameTxt.layoutYProperty().bind(scene.heightProperty().divide(9.7));
-		mEnemyNameTxt.layoutXProperty().bind(scene.widthProperty().divide(4.9));
-		mEnemyNameTxt.fontProperty().bind(fontProperty);
-		mEnemyNameTxt.textProperty().bind(mEnemyName);
+		createBindsTxt(mPlayerNameTxt, scene, 1.75, 2.08, fontProperty, mPlayerName);
+		createBindsTxt(mEnemyNameTxt, scene, 4.9, 9.7, fontProperty, mEnemyName);
 	}
 	
 	private void setUpAnatureHpTxt(Scene scene)
@@ -335,40 +295,22 @@ public class BattleController
 		StringProperty enemyHpTxt = new SimpleStringProperty(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue());
 		mEnemyHp.addListener((observable, oldValue, newValue) -> enemyHpTxt.set(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue()));
 
-		mPlayerHpTxt.textProperty().bind(playerHpTxt);
-		mPlayerHpTxt.layoutYProperty().bind(scene.heightProperty().divide(1.83));
-		mPlayerHpTxt.layoutXProperty().bind(scene.widthProperty().divide(1.41));
-		mPlayerHpTxt.fontProperty().bind(fontProperty);
-
-		mEnemyHpTxt.textProperty().bind(enemyHpTxt);
-		mEnemyHpTxt.layoutYProperty().bind(scene.heightProperty().divide(5.8));
-		mEnemyHpTxt.layoutXProperty().bind(scene.widthProperty().divide(4.7));
-		mEnemyHpTxt.fontProperty().bind(fontProperty);
+		createBindsTxt(mPlayerHpTxt, scene, 1.41, 1.83, fontProperty, playerHpTxt);
+		createBindsTxt(mEnemyHpTxt, scene, 4.7, 5.8, fontProperty, enemyHpTxt);
 	}
 	
 	private void setUpAnatureLvlTxt(Scene scene)
 	{
 		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
 		
-		StringProperty mPlayerLvlTxtTxt = new SimpleStringProperty("Lvl " + mPlayerLvl.get());
-		mPlayerLvl.addListener((observable, oldValue, newValue) -> mPlayerLvlTxtTxt.set("Lvl " + mPlayerLvl.get()));
+		StringProperty playerLvlTxt = new SimpleStringProperty("Lvl " + mPlayerLvl.get());
+		mPlayerLvl.addListener((observable, oldValue, newValue) -> playerLvlTxt.set("Lvl " + mPlayerLvl.get()));
 
-		StringProperty mEnemyLvlTxtTxt = new SimpleStringProperty("Lvl " + mEnemyLvl.get());
-		mEnemyLvl.addListener((observable, oldValue, newValue) -> mEnemyLvlTxtTxt.set("Lvl " + mEnemyLvl.get()));
+		StringProperty enemyLvlTxt = new SimpleStringProperty("Lvl " + mEnemyLvl.get());
+		mEnemyLvl.addListener((observable, oldValue, newValue) -> enemyLvlTxt.set("Lvl " + mEnemyLvl.get()));
 
-		mPlayerLvlTxt.textProperty().bind(mPlayerLvlTxtTxt);
-		mPlayerLvlTxt.setTextAlignment(TextAlignment.LEFT);
-		mPlayerLvlTxt.setFill(Color.BLACK);
-		mPlayerLvlTxt.layoutYProperty().bind(scene.heightProperty().divide(1.83));
-		mPlayerLvlTxt.layoutXProperty().bind(scene.widthProperty().divide(1.71));
-		mPlayerLvlTxt.fontProperty().bind(fontProperty);
-
-		mEnemyLvlTxt.textProperty().bind(mEnemyLvlTxtTxt);
-		mEnemyLvlTxt.setTextAlignment(TextAlignment.LEFT);
-		mEnemyLvlTxt.setFill(Color.BLACK);
-		mEnemyLvlTxt.layoutYProperty().bind(scene.heightProperty().divide(5.8));
-		mEnemyLvlTxt.layoutXProperty().bind(scene.widthProperty().divide(2.61));
-		mEnemyLvlTxt.fontProperty().bind(fontProperty);
+		createBindsTxt(mPlayerLvlTxt, scene, 1.71, 1.83, fontProperty, playerLvlTxt);
+		createBindsTxt(mEnemyLvlTxt, scene, 2.61, 5.8, fontProperty, enemyLvlTxt);
 	}
 	
 	private void setUpAnatureHpAndXpBars(Scene scene)
@@ -398,15 +340,8 @@ public class BattleController
 	
 	private void setUpAnatureGenders(Scene scene)
 	{
-		mPlayerGender.fitWidthProperty().bind(scene.widthProperty().divide(57));
-		mPlayerGender.fitHeightProperty().bind(scene.heightProperty().divide(31));
-		mPlayerGender.layoutXProperty().bind(scene.widthProperty().divide(1.79));
-		mPlayerGender.layoutYProperty().bind(scene.heightProperty().divide(1.93));
-		
-		mEnemyGender.fitWidthProperty().bind(scene.widthProperty().divide(57));
-		mEnemyGender.fitHeightProperty().bind(scene.heightProperty().divide(31));
-		mEnemyGender.layoutXProperty().bind(scene.widthProperty().divide(2.8));
-		mEnemyGender.layoutYProperty().bind(scene.heightProperty().divide(7));
+		createBindsImageView(mPlayerGender, scene, 1.79, 1.93, 57, 31);
+		createBindsImageView(mEnemyGender, scene, 2.8, 7, 57, 31);
 	}
 	
 	private void setUpBtnGrid(Scene scene)
@@ -519,53 +454,24 @@ public class BattleController
 		ObjectProperty<Font> fontProperty = getFontProperty(45, scene);
 		ObjectProperty<Font> pageFontProperty = getFontProperty(65, scene);
 		
-		mSwitchSelection.fitWidthProperty().bind(scene.widthProperty());
-		mSwitchSelection.fitHeightProperty().bind(scene.heightProperty());
-		mSwitchSelection.visibleProperty().bind(mShowSwitch);
+		createBindsImageView(mSwitchSelection, scene, 1, 1, mShowSwitch);
+		createBindsImageView(mSwitchDialogue, scene, 1, 1, mShowSwitch);
 
-		mSwitchDialogue.fitWidthProperty().bind(scene.widthProperty());
-		mSwitchDialogue.fitHeightProperty().bind(scene.heightProperty());
-		mSwitchDialogue.visibleProperty().bind(mShowSwitch);
-		
-		mSwitchBtn.layoutXProperty().bind(scene.widthProperty().divide(2.71));
-		mSwitchBtn.layoutYProperty().bind(scene.heightProperty().divide(1.5));
-		mSwitchBtn.fitWidthProperty().bind(scene.widthProperty().divide(8.31));
-		mSwitchBtn.fitHeightProperty().bind(scene.heightProperty().divide(21.818));
-		mSwitchBtn.visibleProperty().bind(mShowSwitch);
+		createBindsImageView(mSwitchBtn, scene, 2.71, 1.5, 8.31, 21.818, mShowSwitch);
 		mSwitchBtn.setOnMouseClicked(event -> activateTurn(BattleChoice.Switch));
-		
-		mSwitchBackBtn.layoutXProperty().bind(scene.widthProperty().divide(2.25));
-		mSwitchBackBtn.layoutYProperty().bind(scene.heightProperty().divide(1.16));
-		mSwitchBackBtn.fitWidthProperty().bind(scene.widthProperty().divide(9));
-		mSwitchBackBtn.fitHeightProperty().bind(scene.heightProperty().divide(11));
-		mSwitchBackBtn.visibleProperty().bind(mShowSwitch);
+
+		createBindsImageView(mSwitchBackBtn, scene, 2.25, 1.16, 9, 11, mShowSwitch);
 		mSwitchBackBtn.setOnMouseClicked(event -> onBackBtn());
-		
-		mSwitchSelectedImg.layoutXProperty().bind(scene.widthProperty().divide(2.889));
-		mSwitchSelectedImg.layoutYProperty().bind(scene.heightProperty().divide(3.396));
-		mSwitchSelectedImg.fitWidthProperty().bind(scene.widthProperty().divide(5.638));
-		mSwitchSelectedImg.fitHeightProperty().bind(scene.heightProperty().divide(3.03));
-		mSwitchSelectedImg.visibleProperty().bind(mShowSwitch);
+
+		createBindsImageView(mSwitchSelectedImg, scene, 2.889, 3.396, 5.638, 3.03, mShowSwitch);
 		
 		setUpSwitchPageOne(scene, fontProperty);
 		setUpSwitchPageTwo(scene, fontProperty);
 		
-		mSwitchPageTxt.layoutXProperty().bind(scene.widthProperty().divide(1.16));
-		mSwitchPageTxt.layoutYProperty().bind(scene.heightProperty().divide(5.4));
-		mSwitchPageTxt.fontProperty().bind(pageFontProperty);
-		mSwitchPageTxt.visibleProperty().bind(mShowSwitch);
+		createBindsTxt(mSwitchPageTxt, scene, 1.16, 5.4, pageFontProperty, mShowSwitch);
 		
-		mSwitchPageLeft.layoutXProperty().bind(scene.widthProperty().divide(1.245));
-		mSwitchPageLeft.layoutYProperty().bind(scene.heightProperty().divide(6.99));
-		mSwitchPageLeft.fitWidthProperty().bind(scene.widthProperty().divide(46.23));
-		mSwitchPageLeft.fitHeightProperty().bind(scene.heightProperty().divide(18.46));
-		mSwitchPageLeft.visibleProperty().bind(mShowSwitch);
-		
-		mSwitchPageRight.layoutXProperty().bind(scene.widthProperty().divide(1.043));
-		mSwitchPageRight.layoutYProperty().bind(scene.heightProperty().divide(6.99));
-		mSwitchPageRight.fitWidthProperty().bind(scene.widthProperty().divide(46.23));
-		mSwitchPageRight.fitHeightProperty().bind(scene.heightProperty().divide(18.46));
-		mSwitchPageRight.visibleProperty().bind(mShowSwitch);
+		createBindsImageView(mSwitchPageLeft, scene, 1.245, 6.99, 46.23, 18.46, mShowSwitch);
+		createBindsImageView(mSwitchPageRight, scene, 1.043, 6.99, 46.23, 18.46, mShowSwitch);
 		
 		setUpAnatureTabs(scene);
 	}
@@ -574,89 +480,28 @@ public class BattleController
 	{
 		ObjectProperty<Font> nameFontTracking = getFontProperty(75, scene);
 		
-		mSwitchSelectedCatalogNum.layoutXProperty().bind(scene.widthProperty().divide(1.2895));
-		mSwitchSelectedCatalogNum.layoutYProperty().bind(scene.heightProperty().divide(3.7));
-		mSwitchSelectedCatalogNum.fontProperty().bind(fontTracking);
-		mSwitchSelectedCatalogNum.visibleProperty().bind(mShowSwitchPageOne.and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedCatalogNum, scene, 1.2895, 3.7, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedName, scene, 1.2895, 2.8, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedOwner, scene, 1.2895, 1.93, nameFontTracking, mShowSwitchPageOne.and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedCurrXp, scene, 1.2895, 1.65, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedNextXp, scene, 1.2895, 1.45, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
 		
-		mSwitchSelectedName.layoutXProperty().bind(scene.widthProperty().divide(1.2895));
-		mSwitchSelectedName.layoutYProperty().bind(scene.heightProperty().divide(2.8));
-		mSwitchSelectedName.fontProperty().bind(fontTracking);
-		mSwitchSelectedName.visibleProperty().bind(mShowSwitchPageOne.and(mShowSwitch));
-		
-		mSwitchSelectedOwner.layoutXProperty().bind(scene.widthProperty().divide(1.2895));
-		mSwitchSelectedOwner.layoutYProperty().bind(scene.heightProperty().divide(1.93));
-		mSwitchSelectedOwner.fontProperty().bind(nameFontTracking);
-		mSwitchSelectedOwner.visibleProperty().bind(mShowSwitchPageOne.and(mShowSwitch));
-		
-		mSwitchSelectedCurrXp.layoutXProperty().bind(scene.widthProperty().divide(1.2895));
-		mSwitchSelectedCurrXp.layoutYProperty().bind(scene.heightProperty().divide(1.65));
-		mSwitchSelectedCurrXp.fontProperty().bind(fontTracking);
-		mSwitchSelectedCurrXp.visibleProperty().bind(mShowSwitchPageOne.and(mShowSwitch));
-		
-		mSwitchSelectedNextXp.layoutXProperty().bind(scene.widthProperty().divide(1.2895));
-		mSwitchSelectedNextXp.layoutYProperty().bind(scene.heightProperty().divide(1.45));
-		mSwitchSelectedNextXp.fontProperty().bind(fontTracking);
-		mSwitchSelectedNextXp.visibleProperty().bind(mShowSwitchPageOne.and(mShowSwitch));
-		
-		mSwitchSelectedTypeOne.layoutXProperty().bind(scene.widthProperty().divide(1.298));
-		mSwitchSelectedTypeOne.layoutYProperty().bind(scene.heightProperty().divide(2.52));
-		mSwitchSelectedTypeOne.fitWidthProperty().bind(scene.widthProperty().divide(10.578));
-		mSwitchSelectedTypeOne.fitHeightProperty().bind(scene.heightProperty().divide(18));
-		mSwitchSelectedTypeOne.visibleProperty().bind(mShowSwitchPageOne.and(mShowSwitch));
-		
-		mSwitchSelectedTypeTwo.layoutXProperty().bind(scene.widthProperty().divide(1.1469));
-		mSwitchSelectedTypeTwo.layoutYProperty().bind(scene.heightProperty().divide(2.52));
-		mSwitchSelectedTypeTwo.fitWidthProperty().bind(scene.widthProperty().divide(10.578));
-		mSwitchSelectedTypeTwo.fitHeightProperty().bind(scene.heightProperty().divide(18));
-//		mSwitchSelectedTypeTwo.visibleProperty().bind(mShowSwitchPageOne.and(mShowSwitch));
-		mSwitchSelectedTypeTwo.setVisible(false);
+		createBindsImageView(mSwitchSelectedTypeOne, scene, 1.298, 2.52, 10.578, 18, mShowSwitchPageOne.and(mShowSwitch));
+		createBindsImageView(mSwitchSelectedTypeTwo, scene, 1.1469, 2.52, 10.578, 18, mShowSwitchPageOne.and(mShowSwitch));
 	}
 	
 	private void setUpSwitchPageTwo(Scene scene, ObjectProperty<Font> fontTracking)
 	{
 		ObjectProperty<Font> abilityDescFontTracking = getFontProperty(85, scene);
 		
-		mSwitchSelectedHp.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedHp.layoutYProperty().bind(scene.heightProperty().divide(3.7));
-		mSwitchSelectedHp.fontProperty().bind(fontTracking);
-		mSwitchSelectedHp.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
-
-		mSwitchSelectedAtk.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedAtk.layoutYProperty().bind(scene.heightProperty().divide(3));
-		mSwitchSelectedAtk.fontProperty().bind(fontTracking);
-		mSwitchSelectedAtk.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
-
-		mSwitchSelectedSpAtk.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedSpAtk.layoutYProperty().bind(scene.heightProperty().divide(2.55));
-		mSwitchSelectedSpAtk.fontProperty().bind(fontTracking);
-		mSwitchSelectedSpAtk.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
-
-		mSwitchSelectedDef.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedDef.layoutYProperty().bind(scene.heightProperty().divide(2.2));
-		mSwitchSelectedDef.fontProperty().bind(fontTracking);
-		mSwitchSelectedDef.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
-
-		mSwitchSelectedSpDef.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedSpDef.layoutYProperty().bind(scene.heightProperty().divide(1.94));
-		mSwitchSelectedSpDef.fontProperty().bind(fontTracking);
-		mSwitchSelectedSpDef.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
-
-		mSwitchSelectedSpeed.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedSpeed.layoutYProperty().bind(scene.heightProperty().divide(1.73));
-		mSwitchSelectedSpeed.fontProperty().bind(fontTracking);
-		mSwitchSelectedSpeed.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
-
-		mSwitchSelectedAbilityName.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedAbilityName.layoutYProperty().bind(scene.heightProperty().divide(1.57));
-		mSwitchSelectedAbilityName.fontProperty().bind(fontTracking);
-		mSwitchSelectedAbilityName.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
-
-		mSwitchSelectedAbilityDesc.layoutXProperty().bind(scene.widthProperty().divide(1.4));
-		mSwitchSelectedAbilityDesc.layoutYProperty().bind(scene.heightProperty().divide(1.48));
-		mSwitchSelectedAbilityDesc.fontProperty().bind(abilityDescFontTracking);
-		mSwitchSelectedAbilityDesc.wrappingWidthProperty().bind(scene.widthProperty().divide(3.71));
-		mSwitchSelectedAbilityDesc.visibleProperty().bind(mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedHp, scene, 1.4, 3.7, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedAtk, scene, 1.4, 3, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedSpAtk, scene, 1.4, 2.55, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedDef, scene, 1.4, 2.2, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedSpDef, scene, 1.4, 1.94, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedSpeed, scene, 1.4, 1.73, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedAbilityName, scene, 1.4, 1.57, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedAbilityDesc, scene, 1.4, 1.48, 3.71, abilityDescFontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 	}
 	
 	private void setUpAnatureTabs(Scene scene)
@@ -664,46 +509,18 @@ public class BattleController
 		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 		
 		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, true);
-		mSlotOne.layoutXProperty().bind(scene.widthProperty().divide(85));
-		mSlotOne.layoutYProperty().bind(scene.heightProperty().divide(4.2));
-		mSlotOne.prefWidthProperty().bind(scene.widthProperty().divide(3.7));
-		mSlotOne.prefHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSlotOne.setOnMouseClick(event -> updateSwitchSelected(0));
-		
 		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, false);
-		mSlotTwo.layoutXProperty().bind(scene.widthProperty().divide(85));
-		mSlotTwo.layoutYProperty().bind(scene.heightProperty().divide(3.157));
-		mSlotTwo.prefWidthProperty().bind(scene.widthProperty().divide(3.7));
-		mSlotTwo.prefHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSlotTwo.setOnMouseClick(event -> updateSwitchSelected(1));
-		
 		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, false);
-		mSlotThree.layoutXProperty().bind(scene.widthProperty().divide(85));
-		mSlotThree.layoutYProperty().bind(scene.heightProperty().divide(2.54));
-		mSlotThree.prefWidthProperty().bind(scene.widthProperty().divide(3.7));
-		mSlotThree.prefHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSlotThree.setOnMouseClick(event -> updateSwitchSelected(2));
-		
 		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, false);
-		mSlotFour.layoutXProperty().bind(scene.widthProperty().divide(85));
-		mSlotFour.layoutYProperty().bind(scene.heightProperty().divide(2.114));
-		mSlotFour.prefWidthProperty().bind(scene.widthProperty().divide(3.7));
-		mSlotFour.prefHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSlotFour.setOnMouseClick(event -> updateSwitchSelected(3));
-		
 		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, false);
-		mSlotFive.layoutXProperty().bind(scene.widthProperty().divide(85));
-		mSlotFive.layoutYProperty().bind(scene.heightProperty().divide(1.82));
-		mSlotFive.prefWidthProperty().bind(scene.widthProperty().divide(3.7));
-		mSlotFive.prefHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSlotFive.setOnMouseClick(event -> updateSwitchSelected(4));
-		
 		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, false);
-		mSlotSix.layoutXProperty().bind(scene.widthProperty().divide(85));
-		mSlotSix.layoutYProperty().bind(scene.heightProperty().divide(1.59));
-		mSlotSix.prefWidthProperty().bind(scene.widthProperty().divide(3.7));
-		mSlotSix.prefHeightProperty().bind(scene.heightProperty().divide(15.1));
-		mSlotSix.setOnMouseClick(event -> updateSwitchSelected(5));
+		
+		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0);
+		createBindsAnatureslot(mSlotTwo, scene, 85, 3.157, 3.7, 15.1, 1);
+		createBindsAnatureslot(mSlotThree, scene, 85, 2.54, 3.7, 15.1, 2);
+		createBindsAnatureslot(mSlotFour, scene, 85, 2.114, 3.7, 15.1, 3);
+		createBindsAnatureslot(mSlotFive, scene, 85, 1.82, 3.7, 15.1, 4);
+		createBindsAnatureslot(mSlotSix, scene, 85, 1.59, 3.7, 15.1, 5);
 		
 		ArrayList<Node> slots = new ArrayList<Node>();
 		slots.add(mSlotOne);
@@ -718,58 +535,26 @@ public class BattleController
 	
 	private void setUpItemElements(Scene scene)
 	{
-		mItemSelectionBg.fitWidthProperty().bind(scene.widthProperty());
-		mItemSelectionBg.fitHeightProperty().bind(scene.heightProperty());
-		mItemSelectionBg.visibleProperty().bind(mShowItemSelection);
-		
-		mItemDialogue.fitWidthProperty().bind(scene.widthProperty());
-		mItemDialogue.fitHeightProperty().bind(scene.heightProperty());
-		mItemDialogue.visibleProperty().bind(mShowItemSelection);
-		
-		mSelectedItem.fitWidthProperty().bind(scene.widthProperty());
-		mSelectedItem.fitHeightProperty().bind(scene.heightProperty());
-		mSelectedItem.visibleProperty().bind(mShowItemSelection);
-		
-		mItemBackBtn.layoutXProperty().bind(scene.widthProperty().divide(2.3));
-		mItemBackBtn.layoutYProperty().bind(scene.heightProperty().divide(1.19));
-		mItemBackBtn.fitWidthProperty().bind(scene.widthProperty().divide(7));
-		mItemBackBtn.fitHeightProperty().bind(scene.heightProperty().divide(9));
-		mItemBackBtn.visibleProperty().bind(mShowItemSelection);
+		createBindsImageView(mItemSelectionBg, scene, 1, 1, mShowItemSelection);
+		createBindsImageView(mItemDialogue, scene, 1, 1, mShowItemSelection);
+		createBindsImageView(mSelectedItem, scene, 1, 1, mShowItemSelection);
+
+		createBindsImageView(mItemBackBtn, scene, 2.3, 1.19, 7, 9, mShowItemSelection);
 		mItemBackBtn.setOnMouseClicked(event -> onBackBtn());
 		
-		mItemUseBtn.layoutXProperty().bind(scene.widthProperty().divide(20));
-		mItemUseBtn.layoutYProperty().bind(scene.heightProperty().divide(1.52));
-		mItemUseBtn.fitWidthProperty().bind(scene.widthProperty().divide(7));
-		mItemUseBtn.fitHeightProperty().bind(scene.heightProperty().divide(17));
-		mItemUseBtn.visibleProperty().bind(mShowItemSelection);
+		createBindsImageView(mItemUseBtn, scene, 20, 1.52, 7, 17, mShowItemSelection);
 		mItemUseBtn.setOnMouseClicked(event -> activateTurn(BattleChoice.Item));
-		
-		mItemPotionsTab.layoutXProperty().bind(scene.widthProperty().divide(4.07));
-		mItemPotionsTab.layoutYProperty().bind(scene.heightProperty().divide(4.71));
-		mItemPotionsTab.fitWidthProperty().bind(scene.widthProperty().divide(23));
-		mItemPotionsTab.fitHeightProperty().bind(scene.heightProperty().divide(13));
-		mItemPotionsTab.visibleProperty().bind(mShowItemSelection);
+
+		createBindsImageView(mItemPotionsTab, scene, 4.07, 4.71, 23, 13, mShowItemSelection);
 		mItemPotionsTab.setOnMouseClicked(event -> onItemTab(true));
-		
-		mItemPotionTabImg.layoutXProperty().bind(scene.widthProperty().divide(4.03));
-		mItemPotionTabImg.layoutYProperty().bind(scene.heightProperty().divide(4.71));
-		mItemPotionTabImg.fitWidthProperty().bind(scene.widthProperty().divide(26));
-		mItemPotionTabImg.fitHeightProperty().bind(scene.heightProperty().divide(13));
-		mItemPotionTabImg.visibleProperty().bind(mShowItemSelection);
+
+		createBindsImageView(mItemPotionTabImg, scene, 4.03, 4.71, 26, 13, mShowItemSelection);
 		mItemPotionTabImg.setOnMouseClicked(event -> onItemTab(true));
-		
-		mItemAnaCubeTab.layoutXProperty().bind(scene.widthProperty().divide(4.06));
-		mItemAnaCubeTab.layoutYProperty().bind(scene.heightProperty().divide(3.5));
-		mItemAnaCubeTab.fitWidthProperty().bind(scene.widthProperty().divide(23));
-		mItemAnaCubeTab.fitHeightProperty().bind(scene.heightProperty().divide(13));
-		mItemAnaCubeTab.visibleProperty().bind(mShowItemSelection);
+
+		createBindsImageView(mItemAnaCubeTab, scene, 4.06, 3.5, 23, 13, mShowItemSelection);
 		mItemAnaCubeTab.setOnMouseClicked(event -> onItemTab(false));
-		
-		mItemAnaCubeTabImg.layoutXProperty().bind(scene.widthProperty().divide(4.07));
-		mItemAnaCubeTabImg.layoutYProperty().bind(scene.heightProperty().divide(3.5));
-		mItemAnaCubeTabImg.fitWidthProperty().bind(scene.widthProperty().divide(23));
-		mItemAnaCubeTabImg.fitHeightProperty().bind(scene.heightProperty().divide(13));
-		mItemAnaCubeTabImg.visibleProperty().bind(mShowItemSelection);
+
+		createBindsImageView(mItemAnaCubeTabImg, scene, 4.07, 3.5, 23, 13, mShowItemSelection);
 		mItemAnaCubeTabImg.setOnMouseClicked(event -> onItemTab(false));
 		
 		mItemList.layoutXProperty().bind(scene.widthProperty().divide(32));
@@ -787,147 +572,56 @@ public class BattleController
 		
 		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
 		
-		mSelectedItemName.fontProperty().bind(fontProperty);
-		mSelectedItemName.layoutXProperty().bind(scene.widthProperty().divide(28.44));
-		mSelectedItemName.layoutYProperty().bind(scene.heightProperty().divide(4));
-		mSelectedItemName.visibleProperty().bind(mShowItemSelection);
-		mSelectedItemName.wrappingWidthProperty().bind(scene.widthProperty().divide(5.8479));
+		createBindsTxt(mSelectedItemName, scene, 28.44, 4.0, 5.8479, fontProperty, mShowItemSelection);
 		mSelectedItemName.textProperty().bind(mSelectedItemTxt);
 		
-		mSelectedItemImg.layoutXProperty().bind(scene.widthProperty().divide(14.1));
-		mSelectedItemImg.layoutYProperty().bind(scene.heightProperty().divide(4));
-		mSelectedItemImg.fitWidthProperty().bind(scene.widthProperty().divide(10));
-		mSelectedItemImg.fitHeightProperty().bind(scene.heightProperty().divide(5));
-		mSelectedItemImg.visibleProperty().bind(mShowItemSelection);
+		createBindsImageView(mSelectedItemImg, scene, 14.1, 4, 10, 5, mShowItemSelection);
 		
 		mShowItemSelection.set(false);
 	}
 	
 	private void setUpMoveSelection(Scene scene)
 	{
-		mAttackDialogue.fitWidthProperty().bind(scene.widthProperty());
-		mAttackDialogue.fitHeightProperty().bind(scene.heightProperty());
-		mAttackDialogue.visibleProperty().bind(mShowMoveSelection);
-
-		mAttackSeOne.fitWidthProperty().bind(scene.widthProperty());
-		mAttackSeOne.fitHeightProperty().bind(scene.heightProperty());
-		mAttackSeOne.visibleProperty().bind(mShowMoveSeOne);
-
-		mAttackSeTwo.fitWidthProperty().bind(scene.widthProperty());
-		mAttackSeTwo.fitHeightProperty().bind(scene.heightProperty());
-		mAttackSeTwo.visibleProperty().bind(mShowMoveSeTwo);
-
-		mAttackSeThree.fitWidthProperty().bind(scene.widthProperty());
-		mAttackSeThree.fitHeightProperty().bind(scene.heightProperty());
-		mAttackSeThree.visibleProperty().bind(mShowMoveSeThree);
-
-		mAttackSeFour.fitWidthProperty().bind(scene.widthProperty());
-		mAttackSeFour.fitHeightProperty().bind(scene.heightProperty());
-		mAttackSeFour.visibleProperty().bind(mShowMoveSeFour);
+		createBindsImageView(mAttackDialogue, scene, 1, 1, mShowMoveSelection);
+		createBindsImageView(mAttackSeOne, scene, 1, 1, mShowMoveSeOne);
+		createBindsImageView(mAttackSeTwo, scene, 1, 1, mShowMoveSeTwo);
+		createBindsImageView(mAttackSeThree, scene, 1, 1, mShowMoveSeThree);
+		createBindsImageView(mAttackSeFour, scene, 1, 1, mShowMoveSeFour);
 		
 		mMoveSeGroup.visibleProperty().bind(mShowMoveSe);
 		
-		mAttackBackBtn.layoutXProperty().bind(scene.widthProperty().divide(2.25));
-		mAttackBackBtn.layoutYProperty().bind(scene.heightProperty().divide(1.16));
-		mAttackBackBtn.fitWidthProperty().bind(scene.widthProperty().divide(9));
-		mAttackBackBtn.fitHeightProperty().bind(scene.heightProperty().divide(11));
-		mAttackBackBtn.visibleProperty().bind(mShowMoveSelection);
+		createBindsImageView(mAttackBackBtn, scene, 2.25, 1.16, 9, 11, mShowMoveSelection);
 		mAttackBackBtn.setOnMouseClicked(event -> onBackBtn());
 		
 		ObjectProperty<Font> moveNameFontProperty = getFontProperty(75, scene);
 		ObjectProperty<Font> moveMpFontProperty = getFontProperty(95, scene);
-		
-		mAttackImgOne.layoutXProperty().bind(scene.widthProperty().divide(4.5));
-		mAttackImgOne.layoutYProperty().bind(scene.heightProperty().divide(1.31));
-		mAttackImgOne.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
-		mAttackImgOne.fitHeightProperty().bind(scene.heightProperty().divide(11));
-		mAttackImgOne.visibleProperty().bind(mShowMoveSelection.and(mShowMoveOne));
-		mAttackImgOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
-		
-		mAttackNameOne.textProperty().bind(mAttackNameOneTxt);
-		mAttackNameOne.layoutXProperty().bind(scene.widthProperty().divide(4.39));
-		mAttackNameOne.layoutYProperty().bind(scene.heightProperty().divide(1.24));
-		mAttackNameOne.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackNameOne.fontProperty().bind(moveNameFontProperty);
-		mAttackNameOne.visibleProperty().bind(mShowMoveSelection.and(mShowMoveOne));
-		mAttackNameOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
 
-		mAttackMpOne.textProperty().bind(mAttackMpOneTxt);
-		mAttackMpOne.layoutXProperty().bind(scene.widthProperty().divide(4.39));
-		mAttackMpOne.layoutYProperty().bind(scene.heightProperty().divide(1.19));
-		mAttackMpOne.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackMpOne.fontProperty().bind(moveMpFontProperty);
-		mAttackMpOne.visibleProperty().bind(mShowMoveSelection.and(mShowMoveOne));
+		createBindsImageView(mAttackImgOne, scene, 4.5, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveOne));
+		createBindsTxt(mAttackNameOne, scene, 4.39, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackNameOneTxt);
+		createBindsTxt(mAttackMpOne, scene, 4.39, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackMpOneTxt);
+		mAttackImgOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
+		mAttackNameOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
 		mAttackMpOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
 		
-		mAttackImgTwo.layoutXProperty().bind(scene.widthProperty().divide(4.5));
-		mAttackImgTwo.layoutYProperty().bind(scene.heightProperty().divide(1.158));
-		mAttackImgTwo.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
-		mAttackImgTwo.fitHeightProperty().bind(scene.heightProperty().divide(11));
-		mAttackImgTwo.visibleProperty().bind(mShowMoveSelection.and(mShowMoveTwo));
+		createBindsImageView(mAttackImgTwo, scene, 4.5, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveTwo));
+		createBindsTxt(mAttackNameTwo, scene, 4.39, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackNameTwoTxt);
+		createBindsTxt(mAttackMpTwo, scene, 4.39, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackMpTwoTxt);
 		mAttackImgTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
-
-		mAttackNameTwo.textProperty().bind(mAttackMpTwoTxt);
-		mAttackNameTwo.layoutXProperty().bind(scene.widthProperty().divide(4.39));
-		mAttackNameTwo.layoutYProperty().bind(scene.heightProperty().divide(1.103));
-		mAttackNameTwo.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackNameTwo.fontProperty().bind(moveNameFontProperty);
-		mAttackNameTwo.visibleProperty().bind(mShowMoveSelection.and(mShowMoveTwo));
 		mAttackNameTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
-
-		mAttackMpTwo.textProperty().bind(mAttackMpTwoTxt);
-		mAttackMpTwo.textProperty().bind(mAttackNameTwoTxt);
-		mAttackMpTwo.layoutXProperty().bind(scene.widthProperty().divide(4.39));
-		mAttackMpTwo.layoutYProperty().bind(scene.heightProperty().divide(1.063));
-		mAttackMpTwo.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackMpTwo.fontProperty().bind(moveMpFontProperty);
-		mAttackMpTwo.visibleProperty().bind(mShowMoveSelection.and(mShowMoveTwo));
 		mAttackMpTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
 		
-		mAttackImgThree.layoutXProperty().bind(scene.widthProperty().divide(1.515));
-		mAttackImgThree.layoutYProperty().bind(scene.heightProperty().divide(1.31));
-		mAttackImgThree.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
-		mAttackImgThree.fitHeightProperty().bind(scene.heightProperty().divide(11));
-		mAttackImgThree.visibleProperty().bind(mShowMoveSelection.and(mShowMoveThree));
+		createBindsImageView(mAttackImgThree, scene, 1.515, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveThree));
+		createBindsTxt(mAttackNameThree, scene, 1.507, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackNameThreeTxt);
+		createBindsTxt(mAttackMpThree, scene, 1.507, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackMpThreeTxt);
 		mAttackImgThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
-
-		mAttackNameThree.textProperty().bind(mAttackNameThreeTxt);
-		mAttackNameThree.layoutXProperty().bind(scene.widthProperty().divide(1.507));
-		mAttackNameThree.layoutYProperty().bind(scene.heightProperty().divide(1.24));
-		mAttackNameThree.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackNameThree.fontProperty().bind(moveNameFontProperty);
-		mAttackNameThree.visibleProperty().bind(mShowMoveSelection.and(mShowMoveThree));
 		mAttackNameThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
-
-		mAttackMpThree.textProperty().bind(mAttackMpThreeTxt);
-		mAttackMpThree.layoutXProperty().bind(scene.widthProperty().divide(1.507));
-		mAttackMpThree.layoutYProperty().bind(scene.heightProperty().divide(1.19));
-		mAttackMpThree.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackMpThree.fontProperty().bind(moveMpFontProperty);
-		mAttackMpThree.visibleProperty().bind(mShowMoveSelection.and(mShowMoveThree));
 		mAttackMpThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
 		
-		mAttackImgFour.layoutXProperty().bind(scene.widthProperty().divide(1.515));
-		mAttackImgFour.layoutYProperty().bind(scene.heightProperty().divide(1.158));
-		mAttackImgFour.fitWidthProperty().bind(scene.widthProperty().divide(8.5));
-		mAttackImgFour.fitHeightProperty().bind(scene.heightProperty().divide(11));
-		mAttackImgFour.visibleProperty().bind(mShowMoveSelection.and(mShowMoveFour));
+		createBindsImageView(mAttackImgFour, scene, 1.515, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveFour));
+		createBindsTxt(mAttackNameFour, scene, 1.507, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackNameFourTxt);
+		createBindsTxt(mAttackMpFour, scene, 1.507, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackMpFourTxt);
 		mAttackImgFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
-
-		mAttackNameFour.textProperty().bind(mAttackNameFourTxt);
-		mAttackNameFour.layoutXProperty().bind(scene.widthProperty().divide(1.507));
-		mAttackNameFour.layoutYProperty().bind(scene.heightProperty().divide(1.103));
-		mAttackNameFour.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackNameFour.fontProperty().bind(moveNameFontProperty);
-		mAttackNameFour.visibleProperty().bind(mShowMoveSelection.and(mShowMoveFour));
 		mAttackNameFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
-
-		mAttackMpFour.textProperty().bind(mAttackMpFourTxt);
-		mAttackMpFour.layoutXProperty().bind(scene.widthProperty().divide(1.507));
-		mAttackMpFour.layoutYProperty().bind(scene.heightProperty().divide(1.063));
-		mAttackMpFour.wrappingWidthProperty().bind(scene.widthProperty().divide(9.36));
-		mAttackMpFour.fontProperty().bind(moveMpFontProperty);
-		mAttackMpFour.visibleProperty().bind(mShowMoveSelection.and(mShowMoveFour));
 		mAttackMpFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
 	}
 	
@@ -1431,8 +1125,13 @@ public class BattleController
 	
 	private void healthGain(ItemResult result, DoubleProperty toChange)
 	{
+		double duration = 2000;
+		
+		if(result.getHpGained() < 5)
+			duration = 100;
+		
 		mDialogueTxt.set(result.getDialogue());
-		ProgressBarIncrease increase = new ProgressBarIncrease(toChange, Duration.millis(2000), result.getHpGained());
+		ProgressBarIncrease increase = new ProgressBarIncrease(toChange, Duration.millis(duration), result.getHpGained());
 		increase.setOnFinished(event -> mCanClick.set(true));
 		increase.play();
 	}
@@ -1481,5 +1180,94 @@ public class BattleController
 		fontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 		
 		return fontProperty;
+	}
+	
+	private void createBindsImageView(ImageView img, Scene scene, double widthToDivide, double heightToDivide)
+	{
+		img.fitWidthProperty().bind(scene.widthProperty().divide(widthToDivide));
+		img.fitHeightProperty().bind(scene.heightProperty().divide(heightToDivide));
+	}
+	
+	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide)
+	{
+		createBindsImageView(img, scene, widthToDivide, heightToDivide);
+		img.layoutXProperty().bind(scene.widthProperty().divide(xToDivide));
+		img.layoutYProperty().bind(scene.heightProperty().divide(yToDivide));
+	}
+	
+	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide, BooleanProperty visibleProp)
+	{
+		img.visibleProperty().bind(visibleProp);
+		createBindsImageView(img, scene, xToDivide, yToDivide, widthToDivide, heightToDivide);
+	}
+	
+	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide, BooleanBinding visibleProp)
+	{
+		img.visibleProperty().bind(visibleProp);
+		createBindsImageView(img, scene, xToDivide, yToDivide, widthToDivide, heightToDivide);
+	}
+	
+	private void createBindsImageView(ImageView img, Scene scene, double widthToDivide, double heightToDivide, BooleanProperty visibleProp)
+	{
+		createBindsImageView(img, scene, widthToDivide, heightToDivide);
+		img.visibleProperty().bind(visibleProp);
+	}
+	
+	private void createBindsImageView(ImageView img, Scene scene, double yToDivide, double widthToDivide, double heightToDivide)
+	{
+		createBindsImageView(img, scene, widthToDivide, heightToDivide);
+		img.layoutYProperty().bind(scene.heightProperty().divide(yToDivide));
+	}
+	
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp)
+	{
+		txt.layoutXProperty().bind(scene.widthProperty().divide(xToDivide));
+		txt.layoutYProperty().bind(scene.heightProperty().divide(yToDivide));
+		txt.fontProperty().bind(fontProp);
+	}
+	
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp, StringProperty stringProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
+		txt.textProperty().bind(stringProp);
+	}
+	
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp, BooleanProperty visibleProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
+		txt.visibleProperty().bind(visibleProp);
+	}
+	
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp, BooleanBinding visibleProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
+		txt.visibleProperty().bind(visibleProp);
+	}
+	
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide, ObjectProperty<Font> fontProp, BooleanProperty visibleProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp, visibleProp);
+		txt.wrappingWidthProperty().bind(scene.widthProperty().divide(wrapToDivide));
+	}
+	
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide, ObjectProperty<Font> fontProp, BooleanBinding visibleProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp, visibleProp);
+		txt.wrappingWidthProperty().bind(scene.widthProperty().divide(wrapToDivide));
+	}
+	
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide, ObjectProperty<Font> fontProp, BooleanBinding visibleProp, StringProperty stringProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, wrapToDivide, fontProp, visibleProp);
+		txt.textProperty().bind(stringProp);
+	}
+	
+	private void createBindsAnatureslot(AnatureSlot slot, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide, int slotIndex)
+	{
+		slot.layoutXProperty().bind(scene.widthProperty().divide(xToDivide));
+		slot.layoutYProperty().bind(scene.heightProperty().divide(yToDivide));
+		slot.prefWidthProperty().bind(scene.widthProperty().divide(widthToDivide));
+		slot.prefHeightProperty().bind(scene.heightProperty().divide(heightToDivide));
+		slot.setOnMouseClick(event -> updateSwitchSelected(slotIndex));
 	}
 }
