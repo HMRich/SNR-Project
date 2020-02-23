@@ -13,6 +13,7 @@ public class Player
 	private Backpack mBackpack;
 	private Image mSprite;
 	private ArrayList<Anature> mPartyAnature;
+	private int mSelectedIndex;
 
 	public Player(Image sprite)
 	{
@@ -23,6 +24,7 @@ public class Player
 		mBackpack = new Backpack();
 		mSprite = sprite;
 		mPartyAnature = new ArrayList<Anature>();
+		mSelectedIndex = 0;
 	}
 
 	public String getName()
@@ -104,5 +106,18 @@ public class Player
 			throw new IllegalArgumentException("The Player's Anature Party already has 6.");
 
 		mPartyAnature.add(toAdd);
+	}
+
+	public int getSelectedIndex()
+	{
+		return mSelectedIndex;
+	}
+
+	public void setSelectedIndex(int selectedIndex)
+	{
+		if(selectedIndex > 5 || selectedIndex < 0)
+			throw new IllegalArgumentException("Invalid Selected Index");
+		
+		mSelectedIndex = selectedIndex;
 	}
 }

@@ -4,10 +4,12 @@ import java.io.IOException;
 
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.TrainerIds;
+import application.items.ItemPool;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
 import javafx.application.Application;
@@ -80,6 +82,7 @@ public class Startup extends Application
 					Parent introRoot = introLoader.load();
 					Scene intro = new Scene(introRoot);
 					intro.setOnKeyReleased(mKeyListener);
+					
 					mStage.setScene(intro);
 					break;
 
@@ -111,9 +114,23 @@ public class Startup extends Application
 	public static void createDemo()
 	{
 		mPlayer.addAnatures(AnatureBuilder.createAnature(Species.Null, 15));
+		
+		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
+		second.setName("Other Null");
+		mPlayer.addAnatures(second);
+		
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Great_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
+		
 		mTrainer = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 
 		changeScene(SceneType.Battle);
 	}
-
+	
+	public static String getPlayerName()
+	{
+		return mPlayer.getName();
+	}
 }

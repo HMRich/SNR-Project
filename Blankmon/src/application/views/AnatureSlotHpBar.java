@@ -1,6 +1,7 @@
 package application.views;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ProgressBar;
@@ -11,16 +12,16 @@ public class AnatureSlotHpBar extends ProgressBar
 	private DoubleProperty mCurrValue, mTotalValue;
 	private Pane mToBindTo;
 	
-	public AnatureSlotHpBar(DoubleProperty currValue, DoubleProperty totalValue, Pane toBindTo)
+	public AnatureSlotHpBar(double currValue, double totalValue, Pane toBindTo)
 	{
-		mCurrValue = currValue;
-		mTotalValue = totalValue;
+		mCurrValue = new SimpleDoubleProperty(currValue);
+		mTotalValue = new SimpleDoubleProperty(totalValue);
 		mToBindTo = toBindTo;
 		
 		progressProperty().bind(mCurrValue.divide(mTotalValue));
 		prefWidthProperty().bind(mToBindTo.widthProperty().divide(2.5));
 		prefHeightProperty().bind(mToBindTo.heightProperty().divide(4));
-		
+
 		getStylesheets().add("/resources/css/BattleStyle.css");
 		getStyleClass().add("green-bar");
 		mCurrValue.addListener(new ChangeListener<Number>()
@@ -54,5 +55,10 @@ public class AnatureSlotHpBar extends ProgressBar
 	public void bindY(double toDivideBy)
 	{
 		layoutYProperty().bind(mToBindTo.heightProperty().divide(toDivideBy));
+	}
+	
+	public void updateProgress(double currValue)
+	{
+		mCurrValue.set(currValue);
 	}
 }

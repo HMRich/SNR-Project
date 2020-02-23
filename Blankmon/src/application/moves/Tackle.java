@@ -13,7 +13,7 @@ public class Tackle extends Move
 	
 	public Tackle()
 	{
-		super(mDamageDone, MoveIds.Tackle, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Normal);
+		super("Tackle", 15, MoveIds.Tackle, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Normal);
 	}
 
 	@Override

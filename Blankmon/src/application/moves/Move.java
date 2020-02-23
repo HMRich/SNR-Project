@@ -6,6 +6,7 @@ import application.enums.Type;
 
 public abstract class Move
 {
+	private String mName;
 	private int mTotalMovePoints;
 	private MoveIds mMoveId;
 	private boolean mDoesDamage;
@@ -13,15 +14,20 @@ public abstract class Move
 	private double mAccuracyStat;
 	private Type mType;
 
-	public Move(int totalMovePoints, MoveIds moveId, boolean doesDamage, boolean isPhysicalAttack, double accuracyStat, Type enumType)
+	public Move(String name, int totalMovePoints, MoveIds moveId, boolean doesDamage, boolean isPhysicalAttack, double accuracyStat, Type enumType)
 	{
+		mName = name;
 		mTotalMovePoints = totalMovePoints;
 		mMoveId = moveId;
 		mDoesDamage = doesDamage;
 		mIsPhysicalAttack = isPhysicalAttack;
 		mAccuracyStat = accuracyStat;
 		mType = enumType;
-				
+	}
+	
+	public String getName()
+	{
+		return mName;
 	}
 
 	public int getTotalMovePoints()
