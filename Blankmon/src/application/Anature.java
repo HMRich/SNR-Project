@@ -54,7 +54,7 @@ public class Anature
 		mDefense = defense;
 		mSpecialDefense = specialDefense;
 		mTotalHp = totalHp;
-		setmAccuracy(accuracy);
+		mAccuracy = accuracy;
 		resetTempStats();
 	}
 
@@ -299,12 +299,12 @@ public class Anature
 		 mTempAccuracy = accuracy;
 	}
 	
-	public int getmAccuracy()
+	public int getAccuracy()
 	{
 		return mAccuracy;
 	}
 
-	public void setmAccuracy(int mAccuracy)
+	public void setAccuracy(int mAccuracy)
 	{
 		this.mAccuracy = mAccuracy;
 	}
