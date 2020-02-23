@@ -20,7 +20,7 @@ public class AbilityPool
 	private static void generateAbilities()
 	{
 		mAbilities = new HashMap<AbilityIds, Ability>();
-		mAbilities.put(AbilityIds.Intimidate, new Intimidate());
+		mAbilities.put(AbilityIds.Tyrannize , new Tyrannize());
 		mAbilities.put(AbilityIds.Spiky, new Spiky());
 		mAbilities.put(AbilityIds.Determined, new Determined());
 	}
