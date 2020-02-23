@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import application.Anature;
 import application.BaseAI;
+import application.enums.AiChoice;
 import application.enums.TrainerIds;
 import application.enums.Type;
 import application.items.Item;
@@ -39,11 +40,11 @@ public class Trainer
 		mAi.switchAnature(mAnatures, new Type[] { mCurrentAnature.getPrimaryType(), mCurrentAnature.getSecondaryType() }, 25, mCurrentAnature);
 	};
 
-	public final String useTurn(Anature playerAnature) // TODO The String return is only temporary
+	public final AiChoice useTurn(Anature playerAnature) // TODO The String return is only temporary
 	{
-		String itemResult = mAi.useItem(mItems, mCurrentAnature, mHealthThreshold);
+		AiChoice itemResult = mAi.useItem(mItems, mCurrentAnature, mHealthThreshold);
 		
-		if(itemResult.length() == 0)
+		if(itemResult.equals(AiChoice.No_Choice))
 		{
 			Type[] types = null;
 			
@@ -53,9 +54,9 @@ public class Trainer
 			else
 				types = new Type[] { playerAnature.getPrimaryType() };
 			
-			String switchResult = mAi.switchAnature(mAnatures, types, mSwitchThreshold, mCurrentAnature);
+			AiChoice switchResult = mAi.switchAnature(mAnatures, types, mSwitchThreshold, mCurrentAnature);
 			
-			if(switchResult.length() == 0)
+			if(switchResult.equals(AiChoice.No_Choice))
 			{
 				return mAi.chooseMove();
 			}
