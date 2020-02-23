@@ -1,19 +1,24 @@
 package application.items;
 
 import application.Anature;
-import application.Item;
+import application.ItemResult;
 import application.enums.ItemIds;
 
-public class UltraPotion extends Item{
-	private int mHealthPoints = 200; 
+public class UltraPotion extends Item
+{
+	private int mHealthPoints = 200;
 
-	public UltraPotion() {
-		super(ItemIds.Ultra_Potion, "Ultra Potion"); 
-	}
-
-	public void useItem(Anature target)
+	public UltraPotion()
 	{
-		System.out.println("Use Item Ultra Potion"); // TODO
+		super(ItemIds.Ultra_Potion, "Ultra Potion");
 	}
 
+	public ItemResult useItem(Anature target)
+	{
+		double oldHp = target.getCurrHp();
+		String dialogue = target.healAnature(mHealthPoints);
+		double newHp = target.getCurrHp();
+		
+		return new ItemResult(dialogue, newHp - oldHp);
+	}
 }

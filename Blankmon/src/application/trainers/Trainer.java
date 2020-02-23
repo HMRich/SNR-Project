@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import application.Anature;
 import application.BaseAI;
-import application.Item;
 import application.enums.TrainerIds;
 import application.enums.Type;
+import application.items.Item;
 
 public class Trainer
 {

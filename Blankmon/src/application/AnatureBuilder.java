@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import application.abillities.Ability;
+import application.abillities.AbilityPool;
 import application.enums.AbilityIds;
 import application.enums.DatabaseType;
 import application.enums.Gender;
@@ -26,7 +28,7 @@ public class AnatureBuilder
 		Type[] types = new Type[2];
 		boolean isShiny = false;
 		Ability ability = null;
-		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0;
+		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0, indexNum = 0;
 
 		Random r = new Random();
 
@@ -58,6 +60,7 @@ public class AnatureBuilder
 				String abilitiesStr = results.getString("PossibleAbilities");
 				String speedStr = results.getString("BaseSpeed");
 				String typesStr = results.getString("Types");
+				String indexNumStr = results.getString("IndexNum");
 
 				hp = Integer.parseInt(hpStr);
 				attack = Integer.parseInt(atkStr);
@@ -65,6 +68,7 @@ public class AnatureBuilder
 				defense = Integer.parseInt(defStr);
 				specialDefense = Integer.parseInt(spDefStr);
 				speed = Integer.parseInt(speedStr);
+				indexNum = Integer.parseInt(indexNumStr);
 
 				ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(abilitiesStr.split(",")));
 				AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
@@ -73,6 +77,7 @@ public class AnatureBuilder
 				String[] typesStrAra = typesStr.split(",");
 				for(int i = 0; i < typesStrAra.length && i < 2; i++)
 					types[i] = Type.valueOf(typesStrAra[i]);
+				
 				
 			}
 
@@ -85,8 +90,8 @@ public class AnatureBuilder
 			e.printStackTrace();
 			return null;
 		}
-
-		return new Anature(species.toString(), "TODO PLAYER NAME HERE", level, 0, gender, moves, types, species, isShiny, ability,
+		
+		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability,
 				attack, specialAttack, defense, specialDefense, hp, speed);
 	}
 

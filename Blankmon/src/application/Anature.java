@@ -1,6 +1,9 @@
 package application;
 
-import application.enums.*;
+import application.abillities.Ability;
+import application.enums.Gender;
+import application.enums.Species;
+import application.enums.Type;
 
 public class Anature
 {
@@ -12,12 +15,13 @@ public class Anature
 	private Species mSpecies;
 	private boolean mIsShiny;
 	private Ability mAbility;
+	private int mIndexNum;
 	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed;
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
-			Species species, boolean isShiny, Ability ability, int attack, int specialAttack, int defense, int specialDefense,
-			int totalHp, int speed)
+			Species species, boolean isShiny, int indexNum, Ability ability, int attack, int specialAttack, int defense,
+			int specialDefense, int totalHp, int speed)
 	{
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
@@ -43,6 +47,7 @@ public class Anature
 
 		mSpecies = species;
 		mIsShiny = isShiny;
+		mIndexNum = indexNum;
 		mAbility = ability;
 		mAttack = attack;
 		mSpecialAttack = specialAttack;
@@ -276,6 +281,11 @@ public class Anature
 	{
 		mTempSpeed = tempSpeed;
 	}
+	
+	public int getIndexNum()
+	{
+		return mIndexNum;
+	}
 
 	public void resetTempStats()
 	{
@@ -292,5 +302,20 @@ public class Anature
 
 		if(mCurrHp < 0)
 			mCurrHp = 0;
+	}
+
+	public String healAnature(int healAmount)
+	{
+		String result = " was healed " + healAmount + " hp.";
+		
+		mCurrHp += healAmount;
+
+		if(mCurrHp > mTotalHp)
+		{
+			mCurrHp = mTotalHp;
+			result = " was healed completely!";
+		}
+		
+		return mName + result;
 	}
 }

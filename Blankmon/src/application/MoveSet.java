@@ -46,18 +46,26 @@ public class MoveSet
 		}
 	}
 
-	public Move setMove(int index, Move move)
+	public void setMove(int index, Move move)
 	{
 		switch(index)
 		{
 			case 0:
 				mMove1 = move;
+				break;
+				
 			case 1:
 				mMove2 = move;
+				break;
+				
 			case 2:
 				mMove3 = move;
+				break;
+				
 			case 3:
 				mMove4 = move;
+				break;
+				
 			default:
 				throw new IllegalStateException("index was not in a valid value.");
 		}
@@ -69,29 +77,66 @@ public class MoveSet
 		{
 			case 0:
 				return mMove1MovePoints;
+				
 			case 1:
 				return mMove2MovePoints;
+				
 			case 2:
 				return mMove3MovePoints;
+				
 			case 3:
 				return mMove4MovePoints;
+				
 			default:
 				throw new IllegalStateException("index was not in a vaild state.");
 		}
 	}
 
-	public Move setMovePoints(int index, int movePoints)
+	public void setMovePoints(int index, int movePoints)
 	{
 		switch(index)
 		{
 			case 0:
 				mMove1MovePoints = movePoints;
+				break;
+				
 			case 1:
 				mMove2MovePoints = movePoints;
+				break;
+				
 			case 2:
 				mMove3MovePoints = movePoints;
+				break;
+				
 			case 3:
 				mMove4MovePoints = movePoints;
+				break;
+				
+			default:
+				throw new IllegalStateException("index was not in a valid value.");
+		}
+	}
+	
+	public void useMp(int index)
+	{
+		switch(index)
+		{
+			case 0:
+				mMove1MovePoints--;
+				break;
+				
+			case 1:
+				mMove2MovePoints--;
+				break;
+				
+			case 2:
+				mMove3MovePoints--;
+				break;
+				
+			case 3:
+				mMove4MovePoints--;
+				break;
+				
 			default:
 				throw new IllegalStateException("index was not in a valid value.");
 		}

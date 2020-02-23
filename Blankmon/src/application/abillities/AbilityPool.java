@@ -1,8 +1,7 @@
-package application;
+package application.abillities;
 
 import java.util.HashMap;
 
-import application.abillities.Intimidate;
 import application.enums.AbilityIds;
 
 public class AbilityPool
@@ -11,7 +10,7 @@ public class AbilityPool
 
 	public static Ability getAbility(AbilityIds abilityId)
 	{
-		if (mAbilities == null)
+		if(mAbilities == null)
 		{
 			generateAbilities();
 		}
@@ -22,5 +21,7 @@ public class AbilityPool
 	{
 		mAbilities = new HashMap<AbilityIds, Ability>();
 		mAbilities.put(AbilityIds.Intimidate, new Intimidate());
+		mAbilities.put(AbilityIds.Spiky, new Spiky());
+		mAbilities.put(AbilityIds.Determined, new Determined());
 	}
 }

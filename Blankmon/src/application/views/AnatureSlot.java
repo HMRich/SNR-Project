@@ -2,15 +2,19 @@ package application.views;
 
 import application.enums.Gender;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -20,21 +24,29 @@ public class AnatureSlot extends Pane
 {
 	private ImageView mBg, mAnatureImg, mHpBg, mGender;
 	private Text mNameTxt, mLvlTxt, mHpTxt;
-	private BooleanProperty mIsShown;
-	private boolean mIsSelected;
+	private BooleanProperty mIsShown, mIsTabVisible, mIsSelected, mIsCurrent;
+	private StringProperty mNameProperty, mLvlProperty, mHpProperty;
+	private Image mSelected, mDeselected, mDeselectedHover;
+	private AnatureSlotHpBar mHpBar;
 	
 	public AnatureSlot(Scene scene, boolean isSelected, Image anatureImg, Gender gender, 
-			StringProperty nameTxt, StringProperty lvlTxt, StringProperty hpTxt, BooleanProperty isShown, DoubleProperty hpProp)
+			String nameTxt, String lvlTxt, String hpTxt, BooleanProperty isShown, BooleanProperty isTabVisible, double hpNum, boolean isCurrent)
 	{
 		nullChecks(scene, anatureImg, nameTxt, lvlTxt, hpTxt);
 		mIsShown = isShown;
-		mIsSelected = isSelected;
+		mIsTabVisible = isTabVisible;
+		mIsSelected = new SimpleBooleanProperty(isSelected);
+		mIsCurrent = new SimpleBooleanProperty(isCurrent);
+		
+		mSelected = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Anature_Slot_Selected.png").toExternalForm());
+		mDeselected = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Anature_Slot_Deselected.png").toExternalForm());
+		mDeselectedHover = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Anature_Slot_Deselected_Hover.png").toExternalForm());
 		
 		if(isSelected)
-			mBg = new ImageView(new Image(getClass().getResource("/resources/images/battle/switching/Switch_Anature_Slot_Selected.png").toExternalForm()));
+			mBg = new ImageView(mSelected);
 		
 		else
-			mBg = new ImageView(new Image(getClass().getResource("/resources/images/battle/switching/Switch_Anature_Slot_Deselected.png").toExternalForm()));
+			mBg = new ImageView(mDeselected);
 		
 		switch(gender)
 		{
@@ -53,16 +65,20 @@ public class AnatureSlot extends Pane
 		mAnatureImg = new ImageView(anatureImg);
 		mHpBg = new ImageView(new Image(getClass().getResource("/resources/images/battle/switching/Switch_Hp_Bar.png").toExternalForm()));
 		
-		mNameTxt = createText(nameTxt, scene, 55);
-		mLvlTxt = createText(lvlTxt, scene, 55);
-		mHpTxt = createText(hpTxt, scene, 85);
+		mNameProperty = new SimpleStringProperty(nameTxt);
+		mLvlProperty = new SimpleStringProperty(lvlTxt);
+		mHpProperty = new SimpleStringProperty(hpTxt);
 		
-		AnatureSlotHpBar hpBar = new AnatureSlotHpBar(hpProp, hpProp, this);
-		hpBar.bindX(3.9);
-		hpBar.bindY(1.55);
-		hpBar.visibleProperty().bind(isShown);
+		mNameTxt = createText(mNameProperty, scene, 55);
+		mLvlTxt = createText(mLvlProperty, scene, 55);
+		mHpTxt = createText(mHpProperty, scene, 85);
 		
-		getChildren().addAll(mBg, mAnatureImg, mHpBg, hpBar, mGender, mNameTxt, mLvlTxt, mHpTxt);
+		mHpBar = new AnatureSlotHpBar(hpNum, hpNum, this);
+		mHpBar.bindX(3.9);
+		mHpBar.bindY(1.55);
+		mHpBar.visibleProperty().bind(isShown.and(isTabVisible));
+		
+		getChildren().addAll(mBg, mAnatureImg, mHpBg, mHpBar, mGender, mNameTxt, mLvlTxt, mHpTxt);
 		createBindings(scene);
 		
 		setOnMouseEntered(new EventHandler<Event>()
@@ -70,8 +86,8 @@ public class AnatureSlot extends Pane
 			@Override
 			public void handle(Event event)
 			{
-				if(!mIsSelected)
-					mBg.setImage(new Image(getClass().getResource("/resources/images/battle/switching/Switch_Anature_Slot_Deselected_Hover.png").toExternalForm()));
+				if(!mIsSelected.get() && !mIsCurrent.get())
+					mBg.setImage(mDeselectedHover);
 			}
 		});
 		
@@ -80,10 +96,60 @@ public class AnatureSlot extends Pane
 			@Override
 			public void handle(Event event)
 			{
-				if(!mIsSelected)
-					mBg.setImage(new Image(getClass().getResource("/resources/images/battle/switching/Switch_Anature_Slot_Deselected.png").toExternalForm()));
+				if(!mIsSelected.get() && !mIsCurrent.get())
+					mBg.setImage(mDeselected);
 			}
 		});
+		
+		mIsSelected.addListener(new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			{
+				if(mIsSelected.get() && !mIsCurrent.get())
+					mBg.setImage(mDeselectedHover);
+				
+				else if(!mIsCurrent.get())
+					mBg.setImage(mDeselected);
+			}
+		});
+	}
+	
+	public void updateSlot(boolean isCurrent, Image anatureImg, Gender gender, 
+			String nameTxt, String lvlTxt, String hpTxt, boolean isShown, boolean isTabVisible, double hp)
+	{
+		if(isCurrent)
+			mBg.setImage(mSelected);
+		
+		else
+			mBg.setImage(mDeselected);
+		
+		mAnatureImg.setImage(anatureImg);
+		
+		switch(gender)
+		{
+			case Male:
+				mGender.setImage(new Image(getClass().getResource("/resources/images/battle/Male_Symbol.png").toExternalForm()));
+				break;
+				
+			case Female:
+				mGender.setImage(new Image(getClass().getResource("/resources/images/battle/Female_Symbol.png").toExternalForm()));
+				break;
+				
+			default:
+				mGender.setImage(null);
+		}
+		
+		mNameProperty.set(nameTxt);
+		mLvlProperty.set(lvlTxt);
+		mHpProperty.set(hpTxt);
+		
+		mIsCurrent.set(isCurrent);
+		mIsSelected.set(false);
+		mIsShown.set(isShown);
+		mIsTabVisible.set(isTabVisible);
+		
+		mHpBar.updateProgress(hp);
 	}
 
 	private Text createText(StringProperty txt, Scene scene, int fontSize)
@@ -119,7 +185,7 @@ public class AnatureSlot extends Pane
 		return value;
 	}
 	
-	private void nullChecks(Scene scene, Image anatureImg, StringProperty nameTxt, StringProperty lvlTxt, StringProperty hpTxt)
+	private void nullChecks(Scene scene, Image anatureImg, String nameTxt, String lvlTxt, String hpTxt)
 	{
 		if(scene == null)
 			throw new IllegalArgumentException("Passed in scene is null.");
@@ -141,36 +207,58 @@ public class AnatureSlot extends Pane
 	{
 		mBg.fitWidthProperty().bind(prefWidthProperty());
 		mBg.fitHeightProperty().bind(prefHeightProperty());
-		mBg.visibleProperty().bind(mIsShown);
+		mBg.visibleProperty().bind(mIsShown.and(mIsTabVisible));
 		
 		mAnatureImg.layoutXProperty().bind(scene.widthProperty().divide(160));
 		mAnatureImg.layoutYProperty().bind(scene.heightProperty().divide(180));
 		mAnatureImg.fitWidthProperty().bind(scene.widthProperty().divide(33.68));
 		mAnatureImg.fitHeightProperty().bind(scene.heightProperty().divide(18));
-		mAnatureImg.visibleProperty().bind(mIsShown);
+		mAnatureImg.visibleProperty().bind(mIsShown.and(mIsTabVisible));
 		
 		mHpBg.layoutXProperty().bind(scene.widthProperty().divide(25.6));
 		mHpBg.layoutYProperty().bind(scene.heightProperty().divide(24.827));
 		mHpBg.fitWidthProperty().bind(scene.widthProperty().divide(6.808));
 		mHpBg.fitHeightProperty().bind(scene.heightProperty().divide(45));
-		mHpBg.visibleProperty().bind(mIsShown);
+		mHpBg.visibleProperty().bind(mIsShown.and(mIsTabVisible));
 		
 		mGender.layoutXProperty().bind(scene.widthProperty().divide(3.926));
 		mGender.layoutYProperty().bind(scene.heightProperty().divide(31.3));
 		mGender.fitWidthProperty().bind(scene.widthProperty().divide(75.294));
 		mGender.fitHeightProperty().bind(scene.heightProperty().divide(31.3));
-		mGender.visibleProperty().bind(mIsShown);
+		mGender.visibleProperty().bind(mIsShown.and(mIsTabVisible));
 		
 		mNameTxt.layoutXProperty().bind(scene.widthProperty().divide(25.09));
 		mNameTxt.layoutYProperty().bind(scene.heightProperty().divide(28));
-		mNameTxt.visibleProperty().bind(mIsShown);
+		mNameTxt.visibleProperty().bind(mIsShown.and(mIsTabVisible));
 		
 		mLvlTxt.layoutXProperty().bind(scene.widthProperty().divide(5.31));
 		mLvlTxt.layoutYProperty().bind(scene.heightProperty().divide(28));
-		mLvlTxt.visibleProperty().bind(mIsShown);
+		mLvlTxt.visibleProperty().bind(mIsShown.and(mIsTabVisible));
 		
 		mHpTxt.layoutXProperty().bind(scene.widthProperty().divide(5.31));
 		mHpTxt.layoutYProperty().bind(scene.heightProperty().divide(16.5));
-		mHpTxt.visibleProperty().bind(mIsShown);
+		mHpTxt.visibleProperty().bind(mIsShown.and(mIsTabVisible));
+	}
+	
+	public void setOnMouseClick(EventHandler<MouseEvent> event)
+	{
+		mBg.setOnMouseClicked(event);
+		mAnatureImg.setOnMouseClicked(event);
+		mHpBg.setOnMouseClicked(event);
+		mHpBar.setOnMouseClicked(event);
+		mGender.setOnMouseClicked(event);
+		mNameTxt.setOnMouseClicked(event);
+		mLvlTxt.setOnMouseClicked(event);
+		mHpTxt.setOnMouseClicked(event);
+	}
+	
+	public void setIsSelected(boolean isSelected)
+	{
+		mIsSelected.set(isSelected);
+	}
+	
+	public void setIsCurrent(boolean isCurrent)
+	{
+		mIsCurrent.set(isCurrent);
 	}
 }
