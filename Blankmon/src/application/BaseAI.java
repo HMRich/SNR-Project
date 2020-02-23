@@ -40,22 +40,22 @@ public class BaseAI
 		double random = Math.random();
 		if(random < 0.25)
 		{
-			return AiChoice.move0;
+			return AiChoice.move1;
 		}
 		
 		else if(random > 0.25 && random <= 0.50)
 		{
-			return AiChoice.move1;
+			return AiChoice.move2;
 		}
 		
 		else if(random > 0.50 && random <= 0.75)
 		{
-			return AiChoice.move2;
+			return AiChoice.move3;
 		}
 		
 		else
 		{
-			return AiChoice.move3;
+			return AiChoice.move4;
 		}
 	}
 
