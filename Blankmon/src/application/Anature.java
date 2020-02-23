@@ -54,7 +54,7 @@ public class Anature
 		mDefense = defense;
 		mSpecialDefense = specialDefense;
 		mTotalHp = totalHp;
-		mAccuracy = accuracy;
+		setmAccuracy(accuracy);
 		resetTempStats();
 	}
 
@@ -299,6 +299,16 @@ public class Anature
 		 mTempAccuracy = accuracy;
 	}
 	
+	public int getmAccuracy()
+	{
+		return mAccuracy;
+	}
+
+	public void setmAccuracy(int mAccuracy)
+	{
+		this.mAccuracy = mAccuracy;
+	}
+	
 	public void resetTempStats()
 	{
 		mTempAttack = 0;
@@ -306,6 +316,7 @@ public class Anature
 		mTempDefense = 0;
 		mTempSpecialDefense = 0;
 		mTempSpeed = 0;
+		mTempAccuracy = 0;
 	}
 
 	public void takeDamage(double damage)
@@ -330,4 +341,6 @@ public class Anature
 		
 		return mName + result;
 	}
+
+	
 }
