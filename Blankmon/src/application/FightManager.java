@@ -51,15 +51,27 @@ public class FightManager
 		}
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
+		// This if statement checks if the move is going to miss
+		if((playerAnatureMove.getAccuracy() / playerAnature.getTempAccuracy()) > (Math.random() + .1))
+		{
+			playerAnatureMove.activateMove(playerAnature, enemyAnature);
+			moves.useMp(indexOfMove);
 
-		playerAnatureMove.activateMove(playerAnature, enemyAnature);
-		moves.useMp(indexOfMove);
+			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
 
-		abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
+			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
+					mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName()
+							+ "!",
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
+		}
+		else
+		{
+			return new MoveResult(0,
+					mPlayerName + "'s " + playerAnature.getName() + " missed " + mEnemyName + "'s " + enemyAnature.getName()
+							+ "!",
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
+		}
 
-		return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-				mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!",
-				indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
 	}
 
 	public MoveResult attackPlayer(int indexOfMove)
@@ -81,15 +93,25 @@ public class FightManager
 		}
 
 		Move enemyAnatureMove = moves.getMove(indexOfMove);
+		if((enemyAnatureMove.getAccuracy() / enemyAnature.getTempAccuracy()) > (Math.random() + .1))
+		{
+			enemyAnatureMove.activateMove(enemyAnature, playerAnature);
+			moves.useMp(indexOfMove);
 
-		enemyAnatureMove.activateMove(enemyAnature, playerAnature);
-		moves.useMp(indexOfMove);
+			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
 
-		abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
-
-		return new MoveResult(oldHp - playerAnature.getCurrHp(),
-				mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!",
-				indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+			return new MoveResult(oldHp - playerAnature.getCurrHp(),
+					mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName()
+							+ "!",
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+		}
+		else
+		{
+			return new MoveResult(0,
+					mEnemyName + "'s " + enemyAnature.getName() + " missed " + mPlayerName + "'s " + playerAnature.getName()
+							+ "!",
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+		}
 	}
 
 	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, Item item)
@@ -196,4 +218,5 @@ public class FightManager
 		if(index > -1 && index < 7)
 			mEnemyIndex = index;
 	}
+
 }

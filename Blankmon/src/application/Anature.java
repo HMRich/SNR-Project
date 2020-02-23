@@ -16,12 +16,12 @@ public class Anature
 	private boolean mIsShiny;
 	private Ability mAbility;
 	private int mIndexNum;
-	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed;
-	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed;
+	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed,mAccuracy;
+	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
 			Species species, boolean isShiny, int indexNum, Ability ability, int attack, int specialAttack, int defense,
-			int specialDefense, int totalHp, int speed)
+			int specialDefense, int totalHp, int speed, int accuracy)
 	{
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
@@ -54,6 +54,7 @@ public class Anature
 		mDefense = defense;
 		mSpecialDefense = specialDefense;
 		mTotalHp = totalHp;
+		mAccuracy = accuracy;
 		resetTempStats();
 	}
 
@@ -287,6 +288,17 @@ public class Anature
 		return mIndexNum;
 	}
 
+	
+	public int getTempAccuracy() 
+	{
+		return mTempAccuracy;
+	}
+	
+	public void setTempAccuracy(int accuracy) 
+	{
+		 mTempAccuracy = accuracy;
+	}
+	
 	public void resetTempStats()
 	{
 		mTempAttack = 0;

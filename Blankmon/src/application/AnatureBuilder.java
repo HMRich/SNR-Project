@@ -28,7 +28,7 @@ public class AnatureBuilder
 		Type[] types = new Type[2];
 		boolean isShiny = false;
 		Ability ability = null;
-		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0, indexNum = 0;
+		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0, indexNum = 0, accuracy = 0;
 
 		Random r = new Random();
 
@@ -61,6 +61,7 @@ public class AnatureBuilder
 				String speedStr = results.getString("BaseSpeed");
 				String typesStr = results.getString("Types");
 				String indexNumStr = results.getString("IndexNum");
+				String accuracyStr = results.getString("Accuracy");
 
 				hp = Integer.parseInt(hpStr);
 				attack = Integer.parseInt(atkStr);
@@ -69,6 +70,7 @@ public class AnatureBuilder
 				specialDefense = Integer.parseInt(spDefStr);
 				speed = Integer.parseInt(speedStr);
 				indexNum = Integer.parseInt(indexNumStr);
+				accuracy = Integer.parseInt(accuracyStr);
 
 				ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(abilitiesStr.split(",")));
 				AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
@@ -92,7 +94,7 @@ public class AnatureBuilder
 		}
 		
 		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability,
-				attack, specialAttack, defense, specialDefense, hp, speed);
+				attack, specialAttack, defense, specialDefense, hp, speed, accuracy);
 	}
 
 	private static MoveSet generateMoveSet(Species species, int level)
