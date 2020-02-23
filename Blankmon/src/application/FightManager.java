@@ -12,7 +12,7 @@ public class FightManager
 {
 	private ArrayList<Anature> mPlayerTeam, mEnemyTeam;
 	private String mPlayerName, mEnemyName;
-	private int mPlayerIndex, mEnemyIndex;
+	private int mPlayerIndex, mEnemyIndex, mTurnCount;
 
 	public FightManager(ArrayList<Anature> playerTeam, ArrayList<Anature> enemyTeam, String playerName, String enemyName)
 	{
@@ -26,10 +26,12 @@ public class FightManager
 		
 		mPlayerIndex = 0;
 		mEnemyIndex = 0;
+		mTurnCount = 0;
 	}
 
 	public MoveResult attackEnemy(int indexOfMove)
 	{
+		mTurnCount++;
 		checkNulls(mPlayerTeam, indexOfMove);
 		Anature playerAnature = mPlayerTeam.get(mPlayerIndex);
 		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
@@ -60,6 +62,7 @@ public class FightManager
 
 	public MoveResult attackPlayer(int indexOfMove)
 	{
+		mTurnCount++;
 		checkNulls(mEnemyTeam, indexOfMove);
 		Anature playerAnature = mPlayerTeam.get(mPlayerIndex);
 		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
@@ -90,6 +93,7 @@ public class FightManager
 
 	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, Item item)
 	{
+		mTurnCount++;
 		Anature target;
 
 		if(isPlayer)
@@ -139,6 +143,11 @@ public class FightManager
 	public ArrayList<Anature> getEnemyTeam()
 	{
 		return mEnemyTeam;
+	}
+	
+	private int getTurnCount()
+	{
+		return mTurnCount % 2;
 	}
 
 	private void checkNulls(ArrayList<Anature> team, int indexOfMove)
