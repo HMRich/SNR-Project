@@ -461,7 +461,11 @@ public class BattleController
 		mSwitchBtn.setOnMouseClicked(event -> activateTurn(BattleChoice.Switch));
 
 		createBindsImageView(mSwitchBackBtn, scene, 2.25, 1.16, 9, 11, mShowSwitch);
-		mSwitchBackBtn.setOnMouseClicked(event -> onBackBtn());
+		mSwitchBackBtn.setOnMouseClicked(event -> 
+		{
+			onBackBtn(); 
+			mSwitchIndexSelected = mPlayer.getSelectedIndex();
+		});
 
 		createBindsImageView(mSwitchSelectedImg, scene, 2.889, 3.396, 5.638, 3.03, mShowSwitch);
 		
@@ -1063,7 +1067,6 @@ public class BattleController
 						});
 						
 						fadeOld.play();
-						
 						mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
 					}
 				});
@@ -1159,7 +1162,6 @@ public class BattleController
 	
 	private void onBackBtn()
 	{
-		mSwitchIndexSelected = mPlayer.getSelectedIndex();
 		mShowPlayerBars.set(true);
 		mShowSwitch.set(false);
 		mShowItemSelection.set(false);

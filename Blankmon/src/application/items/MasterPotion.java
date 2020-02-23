@@ -14,7 +14,7 @@ public class MasterPotion extends Item
 	public ItemResult useItem(Anature target)
 	{
 		double oldHp = target.getCurrHp();
-		String dialogue = target.healAnature(9999);
+		String dialogue = target.healAnature(999999999);
 		double newHp = target.getCurrHp();
 		
 		return new ItemResult(dialogue, newHp - oldHp);

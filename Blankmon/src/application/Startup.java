@@ -4,14 +4,12 @@ import java.io.IOException;
 
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.TrainerIds;
-import application.items.GreatPotion;
-import application.items.MasterPotion;
-import application.items.Potion;
-import application.items.UltraPotion;
+import application.items.ItemPool;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
 import javafx.application.Application;
@@ -121,10 +119,10 @@ public class Startup extends Application
 		second.setName("Other Null");
 		mPlayer.addAnatures(second);
 		
-		mPlayer.getBackpack().addItem(new Potion());
-		mPlayer.getBackpack().addItem(new GreatPotion());
-		mPlayer.getBackpack().addItem(new UltraPotion());
-		mPlayer.getBackpack().addItem(new MasterPotion());
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Great_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
 		
 		mTrainer = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 

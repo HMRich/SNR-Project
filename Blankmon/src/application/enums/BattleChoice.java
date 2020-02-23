@@ -2,6 +2,6 @@ package application.enums;
 
 public enum BattleChoice
 {
-	Switch, Item, Escape, // Modify for move, anature, and item selection
+	Switch, Item, Escape,
 	Attack_1, Attack_2, Attack_3, Attack_4
 }

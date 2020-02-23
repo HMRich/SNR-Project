@@ -313,7 +313,7 @@ public class Anature
 		if(mCurrHp > mTotalHp)
 		{
 			mCurrHp = mTotalHp;
-			result = mName + " was healed completely!";
+			result = " was healed completely!";
 		}
 		
 		return mName + result;
