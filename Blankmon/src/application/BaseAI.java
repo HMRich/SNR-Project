@@ -7,55 +7,55 @@ import application.items.Item;
 
 public class BaseAI
 {
-	public final String useItem(ArrayList<Item> items, Anature currentAnature, int healthThreshold)
+	public final AiChoice useItem(ArrayList<Item> items, Anature currentAnature, int healthThreshold)
 	{
 		if(items.isEmpty())
 		{
-			return "";
+			return AiChoice.No_Choice;
 		}
 		
 		else if(currentAnature.getTotalHp() < healthThreshold)
 		{
-			return "Item Consumed";
+			return AiChoice.Item_Consumed;
 		}
 		
 		else
 		{
-			return "";
+			return AiChoice.No_Choice;
 		}
 	}
 
-	public String switchAnature(ArrayList<Anature> anatures, Type[] types, int switchThreshold, Anature currentAnature)
+	public AiChoice switchAnature(ArrayList<Anature> anatures, Type[] types, int switchThreshold, Anature currentAnature)
 	{
 		if(!anatures.isEmpty() && isAnatureAtTypeDisadvantage(types) && willSwitch(switchThreshold))
 		{
-			return "Switch Anature";
+			return AiChoice.Switch_Anature;
 		}
 
-		return "";
+		return AiChoice.No_Choice;
 	}
 
-	public String chooseMove()
+	public AiChoice chooseMove()
 	{
 		double random = Math.random();
 		if(random < 0.25)
 		{
-			return "Move0";
+			return AiChoice.move1;
 		}
 		
 		else if(random > 0.25 && random <= 0.50)
 		{
-			return "Move1";
+			return AiChoice.move2;
 		}
 		
 		else if(random > 0.50 && random <= 0.75)
 		{
-			return "Move2";
+			return AiChoice.move3;
 		}
 		
 		else
 		{
-			return "Move3";
+			return AiChoice.move4;
 		}
 	}
 

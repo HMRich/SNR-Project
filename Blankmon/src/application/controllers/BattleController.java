@@ -940,7 +940,7 @@ public class BattleController
 		Anature enemyCurr = mFightManager.getEnemyTeam().get(0);
 		Anature playerCurr = mFightManager.getPlayerTeam().get(0);
 		
-		String enemyTurn = mEnemyTrainer.useTurn(playerCurr); // TODO Change to an Enum
+		AiChoice enemyTurn = mEnemyTrainer.useTurn(playerCurr); 
 		
 		int whoGoesFirst = playerCurr.getSpeed() - enemyCurr.getSpeed();
 		
@@ -1074,9 +1074,10 @@ public class BattleController
 		}
 	}
 	
-	private void enemyTurn(String enemyTurn)
+	private void enemyTurn(AiChoice enemyTurn)
 	{
-		if(enemyTurn.startsWith("Move"))
+		if(enemyTurn.equals(AiChoice.move1) || enemyTurn.equals(AiChoice.move2) || enemyTurn.equals(AiChoice.move3) 
+				 || enemyTurn.equals(AiChoice.move4))
 		{
 			mClickQueue.enqueue(new Runnable()
 			{
