@@ -7,7 +7,7 @@ public class Tyrannize implements Ability
 {
 	public void activateAbility(Anature user, Anature target)
 	{
-		target.setTempAttack(target.getTempAttack() - 5);
+		target.setTempAttack((int)(target.getTempAttack() * .9));
 	}
 
 	public AbilityIds getAbilityId()
