@@ -3,21 +3,21 @@ package application.abillities;
 import application.Anature;
 import application.enums.AbilityIds;
 
-public class Intimidate implements Ability
+public class Tyrannize implements Ability
 {
 	public void activateAbility(Anature user, Anature target)
 	{
-		System.out.println("Ability Intimidate"); // TODO
+		target.setTempAttack((int)(target.getTempAttack() * .9));
 	}
 
 	public AbilityIds getAbilityId()
 	{
-		return AbilityIds.Intimidate;
+		return AbilityIds.Tyrannize;
 	}
 
 	public String getAbilityName()
 	{
-		return "Intimidate";
+		return "Tyrannize";
 	}
 
 	public String getAbilityDescription()
