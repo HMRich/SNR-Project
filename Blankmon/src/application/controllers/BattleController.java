@@ -10,6 +10,7 @@ import application.ItemResult;
 import application.MoveResult;
 import application.MoveSet;
 import application.Player;
+import application.Startup;
 import application.animations.*;
 import application.enums.*;
 import application.items.Item;
@@ -104,6 +105,7 @@ public class BattleController
 	private ClickQueue mClickQueue;
 	private AnatureSlot mSlotOne, mSlotTwo, mSlotThree, mSlotFour, mSlotFive, mSlotSix;
 	private int mSwitchPageNum, mSwitchIndexSelected;
+	private boolean mToEnd;
 	
 	public void initialize()
 	{
@@ -161,6 +163,7 @@ public class BattleController
 		mCanClick = new SimpleBooleanProperty(false);
 		mSwitchPageNum = 1;
 		mSwitchIndexSelected = 0;
+		mToEnd = false;
 		
 		mSwitchPageOneImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page1.png").toExternalForm());
 		mSwitchPageTwoImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page2.png").toExternalForm());
@@ -240,6 +243,9 @@ public class BattleController
 						OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200), true);
 						back.setOnFinished(event -> mShowBtns.set(true));
 						back.play();
+						
+						mPlayerImage.setVisible(false);
+						mTrainerImage.setVisible(false);
 					}
 				});
 				
@@ -379,7 +385,7 @@ public class BattleController
 		grid.add(bagImage, 0, 1);
 		
 		ResizableImage escapeImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
-		escapeImage.setOnAction(event -> activateTurn(BattleChoice.Escape));
+		escapeImage.setOnAction(event -> Startup.changeScene(SceneType.Starter_Town)); // TODO for demo
 		grid.add(escapeImage, 1, 1);
 		
 		grid.visibleProperty().bind(mShowBtns);
@@ -424,25 +430,44 @@ public class BattleController
 				if(mCanClick.get())
 				{
 					Runnable toRun = mClickQueue.dequeue();
+
+					if(mToEnd)
+					{
+						toRun.run();
+					}
 					
-					if(toRun != null)
+					else if(toRun != null)
 					{
 						mCanClick.set(false);
-						toRun.run();
 						
 						if(mPlayerHp.get() == 0) // TODO Just for Demo. Change to do swapping here.
 						{
 							mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
-							mCanClick.set(false);
+							
 							mShowBtns.set(false);
+							
+							mClickQueue.clear();
+							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+							
+							mCanClick.set(true);
+							mToEnd = true;
 						}
 						
 						else if(mEnemyHp.get() == 0)
 						{
 							mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-							mCanClick.set(false);
+
 							mShowBtns.set(false);
+							
+							mClickQueue.clear();
+							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+							
+							mCanClick.set(true);
+							mToEnd = true;
 						}
+						
+						else
+							toRun.run();
 					}
 				}
 			}
@@ -451,7 +476,7 @@ public class BattleController
 	
 	private void setUpSwitchElements(Scene scene)
 	{
-		ObjectProperty<Font> fontProperty = getFontProperty(45, scene);
+		ObjectProperty<Font> fontProperty = getFontProperty(65, scene);
 		ObjectProperty<Font> pageFontProperty = getFontProperty(65, scene);
 		
 		createBindsImageView(mSwitchSelection, scene, 1, 1, mShowSwitch);
@@ -1010,7 +1035,7 @@ public class BattleController
 					{
 						Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
 						
-						ItemResult result = mFightManager.itemUse(true, 0, selectedItem); // TODO Change it so u can use items on other anatures
+						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other anatures
 						healthGain(result, mPlayerHp);
 						
 						mPlayer.getBackpack().removeItem(selectedItem.getItemId());

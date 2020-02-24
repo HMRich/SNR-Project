@@ -12,6 +12,7 @@ import application.enums.TrainerIds;
 import application.items.ItemPool;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
+import application.views.cells.StarterTownCell;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -22,11 +23,13 @@ import javafx.stage.Stage;
 
 public class Startup extends Application
 {
-	private LoggerStartUp mLogger;
+	private static LoggerStartUp mLogger;
 	private static Stage mStage, mLoggerStage;
 	private static Player mPlayer;
 	private static Trainer mTrainer;
 	private static EventHandler<KeyEvent> mKeyListener;
+	
+	private static StarterTownCell mStarterTown;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -98,6 +101,15 @@ public class Startup extends Application
 
 					mStage.setScene(scene);
 					break;
+					
+				case Starter_Town:
+					if(mStarterTown == null)
+						mStarterTown = new StarterTownCell(mLogger);
+					
+					Scene townScene = mStarterTown.getScene();
+					
+					mStage.setScene(townScene);
+					break;
 			}
 		}
 
@@ -126,7 +138,7 @@ public class Startup extends Application
 		
 		mTrainer = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 
-		changeScene(SceneType.Battle);
+		changeScene(SceneType.Starter_Town);
 	}
 	
 	public static String getPlayerName()
