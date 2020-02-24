@@ -105,6 +105,7 @@ public class BattleController
 	private ClickQueue mClickQueue;
 	private AnatureSlot mSlotOne, mSlotTwo, mSlotThree, mSlotFour, mSlotFive, mSlotSix;
 	private int mSwitchPageNum, mSwitchIndexSelected;
+	private boolean mToEnd;
 	
 	public void initialize()
 	{
@@ -162,6 +163,7 @@ public class BattleController
 		mCanClick = new SimpleBooleanProperty(false);
 		mSwitchPageNum = 1;
 		mSwitchIndexSelected = 0;
+		mToEnd = false;
 		
 		mSwitchPageOneImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page1.png").toExternalForm());
 		mSwitchPageTwoImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page2.png").toExternalForm());
@@ -428,11 +430,15 @@ public class BattleController
 				if(mCanClick.get())
 				{
 					Runnable toRun = mClickQueue.dequeue();
+
+					if(mToEnd)
+					{
+						toRun.run();
+					}
 					
-					if(toRun != null)
+					else if(toRun != null)
 					{
 						mCanClick.set(false);
-						toRun.run();
 						
 						if(mPlayerHp.get() == 0) // TODO Just for Demo. Change to do swapping here.
 						{
@@ -444,6 +450,7 @@ public class BattleController
 							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
 							
 							mCanClick.set(true);
+							mToEnd = true;
 						}
 						
 						else if(mEnemyHp.get() == 0)
@@ -456,7 +463,11 @@ public class BattleController
 							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
 							
 							mCanClick.set(true);
+							mToEnd = true;
 						}
+						
+						else
+							toRun.run();
 					}
 				}
 			}

@@ -36,7 +36,6 @@ public abstract class AbstractCell
 	private double mSpeedMultiplier;
 	protected final DoubleProperty mZoom;
 	protected boolean mUp, mDown, mLeft ,mRight;
-	protected boolean mCanMoveUp, mCanMoveDown, mCanMoveRight, mCanMoveLeft;
 	private Scene mScene;
 	private AnimationTimer mTimer;
 	protected static ImageView mPlayer;
@@ -51,10 +50,6 @@ public abstract class AbstractCell
 	public AbstractCell(LoggerStartUp logger, double width, double height)
 	{
 		mZoom = new SimpleDoubleProperty(2.6);
-		mCanMoveUp = true;
-		mCanMoveDown = true;
-		mCanMoveRight = true;
-		mCanMoveLeft = true;
 		
 		mShowCollision = new SimpleBooleanProperty(false);
 		mUpCollisions = new ArrayList<Rectangle>();
@@ -98,9 +93,9 @@ public abstract class AbstractCell
 		
 		map.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
+		mBackground.getChildren().addAll(mPlayer, mPlayerCollisionBox);
 		addToBackground();
 		createCollisons();
-		mBackground.getChildren().addAll(mPlayer, mPlayerCollisionBox);
 
 		mScene = new Scene(new BorderPane(map), 1280, 720, Color.BLACK);
 		Rectangle clip = new Rectangle();
@@ -151,26 +146,45 @@ public abstract class AbstractCell
 				double deltaX = 0;
 				double deltaY = 0;
 				
-				if (mRight && mCanMoveRight)
+				timerHook();
+				
+				if (mRight)
 					deltaX += mSpeed * mSpeedMultiplier;
 				
-				if (mLeft && mCanMoveLeft)
+				if (mLeft)
 					deltaX -= mSpeed * mSpeedMultiplier;
 				
-				if (mDown && mCanMoveDown)
+				if (mDown)
 					deltaY += mSpeed * mSpeedMultiplier;
 				
-				if (mUp && mCanMoveUp)
+				if (mUp)
 					deltaY -= mSpeed * mSpeedMultiplier;
 				
 				updatePcSprite();
 				
+				double oldX = mPlayer.getX();
+				double oldY = mPlayer.getY();
+				
 				mPlayer.setX(clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, map.getWidth() - mPlayer.getFitWidth()));
 				mPlayer.setY(clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, map.getHeight() - mPlayer.getFitHeight()));
 				
-				lastUpdate = now;
+				if(!xCollisionCheck())
+				{
+					mPlayer.setX(oldX);
+				}
 				
-				timerHook();
+				if(!YCollisionCheck())
+				{
+					mPlayer.setY(oldY);
+				}
+				
+				if(!otherCollisionCheck())
+				{
+					mPlayer.setX(oldX);
+					mPlayer.setY(oldY);
+				}
+				
+				lastUpdate = now;
 			}
 		};
 
@@ -179,6 +193,9 @@ public abstract class AbstractCell
 	
 	protected abstract void addToBackground();
 	protected abstract void timerHook();
+	protected abstract boolean xCollisionCheck();
+	protected abstract boolean YCollisionCheck();
+	protected abstract boolean otherCollisionCheck();
 
 	protected abstract ImageLayer createBackground();
 	protected abstract ImageLayer createForeground();

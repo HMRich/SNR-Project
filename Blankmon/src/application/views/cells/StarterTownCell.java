@@ -6,7 +6,6 @@ import application.LoggerStartUp;
 import application.Startup;
 import application.enums.SceneType;
 import application.views.ImageLayer;
-import javafx.animation.AnimationTimer;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +39,7 @@ public class StarterTownCell extends AbstractCell
 		mTrainerCollisionBox.heightProperty().bind(mTrainer.fitHeightProperty().multiply(0.3));
 		mTrainerCollisionBox.xProperty().bind(mTrainer.xProperty().add(mTrainer.getFitWidth() * 0.1));
 		mTrainerCollisionBox.yProperty().bind(mTrainer.yProperty().add(mTrainer.getFitHeight() * 0.7));
+		mTrainerCollisionBox.setFill(Color.BLUE);
 		mTrainerCollisionBox.visibleProperty().bind(mShowCollision);
 		
 		mBattleTrainer = false;
@@ -50,11 +50,26 @@ public class StarterTownCell extends AbstractCell
 	@Override
 	protected void timerHook()
 	{
-		if(mPlayerCollisionBox.getBoundsInParent().intersects(mTrainerCollisionBox.getBoundsInParent()))
+		if(mPlayerCollisionBox.getBoundsInParent().intersects(mTrainer.getBoundsInParent()))
 			mBattleTrainer = true;
 		
 		else
 			mBattleTrainer = false;
+
+		int trainerIndex = mBackground.getChildren().indexOf(mTrainer);
+		int playerIndex = mBackground.getChildren().indexOf(mPlayer);
+		
+		if(mPlayerCollisionBox.getY() > mTrainerCollisionBox.getY() && playerIndex < trainerIndex)
+		{
+			mBackground.getChildren().remove(mPlayer);
+			mBackground.getChildren().add(trainerIndex + 1, mPlayer);
+		}
+		
+		else if(mPlayerCollisionBox.getY() <= mTrainerCollisionBox.getY() && playerIndex > trainerIndex)
+		{
+			mBackground.getChildren().remove(mPlayer);
+			mBackground.getChildren().add(trainerIndex, mPlayer);
+		}
 	}
 
 	@Override
@@ -84,57 +99,6 @@ public class StarterTownCell extends AbstractCell
 		addCollisionHouse(446, 510);
 		addCollisionHouse(1077, 794);
 		addCollisionHouse(236, 1180);
-		
-		AnimationTimer collisionTimer = new AnimationTimer()
-		{
-			@Override
-			public void handle(long now)
-			{
-				Bounds playerBounds = mPlayerCollisionBox.getBoundsInLocal();
-
-				mCanMoveUp = true;
-				for(Rectangle north : mUpCollisions)
-				{
-					if(playerBounds.intersects(north.getBoundsInParent()))
-					{
-						mCanMoveUp = false;
-						break;
-					}
-				}
-
-				mCanMoveDown = true;
-				for(Rectangle south : mDownCollisions)
-				{
-					if(playerBounds.intersects(south.getBoundsInParent()))
-					{
-						mCanMoveDown = false;
-						break;
-					}
-				}
-
-				mCanMoveLeft = true;
-				for(Rectangle west : mLeftCollisions)
-				{
-					if(playerBounds.intersects(west.getBoundsInParent()))
-					{
-						mCanMoveLeft = false;
-						break;
-					}
-				}
-
-				mCanMoveRight = true;
-				for(Rectangle east : mRightCollisions)
-				{
-					if(playerBounds.intersects(east.getBoundsInParent()))
-					{
-						mCanMoveRight = false;
-						break;
-					}
-				}
-			}
-		};
-		
-		collisionTimer.start();
 		
 		mBackground.getChildren().addAll(mUpCollisions);
 		mBackground.getChildren().addAll(mDownCollisions);
@@ -185,5 +149,66 @@ public class StarterTownCell extends AbstractCell
 			mDown = false;
 			mUp = false;
 		}
+	}
+
+	@Override
+	protected boolean xCollisionCheck()
+	{
+		Bounds playerBounds = mPlayerCollisionBox.getBoundsInLocal();
+
+		for(Rectangle west : mLeftCollisions)
+		{
+			if(playerBounds.intersects(west.getBoundsInParent()))
+			{
+				return false;
+			}
+		}
+
+		for(Rectangle east : mRightCollisions)
+		{
+			if(playerBounds.intersects(east.getBoundsInParent()))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	@Override
+	protected boolean YCollisionCheck()
+	{
+		Bounds playerBounds = mPlayerCollisionBox.getBoundsInLocal();
+		
+		for(Rectangle north : mUpCollisions)
+		{
+			if(playerBounds.intersects(north.getBoundsInParent()))
+			{
+				return false;
+			}
+		}
+
+		for(Rectangle south : mDownCollisions)
+		{
+			if(playerBounds.intersects(south.getBoundsInParent()))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	@Override
+	protected boolean otherCollisionCheck()
+	{
+		Bounds playerBounds = mPlayerCollisionBox.getBoundsInLocal();
+		
+		if(playerBounds.intersects(mTrainerCollisionBox.getBoundsInParent()))
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }
