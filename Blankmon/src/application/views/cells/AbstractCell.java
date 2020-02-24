@@ -98,9 +98,9 @@ public abstract class AbstractCell
 		
 		map.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-		mBackground.getChildren().addAll(mPlayer, mPlayerCollisionBox);
 		addToBackground();
 		createCollisons();
+		mBackground.getChildren().addAll(mPlayer, mPlayerCollisionBox);
 
 		mScene = new Scene(new BorderPane(map), 1280, 720, Color.BLACK);
 		Rectangle clip = new Rectangle();
