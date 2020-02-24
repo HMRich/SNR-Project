@@ -10,6 +10,7 @@ import application.ItemResult;
 import application.MoveResult;
 import application.MoveSet;
 import application.Player;
+import application.Startup;
 import application.animations.*;
 import application.enums.*;
 import application.items.Item;
@@ -382,7 +383,7 @@ public class BattleController
 		grid.add(bagImage, 0, 1);
 		
 		ResizableImage escapeImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
-		escapeImage.setOnAction(event -> activateTurn(BattleChoice.Escape));
+		escapeImage.setOnAction(event -> Startup.changeScene(SceneType.Starter_Town)); // TODO for demo
 		grid.add(escapeImage, 1, 1);
 		
 		grid.visibleProperty().bind(mShowBtns);
@@ -436,19 +437,25 @@ public class BattleController
 						if(mPlayerHp.get() == 0) // TODO Just for Demo. Change to do swapping here.
 						{
 							mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
-							mCanClick.set(false);
+							
 							mShowBtns.set(false);
 							
 							mClickQueue.clear();
+							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+							
+							mCanClick.set(true);
 						}
 						
 						else if(mEnemyHp.get() == 0)
 						{
 							mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-							mCanClick.set(false);
+
 							mShowBtns.set(false);
 							
 							mClickQueue.clear();
+							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+							
+							mCanClick.set(true);
 						}
 					}
 				}

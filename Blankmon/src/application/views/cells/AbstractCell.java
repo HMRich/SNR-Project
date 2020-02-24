@@ -1,19 +1,23 @@
 package application.views.cells;
 
+import java.util.ArrayList;
+
 import application.LoggerStartUp;
-import application.Startup;
 import application.enums.Direction;
-import application.enums.SceneType;
+import application.views.ImageLayer;
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -27,25 +31,41 @@ import javafx.scene.shape.Rectangle;
 public abstract class AbstractCell
 {
 	private LoggerStartUp mLogger;
-	protected int mHeight, mWidth;
+	protected double mHeight, mWidth;
 	private final int mSpeed = 300; // pixels / second
-	private final double mZoom = 2.6;
-	private boolean mUp, mDown, mLeft ,mRight;
+	private double mSpeedMultiplier;
+	protected final DoubleProperty mZoom;
+	protected boolean mUp, mDown, mLeft ,mRight;
+	protected boolean mCanMoveUp, mCanMoveDown, mCanMoveRight, mCanMoveLeft;
 	private Scene mScene;
 	private AnimationTimer mTimer;
-	private ImageView mPlayer;
+	protected static ImageView mPlayer;
+	protected static Rectangle mPlayerCollisionBox;
 	private Direction mPcFacing;
-	
-	private boolean mCanMoveUp;
+	protected ImageLayer mBackground;
+	protected ArrayList<Rectangle> mUpCollisions, mDownCollisions, mRightCollisions, mLeftCollisions;
+	protected BooleanProperty mShowCollision;
 	
 	private Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
 
-	public AbstractCell(LoggerStartUp logger)
+	public AbstractCell(LoggerStartUp logger, double width, double height)
 	{
+		mZoom = new SimpleDoubleProperty(2.6);
 		mCanMoveUp = true;
+		mCanMoveDown = true;
+		mCanMoveRight = true;
+		mCanMoveLeft = true;
+		
+		mShowCollision = new SimpleBooleanProperty(false);
+		mUpCollisions = new ArrayList<Rectangle>();
+		mDownCollisions = new ArrayList<Rectangle>();
+		mRightCollisions = new ArrayList<Rectangle>();
+		mLeftCollisions = new ArrayList<Rectangle>();
+		
 		mLogger = logger;
-		mHeight = 468;
-		mWidth = 427;
+		mHeight = height;
+		mWidth = width;
+		mSpeedMultiplier = 1;
 		
 		mWalkUpImg = new Image(getClass().getResource("/resources/images/player/up_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
 		mWalkDownImg = new Image(getClass().getResource("/resources/images/player/down_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
@@ -59,26 +79,28 @@ public abstract class AbstractCell
 		
 		mPcFacing = Direction.Waiting;
 		mPlayer = new ImageView(mStandDownImg);
-		mPlayer.setFitHeight(29 * mZoom);
-		mPlayer.setFitWidth(24 * mZoom);
+		mPlayer.fitWidthProperty().bind(mZoom.multiply(24));
+		mPlayer.fitHeightProperty().bind(mZoom.multiply(29));
 		mPlayer.setX(485);
 		mPlayer.setY(599);
 		
-		ImageView trainer = new ImageView(new Image(getClass().getResource("/resources/images/trainers/kelly/down_stand.png").toExternalForm(), 100.0, 100.0, true, false));
-		trainer.setFitHeight(29 * mZoom);
-		trainer.setFitWidth(24 * mZoom);
-		trainer.setX(427);
-		trainer.setY(1310);
+		mPlayerCollisionBox = new Rectangle();
+		mPlayerCollisionBox.widthProperty().bind(mPlayer.fitWidthProperty().multiply(0.75));
+		mPlayerCollisionBox.heightProperty().bind(mPlayer.fitHeightProperty().multiply(0.3));
+		mPlayerCollisionBox.xProperty().bind(mPlayer.xProperty().add(mPlayer.getFitWidth() * 0.1));
+		mPlayerCollisionBox.yProperty().bind(mPlayer.yProperty().add(mPlayer.getFitHeight() * 0.7));
+		mPlayerCollisionBox.visibleProperty().bind(mShowCollision);
 		
-		Pane background = createBackground();
+		mBackground = createBackground();
 		Pane foreground = createForeground();
-		createCollisons(background);
 		
-		StackPane map = new StackPane(background, foreground);
+		StackPane map = new StackPane(mBackground, foreground);
 		
 		map.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-		background.getChildren().addAll(trainer, mPlayer);
+		mBackground.getChildren().addAll(mPlayer, mPlayerCollisionBox);
+		addToBackground();
+		createCollisons();
 
 		mScene = new Scene(new BorderPane(map), 1280, 720, Color.BLACK);
 		Rectangle clip = new Rectangle();
@@ -98,16 +120,15 @@ public abstract class AbstractCell
 		map.translateXProperty().bind(clip.xProperty().multiply(-1));
 		map.translateYProperty().bind(clip.yProperty().multiply(-1));
 
-		mScene.setOnKeyPressed(e -> processKey(e.getCode(), true));
-		mScene.setOnKeyReleased(e -> processKey(e.getCode(), false));
+		mScene.setOnKeyPressed(e -> processKey(e, true));
+		mScene.setOnKeyReleased(e -> processKey(e, false));
 		
 		mScene.setOnMouseClicked(new EventHandler<MouseEvent>()
 		{
 			@Override
 			public void handle(MouseEvent event)
 			{
-				System.out.println(event.getSceneX() + " - " + event.getSceneY());
-				System.out.println(mPlayer.getX() + " - " + mPlayer.getY());
+				mShowCollision.set(!mShowCollision.get());
 			}
 		});
 
@@ -119,22 +140,28 @@ public abstract class AbstractCell
 			public void handle(long now)
 			{
 				long elapsedNanos = now - lastUpdate;
+				
 				if (lastUpdate < 0)
 				{
 					lastUpdate = now;
 					return;
 				}
-				double elapsedSeconds = elapsedNanos / 1_000_000_000.0;
+				
+				double elapsedSeconds = elapsedNanos / 1000000000.0;
 				double deltaX = 0;
 				double deltaY = 0;
-				if (mRight)
-					deltaX += mSpeed;
-				if (mLeft)
-					deltaX -= mSpeed;
-				if (mDown)
-					deltaY += mSpeed;
+				
+				if (mRight && mCanMoveRight)
+					deltaX += mSpeed * mSpeedMultiplier;
+				
+				if (mLeft && mCanMoveLeft)
+					deltaX -= mSpeed * mSpeedMultiplier;
+				
+				if (mDown && mCanMoveDown)
+					deltaY += mSpeed * mSpeedMultiplier;
+				
 				if (mUp && mCanMoveUp)
-					deltaY -= mSpeed;
+					deltaY -= mSpeed * mSpeedMultiplier;
 				
 				updatePcSprite();
 				
@@ -143,70 +170,56 @@ public abstract class AbstractCell
 				
 				lastUpdate = now;
 				
-				if(mPlayer.getBoundsInParent().intersects(trainer.getBoundsInParent())) // TODO Only for demo
-				{
-					Startup.changeScene(SceneType.Battle);
-
-					mPlayer.setX(485);
-					mPlayer.setY(599);
-					
-					mRight = false;
-					mLeft = false;
-					mDown = false;
-					mUp = false;
-				}
+				timerHook();
 			}
 		};
 
 		mTimer.start();
 	}
+	
+	protected abstract void addToBackground();
+	protected abstract void timerHook();
 
-	private void createCollisons(Pane background)
-	{
-		Rectangle northTreeBox = new Rectangle(277, 37, 1151, 50);
-		
-		AnimationTimer collisionTimer = new AnimationTimer()
-		{
-			@Override
-			public void handle(long now)
-			{
-				if(mPlayer.getBoundsInParent().intersects(northTreeBox.getBoundsInParent()))
-					mCanMoveUp = false;
-				
-				else
-					mCanMoveUp = true;
-			}
-		};
-		
-		collisionTimer.start();
-		
-		background.getChildren().add(northTreeBox);
-	}
+	protected abstract ImageLayer createBackground();
+	protected abstract ImageLayer createForeground();
+
+	protected abstract void createCollisons();
+	protected abstract void keyPressHook(KeyEvent event);
 
 	private double clampRange(double value, double min, double max)
 	{
 		if (value < min)
 			return min;
+		
 		if (value > max)
 			return max;
+		
 		return value;
 	}
 
-	private void processKey(KeyCode code, boolean on)
+	private void processKey(KeyEvent event, boolean on)
 	{
-		switch(code)
+		switch(event.getCode())
 		{
+			case A:
+			
 			case LEFT:
 				mLeft = on;
 				break;
+				
+			case D:
 				
 			case RIGHT:
 				mRight = on;
 				break;
 				
+			case W:
+				
 			case UP:
 				mUp = on;
 				break;
+				
+			case S:
 				
 			case DOWN:
 				mDown = on;
@@ -216,47 +229,29 @@ public abstract class AbstractCell
 				break;
 		}
 		
-		if(code == KeyCode.BACK_QUOTE)
+		if(event.getCode() == KeyCode.BACK_QUOTE && !on)
 		{
 			mLogger.toggleWindow();
 		}
-	}
-
-	private Pane createBackground()
-	{
-		Canvas canvas = new Canvas(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.drawImage(new Image(getClass().getResource("/resources/images/overworld/starter_town_background.png").toExternalForm(), 10000.0, 10000.0, true, false)
-				, 0, 0, mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-
-		Pane pane = new Pane(canvas);
-
-		pane.setMinSize(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-		pane.setPrefSize(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-		pane.setMaxSize(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-
-		return pane;
-	}
-
-	private Pane createForeground()
-	{
-		Canvas canvas = new Canvas(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.drawImage(new Image(getClass().getResource("/resources/images/overworld/starter_town_foreground.png").toExternalForm(), 10000.0, 10000.0, true, false)
-				, 0, 0, mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-
-		StackPane pane = new StackPane();		
-		pane.getChildren().add(canvas);
-
-		pane.setMinSize(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-		pane.setPrefSize(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-		pane.setMaxSize(mWidth * mZoom * 1.4, mHeight * mZoom * 1.4);
-
-		return pane;
+		
+		if(event.isShiftDown())
+		{
+			mSpeedMultiplier = 1.75;
+		}
+		
+		else
+		{
+			mSpeedMultiplier = 1;
+		}
+		
+		keyPressHook(event);
 	}
 	
 	public Scene getScene()
 	{
+		mPlayer.setX(485);
+		mPlayer.setY(599);
+		
 		mRight = false;
 		mLeft = false;
 		mUp = false;

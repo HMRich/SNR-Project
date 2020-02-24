@@ -28,6 +28,8 @@ public class Startup extends Application
 	private static Player mPlayer;
 	private static Trainer mTrainer;
 	private static EventHandler<KeyEvent> mKeyListener;
+	
+	private static StarterTownCell mStarterTown;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -101,9 +103,10 @@ public class Startup extends Application
 					break;
 					
 				case Starter_Town:
-					StarterTownCell starterTown = new StarterTownCell(mLogger);
-					Scene townScene = starterTown.getScene();
-//					townScene.setOnKeyReleased(mKeyListener);
+					if(mStarterTown == null)
+						mStarterTown = new StarterTownCell(mLogger);
+					
+					Scene townScene = mStarterTown.getScene();
 					
 					mStage.setScene(townScene);
 					break;
