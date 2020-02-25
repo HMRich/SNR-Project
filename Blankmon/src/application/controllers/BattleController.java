@@ -622,7 +622,7 @@ public class BattleController
 		createBindsImageView(mAttackBackBtn, scene, 2.25, 1.16, 9, 11, mShowMoveSelection);
 		mAttackBackBtn.setOnMouseClicked(event -> onBackBtn());
 		
-		ObjectProperty<Font> moveNameFontProperty = getFontProperty(75, scene);
+		ObjectProperty<Font> moveNameFontProperty = getFontProperty(85, scene);
 		ObjectProperty<Font> moveMpFontProperty = getFontProperty(95, scene);
 
 		createBindsImageView(mAttackImgOne, scene, 4.5, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveOne));
