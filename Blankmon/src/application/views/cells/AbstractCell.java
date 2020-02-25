@@ -266,9 +266,6 @@ public abstract class AbstractCell
 	
 	public Scene getScene()
 	{
-		mPlayer.setX(485);
-		mPlayer.setY(599);
-		
 		mRight = false;
 		mLeft = false;
 		mUp = false;

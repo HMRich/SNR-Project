@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
@@ -49,6 +50,9 @@ public class Startup extends Application
 		};
 
 		mStage = primaryStage;
+		mStage.getIcons().add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
+		mStage.setTitle("Anature");
+		
 		mStage.setMinWidth(640);
 		mStage.setMinHeight(360);
 

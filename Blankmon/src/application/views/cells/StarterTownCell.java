@@ -75,14 +75,14 @@ public class StarterTownCell extends AbstractCell
 	@Override
 	protected ImageLayer createBackground()
 	{
-		Image bg = new Image(getClass().getResource("/resources/images/overworld/starter_town_background.png").toExternalForm(), 10000.0, 10000.0, true, false);
+		Image bg = new Image(getClass().getResource("/resources/images/overworld/starter_town_background.png").toExternalForm(), 1000.0, 1000.0, true, false);
 		return new ImageLayer(mWidth, mHeight, mZoom, bg);
 	}
 
 	@Override
 	protected ImageLayer createForeground()
 	{
-		Image bg = new Image(getClass().getResource("/resources/images/overworld/starter_town_foreground.png").toExternalForm(), 10000.0, 10000.0, true, false);
+		Image bg = new Image(getClass().getResource("/resources/images/overworld/starter_town_foreground.png").toExternalForm(), 1000.0, 1000.0, true, false);
 		return new ImageLayer(mWidth, mHeight, mZoom, bg);
 	}
 	
@@ -140,9 +140,6 @@ public class StarterTownCell extends AbstractCell
 		if(event.getCode() == KeyCode.E && mBattleTrainer)
 		{
 			Startup.changeScene(SceneType.Battle);
-
-			mPlayer.setX(485);
-			mPlayer.setY(599);
 			
 			mRight = false;
 			mLeft = false;

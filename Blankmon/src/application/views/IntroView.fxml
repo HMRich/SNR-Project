@@ -26,6 +26,11 @@
                   <Image url="@../../resources/images/Anature%20Logo.png" />
                </image>
             </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="565.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/images/Icon.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </center>
