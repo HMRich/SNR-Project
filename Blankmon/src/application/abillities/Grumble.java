@@ -8,7 +8,7 @@ public class Grumble implements Ability
 	public static void activateAbility(Anature targetAnature, int turnNumber)
 	{
 		if(turnNumber == 1)
-			targetAnature.setTempAttack((int) -(targetAnature.getAttack() * 0.1));
+			targetAnature.setTempAttack((int) - (targetAnature.getAttack() * 0.1));
 	}
 
 	@Override
@@ -34,5 +34,4 @@ public class Grumble implements Ability
 	{
 		return false;
 	}
-
 }

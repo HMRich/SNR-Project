@@ -38,5 +38,4 @@ public class ToughSkin implements Ability
 	{
 		return true;
 	}
-
 }

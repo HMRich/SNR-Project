@@ -70,7 +70,6 @@ public class LoggerController
 
 		}
 
-		mLoggingText.set(
-				mLoggingText.get() + LocalDateTime.now().toString().replace("T", " ").substring(0, 19) + ": " + toLog + "\n");
+		mLoggingText.set(mLoggingText.get() + LocalDateTime.now().toString().replace("T", " ").substring(0, 19) + ": " + toLog + "\n");
 	}
 }

@@ -52,6 +52,7 @@ public class LoggerStartUp extends Application
 			mStage.setX(x);
 			mStage.setY(y);
 		}
+		
 		isShown = !isShown;
 	}
 
@@ -61,5 +62,4 @@ public class LoggerStartUp extends Application
 		y = mStage.getY();
 		isShown = !isShown;
 	}
-
 }

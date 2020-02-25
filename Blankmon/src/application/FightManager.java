@@ -2,7 +2,7 @@ package application;
 
 import java.util.ArrayList;
 
-import application.abillities.Determined;
+import application.abillities.Determination;
 import application.abillities.Grumble;
 import application.abillities.SleepDeprived;
 import application.abillities.Spiky;
@@ -47,8 +47,8 @@ public class FightManager
 			playerAnature.takeDamage(10);
 			enemyAnature.takeDamage(20);
 
-			return new MoveResult(oldHp - enemyAnature.getCurrHp(), mPlayerName + "'s " + playerAnature.getName() + " Flaied at "
-					+ mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true);
+			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
+					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true);
 		}
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
@@ -61,15 +61,13 @@ public class FightManager
 			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
 
 			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName()
-							+ "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
+					mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!", indexOfMove,
+					moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
 		}
+		
 		else
 		{
-			return new MoveResult(0,
-					mPlayerName + "'s " + playerAnature.getName() + " missed " + mEnemyName + "'s " + enemyAnature.getName()
-							+ "!",
+			return new MoveResult(0, mPlayerName + "'s " + playerAnature.getName() + " missed " + mEnemyName + "'s " + enemyAnature.getName() + "!",
 					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
 		}
 
@@ -89,8 +87,8 @@ public class FightManager
 			enemyAnature.takeDamage(10);
 			playerAnature.takeDamage(20);
 
-			return new MoveResult(oldHp - playerAnature.getCurrHp(), mEnemyName + "'s " + enemyAnature.getName() + " Flaied at "
-					+ mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false);
+			return new MoveResult(oldHp - playerAnature.getCurrHp(),
+					mEnemyName + "'s " + enemyAnature.getName() + " Flaied at " + mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false);
 		}
 
 		Move enemyAnatureMove = moves.getMove(indexOfMove);
@@ -102,15 +100,13 @@ public class FightManager
 			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
 
 			return new MoveResult(oldHp - playerAnature.getCurrHp(),
-					mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName()
-							+ "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+					mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!", indexOfMove,
+					moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
 		}
+		
 		else
 		{
-			return new MoveResult(0,
-					mEnemyName + "'s " + enemyAnature.getName() + " missed " + mPlayerName + "'s " + playerAnature.getName()
-							+ "!",
+			return new MoveResult(0, mEnemyName + "'s " + enemyAnature.getName() + " missed " + mPlayerName + "'s " + playerAnature.getName() + "!",
 					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
 		}
 	}
@@ -137,8 +133,8 @@ public class FightManager
 	{
 		switch(abilityId)
 		{
-			case Determined:
-				Determined.activateAbility(targetAnature, move, oldHp);
+			case Determination:
+				Determination.activateAbility(targetAnature, move, oldHp);
 				break;
 
 			case Dry_Skin:

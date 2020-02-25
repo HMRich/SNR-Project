@@ -11,13 +11,13 @@ public class AnatureSlotHpBar extends ProgressBar
 {
 	private DoubleProperty mCurrValue, mTotalValue;
 	private Pane mToBindTo;
-	
+
 	public AnatureSlotHpBar(double currValue, double totalValue, Pane toBindTo)
 	{
 		mCurrValue = new SimpleDoubleProperty(currValue);
 		mTotalValue = new SimpleDoubleProperty(totalValue);
 		mToBindTo = toBindTo;
-		
+
 		progressProperty().bind(mCurrValue.divide(mTotalValue));
 		prefWidthProperty().bind(mToBindTo.widthProperty().divide(2.5));
 		prefHeightProperty().bind(mToBindTo.heightProperty().divide(4));
@@ -33,30 +33,38 @@ public class AnatureSlotHpBar extends ProgressBar
 
 				getStyleClass().removeAll("red-bar", "orange-bar", "yellow-bar", "green-bar");
 				if(progress < 20)
+				{
 					getStyleClass().add("red-bar");
-				
+				}
+
 				else if(progress < 40)
+				{
 					getStyleClass().add("orange-bar");
-				
+				}
+
 				else if(progress < 60)
+				{
 					getStyleClass().add("yellow-bar");
-				
+				}
+
 				else
+				{
 					getStyleClass().add("green-bar");
+				}
 			}
 		});
 	}
-	
+
 	public void bindX(double toDivideBy)
 	{
 		layoutXProperty().bind(mToBindTo.widthProperty().divide(toDivideBy));
 	}
-	
+
 	public void bindY(double toDivideBy)
 	{
 		layoutYProperty().bind(mToBindTo.heightProperty().divide(toDivideBy));
 	}
-	
+
 	public void updateProgress(double currValue)
 	{
 		mCurrValue.set(currValue);

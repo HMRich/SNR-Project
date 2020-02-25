@@ -40,7 +40,9 @@ public class PlayerAnimation extends Transition
 		int index = (int) (frac * 2 * (mImages.size()-1));
 		
 		if(index < mImages.size())
+		{
 			mImageView.setImage(mImages.get(index));
+		}
 		
 		if(frac > 0.7)
 		{
@@ -49,6 +51,8 @@ public class PlayerAnimation extends Transition
 		}
 		
 		if(frac >= 0.85 && !isFinished.get())
+		{
 			isFinished.set(true);
+		}
 	}
 }

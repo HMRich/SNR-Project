@@ -44,10 +44,14 @@ public class ClickQueue
 		Node node = new Node(val);
 		
 		if(mSize == 0)
+		{
 			mHead = node;
+		}
 		
 		else
+		{
 			mTail.mNext = node;
+		}
 
 		mTail = node;
 		mSize++;

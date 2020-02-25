@@ -34,5 +34,4 @@ public class SleepDeprived implements Ability
 	{
 		return true;
 	}
-
 }

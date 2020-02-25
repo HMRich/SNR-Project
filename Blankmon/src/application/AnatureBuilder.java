@@ -32,14 +32,20 @@ public class AnatureBuilder
 
 		Random r = new Random();
 
-		if (r.nextInt(2) == 0)
+		if(r.nextInt(2) == 0)
+		{
 			gender = Gender.Male;
+		}
 
 		else
+		{
 			gender = Gender.Female;
+		}
 
-		if (r.nextInt(4200) == 420)
+		if(r.nextInt(4200) == 420)
+		{
 			isShiny = true;
+		}
 
 		try
 		{
@@ -50,7 +56,7 @@ public class AnatureBuilder
 			pst.setString(1, species.toString());
 
 			ResultSet results = pst.executeQuery();
-			if (results.next())
+			if(results.next())
 			{
 				String hpStr = results.getString("BaseHp");
 				String atkStr = results.getString("BaseAttack");
@@ -75,12 +81,13 @@ public class AnatureBuilder
 				ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(abilitiesStr.split(",")));
 				AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
 				ability = AbilityPool.getAbility(chosenAbility);
-				
+
 				String[] typesStrAra = typesStr.split(",");
 				for(int i = 0; i < typesStrAra.length && i < 2; i++)
+				{
 					types[i] = Type.valueOf(typesStrAra[i]);
-				
-				
+				}
+
 			}
 
 			results.close();
@@ -92,9 +99,9 @@ public class AnatureBuilder
 			e.printStackTrace();
 			return null;
 		}
-		
-		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability,
-				attack, specialAttack, defense, specialDefense, hp, speed, accuracy);
+
+		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability, attack,
+				specialAttack, defense, specialDefense, hp, speed, accuracy);
 	}
 
 	private static MoveSet generateMoveSet(Species species, int level)
@@ -116,7 +123,7 @@ public class AnatureBuilder
 
 				int minLevel = Integer.parseInt(minLevelStr);
 
-				if (minLevel > level)
+				if(minLevel > level)
 					continue;
 
 				MoveIds moveName = MoveIds.valueOf(moveNameStr);
@@ -138,18 +145,18 @@ public class AnatureBuilder
 		Move move3 = null;
 		Move move4 = null;
 
-		if (availableMoves.size() <= 4)
+		if(availableMoves.size() <= 4)
 		{
-			if (availableMoves.size() >= 1)
+			if(availableMoves.size() >= 1)
 				move1 = MovePool.getMove(availableMoves.get(0));
 
-			if (availableMoves.size() >= 2)
+			if(availableMoves.size() >= 2)
 				move2 = MovePool.getMove(availableMoves.get(1));
 
-			if (availableMoves.size() >= 3)
+			if(availableMoves.size() >= 3)
 				move3 = MovePool.getMove(availableMoves.get(2));
 
-			if (availableMoves.size() >= 4)
+			if(availableMoves.size() >= 4)
 				move4 = MovePool.getMove(availableMoves.get(3));
 		}
 
@@ -157,14 +164,10 @@ public class AnatureBuilder
 		{
 			int chosenIndex1 = 0, chosenIndex2 = 0, chosenIndex3 = 0, chosenIndex4 = 0;
 
-			chosenIndex1 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex1, chosenIndex2, chosenIndex3,
-					chosenIndex4);
-			chosenIndex2 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex2, chosenIndex1, chosenIndex3,
-					chosenIndex4);
-			chosenIndex3 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex3, chosenIndex2, chosenIndex1,
-					chosenIndex4);
-			chosenIndex4 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex4, chosenIndex2, chosenIndex1,
-					chosenIndex3);
+			chosenIndex1 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex1, chosenIndex2, chosenIndex3, chosenIndex4);
+			chosenIndex2 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex2, chosenIndex1, chosenIndex3, chosenIndex4);
+			chosenIndex3 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex3, chosenIndex2, chosenIndex1, chosenIndex4);
+			chosenIndex4 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex4, chosenIndex2, chosenIndex1, chosenIndex3);
 
 			move1 = MovePool.getMove(availableMoves.get(chosenIndex1));
 			move2 = MovePool.getMove(availableMoves.get(chosenIndex2));
@@ -181,7 +184,9 @@ public class AnatureBuilder
 		toGenerate = r.nextInt(max);
 
 		while(toGenerate == otherIndex1 || toGenerate == otherIndex2 || toGenerate == otherIndex3)
+		{
 			toGenerate = r.nextInt(max);
+		}
 
 		return toGenerate;
 	}

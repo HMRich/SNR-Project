@@ -18,7 +18,7 @@ public class Potion extends Item
 		double oldHp = target.getCurrHp();
 		String dialogue = target.healAnature(mHealthPoints);
 		double newHp = target.getCurrHp();
-		
+
 		return new ItemResult(dialogue, newHp - oldHp);
 	}
 }

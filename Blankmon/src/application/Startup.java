@@ -29,7 +29,7 @@ public class Startup extends Application
 	private static Player mPlayer;
 	private static Trainer mTrainer;
 	private static EventHandler<KeyEvent> mKeyListener;
-	
+
 	private static StarterTownCell mStarterTown;
 
 	@Override
@@ -52,7 +52,7 @@ public class Startup extends Application
 		mStage = primaryStage;
 		mStage.getIcons().add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
 		mStage.setTitle("Anature");
-		
+
 		mStage.setMinWidth(640);
 		mStage.setMinHeight(360);
 
@@ -89,7 +89,7 @@ public class Startup extends Application
 					Parent introRoot = introLoader.load();
 					Scene intro = new Scene(introRoot);
 					intro.setOnKeyReleased(mKeyListener);
-					
+
 					mStage.setScene(intro);
 					break;
 
@@ -105,13 +105,15 @@ public class Startup extends Application
 
 					mStage.setScene(scene);
 					break;
-					
+
 				case Starter_Town:
 					if(mStarterTown == null)
+					{
 						mStarterTown = new StarterTownCell(mLogger);
-					
+					}
+
 					Scene townScene = mStarterTown.getScene();
-					
+
 					mStage.setScene(townScene);
 					break;
 			}
@@ -130,21 +132,21 @@ public class Startup extends Application
 	public static void createDemo()
 	{
 		mPlayer.addAnatures(AnatureBuilder.createAnature(Species.Null, 15));
-		
+
 		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.setName("Other Null");
 		mPlayer.addAnatures(second);
-		
+
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
-		
+
 		mTrainer = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 
 		changeScene(SceneType.Starter_Town);
 	}
-	
+
 	public static String getPlayerName()
 	{
 		return mPlayer.getName();

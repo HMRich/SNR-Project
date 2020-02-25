@@ -24,7 +24,7 @@ public abstract class Move
 		mAccuracyStat = accuracyStat;
 		mType = enumType;
 	}
-	
+
 	public String getName()
 	{
 		return mName;
@@ -45,20 +45,20 @@ public abstract class Move
 		return mDoesDamage;
 	}
 
-	public double getAccuracy() 
+	public double getAccuracy()
 	{
 		return mAccuracyStat;
 	}
-	
-	public Type getType() 
+
+	public Type getType()
 	{
 		return mType;
 	}
-	
+
 	public boolean isPhysicalAttack()
 	{
 		return mIsPhysicalAttack;
 	}
-	
+
 	public abstract void activateMove(Anature source, Anature target);
 }

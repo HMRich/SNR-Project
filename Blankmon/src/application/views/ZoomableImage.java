@@ -19,22 +19,22 @@ public class ZoomableImage extends Region
 		mZoom = zoom;
 		mWidth = width;
 		mHeight = height;
-		
+
 		mCanvas = new Canvas();
 		mCanvas.widthProperty().bind(mZoom.multiply(mWidth).multiply(1.4));
 		mCanvas.heightProperty().bind(mZoom.multiply(mHeight).multiply(1.4));
-		
+
 		getChildren().add(mCanvas);
 	}
-	
+
 	public void draw()
 	{
 		GraphicsContext gc = mCanvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, mCanvas.getWidth(), mCanvas.getHeight());
-		
+
 		gc.drawImage(mImage, 0, 0, mWidth * mZoom.get() * 1.4, mHeight * mZoom.get() * 1.4);
 	}
-	
+
 	@Override
 	public void layoutChildren()
 	{

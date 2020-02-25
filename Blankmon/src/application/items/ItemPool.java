@@ -12,48 +12,53 @@ public class ItemPool
 
 	public static Item getItems(ItemIds itemId)
 	{
-		if (mItems == null)
+		if(mItems == null)
 		{
 			generateItems();
 		}
+
 		return mItems.get(itemId);
 	}
-	
+
 	public static Item getItems(String input)
 	{
 		String toCheck = input;
 		ItemIds id = null;
-		
+
 		if(input.contains(" "))
 		{
 			String[] parts = input.split(" ");
-			
+
 			if(parts.length == 3)
-				toCheck = parts[0] + "_" +  parts[1];
-			
+			{
+				toCheck = parts[0] + "_" + parts[1];
+			}
+
 			else
+			{
 				toCheck = parts[0];
-			
+			}
+
 			toCheck = toCheck.substring(0, toCheck.length() - 1);
 		}
-		
+
 		else
 		{
 			LoggerController.logEvent(LoggingTypes.Default, "Try to get an item by an invalid String: " + input);
 			return null;
 		}
-		
+
 		try
 		{
 			id = ItemIds.valueOf(toCheck);
 		}
-		
+
 		catch(Exception e)
 		{
 			LoggerController.logEvent(LoggingTypes.Default, "Try to get an item by an invalid String: " + input);
 			return null;
 		}
-		
+
 		return getItems(id);
 	}
 

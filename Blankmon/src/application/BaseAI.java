@@ -13,12 +13,12 @@ public class BaseAI
 		{
 			return AiChoice.No_Choice;
 		}
-		
+
 		else if(currentAnature.getTotalHp() < healthThreshold)
 		{
 			return AiChoice.Item_Consumed;
 		}
-		
+
 		else
 		{
 			return AiChoice.No_Choice;
@@ -40,22 +40,22 @@ public class BaseAI
 		double random = Math.random();
 		if(random < 0.25)
 		{
-			return AiChoice.move1;
+			return AiChoice.Move1;
 		}
-		
+
 		else if(random > 0.25 && random <= 0.50)
 		{
-			return AiChoice.move2;
+			return AiChoice.Move2;
 		}
-		
+
 		else if(random > 0.50 && random <= 0.75)
 		{
-			return AiChoice.move3;
+			return AiChoice.Move3;
 		}
-		
+
 		else
 		{
-			return AiChoice.move4;
+			return AiChoice.Move4;
 		}
 	}
 

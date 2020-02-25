@@ -16,7 +16,7 @@ public class MasterPotion extends Item
 		double oldHp = target.getCurrHp();
 		String dialogue = target.healAnature(999999999);
 		double newHp = target.getCurrHp();
-		
+
 		return new ItemResult(dialogue, newHp - oldHp);
 	}
 }

@@ -16,18 +16,16 @@ public class Anature
 	private boolean mIsShiny;
 	private Ability mAbility;
 	private int mIndexNum;
-	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed,mAccuracy;
+	private int mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed, mAccuracy;
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
 
-	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types,
-			Species species, boolean isShiny, int indexNum, Ability ability, int attack, int specialAttack, int defense,
-			int specialDefense, int totalHp, int speed, int accuracy)
+	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types, Species species, boolean isShiny,
+			int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense, int totalHp, int speed, int accuracy)
 	{
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
 
-		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0
-				|| currentXp < 0)
+		else if(attack < 0 || specialAttack < 0 || defense < 0 || specialDefense < 0 || totalHp < 0 || level <= 0 || currentXp < 0)
 			throw new IllegalArgumentException("Invalid int values.");
 
 		else if(types.length > 2 || types.length == 0)
@@ -43,7 +41,9 @@ public class Anature
 		mPrimaryType = types[0];
 
 		if(types.length == 2)
+		{
 			mSecondaryType = types[1];
+		}
 
 		mSpecies = species;
 		mIsShiny = isShiny;
@@ -282,23 +282,22 @@ public class Anature
 	{
 		mTempSpeed = tempSpeed;
 	}
-	
+
 	public int getIndexNum()
 	{
 		return mIndexNum;
 	}
 
-	
-	public int getTempAccuracy() 
+	public int getTempAccuracy()
 	{
 		return mTempAccuracy;
 	}
-	
-	public void setTempAccuracy(int accuracy) 
+
+	public void setTempAccuracy(int accuracy)
 	{
-		 mTempAccuracy = accuracy;
+		mTempAccuracy = accuracy;
 	}
-	
+
 	public int getAccuracy()
 	{
 		return mAccuracy;
@@ -308,7 +307,7 @@ public class Anature
 	{
 		this.mAccuracy = mAccuracy;
 	}
-	
+
 	public void resetTempStats()
 	{
 		mTempAttack = 0;
@@ -330,7 +329,7 @@ public class Anature
 	public String healAnature(int healAmount)
 	{
 		String result = " was healed " + healAmount + " hp.";
-		
+
 		mCurrHp += healAmount;
 
 		if(mCurrHp > mTotalHp)
@@ -338,9 +337,8 @@ public class Anature
 			mCurrHp = mTotalHp;
 			result = " was healed completely!";
 		}
-		
+
 		return mName + result;
 	}
 
-	
 }

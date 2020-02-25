@@ -19,7 +19,7 @@ public class StarterTownCell extends AbstractCell
 	private ImageView mTrainer;
 	private Rectangle mTrainerCollisionBox;
 	private boolean mBattleTrainer;
-	
+
 	public StarterTownCell(LoggerStartUp logger)
 	{
 		super(logger, 427, 468);
@@ -28,12 +28,13 @@ public class StarterTownCell extends AbstractCell
 	@Override
 	protected void addToBackground()
 	{
-		mTrainer = new ImageView(new Image(getClass().getResource("/resources/images/trainers/kelly/down_stand.png").toExternalForm(), 100.0, 100.0, true, false));
+		mTrainer = new ImageView(
+				new Image(getClass().getResource("/resources/images/trainers/kelly/down_stand.png").toExternalForm(), 100.0, 100.0, true, false));
 		mTrainer.setFitHeight(29 * mZoom.get());
 		mTrainer.setFitWidth(24 * mZoom.get());
 		mTrainer.setX(427);
 		mTrainer.setY(1310);
-		
+
 		mTrainerCollisionBox = new Rectangle();
 		mTrainerCollisionBox.widthProperty().bind(mTrainer.fitWidthProperty().multiply(0.75));
 		mTrainerCollisionBox.heightProperty().bind(mTrainer.fitHeightProperty().multiply(0.3));
@@ -41,9 +42,9 @@ public class StarterTownCell extends AbstractCell
 		mTrainerCollisionBox.yProperty().bind(mTrainer.yProperty().add(mTrainer.getFitHeight() * 0.7));
 		mTrainerCollisionBox.setFill(Color.BLUE);
 		mTrainerCollisionBox.visibleProperty().bind(mShowCollision);
-		
+
 		mBattleTrainer = false;
-		
+
 		mBackground.getChildren().addAll(mTrainer, mTrainerCollisionBox);
 	}
 
@@ -52,19 +53,19 @@ public class StarterTownCell extends AbstractCell
 	{
 		if(mPlayerCollisionBox.getBoundsInParent().intersects(mTrainer.getBoundsInParent()))
 			mBattleTrainer = true;
-		
+
 		else
 			mBattleTrainer = false;
 
 		int trainerIndex = mBackground.getChildren().indexOf(mTrainer);
 		int playerIndex = mBackground.getChildren().indexOf(mPlayer);
-		
+
 		if(mPlayerCollisionBox.getY() > mTrainerCollisionBox.getY() && playerIndex < trainerIndex)
 		{
 			mBackground.getChildren().remove(mPlayer);
 			mBackground.getChildren().add(trainerIndex + 1, mPlayer);
 		}
-		
+
 		else if(mPlayerCollisionBox.getY() <= mTrainerCollisionBox.getY() && playerIndex > trainerIndex)
 		{
 			mBackground.getChildren().remove(mPlayer);
@@ -85,7 +86,7 @@ public class StarterTownCell extends AbstractCell
 		Image bg = new Image(getClass().getResource("/resources/images/overworld/starter_town_foreground.png").toExternalForm(), 1000.0, 1000.0, true, false);
 		return new ImageLayer(mWidth, mHeight, mZoom, bg);
 	}
-	
+
 	@Override
 	protected void createCollisons()
 	{
@@ -95,52 +96,52 @@ public class StarterTownCell extends AbstractCell
 		addCollisionRectangle(90, 680, 15, 1000, mLeftCollisions);
 		addCollisionRectangle(90, 660, 200, 15, mUpCollisions);
 		addCollisionRectangle(277, 37, 15, 620, mLeftCollisions);
-		
+
 		addCollisionHouse(446, 510);
 		addCollisionHouse(1077, 794);
 		addCollisionHouse(236, 1180);
-		
+
 		mBackground.getChildren().addAll(mUpCollisions);
 		mBackground.getChildren().addAll(mDownCollisions);
 		mBackground.getChildren().addAll(mRightCollisions);
 		mBackground.getChildren().addAll(mLeftCollisions);
 	}
-	
+
 	private void addCollisionRectangle(double x, double y, double width, double height, ArrayList<Rectangle> toAddTo)
 	{
 		Rectangle collision = new Rectangle(x, y, width, height);
 		collision.visibleProperty().bind(mShowCollision);
 		toAddTo.add(collision);
 	}
-	
+
 	private void addCollisionHouse(double xUpperLeft, double yUpperLeft)
 	{
 		Rectangle houseSouth = new Rectangle(xUpperLeft + 10, yUpperLeft + 110, 230, 20);
 		houseSouth.visibleProperty().bind(mShowCollision);
 		houseSouth.setFill(Color.RED);
 		mUpCollisions.add(houseSouth);
-		
+
 		Rectangle houseWest = new Rectangle(xUpperLeft, yUpperLeft, 17, 127);
 		houseWest.visibleProperty().bind(mShowCollision);
 		mRightCollisions.add(houseWest);
-		
+
 		Rectangle houseEast = new Rectangle(xUpperLeft + 233, yUpperLeft, 17, 127);
 		houseEast.visibleProperty().bind(mShowCollision);
 		mLeftCollisions.add(houseEast);
-		
+
 		Rectangle houseNorth = new Rectangle(xUpperLeft + 10, yUpperLeft, 230, 20);
 		houseNorth.visibleProperty().bind(mShowCollision);
 		houseNorth.setFill(Color.RED);
 		mDownCollisions.add(houseNorth);
 	}
-	
+
 	@Override
 	protected void keyPressHook(KeyEvent event)
 	{
 		if(event.getCode() == KeyCode.E && mBattleTrainer)
 		{
 			Startup.changeScene(SceneType.Battle);
-			
+
 			mRight = false;
 			mLeft = false;
 			mDown = false;
@@ -168,7 +169,7 @@ public class StarterTownCell extends AbstractCell
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -176,7 +177,7 @@ public class StarterTownCell extends AbstractCell
 	protected boolean YCollisionCheck()
 	{
 		Bounds playerBounds = mPlayerCollisionBox.getBoundsInLocal();
-		
+
 		for(Rectangle north : mUpCollisions)
 		{
 			if(playerBounds.intersects(north.getBoundsInParent()))
@@ -192,7 +193,7 @@ public class StarterTownCell extends AbstractCell
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -200,12 +201,12 @@ public class StarterTownCell extends AbstractCell
 	protected boolean otherCollisionCheck()
 	{
 		Bounds playerBounds = mPlayerCollisionBox.getBoundsInLocal();
-		
+
 		if(playerBounds.intersects(mTrainerCollisionBox.getBoundsInParent()))
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
 }

@@ -10,11 +10,11 @@ public class AiPool
 
 	public static BaseAI getAi(AiIds aiId)
 	{
-		if (mAis == null)
+		if(mAis == null)
 		{
 			generateAis();
 		}
-		
+
 		return mAis.get(aiId);
 	}
 

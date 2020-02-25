@@ -20,11 +20,12 @@ public class Trainer
 	private int mHealthThreshold;
 	private int mSwitchThreshold;
 
-	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<Item> items, Anature currentAnature, BaseAI ai, int healthThreshold, int switchThreshold)
+	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<Item> items, Anature currentAnature, BaseAI ai, int healthThreshold,
+			int switchThreshold)
 	{
 		if(id == null && name == null && anatures == null && items == null && currentAnature == null && ai == null)
 			throw new IllegalArgumentException("Null Parameter");
-		
+
 		mId = id;
 		mName = name;
 		mAnatures = anatures;
@@ -37,41 +38,44 @@ public class Trainer
 
 	public void switchAnature()
 	{
-		mAi.switchAnature(mAnatures, new Type[] { mCurrentAnature.getPrimaryType(), mCurrentAnature.getSecondaryType() }, 25, mCurrentAnature);
+		mAi.switchAnature(mAnatures, new Type[]
+		{ mCurrentAnature.getPrimaryType(), mCurrentAnature.getSecondaryType() }, 25, mCurrentAnature);
 	};
 
-	public final AiChoice useTurn(Anature playerAnature) // TODO The String return is only temporary
+	public final AiChoice useTurn(Anature playerAnature)
 	{
 		AiChoice itemResult = mAi.useItem(mItems, mCurrentAnature, mHealthThreshold);
-		
+
 		if(itemResult.equals(AiChoice.No_Choice))
 		{
 			Type[] types = null;
-			
+
 			if(playerAnature.getSecondaryType() != null)
-				types = new Type[] { playerAnature.getPrimaryType(), playerAnature.getSecondaryType() };
-			
+				types = new Type[]
+				{ playerAnature.getPrimaryType(), playerAnature.getSecondaryType() };
+
 			else
-				types = new Type[] { playerAnature.getPrimaryType() };
-			
+				types = new Type[]
+				{ playerAnature.getPrimaryType() };
+
 			AiChoice switchResult = mAi.switchAnature(mAnatures, types, mSwitchThreshold, mCurrentAnature);
-			
+
 			if(switchResult.equals(AiChoice.No_Choice))
 			{
 				return mAi.chooseMove();
 			}
-			
+
 			return switchResult;
 		}
-		
+
 		return itemResult;
 	}
-	
+
 	public String getName()
 	{
 		return mName;
 	}
-	
+
 	public String getSpritePath()
 	{
 		return "/resources/images/trainers/" + mId.toString() + ".png";

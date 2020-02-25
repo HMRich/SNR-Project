@@ -13,22 +13,26 @@ import application.Anature;
 import application.AnatureBuilder;
 import application.BaseAI;
 import application.DatabaseConnection;
+import application.controllers.LoggerController;
 import application.enums.AiIds;
 import application.enums.DatabaseType;
+import application.enums.ItemIds;
+import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
 import application.items.Item;
+import application.items.ItemPool;
 
 public class TrainerBuilder
 {
 	public static Trainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
 	{
 		ArrayList<Item> items = new ArrayList<Item>();
-		ArrayList<Anature> party = new ArrayList<Anature>(); ;
+		ArrayList<Anature> party = new ArrayList<Anature>();
 		BaseAI ai = null;
 		int switchThreshold = 0, healthThreshold = 0;
 		String name = "";
-		
+
 		try
 		{
 			Connection connect = DatabaseConnection.dbConnector(DatabaseType.TrainerDatabase);
@@ -38,7 +42,7 @@ public class TrainerBuilder
 			pst.setString(1, id.toString());
 
 			ResultSet results = pst.executeQuery();
-			if (results.next())
+			if(results.next())
 			{
 				String itemsStr = results.getString("ItemList");
 				String partyStr = results.getString("Anatures");
@@ -50,23 +54,44 @@ public class TrainerBuilder
 				if(itemsStr.length() != 0)
 				{
 					ArrayList<String> itemsStrAra = new ArrayList<String>(Arrays.asList(itemsStr.split(",")));
-					// TODO use Item pool or generate items based on id.
+
+					for(String itemId : itemsStrAra)
+					{
+						try
+						{
+							Item toAdd = ItemPool.getItems(ItemIds.valueOf(itemId));
+
+							if(toAdd == null)
+							{
+								LoggerController.logEvent(LoggingTypes.Default, "Trainer Builder tried to retrieve an item with an invalid Id.");
+							}
+
+							else
+							{
+								items.add(toAdd);
+							}
+						}
+
+						catch(Exception e)
+						{
+							LoggerController.logEvent(LoggingTypes.Default, "Trainer Builder tried to retrieve an item with an invalid Id.");
+						}
+					}
 				}
 
 				ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyStr.split(",")));
-				AnatureBuilder builder = new AnatureBuilder();
 				Random levelGen = new Random();
-				
+
 				for(String anatureStr : partyStrAra)
 				{
 					int level = levelGen.nextInt(maxLevel - minLevel) + minLevel;
-					party.add(builder.createAnature(Species.valueOf(anatureStr), level));
+					party.add(AnatureBuilder.createAnature(Species.valueOf(anatureStr), level));
 				}
-				
+
 				ai = AiPool.getAi(AiIds.valueOf(aiStr));
-				
+
 				switchThreshold = Integer.parseInt(switchStr);
-				healthThreshold = Integer.parseInt(healthStr);				
+				healthThreshold = Integer.parseInt(healthStr);
 			}
 
 			results.close();

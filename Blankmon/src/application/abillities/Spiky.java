@@ -8,8 +8,9 @@ public class Spiky implements Ability
 {
 	public static void activateAbility(Anature attackingAnature, Anature targetAnature, Move move)
 	{
-		if(move.isPhysicalAttack()) {
-			attackingAnature.setCurrHp(attackingAnature.getCurrHp() - (targetAnature.getTotalHp()/8)); 
+		if(move.isPhysicalAttack())
+		{
+			attackingAnature.setCurrHp(attackingAnature.getCurrHp() - (targetAnature.getTotalHp() / 8));
 		}
 	}
 

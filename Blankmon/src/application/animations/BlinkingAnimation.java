@@ -21,9 +21,13 @@ public class BlinkingAnimation extends Transition
 	protected void interpolate(double frac)
 	{
 		if(frac >= 0.8)
+		{
 			mImageView.setOpacity(0);
+		}
 		
 		else
+		{
 			mImageView.setOpacity(100);
+		}
 	}
 }

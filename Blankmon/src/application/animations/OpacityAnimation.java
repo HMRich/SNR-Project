@@ -21,7 +21,9 @@ public class OpacityAnimation extends Transition
 	protected void interpolate(double frac)
 	{
 		if(!mIsReversed)
+		{
 			frac = 1 - frac;
+		}
 		
 		mImageView.setOpacity(frac);
 	}

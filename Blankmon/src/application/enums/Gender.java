@@ -1,5 +1,6 @@
 package application.enums;
 
-public enum Gender {
+public enum Gender
+{
 	Male, Female, Trans
 }

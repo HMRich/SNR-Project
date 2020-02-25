@@ -14,6 +14,7 @@ public class AbilityPool
 		{
 			generateAbilities();
 		}
+		
 		return mAbilities.get(abilityId);
 	}
 
@@ -22,6 +23,6 @@ public class AbilityPool
 		mAbilities = new HashMap<AbilityIds, Ability>();
 		mAbilities.put(AbilityIds.Tyrannize , new Tyrannize());
 		mAbilities.put(AbilityIds.Spiky, new Spiky());
-		mAbilities.put(AbilityIds.Determined, new Determined());
+		mAbilities.put(AbilityIds.Determination, new Determination());
 	}
 }

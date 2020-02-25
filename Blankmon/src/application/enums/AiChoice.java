@@ -2,5 +2,5 @@ package application.enums;
 
 public enum AiChoice
 {
-	Item_Consumed, Switch_Anature, No_Choice, move1, move2, move3, move4
+	Item_Consumed, Switch_Anature, No_Choice, Move1, Move2, Move3, Move4
 }

@@ -65,6 +65,7 @@ public class Player
 			if(badge)
 				badges++;
 		}
+
 		return badges;
 	}
 
@@ -74,6 +75,7 @@ public class Player
 		{
 			throw new IllegalArgumentException("The badgePosition does not exsist.");
 		}
+
 		mBadges[badgePosition] = true;
 	}
 
@@ -117,7 +119,7 @@ public class Player
 	{
 		if(selectedIndex > 5 || selectedIndex < 0)
 			throw new IllegalArgumentException("Invalid Selected Index");
-		
+
 		mSelectedIndex = selectedIndex;
 	}
 }

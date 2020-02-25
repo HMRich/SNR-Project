@@ -4,7 +4,7 @@ import application.Anature;
 import application.enums.AbilityIds;
 import application.moves.Move;
 
-public class Determined implements Ability
+public class Determination implements Ability
 {
 	public static void activateAbility(Anature targetAnature, Move move, double oldHp)
 	{
@@ -16,7 +16,7 @@ public class Determined implements Ability
 
 	public AbilityIds getAbilityId()
 	{
-		return AbilityIds.Determined;
+		return AbilityIds.Determination;
 	}
 
 	public String getAbilityName()
