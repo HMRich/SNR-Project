@@ -1,14 +1,15 @@
 package application.abillities;
 
+import application.controllers.LoggerController;
 import application.enums.AbilityIds;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import application.enums.LoggingTypes;
 
 public class SleepDeprived implements Ability
 {
 	public static void activateAbility()
 	{
-		throw new NotImplementedException();
 		// TODO once statuses are added implement this method
+		LoggerController.logEvent(LoggingTypes.Default, "Not Yet Implemented: SleepDeprived");
 	}
 
 	@Override
