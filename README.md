@@ -6,7 +6,7 @@ Develop Branch: [![Build Status](https://dev.azure.com/hrich2/SNR-Project/_apis/
 
 # Anature
 <p align="center">
-  <img src="https://github.com/HMRich/SNR-Project/blob/develop/Blankmon/src/resources/images/Anature%20Logo.png" width="600">
+  <img src="https://github.com/HMRich/SNR-Project/blob/develop/Anature/src/resources/images/Anature%20Logo.png" width="600">
 </p>
 
 <p align="center">
