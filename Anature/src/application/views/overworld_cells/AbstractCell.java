@@ -1,10 +1,11 @@
-package application.views.cells;
+package application.views.overworld_cells;
 
 import java.util.ArrayList;
 
 import application.LoggerStartUp;
 import application.enums.Direction;
-import application.views.ImageLayer;
+import application.views.elements.ImageLayer;
+import application.views.elements.PlayerSprite;
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -15,7 +16,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -38,11 +38,10 @@ public abstract class AbstractCell
 	protected boolean mUp, mDown, mLeft, mRight;
 	private Scene mScene;
 	private AnimationTimer mTimer;
-	protected static ImageView mPlayer;
-	protected static Rectangle mPlayerCollisionBox;
+	protected static PlayerSprite mPlayer;
 	private Direction mPcFacing;
 	protected ImageLayer mBackground;
-	protected ArrayList<Rectangle> mUpCollisions, mDownCollisions, mRightCollisions, mLeftCollisions;
+	protected ArrayList<Rectangle> mCollisions;
 	protected BooleanProperty mShowCollision;
 
 	private Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
@@ -52,10 +51,7 @@ public abstract class AbstractCell
 		mZoom = new SimpleDoubleProperty(2.6);
 
 		mShowCollision = new SimpleBooleanProperty(false);
-		mUpCollisions = new ArrayList<Rectangle>();
-		mDownCollisions = new ArrayList<Rectangle>();
-		mRightCollisions = new ArrayList<Rectangle>();
-		mLeftCollisions = new ArrayList<Rectangle>();
+		mCollisions = new ArrayList<Rectangle>();
 
 		mLogger = logger;
 		mHeight = height;
@@ -73,18 +69,7 @@ public abstract class AbstractCell
 		mStandLeftImg = new Image(getClass().getResource("/resources/images/player/left_stand.png").toExternalForm(), 100.0, 100.0, true, false);
 
 		mPcFacing = Direction.Waiting;
-		mPlayer = new ImageView(mStandDownImg);
-		mPlayer.fitWidthProperty().bind(mZoom.multiply(24));
-		mPlayer.fitHeightProperty().bind(mZoom.multiply(29));
-		mPlayer.setX(485);
-		mPlayer.setY(599);
-
-		mPlayerCollisionBox = new Rectangle();
-		mPlayerCollisionBox.widthProperty().bind(mPlayer.fitWidthProperty().multiply(0.75));
-		mPlayerCollisionBox.heightProperty().bind(mPlayer.fitHeightProperty().multiply(0.3));
-		mPlayerCollisionBox.xProperty().bind(mPlayer.xProperty().add(mPlayer.getFitWidth() * 0.1));
-		mPlayerCollisionBox.yProperty().bind(mPlayer.yProperty().add(mPlayer.getFitHeight() * 0.7));
-		mPlayerCollisionBox.visibleProperty().bind(mShowCollision);
+		mPlayer = new PlayerSprite(mStandDownImg, 485, 599, mZoom, mShowCollision);
 
 		mBackground = createBackground();
 		Pane foreground = createForeground();
@@ -93,7 +78,7 @@ public abstract class AbstractCell
 
 		map.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-		mBackground.getChildren().addAll(mPlayer, mPlayerCollisionBox);
+		mPlayer.addToContainer(mBackground);
 		addToBackground();
 		createCollisons();
 
@@ -171,20 +156,14 @@ public abstract class AbstractCell
 
 				mPlayer.setX(clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, map.getWidth() - mPlayer.getFitWidth()));
 				mPlayer.setY(clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, map.getHeight() - mPlayer.getFitHeight()));
-
+				
 				if(!xCollisionCheck())
 				{
 					mPlayer.setX(oldX);
 				}
-
-				if(!YCollisionCheck())
+				
+				if(!yCollisionCheck())
 				{
-					mPlayer.setY(oldY);
-				}
-
-				if(!otherCollisionCheck())
-				{
-					mPlayer.setX(oldX);
 					mPlayer.setY(oldY);
 				}
 
@@ -201,9 +180,7 @@ public abstract class AbstractCell
 
 	protected abstract boolean xCollisionCheck();
 
-	protected abstract boolean YCollisionCheck();
-
-	protected abstract boolean otherCollisionCheck();
+	protected abstract boolean yCollisionCheck();
 
 	protected abstract ImageLayer createBackground();
 
@@ -271,7 +248,10 @@ public abstract class AbstractCell
 			mSpeedMultiplier = 1;
 		}
 
-		keyPressHook(event);
+		if(!on)
+		{
+			keyPressHook(event);
+		}
 	}
 
 	public Scene getScene()
@@ -284,6 +264,11 @@ public abstract class AbstractCell
 		mTimer.start();
 
 		return mScene;
+	}
+	
+	public Direction getPlayerFacing()
+	{
+		return mPcFacing; 
 	}
 
 	public void stopTimer()

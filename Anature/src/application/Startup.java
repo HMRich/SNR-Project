@@ -12,7 +12,7 @@ import application.enums.TrainerIds;
 import application.items.ItemPool;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
-import application.views.cells.StarterTownCell;
+import application.views.overworld_cells.StarterTownCell;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

@@ -3,6 +3,8 @@ package application.controllers;
 import java.time.LocalDateTime;
 
 import application.enums.LoggingTypes;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -19,18 +21,22 @@ public class LoggerController
 	@FXML private TextArea mLoggingTextArea;
 
 	private static StringProperty mLoggingText;
-	private static boolean mMouseLocation, mErrorLogging, mMiscLogging;
+	private static boolean mErrorLogging, mMiscLogging;
+	private static BooleanProperty mMouseLocation;
 
 	public void initialize()
 	{
 		mLoggingText = new SimpleStringProperty("");
 		mLoggingTextArea.textProperty().bind(mLoggingText);
+		
+		mMouseLocation = new SimpleBooleanProperty();
+		mMouseLocation.bind(mMouseLocationRadio.selectedProperty());
+		
 		onRadioToggle();
 	}
 
 	public void onRadioToggle()
 	{
-		mMouseLocation = mMouseLocationRadio.isSelected();
 		mErrorLogging = mErrorLoggingRadio.isSelected();
 		mMiscLogging = mMiscLoggingRadio.isSelected();
 	}
@@ -45,7 +51,7 @@ public class LoggerController
 		switch(logType)
 		{
 			case Mouse:
-				if(!mMouseLocation)
+				if(!mMouseLocation.get())
 				{
 					return;
 				}
@@ -71,5 +77,10 @@ public class LoggerController
 		}
 
 		mLoggingText.set(mLoggingText.get() + LocalDateTime.now().toString().replace("T", " ").substring(0, 19) + ": " + toLog + "\n");
+	}
+	
+	public static boolean isMouseLocationEnabled()
+	{
+		return mMouseLocation.get();
 	}
 }
