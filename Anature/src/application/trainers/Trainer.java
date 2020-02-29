@@ -19,6 +19,7 @@ public class Trainer
 	private BaseAI mAi;
 	private int mHealthThreshold;
 	private int mSwitchThreshold;
+	private int tokens = 100;
 
 	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<Item> items, Anature currentAnature, BaseAI ai, int healthThreshold,
 			int switchThreshold)
@@ -84,5 +85,10 @@ public class Trainer
 	public ArrayList<Anature> getAnatures()
 	{
 		return mAnatures;
+	}
+	
+	public int getTokens() 
+	{
+		return tokens;
 	}
 }

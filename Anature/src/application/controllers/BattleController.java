@@ -448,7 +448,18 @@ public class BattleController
 
 						if(mPlayerHp.get() == 0) // TODO Just for Demo. Change to do swapping here.
 						{
-							mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
+							int cost;
+							if (mPlayer.getTokens() <= 0) 
+							{
+								cost = 0;
+							}
+							else 
+							{
+								cost = (int)(mPlayer.getTokens()* .1);
+							}
+							mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated! " + mPlayer.getName() + " paid " + cost + " Tokens!" );
+							
+							mPlayer.setTokens(mPlayer.getTokens() - cost);
 
 							mShowBtns.set(false);
 
@@ -461,7 +472,8 @@ public class BattleController
 
 						else if(mEnemyHp.get() == 0)
 						{
-							mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
+							mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated! " + mEnemyTrainer.getName() + " gave you " + mEnemyTrainer.getTokens() + " Tokens!");
+							mPlayer.setTokens(mPlayer.getTokens() + mEnemyTrainer.getTokens());
 
 							mShowBtns.set(false);
 
