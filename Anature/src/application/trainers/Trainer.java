@@ -85,17 +85,17 @@ public class Trainer
 	{
 		return mAnatures;
 	}
-	
+
 	public ArrayList<Item> getItmes()
 	{
 		return mItems;
 	}
-	
+
 	public Anature getCurrentAnature()
 	{
 		return mCurrentAnature;
 	}
-	
+
 	public int getNextAnature(int index)
 	{
 		index++;
