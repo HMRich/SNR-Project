@@ -69,15 +69,17 @@ public class BattleController
 	@FXML private ImageView mClickIndicatorImg;
 	@FXML private Button mTestBtn;
 
-	@FXML private ImageView mSwitchSelection, mSwitchDialogue, mSwitchBtn, mSwitchBackBtn, mSwitchSelectedImg, mSwitchSelectedTypeOne, mSwitchSelectedTypeTwo,
-			mSwitchPageLeft, mSwitchPageRight;
-	@FXML private Text mSwitchSelectedCatalogNum, mSwitchSelectedName, mSwitchSelectedOwner, mSwitchSelectedCurrXp, mSwitchSelectedNextXp, mSwitchPageTxt;
-	@FXML private Text mSwitchSelectedHp, mSwitchSelectedAtk, mSwitchSelectedSpAtk, mSwitchSelectedDef, mSwitchSelectedSpDef, mSwitchSelectedSpeed,
-			mSwitchSelectedAbilityName, mSwitchSelectedAbilityDesc;
-	private Image mSwitchPageOneImg, mSwitchPageTwoImg, mItemTabSelected, mItemTabDeselected, mItemPotion, mItemGreatPotion, mItemUltraPotion,
-			mItemMasterPotion;
+	@FXML private ImageView mSwitchSelection, mSwitchDialogue, mSwitchBtn, mSwitchBackBtn, mSwitchSelectedImg,
+			mSwitchSelectedTypeOne, mSwitchSelectedTypeTwo, mSwitchPageLeft, mSwitchPageRight;
+	@FXML private Text mSwitchSelectedCatalogNum, mSwitchSelectedName, mSwitchSelectedOwner, mSwitchSelectedCurrXp,
+			mSwitchSelectedNextXp, mSwitchPageTxt;
+	@FXML private Text mSwitchSelectedHp, mSwitchSelectedAtk, mSwitchSelectedSpAtk, mSwitchSelectedDef, mSwitchSelectedSpDef,
+			mSwitchSelectedSpeed, mSwitchSelectedAbilityName, mSwitchSelectedAbilityDesc;
+	private Image mSwitchPageOneImg, mSwitchPageTwoImg, mItemTabSelected, mItemTabDeselected, mItemPotion, mItemGreatPotion,
+			mItemUltraPotion, mItemMasterPotion;
 
-	@FXML private ImageView mItemSelectionBg, mItemDialogue, mSelectedItem, mItemBackBtn, mItemUseBtn, mItemPotionsTab, mItemAnaCubeTab;
+	@FXML private ImageView mItemSelectionBg, mItemDialogue, mSelectedItem, mItemBackBtn, mItemUseBtn, mItemPotionsTab,
+			mItemAnaCubeTab;
 	@FXML private ListView<String> mItemList;
 	@FXML private Rectangle mItemListBg;
 	@FXML private ImageView mItemPotionTabImg, mItemAnaCubeTabImg, mSelectedItemImg;
@@ -85,7 +87,8 @@ public class BattleController
 
 	@FXML private ImageView mAttackDialogue, mAttackSeOne, mAttackSeTwo, mAttackSeThree, mAttackSeFour, mAttackBackBtn;
 	@FXML private ImageView mAttackImgOne, mAttackImgTwo, mAttackImgThree, mAttackImgFour;
-	@FXML private Text mAttackNameOne, mAttackMpOne, mAttackNameTwo, mAttackMpTwo, mAttackNameThree, mAttackMpThree, mAttackNameFour, mAttackMpFour;
+	@FXML private Text mAttackNameOne, mAttackMpOne, mAttackNameTwo, mAttackMpTwo, mAttackNameThree, mAttackMpThree,
+			mAttackNameFour, mAttackMpFour;
 	@FXML private Group mMoveSeGroup;
 
 	private DoubleProperty mEnemyHp, mEnemyHpTotal;
@@ -94,11 +97,11 @@ public class BattleController
 	private IntegerProperty mEnemyLvl, mPlayerLvl;
 	private BooleanProperty mShowItemSelection, mShowSwitch, mShowPlayerBars, mShowSwitchPageOne, mCanClick;
 	private StringProperty mDialogueTxt, mPlayerName, mEnemyName, mSelectedItemTxt;
-	private BooleanProperty mShowBtns, mShowMoveSelection, mShowMoveSe, mShowMoveOne, mShowMoveTwo, mShowMoveThree, mShowMoveFour, mShowMoveSeOne,
-			mShowMoveSeTwo, mShowMoveSeThree, mShowMoveSeFour, mSwitchSlotOne, mSwitchSlotTwo, mSwitchSlotThree, mSwitchSlotFour, mSwitchSlotFive,
-			mSwitchSlotSix;
-	private StringProperty mAttackNameOneTxt, mAttackMpOneTxt, mAttackNameTwoTxt, mAttackMpTwoTxt, mAttackNameThreeTxt, mAttackMpThreeTxt, mAttackNameFourTxt,
-			mAttackMpFourTxt;
+	private BooleanProperty mShowBtns, mShowMoveSelection, mShowMoveSe, mShowMoveOne, mShowMoveTwo, mShowMoveThree, mShowMoveFour,
+			mShowMoveSeOne, mShowMoveSeTwo, mShowMoveSeThree, mShowMoveSeFour, mSwitchSlotOne, mSwitchSlotTwo, mSwitchSlotThree,
+			mSwitchSlotFour, mSwitchSlotFive, mSwitchSlotSix;
+	private StringProperty mAttackNameOneTxt, mAttackMpOneTxt, mAttackNameTwoTxt, mAttackMpTwoTxt, mAttackNameThreeTxt,
+			mAttackMpThreeTxt, mAttackNameFourTxt, mAttackMpFourTxt;
 
 	private FightManager mFightManager;
 	private Trainer mEnemyTrainer;
@@ -166,8 +169,10 @@ public class BattleController
 		mSwitchIndexSelected = 0;
 		mToEnd = false;
 
-		mSwitchPageOneImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page1.png").toExternalForm());
-		mSwitchPageTwoImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page2.png").toExternalForm());
+		mSwitchPageOneImg = new Image(
+				getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page1.png").toExternalForm());
+		mSwitchPageTwoImg = new Image(
+				getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page2.png").toExternalForm());
 
 		mItemTabSelected = new Image(getClass().getResource("/resources/images/battle/items/White_Tab.png").toExternalForm());
 		mItemTabDeselected = new Image(getClass().getResource("/resources/images/battle/items/Grey_Tab.png").toExternalForm());
@@ -296,12 +301,15 @@ public class BattleController
 	{
 		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
 
-		StringProperty playerHpTxt = new SimpleStringProperty(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
-		mPlayerHp.addListener(
-				(observable, oldValue, newValue) -> playerHpTxt.set(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue()));
+		StringProperty playerHpTxt = new SimpleStringProperty(
+				mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
+		mPlayerHp.addListener((observable, oldValue, newValue) -> playerHpTxt
+				.set(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue()));
 
-		StringProperty enemyHpTxt = new SimpleStringProperty(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue());
-		mEnemyHp.addListener((observable, oldValue, newValue) -> enemyHpTxt.set(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue()));
+		StringProperty enemyHpTxt = new SimpleStringProperty(
+				mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue());
+		mEnemyHp.addListener((observable, oldValue, newValue) -> enemyHpTxt
+				.set(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue()));
 
 		createBindsTxt(mPlayerHpTxt, scene, 1.41, 1.83, fontProperty, playerHpTxt);
 		createBindsTxt(mEnemyHpTxt, scene, 4.7, 5.8, fontProperty, enemyHpTxt);
@@ -374,19 +382,23 @@ public class BattleController
 		grid.setVgap(10);
 		mPane.getChildren().add(grid);
 
-		ResizableImage atkImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Attack_Btn.png").toExternalForm()));
+		ResizableImage atkImage = new ResizableImage(
+				new Image(getClass().getResource("/resources/images/battle/Attack_Btn.png").toExternalForm()));
 		atkImage.setOnAction(event -> onAttackBtn());
 		grid.addColumn(0, atkImage);
 
-		ResizableImage anatureImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Anature_Btn.png").toExternalForm()));
+		ResizableImage anatureImage = new ResizableImage(
+				new Image(getClass().getResource("/resources/images/battle/Anature_Btn.png").toExternalForm()));
 		anatureImage.setOnAction(event -> onSwitchBtn());
 		grid.addColumn(1, anatureImage);
 
-		ResizableImage bagImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Bag_Btn.png").toExternalForm()));
+		ResizableImage bagImage = new ResizableImage(
+				new Image(getClass().getResource("/resources/images/battle/Bag_Btn.png").toExternalForm()));
 		bagImage.setOnAction(event -> onBagBtn());
 		grid.add(bagImage, 0, 1);
 
-		ResizableImage escapeImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
+		ResizableImage escapeImage = new ResizableImage(
+				new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
 		escapeImage.setOnAction(event -> Startup.changeScene(SceneType.Starter_Town)); // TODO for demo
 		grid.add(escapeImage, 1, 1);
 
@@ -536,19 +548,26 @@ public class BattleController
 		createBindsTxt(mSwitchSelectedSpDef, scene, 1.4, 1.94, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedSpeed, scene, 1.4, 1.73, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedAbilityName, scene, 1.4, 1.57, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
-		createBindsTxt(mSwitchSelectedAbilityDesc, scene, 1.4, 1.48, 3.71, abilityDescFontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedAbilityDesc, scene, 1.4, 1.48, 3.71, abilityDescFontTracking,
+				mShowSwitchPageOne.not().and(mShowSwitch));
 	}
 
 	private void setUpAnatureTabs(Scene scene)
 	{
 		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 
-		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, true);
-		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, false);
-		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, false);
-		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, false);
-		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, false);
-		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, false);
+		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne,
+				100.0, true);
+		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo,
+				100.0, false);
+		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch,
+				mSwitchSlotThree, 100.0, false);
+		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour,
+				100.0, false);
+		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch,
+				mSwitchSlotFive, 100.0, false);
+		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix,
+				100.0, false);
 
 		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0);
 		createBindsAnatureslot(mSlotTwo, scene, 85, 3.157, 3.7, 15.1, 1);
@@ -632,29 +651,37 @@ public class BattleController
 		ObjectProperty<Font> moveMpFontProperty = getFontProperty(95, scene);
 
 		createBindsImageView(mAttackImgOne, scene, 4.5, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveOne));
-		createBindsTxt(mAttackNameOne, scene, 4.39, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackNameOneTxt);
-		createBindsTxt(mAttackMpOne, scene, 4.39, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackMpOneTxt);
+		createBindsTxt(mAttackNameOne, scene, 4.39, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveOne),
+				mAttackNameOneTxt);
+		createBindsTxt(mAttackMpOne, scene, 4.39, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveOne),
+				mAttackMpOneTxt);
 		mAttackImgOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
 		mAttackNameOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
 		mAttackMpOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
 
 		createBindsImageView(mAttackImgTwo, scene, 4.5, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveTwo));
-		createBindsTxt(mAttackNameTwo, scene, 4.39, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackNameTwoTxt);
-		createBindsTxt(mAttackMpTwo, scene, 4.39, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackMpTwoTxt);
+		createBindsTxt(mAttackNameTwo, scene, 4.39, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveTwo),
+				mAttackNameTwoTxt);
+		createBindsTxt(mAttackMpTwo, scene, 4.39, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveTwo),
+				mAttackMpTwoTxt);
 		mAttackImgTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
 		mAttackNameTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
 		mAttackMpTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
 
 		createBindsImageView(mAttackImgThree, scene, 1.515, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveThree));
-		createBindsTxt(mAttackNameThree, scene, 1.507, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackNameThreeTxt);
-		createBindsTxt(mAttackMpThree, scene, 1.507, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackMpThreeTxt);
+		createBindsTxt(mAttackNameThree, scene, 1.507, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveThree),
+				mAttackNameThreeTxt);
+		createBindsTxt(mAttackMpThree, scene, 1.507, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveThree),
+				mAttackMpThreeTxt);
 		mAttackImgThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
 		mAttackNameThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
 		mAttackMpThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
 
 		createBindsImageView(mAttackImgFour, scene, 1.515, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveFour));
-		createBindsTxt(mAttackNameFour, scene, 1.507, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackNameFourTxt);
-		createBindsTxt(mAttackMpFour, scene, 1.507, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackMpFourTxt);
+		createBindsTxt(mAttackNameFour, scene, 1.507, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveFour),
+				mAttackNameFourTxt);
+		createBindsTxt(mAttackMpFour, scene, 1.507, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveFour),
+				mAttackMpFourTxt);
 		mAttackImgFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
 		mAttackNameFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
 		mAttackMpFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
@@ -699,7 +726,8 @@ public class BattleController
 
 		mDialogueTxt.set(enemyTrainer.getName() + " has started a battle with " + player.getName() + "!");
 
-		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(), enemyTrainer.getName());
+		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(),
+				enemyTrainer.getName());
 	}
 
 	private void updatePlayerAnature(Anature playerCurr)
@@ -876,11 +904,12 @@ public class BattleController
 		// TODO Add different type imgs
 	}
 
-	private void updateSwitchSlot(Anature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)
+	private void updateSwitchSlot(Anature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot,
+			boolean isSelected)
 	{
 		visibleProp.set(true);
-		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(), curr.getCurrHp() + "/" + curr.getTotalHp(),
-				mShowSwitch.get(), visibleProp.get(), curr.getCurrHp());
+		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(),
+				curr.getCurrHp() + "/" + curr.getTotalHp(), mShowSwitch.get(), visibleProp.get(), curr.getCurrHp());
 	}
 
 	private void updateBagMenu()
@@ -1065,7 +1094,10 @@ public class BattleController
 					{
 						Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
 
-						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other
+						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change
+																													// it so u can
+																													// use items
+																													// on other
 																													// anatures
 						healthGain(result, mPlayerHp);
 
@@ -1132,7 +1164,86 @@ public class BattleController
 
 	private void enemyTurn(AiChoice enemyTurn)
 	{
-		if(enemyTurn.equals(AiChoice.Move1) || enemyTurn.equals(AiChoice.Move2) || enemyTurn.equals(AiChoice.Move3) || enemyTurn.equals(AiChoice.Move4))
+		switch(enemyTurn)
+		{
+			case Move1:
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp));
+				break;
+
+			case Move2:
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp));
+				break;
+
+			case Move3:
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackPlayer(2), mPlayerHp));
+				break;
+
+			case Move4:
+				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackPlayer(3), mPlayerHp));
+				break;
+
+			case Item_Consumed:
+				mClickQueue.enqueue(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						Item itemToUse = mEnemyTrainer.getItmes().remove(0);
+
+						ItemResult result = mFightManager.itemUse(false, mFightManager.getEnemyIndex(), itemToUse);
+						healthGain(result, mEnemyHp);
+
+						updateBagMenu();
+					}
+				});
+				break;
+
+			case Switch_Anature:
+				mClickQueue.enqueue(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						mFightManager.setEnemySelectedIndex(mEnemyTrainer.getNextAnature(mFightManager.getEnemyIndex()));
+						Anature oldAnature = mEnemyTrainer.getCurrentAnature();
+						Anature newAnature = mEnemyTrainer.getAnatures().get(mFightManager.getEnemyIndex());
+
+						OpacityAnimation fadeOld = new OpacityAnimation(mAnatureFront, Duration.millis(400), false);
+						fadeOld.setOnFinished(new EventHandler<ActionEvent>()
+						{
+							@Override
+							public void handle(ActionEvent event)
+							{
+								updatePlayerAnature(newAnature);
+
+								try
+								{
+									Thread.sleep(500);
+								}
+
+								catch(InterruptedException e)
+								{
+									LoggerController.logEvent(LoggingTypes.Default, e.getMessage());
+								}
+
+								OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureFront, Duration.millis(400), true);
+								fadeInNew.setOnFinished(actionEvent -> mCanClick.set(true));
+								fadeInNew.play();
+							}
+						});
+
+						fadeOld.play();
+						mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
+					}
+				});
+				break;
+
+			case No_Choice:
+
+				break;
+		}
+		if(enemyTurn.equals(AiChoice.Move1) || enemyTurn.equals(AiChoice.Move2) || enemyTurn.equals(AiChoice.Move3)
+				|| enemyTurn.equals(AiChoice.Move4))
 		{
 			mClickQueue.enqueue(new Runnable()
 			{
@@ -1140,7 +1251,9 @@ public class BattleController
 				public void run()
 				{
 //					healthDrain(mFightManager.attackPlayer(Integer.parseInt(enemyTurn.charAt(4) + "")), mPlayerHp);
-					healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp); // TODO Change to above when Demo is Done!
+					healthDrainMove(mFightManager.attackPlayer(mFightManager.getPlayerIndex()), mPlayerHp); // TODO Change to
+																											// above when Demo is
+																											// Done!
 				}
 			});
 		}
@@ -1231,11 +1344,11 @@ public class BattleController
 		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), toDivideBy);
 		ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
 
-		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
+		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty.set(Font
+				.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 
-		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
+		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty.set(Font
+				.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 
 		return fontProperty;
 	}
@@ -1246,28 +1359,30 @@ public class BattleController
 		img.fitHeightProperty().bind(scene.heightProperty().divide(heightToDivide));
 	}
 
-	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide)
+	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide,
+			double heightToDivide)
 	{
 		createBindsImageView(img, scene, widthToDivide, heightToDivide);
 		img.layoutXProperty().bind(scene.widthProperty().divide(xToDivide));
 		img.layoutYProperty().bind(scene.heightProperty().divide(yToDivide));
 	}
 
-	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide,
+	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide,
+			double heightToDivide, BooleanProperty visibleProp)
+	{
+		img.visibleProperty().bind(visibleProp);
+		createBindsImageView(img, scene, xToDivide, yToDivide, widthToDivide, heightToDivide);
+	}
+
+	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide,
+			double heightToDivide, BooleanBinding visibleProp)
+	{
+		img.visibleProperty().bind(visibleProp);
+		createBindsImageView(img, scene, xToDivide, yToDivide, widthToDivide, heightToDivide);
+	}
+
+	private void createBindsImageView(ImageView img, Scene scene, double widthToDivide, double heightToDivide,
 			BooleanProperty visibleProp)
-	{
-		img.visibleProperty().bind(visibleProp);
-		createBindsImageView(img, scene, xToDivide, yToDivide, widthToDivide, heightToDivide);
-	}
-
-	private void createBindsImageView(ImageView img, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide,
-			BooleanBinding visibleProp)
-	{
-		img.visibleProperty().bind(visibleProp);
-		createBindsImageView(img, scene, xToDivide, yToDivide, widthToDivide, heightToDivide);
-	}
-
-	private void createBindsImageView(ImageView img, Scene scene, double widthToDivide, double heightToDivide, BooleanProperty visibleProp)
 	{
 		createBindsImageView(img, scene, widthToDivide, heightToDivide);
 		img.visibleProperty().bind(visibleProp);
@@ -1286,47 +1401,50 @@ public class BattleController
 		txt.fontProperty().bind(fontProp);
 	}
 
-	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp, StringProperty stringProp)
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp,
+			StringProperty stringProp)
 	{
 		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
 		txt.textProperty().bind(stringProp);
 	}
 
-	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp, BooleanProperty visibleProp)
-	{
-		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
-		txt.visibleProperty().bind(visibleProp);
-	}
-
-	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp, BooleanBinding visibleProp)
-	{
-		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
-		txt.visibleProperty().bind(visibleProp);
-	}
-
-	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide, ObjectProperty<Font> fontProp,
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp,
 			BooleanProperty visibleProp)
 	{
-		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp, visibleProp);
-		txt.wrappingWidthProperty().bind(scene.widthProperty().divide(wrapToDivide));
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
+		txt.visibleProperty().bind(visibleProp);
 	}
 
-	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide, ObjectProperty<Font> fontProp,
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, ObjectProperty<Font> fontProp,
 			BooleanBinding visibleProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp);
+		txt.visibleProperty().bind(visibleProp);
+	}
+
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide,
+			ObjectProperty<Font> fontProp, BooleanProperty visibleProp)
 	{
 		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp, visibleProp);
 		txt.wrappingWidthProperty().bind(scene.widthProperty().divide(wrapToDivide));
 	}
 
-	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide, ObjectProperty<Font> fontProp,
-			BooleanBinding visibleProp, StringProperty stringProp)
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide,
+			ObjectProperty<Font> fontProp, BooleanBinding visibleProp)
+	{
+		createBindsTxt(txt, scene, xToDivide, yToDivide, fontProp, visibleProp);
+		txt.wrappingWidthProperty().bind(scene.widthProperty().divide(wrapToDivide));
+	}
+
+	private void createBindsTxt(Text txt, Scene scene, double xToDivide, double yToDivide, double wrapToDivide,
+			ObjectProperty<Font> fontProp, BooleanBinding visibleProp, StringProperty stringProp)
 	{
 		createBindsTxt(txt, scene, xToDivide, yToDivide, wrapToDivide, fontProp, visibleProp);
 		txt.textProperty().bind(stringProp);
 	}
 
-	private void createBindsAnatureslot(AnatureSlot slot, Scene scene, double xToDivide, double yToDivide, double widthToDivide, double heightToDivide,
-			int slotIndex)
+	private void createBindsAnatureslot(AnatureSlot slot, Scene scene, double xToDivide, double yToDivide, double widthToDivide,
+			double heightToDivide, int slotIndex)
 	{
 		slot.layoutXProperty().bind(scene.widthProperty().divide(xToDivide));
 		slot.layoutYProperty().bind(scene.heightProperty().divide(yToDivide));
