@@ -340,5 +340,10 @@ public class Anature
 
 		return mName + result;
 	}
+	
+	public double getHpPercent()
+	{
+		return mCurrHp / mTotalHp;
+	}
 
 }

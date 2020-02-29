@@ -1213,20 +1213,6 @@ public class BattleController
 
 				break;
 		}
-		if(enemyTurn.equals(AiChoice.Move1) || enemyTurn.equals(AiChoice.Move2) || enemyTurn.equals(AiChoice.Move3) || enemyTurn.equals(AiChoice.Move4))
-		{
-			mClickQueue.enqueue(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-//					healthDrain(mFightManager.attackPlayer(Integer.parseInt(enemyTurn.charAt(4) + "")), mPlayerHp);
-					healthDrainMove(mFightManager.attackPlayer(mFightManager.getPlayerIndex()), mPlayerHp); // TODO Change to
-																											// above when Demo is
-																											// Done!
-				}
-			});
-		}
 	}
 
 	private void healthDrainMove(MoveResult result, DoubleProperty toChange)

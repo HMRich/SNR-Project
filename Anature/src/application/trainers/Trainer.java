@@ -62,7 +62,7 @@ public class Trainer
 
 			if(switchResult.equals(AiChoice.No_Choice))
 			{
-				return mAi.chooseMove();
+				return mAi.chooseMove(mCurrentAnature.getMoves());
 			}
 
 			return switchResult;
