@@ -157,6 +157,7 @@ public class BattleController
 		mShowMoveSeTwo = new SimpleBooleanProperty(false);
 		mShowMoveSeThree = new SimpleBooleanProperty(false);
 		mShowMoveSeFour = new SimpleBooleanProperty(false);
+		
 
 		mShowBtns = new SimpleBooleanProperty(false);
 		mShowSwitchBackBtn = new SimpleBooleanProperty(false);
