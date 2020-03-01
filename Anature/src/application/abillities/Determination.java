@@ -6,12 +6,19 @@ import application.moves.Move;
 
 public class Determination implements Ability
 {
-	public static void activateAbility(Anature targetAnature, Move move, double oldHp)
+	public static String activateAbility(Anature targetAnature, Move move, double oldHp)
 	{
-		if(move.doesDamage() && (move.getTotalMovePoints() >= targetAnature.getTotalHp()))
+		if (move != null)
 		{
-			targetAnature.setCurrHp(1);
+			if(move.doesDamage() && (move.getTotalMovePoints() >= targetAnature.getTotalHp()) && targetAnature.getTotalHp() != 1)
+			{
+				targetAnature.setCurrHp(1);
+				return targetAnature.getName() + " survived on 1 heath thanks to their Determination!"; 
+				
+			}
+			
 		}
+		return "";
 	}
 
 	public AbilityIds getAbilityId()

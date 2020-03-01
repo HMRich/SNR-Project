@@ -11,6 +11,7 @@ import application.MoveResult;
 import application.MoveSet;
 import application.Player;
 import application.Startup;
+import application.abillities.AbilityResult;
 import application.animations.*;
 import application.enums.*;
 import application.items.Item;
@@ -1042,19 +1043,87 @@ public class BattleController
 		switch(choice)
 		{
 			case Attack_1:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(0), mEnemyHp));
+				mClickQueue.enqueue(() -> 
+				{
+					MoveResult result = mFightManager.attackEnemy(0);
+					AbilityResult playerResult = result.getPlayerAbilityResult();
+					AbilityResult enemyResult = result.getEnemyAbilityResult();
+					
+					if (playerResult.isActiviated())
+					{
+						mDialogueTxt.set(playerResult.getDialogue());
+						mClickQueue.addToFront(() -> mDialogueTxt.set(enemyResult.getDialogue())); 
+						mClickQueue.addToFront(() -> healthDrainMove(result, mEnemyHp));
+					}
+					
+					else
+					{
+						healthDrainMove(result, mEnemyHp);
+					}
+				});
 				break;
 
 			case Attack_2:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp));
+				mClickQueue.enqueue(() -> 
+				{
+					MoveResult result = mFightManager.attackEnemy(1);
+					AbilityResult playerResult = result.getPlayerAbilityResult();
+					AbilityResult enemyResult = result.getEnemyAbilityResult();
+					
+					if (playerResult.isActiviated())
+					{
+						mDialogueTxt.set(playerResult.getDialogue());
+						mClickQueue.addToFront(() -> mDialogueTxt.set(enemyResult.getDialogue())); 
+						mClickQueue.addToFront(() -> healthDrainMove(result, mEnemyHp));
+					}
+					
+					else
+					{
+						healthDrainMove(result, mEnemyHp);
+					}
+				});
 				break;
 
 			case Attack_3:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp));
+				mClickQueue.enqueue(() -> 
+				{
+					MoveResult result = mFightManager.attackEnemy(2);
+					AbilityResult playerResult = result.getPlayerAbilityResult();
+					AbilityResult enemyResult = result.getEnemyAbilityResult();
+					
+					if (playerResult.isActiviated())
+					{
+						mDialogueTxt.set(playerResult.getDialogue());
+						mClickQueue.addToFront(() -> mDialogueTxt.set(enemyResult.getDialogue())); 
+						mClickQueue.addToFront(() -> healthDrainMove(result, mEnemyHp));
+					}
+					
+					else
+					{
+						healthDrainMove(result, mEnemyHp);
+					}
+				});
 				break;
 
 			case Attack_4:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp));
+				mClickQueue.enqueue(() -> 
+				{
+					MoveResult result = mFightManager.attackEnemy(3);
+					AbilityResult playerResult = result.getPlayerAbilityResult();
+					AbilityResult enemyResult = result.getEnemyAbilityResult();
+					
+					if (playerResult.isActiviated())
+					{
+						mDialogueTxt.set(playerResult.getDialogue());
+						mClickQueue.addToFront(() -> mDialogueTxt.set(enemyResult.getDialogue())); 
+						mClickQueue.addToFront(() -> healthDrainMove(result, mEnemyHp));
+					}
+					
+					else
+					{
+						healthDrainMove(result, mEnemyHp);
+					}
+				});
 				break;
 
 			case Item:
@@ -1065,10 +1134,24 @@ public class BattleController
 					{
 						Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
 
-						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other
-																													// anatures
-						healthGain(result, mPlayerHp);
-
+						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other anatures
+						
+						AbilityResult playerResult = result.getPlayerAbilityResult();
+						AbilityResult enemyResult = result.getEnemyAbilityResult();																							
+						
+						if (playerResult.isActiviated())
+						{
+							mDialogueTxt.set(playerResult.getDialogue());
+							mClickQueue.addToFront(() -> mDialogueTxt.set(enemyResult.getDialogue())); 
+							mClickQueue.addToFront(() -> healthGain(result, mPlayerHp));
+						}
+						
+						else
+						{
+							healthGain(result, mPlayerHp);
+						}
+						
+						
 						mPlayer.getBackpack().removeItem(selectedItem.getItemId());
 						updateBagMenu();
 					}

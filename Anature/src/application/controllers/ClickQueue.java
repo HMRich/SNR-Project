@@ -80,4 +80,17 @@ public class ClickQueue
 		mHead = null;
 		mTail = null;	
 	}
+	
+	public void addToFront(Runnable val)
+	{
+		Node n = new Node(val);
+		n.mNext = mHead;
+		mHead = n;
+		mSize++;
+	}
+	
+	
+	
+	
+	
 }

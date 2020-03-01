@@ -24,5 +24,6 @@ public class AbilityPool
 		mAbilities.put(AbilityIds.Tyrannize , new Tyrannize());
 		mAbilities.put(AbilityIds.Spiky, new Spiky());
 		mAbilities.put(AbilityIds.Determination, new Determination());
+		mAbilities.put(AbilityIds.ToughSkin, new Determination());
 	}
 }
