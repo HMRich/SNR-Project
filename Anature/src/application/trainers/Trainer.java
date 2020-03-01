@@ -76,13 +76,33 @@ public class Trainer
 		return mName;
 	}
 
-	public String getSpritePath()
+	public TrainerIds getId()
 	{
-		return "/resources/images/trainers/" + mId.toString() + ".png";
+		return mId;
 	}
 
 	public ArrayList<Anature> getAnatures()
 	{
 		return mAnatures;
+	}
+	
+	public boolean canBattle()
+	{
+		if(mAnatures.size() == 0)
+		{
+			return false;
+		}
+		
+		boolean result = false;
+		for(Anature anature : mAnatures)
+		{
+			if(anature.getCurrHp() == 0)
+			{
+				result = true;
+				break;
+			}
+		}
+		
+		return result;
 	}
 }

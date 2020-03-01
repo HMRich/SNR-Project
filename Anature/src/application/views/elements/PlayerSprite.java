@@ -2,6 +2,8 @@ package application.views.elements;
 
 import java.util.ArrayList;
 
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Bounds;
@@ -152,6 +154,12 @@ public class PlayerSprite
 	
 	public void setImage(Image image)
 	{
+		if(image == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Default, "Tried making Player Sprite null.");
+			return;
+		}
+		
 		mImage.setImage(image);
 	}
 	

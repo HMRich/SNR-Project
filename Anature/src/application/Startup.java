@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.controllers.overworld_cells.StarterTownController;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
-import application.enums.TrainerIds;
 import application.items.ItemPool;
+import application.models.StarterTownModel;
 import application.trainers.Trainer;
-import application.trainers.TrainerBuilder;
 import application.views.overworld_cells.StarterTownCell;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -27,16 +27,16 @@ public class Startup extends Application
 	private static LoggerStartUp mLogger;
 	private static Stage mStage, mLoggerStage;
 	private static Player mPlayer;
-	private static Trainer mTrainer;
 	private static EventHandler<KeyEvent> mKeyListener;
 
-	private static StarterTownCell mStarterTown;
+	private static StarterTownModel mStarterTownModel;
+	private static StarterTownCell mStarterTownView;
+	private static StarterTownController mStarterTownController;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
 		mPlayer = new Player(null); // TODO Remove Null
-		mTrainer = null;
 		mKeyListener = new EventHandler<KeyEvent>()
 		{
 			@Override
@@ -93,28 +93,28 @@ public class Startup extends Application
 					mStage.setScene(intro);
 					break;
 
-				case Battle:
-					FXMLLoader loader = new FXMLLoader(Startup.class.getResource("/application/views/BattleView.fxml"));
-					Parent root = loader.load();
-					Scene scene = new Scene(root);
-					scene.setOnKeyReleased(mKeyListener);
-
-					BattleController controller = (BattleController) loader.getController();
-					controller.setUpBindingsAndElements(scene);
-					controller.updateElements(mPlayer, mTrainer);
-
-					mStage.setScene(scene);
-					break;
-
 				case Starter_Town:
-					if(mStarterTown == null)
+					if(mStarterTownController == null)
 					{
-						mStarterTown = new StarterTownCell(mLogger);
+						mStarterTownModel = new StarterTownModel();
+					}
+					
+					if(mStarterTownView == null)
+					{
+						mStarterTownView = new StarterTownCell(mLogger);
+					}
+					
+					if(mStarterTownController == null)
+					{
+						mStarterTownController = new StarterTownController(mLogger, mStarterTownView, mStarterTownModel);
 					}
 
-					Scene townScene = mStarterTown.getScene();
+					Scene townScene = mStarterTownView.getScene();
 
 					mStage.setScene(townScene);
+					break;
+					
+				default:
 					break;
 			}
 		}
@@ -127,6 +127,34 @@ public class Startup extends Application
 
 		mStage.setWidth(width);
 		mStage.setHeight(height);
+	}
+	
+	public static void startBattle(Trainer toBattle)
+	{
+		try
+		{
+			double width = mStage.getWidth();
+			double height = mStage.getHeight();
+			
+			FXMLLoader loader = new FXMLLoader(Startup.class.getResource("/application/views/BattleView.fxml"));
+			Parent root = loader.load();
+			Scene scene = new Scene(root);
+			scene.setOnKeyReleased(mKeyListener);
+
+			BattleController controller = (BattleController) loader.getController();
+			controller.setUpBindingsAndElements(scene);
+			controller.updateElements(mPlayer, toBattle);
+
+			mStage.setScene(scene);
+			
+			mStage.setWidth(width);
+			mStage.setHeight(height);
+		}
+		
+		catch(IOException e)
+		{
+			LoggerController.logEvent(LoggingTypes.Default, "Exception when starting battle. \n" + e.getMessage());
+		}
 	}
 
 	public static void createDemo()
@@ -141,8 +169,6 @@ public class Startup extends Application
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
-
-		mTrainer = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 
 		changeScene(SceneType.Starter_Town);
 	}

@@ -1,20 +1,15 @@
 package application.views.overworld_cells;
 
 import application.LoggerStartUp;
-import application.Startup;
 import application.enums.Direction;
-import application.enums.SceneType;
 import application.views.elements.ImageLayer;
 import application.views.elements.TrainerSprite;
-import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 
 public class StarterTownCell extends AbstractCell
 {
-	private TrainerSprite mKelly;
+	public TrainerSprite mKelly;
 
 	public StarterTownCell(LoggerStartUp logger)
 	{
@@ -32,25 +27,6 @@ public class StarterTownCell extends AbstractCell
 
 		mCollisions.add(mKelly.getCollisionBox());
 		mKelly.addToContainer(mBackground);
-	}
-
-	@Override
-	protected void timerHook()
-	{
-		int trainerIndex = mKelly.getIndex(mBackground);
-		int playerIndex = mPlayer.getIndex(mBackground);
-
-		if(mPlayer.getBoxY() > mKelly.getCollisionY() && playerIndex < trainerIndex)
-		{
-			mPlayer.removeFromContainer(mBackground);
-			mPlayer.addToContainer(mBackground, trainerIndex + 1);
-		}
-
-		else if(mPlayer.getBoxY() <= mKelly.getCollisionY() && playerIndex > trainerIndex)
-		{
-			mPlayer.removeFromContainer(mBackground);
-			mPlayer.addToContainer(mBackground, trainerIndex);
-		}
 	}
 
 	@Override
@@ -84,64 +60,6 @@ public class StarterTownCell extends AbstractCell
 		addCollisionRectangle(236, 1180, 250, 127);
 
 		mBackground.getChildren().addAll(mCollisions);
-	}
-
-	@Override
-	protected void keyPressHook(KeyEvent event)
-	{
-		if(event.getCode() == KeyCode.E)
-		{
-			if(mKelly.interact(mPlayer, getPlayerFacing()) != null)
-			{
-//				System.out.println("ACTIVATE BATTLE");
-				mRight = false;
-				mLeft = false;
-				mDown = false;
-				mUp = false;
-				
-				Startup.changeScene(SceneType.Battle);
-			}
-		}
-	}
-
-	@Override
-	protected boolean xCollisionCheck()
-	{
-		Bounds left = mPlayer.getLeftBounds();
-		Bounds right = mPlayer.getRightBounds();
-		
-		for(Rectangle toCheck : mCollisions)
-		{
-			boolean rightCheck = right.intersects(toCheck.getBoundsInParent());
-			boolean leftCheck = left.intersects(toCheck.getBoundsInParent());
-			
-			if((rightCheck && ! leftCheck) || (leftCheck && !rightCheck))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	@Override
-	protected boolean yCollisionCheck()
-	{
-		Bounds top = mPlayer.getTopBounds();
-		Bounds bot = mPlayer.getBotBounds();
-		
-		for(Rectangle toCheck : mCollisions)
-		{
-			boolean topCheck = top.intersects(toCheck.getBoundsInParent());
-			boolean botCheck = bot.intersects(toCheck.getBoundsInParent());
-			
-			if((topCheck && !botCheck) || (botCheck && !topCheck))
-			{
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	private void addCollisionRectangle(double x, double y, double width, double height)
