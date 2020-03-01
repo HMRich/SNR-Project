@@ -1,16 +1,24 @@
 package application.controllers.overworld_cells;
 
+import java.util.Random;
+
 import application.LoggerStartUp;
+import application.Startup;
 import application.controllers.ClickQueue;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
+import application.enums.TrainerIds;
+import application.trainers.Trainer;
+import application.trainers.TrainerBuilder;
 import application.views.elements.PlayerSprite;
 import application.views.overworld_cells.AbstractCell;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.Rectangle;
 
 public abstract class AbstractController
 {
@@ -56,17 +64,68 @@ public abstract class AbstractController
 
 	protected abstract void timerHook();
 
-	protected abstract boolean xCollisionCheck();
-
-	protected abstract boolean yCollisionCheck();
-
 	protected abstract void keyPressHook(KeyEvent event);
+
+	private boolean grassPatchHook()
+	{
+		Bounds player = mPlayer.getBoxBounds();
+		boolean result = false;
+		
+		for(Rectangle toCheck : mView.getGrassPatches())
+		{
+			result = player.intersects(toCheck.getBoundsInParent());
+			
+			if(result)
+				break;
+		}
+		
+		return result;
+	}
+
+	private boolean xCollisionCheck()
+	{
+		Bounds left = mPlayer.getLeftBounds();
+		Bounds right = mPlayer.getRightBounds();
+
+		for(Rectangle toCheck : mView.getCollisions())
+		{
+			boolean rightCheck = right.intersects(toCheck.getBoundsInParent());
+			boolean leftCheck = left.intersects(toCheck.getBoundsInParent());
+
+			if((rightCheck && !leftCheck) || (leftCheck && !rightCheck))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private boolean yCollisionCheck()
+	{
+		Bounds top = mPlayer.getTopBounds();
+		Bounds bot = mPlayer.getBotBounds();
+
+		for(Rectangle toCheck : mView.getCollisions())
+		{
+			boolean topCheck = top.intersects(toCheck.getBoundsInParent());
+			boolean botCheck = bot.intersects(toCheck.getBoundsInParent());
+
+			if((topCheck && !botCheck) || (botCheck && !topCheck))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 	
 	private void activateTimer()
 	{
 		mTimer = new AnimationTimer()
 		{
 			private long mLastUpdate = -1;
+			private double mLastWildX = 0, mLastWildY = 0;
 
 			@Override
 			public void handle(long now)
@@ -125,6 +184,28 @@ public abstract class AbstractController
 						if(!yCollisionCheck())
 						{
 							mPlayer.setY(oldY);
+						}
+					}
+					
+					if(grassPatchHook())
+					{
+						double currX = mPlayer.getX();
+						double currY = mPlayer.getY();
+						
+						if(currX > mLastWildX + 10 || currX < mLastWildX - 10 || currY > mLastWildY + 10 || currY < mLastWildY - 10)
+						{
+							mLastWildX = mPlayer.getX();
+							mLastWildY = mPlayer.getY();
+							
+							Random r = new Random();
+
+							if(r.nextInt(100) > 79) // TODO modify encounter rate calculations
+							{
+								Trainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
+								Startup.startBattle(wildEncounter);
+								
+								mView.mCanMove = false;
+							}
 						}
 					}
 				}

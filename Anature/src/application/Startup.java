@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.controllers.overworld_cells.PathOneController;
 import application.controllers.overworld_cells.StarterTownController;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
@@ -12,6 +13,7 @@ import application.enums.Species;
 import application.items.ItemPool;
 import application.models.StarterTownModel;
 import application.trainers.Trainer;
+import application.views.overworld_cells.PathOneCell;
 import application.views.overworld_cells.StarterTownCell;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -32,6 +34,10 @@ public class Startup extends Application
 	private static StarterTownModel mStarterTownModel;
 	private static StarterTownCell mStarterTownView;
 	private static StarterTownController mStarterTownController;
+
+//	private static PathOneModel mPathOneModel;
+	private static PathOneCell mPathOneView;
+	private static PathOneController mPathOneController;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -59,15 +65,15 @@ public class Startup extends Application
 		mStage.setWidth(1280);
 		mStage.setHeight(720);
 
-		changeScene(SceneType.Intro);
-		mStage.show();
-
 		mLogger = new LoggerStartUp(mKeyListener);
 		mLogger.init();
 		mLoggerStage = new Stage();
 		mLogger.start(mLoggerStage);
 		mStage.setOnCloseRequest(event -> System.exit(-3000));
 		LoggerController.logEvent(LoggingTypes.Default, "The logger has started.");
+
+		changeScene(SceneType.Intro);
+		mStage.show();
 	}
 
 	public static void main(String[] args)
@@ -94,7 +100,7 @@ public class Startup extends Application
 					break;
 
 				case Starter_Town:
-					if(mStarterTownController == null)
+					if(mStarterTownModel == null)
 					{
 						mStarterTownModel = new StarterTownModel();
 					}
@@ -112,6 +118,27 @@ public class Startup extends Application
 					Scene townScene = mStarterTownView.getScene();
 
 					mStage.setScene(townScene);
+					break;
+
+				case Path_1:
+//					if(mPathOneModel == null)
+//					{
+//						mPathOneModel = new StarterTownModel();
+//					}
+					
+					if(mPathOneView == null)
+					{
+						mPathOneView = new PathOneCell(mLogger);
+					}
+					
+					if(mPathOneController == null)
+					{
+						mPathOneController = new PathOneController(mLogger, mPathOneView);
+					}
+
+					Scene pathOneScene = mPathOneView.getScene();
+
+					mStage.setScene(pathOneScene);
 					break;
 					
 				default:
@@ -170,7 +197,7 @@ public class Startup extends Application
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
 
-		changeScene(SceneType.Starter_Town);
+		changeScene(SceneType.Path_1);
 	}
 
 	public static String getPlayerName()

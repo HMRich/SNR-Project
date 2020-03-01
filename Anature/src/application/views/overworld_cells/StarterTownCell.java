@@ -5,7 +5,6 @@ import application.enums.Direction;
 import application.views.elements.ImageLayer;
 import application.views.elements.TrainerSprite;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
 
 public class StarterTownCell extends AbstractCell
 {
@@ -14,6 +13,8 @@ public class StarterTownCell extends AbstractCell
 	public StarterTownCell(LoggerStartUp logger)
 	{
 		super(logger, 427, 468);
+		mPlayer.setX(485);
+		mPlayer.setY(599);
 	}
 
 	@Override
@@ -27,6 +28,12 @@ public class StarterTownCell extends AbstractCell
 
 		mCollisions.add(mKelly.getCollisionBox());
 		mKelly.addToContainer(mBackground);
+	}
+
+	@Override
+	protected void addToForeground()
+	{
+		// Nothing to add
 	}
 
 	@Override
@@ -58,14 +65,11 @@ public class StarterTownCell extends AbstractCell
 		addCollisionRectangle(446, 510, 250, 127);
 		addCollisionRectangle(1077, 794, 250, 127);
 		addCollisionRectangle(236, 1180, 250, 127);
-
-		mBackground.getChildren().addAll(mCollisions);
 	}
 
-	private void addCollisionRectangle(double x, double y, double width, double height)
+	@Override
+	protected void createGrassPatches()
 	{
-		Rectangle collision = new Rectangle(x, y, width, height);
-		collision.visibleProperty().bind(mShowCollision);
-		mCollisions.add(collision);
+		// None to add
 	}
 }

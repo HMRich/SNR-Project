@@ -7,10 +7,8 @@ import application.enums.LoggingTypes;
 import application.models.StarterTownModel;
 import application.trainers.Trainer;
 import application.views.overworld_cells.StarterTownCell;
-import javafx.geometry.Bounds;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.shape.Rectangle;
 
 public class StarterTownController extends AbstractController
 {
@@ -48,46 +46,6 @@ public class StarterTownController extends AbstractController
 			mPlayer.removeFromContainer(mView.getBackground());
 			mPlayer.addToContainer(mView.getBackground(), trainerIndex);
 		}
-	}
-
-	@Override
-	protected boolean xCollisionCheck()
-	{
-		Bounds left = mPlayer.getLeftBounds();
-		Bounds right = mPlayer.getRightBounds();
-
-		for(Rectangle toCheck : mView.getCollisions())
-		{
-			boolean rightCheck = right.intersects(toCheck.getBoundsInParent());
-			boolean leftCheck = left.intersects(toCheck.getBoundsInParent());
-
-			if((rightCheck && !leftCheck) || (leftCheck && !rightCheck))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	@Override
-	protected boolean yCollisionCheck()
-	{
-		Bounds top = mPlayer.getTopBounds();
-		Bounds bot = mPlayer.getBotBounds();
-
-		for(Rectangle toCheck : mView.getCollisions())
-		{
-			boolean topCheck = top.intersects(toCheck.getBoundsInParent());
-			boolean botCheck = bot.intersects(toCheck.getBoundsInParent());
-
-			if((topCheck && !botCheck) || (botCheck && !topCheck))
-			{
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	@Override

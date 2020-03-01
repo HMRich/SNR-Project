@@ -25,7 +25,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -46,7 +45,7 @@ public abstract class AbstractCell
 	protected static PlayerSprite mPlayer;
 	private Direction mPcFacing;
 	protected ImageLayer mBackground;
-	protected ArrayList<Rectangle> mCollisions;
+	protected ArrayList<Rectangle> mCollisions, mGrassPatches;
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 
@@ -61,6 +60,7 @@ public abstract class AbstractCell
 		mDialogueTxtProperty = new SimpleStringProperty("Sample Text");
 		mShowCollision = LoggerController.getCollisionBoxProperty();
 		mCollisions = new ArrayList<Rectangle>();
+		mGrassPatches = new ArrayList<Rectangle>();
 		mCanMove = true;
 
 		mHeight = height;
@@ -79,7 +79,12 @@ public abstract class AbstractCell
 
 		mPlayer.addToContainer(mBackground);
 		addToBackground();
+		addToForeground();
 		createCollisons();
+		createGrassPatches();
+
+		mBackground.getChildren().addAll(mGrassPatches);
+		mBackground.getChildren().addAll(mCollisions);
 
 		BorderPane cell = new BorderPane(mMap);
 		
@@ -102,11 +107,15 @@ public abstract class AbstractCell
 
 	protected abstract void addToBackground();
 
+	protected abstract void addToForeground();
+
 	protected abstract ImageLayer createBackground();
 
 	protected abstract ImageLayer createForeground();
 
 	protected abstract void createCollisons();
+
+	protected abstract void createGrassPatches();
 	
 	private void setUpDialogueBox(BorderPane cell)
 	{
@@ -187,12 +196,33 @@ public abstract class AbstractCell
 		return value;
 	}
 
+	protected void addCollisionRectangle(double x, double y, double width, double height)
+	{
+		mCollisions.add(createRectangle(x, y, width, height));
+	}
+
+	protected void addGrassPatchRectangle(double x, double y, double width, double height)
+	{
+		Rectangle rect = createRectangle(x, y, width, height);
+		rect.setFill(Color.DARKGREEN);
+		mGrassPatches.add(rect);
+	}
+	
+	private Rectangle createRectangle(double x, double y, double width, double height)
+	{
+		Rectangle rect = new Rectangle(x, y, width, height);
+		rect.visibleProperty().bind(mShowCollision);
+		
+		return rect;
+	}
+
 	public Scene getScene()
 	{
 		mRight = false;
 		mLeft = false;
 		mUp = false;
 		mDown = false;
+		mCanMove = true;
 
 		return mScene;
 	}
@@ -258,6 +288,11 @@ public abstract class AbstractCell
 	public ArrayList<Rectangle> getCollisions()
 	{
 		return mCollisions;
+	}
+
+	public ArrayList<Rectangle> getGrassPatches()
+	{
+		return mGrassPatches;
 	}
 	
 	public void showDialogue(String txt)

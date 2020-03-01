@@ -193,7 +193,7 @@ public class BattleController
 		setUpClickTracker(scene);
 
 		setUpGround(scene);
-		setUpSprites(scene);
+		setUpHumanSprites(scene);
 
 		setUpSwitchElements(scene);
 		setUpItemElements(scene);
@@ -211,75 +211,21 @@ public class BattleController
 		blinkAnimation.play();
 	}
 
-	private void setUpSprites(Scene scene)
+	private void setUpHumanSprites(Scene scene)
 	{
-		XSlideAnimation playerSlide = new XSlideAnimation(mPlayerImage, Duration.millis(1500), 1, 7);
-		playerSlide.setOnFinished(event -> mCanClick.set(true));
-		playerSlide.play();
-
-		mClickQueue.enqueue(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				PlayerAnimation playerAnimation = new PlayerAnimation(mPlayerImage);
-				playerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
-				{
-					@Override
-					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
-					{
-						OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200), true);
-						back.play();
-					}
-				});
-
-				playerAnimation.play();
-
-				OpacityAnimation trainerFade = new OpacityAnimation(mTrainerImage, Duration.millis(1000), false);
-				trainerFade.setOnFinished(new EventHandler<ActionEvent>()
-				{
-					@Override
-					public void handle(ActionEvent actionEvent)
-					{
-						OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200), true);
-						back.setOnFinished(event -> mShowBtns.set(true));
-						back.play();
-
-						mPlayerImage.setVisible(false);
-						mTrainerImage.setVisible(false);
-					}
-				});
-
-				trainerFade.play();
-			}
-		});
-
 		createBindsImageView(mPlayerImage, scene, 4.5, 3, 1.9);
-
-		XSlideAnimation trainerSlide = new XSlideAnimation(mTrainerImage, Duration.millis(1500), 1, 1.8);
-		trainerSlide.play();
-
 		createBindsImageView(mTrainerImage, scene, 13, 5, 3);
 	}
 
 	private void setUpGround(Scene scene)
 	{
-		XSlideAnimation xPlayerGroundSlide = new XSlideAnimation(mPlayerGroundImage, Duration.millis(1500), 1.1, 8);
-		xPlayerGroundSlide.play();
-
 		createBindsImageView(mPlayerGroundImage, scene, 1.65, 2.4, 5);
-
-		XSlideAnimation xTrainerGroundSlide = new XSlideAnimation(mTrainerGroundImage, Duration.millis(1500), 1.05, 2.05);
-		xTrainerGroundSlide.play();
-
 		createBindsImageView(mTrainerGroundImage, scene, 3.5, 3, 6);
 	}
 
 	private void setUpAnatureImgs(Scene scene)
 	{
 		createBindsImageView(mAnatureFront, scene, 1.75, 7.5, 5.5, 3.5);
-		mAnatureFront.setOpacity(0);
-
 		createBindsImageView(mAnatureBack, scene, 5, 2.9, 4, 2.5);
 		mAnatureBack.setOpacity(0);
 	}
@@ -692,14 +638,99 @@ public class BattleController
 		mPlayer = player;
 		mEnemyTrainer = enemyTrainer;
 
+		mTrainerImage.setImage(enemyTrainer.getBattleSprite());
 		updatePlayerAnature(playerCurr);
 		updateMoves(playerCurr);
 		updateSwitch(player.getAnatures(), player.getSelectedIndex());
 		updateBagMenu();
-
-		mDialogueTxt.set(enemyTrainer.getName() + " has started a battle with " + player.getName() + "!");
+		
+		mAnatureFront.setImage(enemyCurr.getFrontSprite());
+		
+		startInto(player, enemyTrainer, enemyCurr);
 
 		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(), enemyTrainer.getName());
+	}
+	
+	private void startInto(Player player, Trainer enemyTrainer, Anature enemyCurr)
+	{
+		mClickQueue.enqueue(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				PlayerAnimation playerAnimation = new PlayerAnimation(mPlayerImage);
+				playerAnimation.isFinished.addListener(new ChangeListener<Boolean>()
+				{
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+					{
+						OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200), true);
+						back.setOnFinished(event -> mShowBtns.set(true));
+						back.play();
+
+						mPlayerImage.setVisible(false);
+						mTrainerImage.setVisible(false);
+					}
+				});
+
+				playerAnimation.play();
+
+				if(enemyTrainer.getId() != TrainerIds.Wild)
+				{
+					OpacityAnimation trainerFade = new OpacityAnimation(mTrainerImage, Duration.millis(1000), false);
+					trainerFade.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent actionEvent)
+						{
+							OpacityAnimation back = new OpacityAnimation(mAnatureFront, Duration.millis(200), true);
+							back.play();
+						}
+					});
+
+					trainerFade.play();
+				}
+			}
+		});
+		
+		if(enemyTrainer.getId() == TrainerIds.Wild)
+		{
+			mAnatureFront.setOpacity(100);
+			startIntroSlides(true);
+			mDialogueTxt.set(player.getName() + " has encountered a wild " + enemyCurr.getName() + "!");
+		}
+		
+		else
+		{
+			mAnatureFront.setOpacity(0);
+			startIntroSlides(false);
+			mDialogueTxt.set(enemyTrainer.getName() + " has started a battle with " + player.getName() + "!");
+		}
+	}
+	
+	private void startIntroSlides(boolean isWild)
+	{
+		XSlideAnimation playerSlide = new XSlideAnimation(mPlayerImage, Duration.millis(1500), 1, 7);
+		playerSlide.setOnFinished(event -> mCanClick.set(true));
+		playerSlide.play();
+		
+
+		XSlideAnimation xPlayerGroundSlide = new XSlideAnimation(mPlayerGroundImage, Duration.millis(1500), 1.1, 8);
+		xPlayerGroundSlide.play();
+		
+		if(!isWild)
+		{
+			XSlideAnimation trainerSlide = new XSlideAnimation(mTrainerImage, Duration.millis(1500), 1, 1.8);
+			trainerSlide.play();
+
+			XSlideAnimation xTrainerGroundSlide = new XSlideAnimation(mTrainerGroundImage, Duration.millis(1500), 1.05, 2.05);
+			xTrainerGroundSlide.play();
+		}
+		
+		else
+		{
+			mTrainerGroundImage.layoutXProperty().bind(mTrainerGroundImage.getScene().widthProperty().divide(2.05));
+		}
 	}
 
 	private void updatePlayerAnature(Anature playerCurr)
@@ -713,6 +744,8 @@ public class BattleController
 		mPlayerXpTotal.set(100); // TODO change to a standard
 
 		mPlayerLvl.set(playerCurr.getLevel());
+		
+		mAnatureBack.setImage(playerCurr.getBackSprite());
 
 		updateMoves(playerCurr);
 	}
