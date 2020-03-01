@@ -1042,19 +1042,23 @@ public class BattleController
 		switch(choice)
 		{
 			case Attack_1:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(0), mEnemyHp));
+				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(0), mEnemyHp));
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 0);
 				break;
 
 			case Attack_2:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp));
+				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp));
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 1);
 				break;
 
 			case Attack_3:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp));
+				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp));
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 2);
 				break;
 
 			case Attack_4:
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp));
+				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp));
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 3);
 				break;
 
 			case Item:
@@ -1134,15 +1138,17 @@ public class BattleController
 	{
 		if(enemyTurn.equals(AiChoice.Move1) || enemyTurn.equals(AiChoice.Move2) || enemyTurn.equals(AiChoice.Move3) || enemyTurn.equals(AiChoice.Move4))
 		{
-			mClickQueue.enqueue(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-//					healthDrain(mFightManager.attackPlayer(Integer.parseInt(enemyTurn.charAt(4) + "")), mPlayerHp);
-					healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp); // TODO Change to above when Demo is Done!
-				}
-			});
+//			mClickQueue.enqueue(new Runnable()
+//			{
+//				@Override
+//				public void run()
+//				{
+////					healthDrain(mFightManager.attackPlayer(Integer.parseInt(enemyTurn.charAt(4) + "")), mPlayerHp);
+//					healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp); // TODO Change to above when Demo is Done!
+//				}
+//			});
+			
+			statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 0);
 		}
 	}
 
@@ -1224,6 +1230,76 @@ public class BattleController
 		mShowMoveSelection.set(false);
 		mShowMoveSe.set(false);
 		mShowBtns.set(true);
+	}
+	
+	private void statusEffectForTurn(Anature anature, boolean isPlayer, int indexOfMove) {
+		StatusEffects anatureStatus = anature.getStatus();
+		
+		switch (anatureStatus) {
+			case Sleep:
+				mClickQueue.enqueueToFront(new Runnable() {
+	
+					@Override
+					public void run() {
+						mDialogueTxt.set(anature.getName() +  " is fast asleep!");
+						mFightManager.attackEnemy(-1);
+					}
+				});
+				
+				break;
+	
+			case Paralysis:
+				mClickQueue.enqueueToFront(new Runnable() {
+	
+					@Override
+					public void run() {
+						mDialogueTxt.set(anature.getName() +  " is paralysed! It may not be able to move!");
+						if(Math.random() > 0.25) {
+							if(isPlayer) {
+								healthDrainMove(mFightManager.attackEnemy(indexOfMove), mPlayerHp);
+							} else {
+								healthDrainMove(mFightManager.attackPlayer(indexOfMove), mEnemyHp);
+							}
+						} else {
+							if(isPlayer) {
+								mFightManager.attackEnemy(-1); 
+							} else {
+								mFightManager.attackPlayer(-1); 
+							}
+							
+						}
+					}
+				});
+				break;
+				
+			case Burn:
+				mClickQueue.enqueueToFront(new Runnable() {
+	
+					@Override
+					public void run() {
+						mDialogueTxt.set(anature.getName() +  " is burned!");
+						if(isPlayer) {
+							healthDrainMove(mFightManager.attackEnemy(indexOfMove), mPlayerHp);
+						} else {
+							healthDrainMove(mFightManager.attackPlayer(indexOfMove), mEnemyHp);
+						}
+						
+					}
+					
+				});
+				break;
+				
+			case None:
+				if(isPlayer) {
+					mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(indexOfMove), mEnemyHp));
+				} else {
+					mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackPlayer(indexOfMove), mPlayerHp));
+				}
+				
+				break; 
+		}
+		mCanClick.set(true);
+		
 	}
 
 	private ObjectProperty<Font> getFontProperty(int toDivideBy, Scene scene)

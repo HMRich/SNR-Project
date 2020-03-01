@@ -4,6 +4,7 @@ import application.abillities.Ability;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.Type;
+import application.enums.StatusEffects;
 
 public class Anature
 {
@@ -13,6 +14,7 @@ public class Anature
 	private MoveSet mMoves;
 	private Type mPrimaryType, mSecondaryType;
 	private Species mSpecies;
+	private StatusEffects mStatus = StatusEffects.None;
 	private boolean mIsShiny;
 	private Ability mAbility;
 	private int mIndexNum;
@@ -306,6 +308,16 @@ public class Anature
 	public void setAccuracy(int mAccuracy)
 	{
 		this.mAccuracy = mAccuracy;
+	}
+	
+	public StatusEffects getStatus()
+	{
+		return mStatus;
+	}
+
+	public void setStatus(StatusEffects mStatus)
+	{
+		this.mStatus = mStatus;
 	}
 
 	public void resetTempStats()

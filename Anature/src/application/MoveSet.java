@@ -1,11 +1,15 @@
 package application;
 
+import application.enums.MoveIds;
+import application.enums.Type;
 import application.moves.Move;
+import application.moves.MovePool;
 
 public class MoveSet
 {
 	private int mMove1MovePoints, mMove2MovePoints, mMove3MovePoints, mMove4MovePoints;
 	private Move mMove1, mMove2, mMove3, mMove4;
+	private Move mSkipTurn = MovePool.getMove(MoveIds.Skip_Turn);
 
 	public MoveSet(Move move1, Move move2, Move move3, Move move4)
 	{
@@ -39,6 +43,9 @@ public class MoveSet
 
 			case 3:
 				return mMove4;
+			
+			case -1: 
+				return mSkipTurn;
 
 			default:
 				throw new IllegalStateException("index was not in a vaild state.");
@@ -64,6 +71,9 @@ public class MoveSet
 			case 3:
 				mMove4 = move;
 				break;
+			
+			case -1:
+				break;
 
 			default:
 				throw new IllegalStateException("index was not in a valid value.");
@@ -85,6 +95,9 @@ public class MoveSet
 
 			case 3:
 				return mMove4MovePoints;
+			
+			case -1:
+				return 0;
 
 			default:
 				throw new IllegalStateException("index was not in a vaild state.");
@@ -111,6 +124,9 @@ public class MoveSet
 				mMove4MovePoints = movePoints;
 				break;
 
+			case -1:
+				break;
+				
 			default:
 				throw new IllegalStateException("index was not in a valid value.");
 		}
@@ -134,6 +150,9 @@ public class MoveSet
 
 			case 3:
 				mMove4MovePoints--;
+				break;
+			
+			case -1:
 				break;
 
 			default:

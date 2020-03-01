@@ -73,6 +73,25 @@ public class ClickQueue
 		
 		return val;
 	}
+	
+	public void enqueueToFront(Runnable val){
+		Node node = new Node(val);
+		
+		if(mSize == 0)
+		{
+			mHead = node;
+		}
+		
+		else
+		{
+			node.mNext = mHead;
+			mHead = node; 
+			
+		}
+
+		mSize++;
+		
+	}
 
 	public void clear()
 	{
