@@ -17,12 +17,12 @@ public class LoggerController
 {
 	@FXML private GridPane mLoggingGridPane;
 	@FXML private HBox MRadipHBox;
-	@FXML private RadioButton mMouseLocationRadio, mErrorLoggingRadio, mMiscLoggingRadio;
+	@FXML private RadioButton mMouseLocationRadio, mShowCollisionBoxesRadio, mCollisionRadio, mErrorLoggingRadio, mMiscLoggingRadio;
 	@FXML private TextArea mLoggingTextArea;
 
 	private static StringProperty mLoggingText;
 	private static boolean mErrorLogging, mMiscLogging;
-	private static BooleanProperty mMouseLocation;
+	private static BooleanProperty mMouseLocation, mShowCollisionBoxes, mCollision;
 
 	public void initialize()
 	{
@@ -31,6 +31,12 @@ public class LoggerController
 		
 		mMouseLocation = new SimpleBooleanProperty();
 		mMouseLocation.bind(mMouseLocationRadio.selectedProperty());
+		
+		mShowCollisionBoxes = new SimpleBooleanProperty();
+		mShowCollisionBoxes.bind(mShowCollisionBoxesRadio.selectedProperty());
+		
+		mCollision = new SimpleBooleanProperty();
+		mCollision.bind(mCollisionRadio.selectedProperty());
 		
 		onRadioToggle();
 	}
@@ -82,5 +88,15 @@ public class LoggerController
 	public static boolean isMouseLocationEnabled()
 	{
 		return mMouseLocation.get();
+	}
+	
+	public static boolean isCollisionEnabled()
+	{
+		return mCollision.get();
+	}
+	
+	public static BooleanProperty getCollisionBoxProperty()
+	{
+		return mShowCollisionBoxes;
 	}
 }

@@ -47,9 +47,9 @@ public class StarterTownCell extends AbstractCell
 	protected void createCollisons()
 	{
 		// Border
-		addCollisionRectangle(277, 55, 1151, 50);
+		addCollisionRectangle(277, 55, 1151, 70);
 		addCollisionRectangle(1430, 76, 15, 1539);
-		addCollisionRectangle(108, 1591, 1539, 15);
+		addCollisionRectangle(101, 1640, 1352, 15);
 		addCollisionRectangle(90, 680, 15, 1000);
 		addCollisionRectangle(90, 660, 200, 15);
 		addCollisionRectangle(277, 37, 15, 620);

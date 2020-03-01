@@ -103,6 +103,6 @@ public class Trainer
 			}
 		}
 		
-		return result;
+		return !result;
 	}
 }

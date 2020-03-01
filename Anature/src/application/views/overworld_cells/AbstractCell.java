@@ -3,6 +3,7 @@ package application.views.overworld_cells;
 import java.util.ArrayList;
 
 import application.LoggerStartUp;
+import application.animations.BlinkingAnimation;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
@@ -11,12 +12,16 @@ import application.views.elements.PlayerSprite;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -29,12 +34,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 public abstract class AbstractCell
 {
 	protected double mHeight, mWidth;
 	protected final DoubleProperty mZoom;
-	public boolean mUp, mDown, mLeft, mRight;
+	public boolean mUp, mDown, mLeft, mRight, mCanMove;
 	private Scene mScene;
 	protected static PlayerSprite mPlayer;
 	private Direction mPcFacing;
@@ -43,14 +50,18 @@ public abstract class AbstractCell
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 
+	private StringProperty mDialogueTxtProperty;
+	private BooleanProperty mShowDialogueProperty;
 	private Image mStandDownImg;
 
 	public AbstractCell(LoggerStartUp logger, double width, double height)
 	{
 		mZoom = new SimpleDoubleProperty(2.6);
-
-		mShowCollision = new SimpleBooleanProperty(false);
+		mShowDialogueProperty = new SimpleBooleanProperty(false);
+		mDialogueTxtProperty = new SimpleStringProperty("Sample Text");
+		mShowCollision = LoggerController.getCollisionBoxProperty();
 		mCollisions = new ArrayList<Rectangle>();
+		mCanMove = true;
 
 		mHeight = height;
 		mWidth = width;
@@ -85,15 +96,8 @@ public abstract class AbstractCell
 		mMap.setClip(clip);
 		mMap.translateXProperty().bind(clip.xProperty().multiply(-1));
 		mMap.translateYProperty().bind(clip.yProperty().multiply(-1));
-
-		mScene.setOnMouseClicked(new EventHandler<MouseEvent>()
-		{
-			@Override
-			public void handle(MouseEvent event)
-			{
-				mShowCollision.set(!mShowCollision.get());
-			}
-		});
+		
+		setUpDialogueBox(cell);
 	}
 
 	protected abstract void addToBackground();
@@ -103,6 +107,57 @@ public abstract class AbstractCell
 	protected abstract ImageLayer createForeground();
 
 	protected abstract void createCollisons();
+	
+	private void setUpDialogueBox(BorderPane cell)
+	{
+		ImageView dialogueBox = new ImageView(
+				new Image(getClass().getResource("/resources/images/overworld/dialogue/Blue_Dialogue_Box.png").toExternalForm(), 1000.0, 1000.0, true, false));
+		
+		dialogueBox.fitWidthProperty().bind(mScene.widthProperty().divide(1.022));
+		dialogueBox.fitHeightProperty().bind(mScene.heightProperty().divide(4.5569));
+		dialogueBox.layoutXProperty().bind(mScene.widthProperty().divide(91.428));
+		dialogueBox.layoutYProperty().bind(mScene.heightProperty().divide(1.306));
+		dialogueBox.visibleProperty().bind(mShowDialogueProperty);
+		
+		ImageView dialogueClickIndicator = new ImageView(
+				new Image(getClass().getResource("/resources/images/battle/BattleScreen_Clickindicator.png").toExternalForm(), 1000.0, 1000.0, true, false));
+		
+		dialogueClickIndicator.fitWidthProperty().bind(mScene.widthProperty().divide(35.55));
+		dialogueClickIndicator.fitHeightProperty().bind(mScene.heightProperty().divide(25.714));
+		dialogueClickIndicator.layoutXProperty().bind(mScene.widthProperty().divide(1.0987));
+		dialogueClickIndicator.layoutYProperty().bind(mScene.heightProperty().divide(1.0746));
+		dialogueClickIndicator.visibleProperty().bind(mShowDialogueProperty);
+		
+		BlinkingAnimation blinkAnimation = new BlinkingAnimation(dialogueClickIndicator, Duration.seconds(1.5));
+		blinkAnimation.play();
+		
+		TextArea dialogueTxt = new TextArea();
+		dialogueTxt.setEditable(false);
+		dialogueTxt.setWrapText(true);
+		dialogueTxt.setFocusTraversable(false);
+		
+		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), 75);
+		ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
+
+		mScene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
+				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
+
+		mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
+				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
+		
+		dialogueTxt.getStylesheets().add("/resources/css/BattleStyle.css");
+		dialogueTxt.textProperty().bind(mDialogueTxtProperty);
+		dialogueTxt.visibleProperty().bind(dialogueBox.visibleProperty());
+		dialogueTxt.fontProperty().bind(fontProperty);
+		
+		dialogueTxt.prefWidthProperty().bind(mScene.widthProperty().divide(1.14));
+		dialogueTxt.prefHeightProperty().bind(mScene.heightProperty().divide(5.29));
+		dialogueTxt.layoutXProperty().bind(mScene.widthProperty().divide(16.202));
+		dialogueTxt.layoutYProperty().bind(mScene.heightProperty().divide(1.28));
+		
+		Pane overlay = new Pane(dialogueBox, dialogueTxt, dialogueClickIndicator);
+		cell.getChildren().add(overlay);
+	}
 
 	public double clampRange(double value, double min, double max)
 	{
@@ -111,6 +166,23 @@ public abstract class AbstractCell
 
 		if(value > max)
 			return max;
+
+		return value;
+	}
+	
+	private double getFontSize()
+	{
+		double value = mScene.getWidth();
+
+		if(mScene.getHeight() < 464)
+		{
+			value = mScene.getHeight() / 0.45;
+		}
+
+		if(mScene.getWidth() >= 1940)
+		{
+			value = value - (mScene.getWidth() - 1940);
+		}
 
 		return value;
 	}
@@ -186,5 +258,22 @@ public abstract class AbstractCell
 	public ArrayList<Rectangle> getCollisions()
 	{
 		return mCollisions;
+	}
+	
+	public void showDialogue(String txt)
+	{
+		if(txt == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Default, "Tried to show overworld dialogue that was null");
+			return;
+		}
+		
+		mDialogueTxtProperty.set(txt);
+		mShowDialogueProperty.set(true);
+	}
+	
+	public void hideDialogue()
+	{
+		mShowDialogueProperty.set(false);
 	}
 }

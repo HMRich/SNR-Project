@@ -1,6 +1,7 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
+import application.controllers.ClickQueue;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
@@ -19,6 +20,7 @@ public abstract class AbstractController
 	private double mSpeedMultiplier;
 	private AnimationTimer mTimer;
 	protected PlayerSprite mPlayer;
+	protected ClickQueue mClickQueue;
 
 	private Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
 	
@@ -34,6 +36,7 @@ public abstract class AbstractController
 		mPlayer = mView.getPlayer();
 		mLogger = logger;
 		mSpeedMultiplier = 1;
+		mClickQueue = new ClickQueue();
 		
 		mWalkUpImg = new Image(getClass().getResource("/resources/images/player/up_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
 		mWalkDownImg = new Image(getClass().getResource("/resources/images/player/down_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
@@ -82,42 +85,48 @@ public abstract class AbstractController
 
 				timerHook();
 
-				if(mView.mRight)
+				if(mView.mCanMove)
 				{
-					deltaX += mSpeed * mSpeedMultiplier;
-				}
+					if(mView.mRight)
+					{
+						deltaX += mSpeed * mSpeedMultiplier;
+					}
 
-				if(mView.mLeft)
-				{
-					deltaX -= mSpeed * mSpeedMultiplier;
-				}
+					if(mView.mLeft)
+					{
+						deltaX -= mSpeed * mSpeedMultiplier;
+					}
 
-				if(mView.mDown)
-				{
-					deltaY += mSpeed * mSpeedMultiplier;
-				}
+					if(mView.mDown)
+					{
+						deltaY += mSpeed * mSpeedMultiplier;
+					}
 
-				if(mView.mUp)
-				{
-					deltaY -= mSpeed * mSpeedMultiplier;
-				}
+					if(mView.mUp)
+					{
+						deltaY -= mSpeed * mSpeedMultiplier;
+					}
 
-				updatePcSprite();
+					updatePcSprite();
 
-				double oldX = mPlayer.getX();
-				double oldY = mPlayer.getY();
+					double oldX = mPlayer.getX();
+					double oldY = mPlayer.getY();
 
-				mPlayer.setX(mView.clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayer.getFitWidth()));
-				mPlayer.setY(mView.clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayer.getFitHeight()));
-				
-				if(!xCollisionCheck())
-				{
-					mPlayer.setX(oldX);
-				}
-				
-				if(!yCollisionCheck())
-				{
-					mPlayer.setY(oldY);
+					mPlayer.setX(mView.clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayer.getFitWidth()));
+					mPlayer.setY(mView.clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayer.getFitHeight()));
+					
+					if(LoggerController.isCollisionEnabled())
+					{
+						if(!xCollisionCheck())
+						{
+							mPlayer.setX(oldX);
+						}
+						
+						if(!yCollisionCheck())
+						{
+							mPlayer.setY(oldY);
+						}
+					}
 				}
 
 				mLastUpdate = now;
