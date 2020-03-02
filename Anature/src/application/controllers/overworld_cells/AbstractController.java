@@ -9,9 +9,11 @@ import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.TrainerIds;
+import application.enums.WarpPoints;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
 import application.views.elements.PlayerSprite;
+import application.views.elements.WarpPointBox;
 import application.views.overworld_cells.AbstractCell;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Bounds;
@@ -23,20 +25,20 @@ import javafx.scene.shape.Rectangle;
 public abstract class AbstractController
 {
 	private LoggerStartUp mLogger;
-	private AbstractCell mView;
+	protected AbstractCell mView;
 	private final int mSpeed = 300; // pixels / second
 	private double mSpeedMultiplier;
 	private AnimationTimer mTimer;
 	protected PlayerSprite mPlayer;
 	protected ClickQueue mClickQueue;
 
-	private Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
+	protected Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
 	
 	public AbstractController(LoggerStartUp logger, AbstractCell view)
 	{
 		if(view == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Making Starter Town view null.");
+			LoggerController.logEvent(LoggingTypes.Error, "Making Starter Town view null.");
 			throw new IllegalArgumentException("Making Starter Town view null.");
 		}
 		
@@ -65,8 +67,10 @@ public abstract class AbstractController
 	protected abstract void timerHook();
 
 	protected abstract void keyPressHook(KeyEvent event);
+	
+	public abstract void movePlayer(WarpPoints warpPoint);
 
-	private boolean grassPatchHook()
+	private boolean checkGrassPatch()
 	{
 		Bounds player = mPlayer.getBoxBounds();
 		boolean result = false;
@@ -80,6 +84,21 @@ public abstract class AbstractController
 		}
 		
 		return result;
+	}
+
+	private WarpPointBox checkWarpPoints()
+	{
+		Bounds player = mPlayer.getBoxBounds();
+		
+		for(WarpPointBox toCheck : mView.getWarpPoints())
+		{
+			if(player.intersects(toCheck.getBoundsInParent()))
+			{
+				return toCheck;
+			}
+		}
+		
+		return null;
 	}
 
 	private boolean xCollisionCheck()
@@ -187,26 +206,37 @@ public abstract class AbstractController
 						}
 					}
 					
-					if(grassPatchHook())
+					if(checkGrassPatch())
 					{
 						double currX = mPlayer.getX();
 						double currY = mPlayer.getY();
 						
-						if(currX > mLastWildX + 10 || currX < mLastWildX - 10 || currY > mLastWildY + 10 || currY < mLastWildY - 10)
+						if(currX > mLastWildX + 100 || currX < mLastWildX - 100 || currY > mLastWildY + 100 || currY < mLastWildY - 100)
 						{
 							mLastWildX = mPlayer.getX();
 							mLastWildY = mPlayer.getY();
 							
 							Random r = new Random();
 
-							if(r.nextInt(100) > 79) // TODO modify encounter rate calculations
+							if(r.nextInt(100) > 85) // TODO modify encounter rate calculations
 							{
+								LoggerController.logEvent(LoggingTypes.Misc, "Player has encountered a wild Anature.");
 								Trainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
 								Startup.startBattle(wildEncounter);
 								
 								mView.mCanMove = false;
 							}
 						}
+					}
+					
+					WarpPointBox warpCheck = checkWarpPoints();
+					
+					if(warpCheck != null)
+					{
+						LoggerController.logEvent(LoggingTypes.Misc, "Player has entered a warp point.");
+						Startup.changeScene(warpCheck.getSceneType(), warpCheck.getWarpPoint());
+						
+						mView.mCanMove = false;
 					}
 				}
 

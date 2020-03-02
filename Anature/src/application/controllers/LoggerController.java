@@ -63,7 +63,7 @@ public class LoggerController
 				}
 				break;
 
-			case Default:
+			case Error:
 				if(!mErrorLogging)
 				{
 					return;

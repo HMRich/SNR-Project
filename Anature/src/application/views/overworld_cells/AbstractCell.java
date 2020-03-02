@@ -7,8 +7,11 @@ import application.animations.BlinkingAnimation;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
+import application.enums.SceneType;
+import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import application.views.elements.PlayerSprite;
+import application.views.elements.WarpPointBox;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -42,10 +45,11 @@ public abstract class AbstractCell
 	protected final DoubleProperty mZoom;
 	public boolean mUp, mDown, mLeft, mRight, mCanMove;
 	private Scene mScene;
-	protected static PlayerSprite mPlayer;
+	protected PlayerSprite mPlayer;
 	private Direction mPcFacing;
 	protected ImageLayer mBackground;
 	protected ArrayList<Rectangle> mCollisions, mGrassPatches;
+	protected ArrayList<WarpPointBox> mWarpPoints;
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 
@@ -61,6 +65,7 @@ public abstract class AbstractCell
 		mShowCollision = LoggerController.getCollisionBoxProperty();
 		mCollisions = new ArrayList<Rectangle>();
 		mGrassPatches = new ArrayList<Rectangle>();
+		mWarpPoints = new ArrayList<WarpPointBox>();
 		mCanMove = true;
 
 		mHeight = height;
@@ -82,7 +87,9 @@ public abstract class AbstractCell
 		addToForeground();
 		createCollisons();
 		createGrassPatches();
+		createWarpPoints();
 
+		mBackground.getChildren().addAll(mWarpPoints);
 		mBackground.getChildren().addAll(mGrassPatches);
 		mBackground.getChildren().addAll(mCollisions);
 
@@ -94,9 +101,9 @@ public abstract class AbstractCell
 		clip.heightProperty().bind(mScene.heightProperty());
 
 		clip.xProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayer.getX() - mScene.getWidth() / 2, 0, mMap.getWidth() - mScene.getWidth()),
-				mPlayer.xProperty(), mScene.widthProperty()));
+				mPlayer.xProp(), mScene.widthProperty()));
 		clip.yProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayer.getY() - mScene.getHeight() / 2, 0, mMap.getHeight() - mScene.getHeight()),
-				mPlayer.yProperty(), mScene.heightProperty()));
+				mPlayer.yProp(), mScene.heightProperty()));
 
 		mMap.setClip(clip);
 		mMap.translateXProperty().bind(clip.xProperty().multiply(-1));
@@ -116,6 +123,8 @@ public abstract class AbstractCell
 	protected abstract void createCollisons();
 
 	protected abstract void createGrassPatches();
+
+	protected abstract void createWarpPoints();
 	
 	private void setUpDialogueBox(BorderPane cell)
 	{
@@ -207,6 +216,13 @@ public abstract class AbstractCell
 		rect.setFill(Color.DARKGREEN);
 		mGrassPatches.add(rect);
 	}
+
+	protected void addWarpPoint(SceneType sceneType, WarpPoints warpTo, double x, double y, double width, double height)
+	{
+		WarpPointBox warp = new WarpPointBox(warpTo, sceneType, x, y, width, height);
+		warp.visibleProperty().bind(mShowCollision);
+		mWarpPoints.add(warp);
+	}
 	
 	private Rectangle createRectangle(double x, double y, double width, double height)
 	{
@@ -223,7 +239,7 @@ public abstract class AbstractCell
 		mUp = false;
 		mDown = false;
 		mCanMove = true;
-
+		
 		return mScene;
 	}
 
@@ -256,7 +272,7 @@ public abstract class AbstractCell
 	{
 		if(direction == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Tried making Player Direction null.");
+			LoggerController.logEvent(LoggingTypes.Error, "Tried making Player Direction null.");
 			return;
 		}
 
@@ -267,7 +283,7 @@ public abstract class AbstractCell
 	{
 		if(event == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Tried making Scene on Keyboard Press null.");
+			LoggerController.logEvent(LoggingTypes.Error, "Tried making Scene on Keyboard Press null.");
 			return;
 		}
 
@@ -278,7 +294,7 @@ public abstract class AbstractCell
 	{
 		if(event == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Tried making Scene on Keyboard Released null.");
+			LoggerController.logEvent(LoggingTypes.Error, "Tried making Scene on Keyboard Released null.");
 			return;
 		}
 
@@ -294,12 +310,17 @@ public abstract class AbstractCell
 	{
 		return mGrassPatches;
 	}
+
+	public ArrayList<WarpPointBox> getWarpPoints()
+	{
+		return mWarpPoints;
+	}
 	
 	public void showDialogue(String txt)
 	{
 		if(txt == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Tried to show overworld dialogue that was null");
+			LoggerController.logEvent(LoggingTypes.Error, "Tried to show overworld dialogue that was null");
 			return;
 		}
 		

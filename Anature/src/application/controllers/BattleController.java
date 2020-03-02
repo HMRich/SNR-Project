@@ -333,7 +333,7 @@ public class BattleController
 		grid.add(bagImage, 0, 1);
 
 		ResizableImage escapeImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
-		escapeImage.setOnAction(event -> Startup.changeScene(SceneType.Starter_Town)); // TODO for demo
+		escapeImage.setOnAction(event -> Startup.changeScene(null, null)); // TODO for demo
 		grid.add(escapeImage, 1, 1);
 
 		grid.visibleProperty().bind(mShowBtns);
@@ -399,7 +399,7 @@ public class BattleController
 							mShowBtns.set(false);
 
 							mClickQueue.clear();
-							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+							mClickQueue.enqueue(() -> Startup.changeScene(null, null));
 
 							mCanClick.set(true);
 							mToEnd = true;
@@ -412,7 +412,7 @@ public class BattleController
 							mShowBtns.set(false);
 
 							mClickQueue.clear();
-							mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+							mClickQueue.enqueue(() -> Startup.changeScene(null, null));
 
 							mCanClick.set(true);
 							mToEnd = true;
@@ -1146,7 +1146,7 @@ public class BattleController
 
 								catch(InterruptedException e)
 								{
-									LoggerController.logEvent(LoggingTypes.Default, e.getMessage());
+									LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
 								}
 
 								OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);

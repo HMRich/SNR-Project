@@ -1,6 +1,8 @@
 package application.views.overworld_cells;
 
 import application.LoggerStartUp;
+import application.enums.SceneType;
+import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import javafx.scene.image.Image;
 
@@ -62,5 +64,12 @@ public class PathOneCell extends AbstractCell
 		addGrassPatchRectangle(378, 993, 1100, 116);
 		addGrassPatchRectangle(378, 1108, 1016, 58);
 		addGrassPatchRectangle(378, 1163, 959, 58);
+	}
+
+	@Override
+	protected void createWarpPoints()
+	{
+		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_Path_1_Exit, 0, 256, 13, 207);
+		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1, 953, 1682, 183, 21); // TODO only for demo
 	}
 }

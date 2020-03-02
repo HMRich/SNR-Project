@@ -10,6 +10,7 @@ import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
+import application.enums.WarpPoints;
 import application.items.ItemPool;
 import application.models.StarterTownModel;
 import application.trainers.Trainer;
@@ -30,6 +31,7 @@ public class Startup extends Application
 	private static Stage mStage, mLoggerStage;
 	private static Player mPlayer;
 	private static EventHandler<KeyEvent> mKeyListener;
+	private static SceneType mLastSceneType, mCurrSceneType;
 
 	private static StarterTownModel mStarterTownModel;
 	private static StarterTownCell mStarterTownView;
@@ -70,9 +72,11 @@ public class Startup extends Application
 		mLoggerStage = new Stage();
 		mLogger.start(mLoggerStage);
 		mStage.setOnCloseRequest(event -> System.exit(-3000));
-		LoggerController.logEvent(LoggingTypes.Default, "The logger has started.");
+		LoggerController.logEvent(LoggingTypes.Error, "The logger has started.");
 
-		changeScene(SceneType.Intro);
+		mLastSceneType = SceneType.Intro;
+		mCurrSceneType = SceneType.Intro;
+		changeScene(SceneType.Intro, null);
 		mStage.show();
 	}
 
@@ -81,10 +85,15 @@ public class Startup extends Application
 		launch(args);
 	}
 
-	public static void changeScene(SceneType type)
+	public static void changeScene(SceneType type, WarpPoints warpPoint)
 	{
 		double width = mStage.getWidth();
 		double height = mStage.getHeight();
+		
+		if(type == null)
+		{
+			type = mLastSceneType;
+		}
 
 		try
 		{
@@ -95,7 +104,8 @@ public class Startup extends Application
 					Parent introRoot = introLoader.load();
 					Scene intro = new Scene(introRoot);
 					intro.setOnKeyReleased(mKeyListener);
-
+					
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Intro");
 					mStage.setScene(intro);
 					break;
 
@@ -114,9 +124,11 @@ public class Startup extends Application
 					{
 						mStarterTownController = new StarterTownController(mLogger, mStarterTownView, mStarterTownModel);
 					}
-
+					
 					Scene townScene = mStarterTownView.getScene();
+					mStarterTownController.movePlayer(warpPoint);
 
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Starter Town");
 					mStage.setScene(townScene);
 					break;
 
@@ -137,13 +149,18 @@ public class Startup extends Application
 					}
 
 					Scene pathOneScene = mPathOneView.getScene();
-
+					mPathOneController.movePlayer(warpPoint);
+					
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Path 1");
 					mStage.setScene(pathOneScene);
 					break;
 					
 				default:
 					break;
 			}
+
+			mLastSceneType = mCurrSceneType;
+			mCurrSceneType = type;
 		}
 
 		catch(IOException e)
@@ -171,16 +188,19 @@ public class Startup extends Application
 			BattleController controller = (BattleController) loader.getController();
 			controller.setUpBindingsAndElements(scene);
 			controller.updateElements(mPlayer, toBattle);
-
-			mStage.setScene(scene);
 			
 			mStage.setWidth(width);
 			mStage.setHeight(height);
+			
+			mLastSceneType = mCurrSceneType;
+			
+			LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Battle");
+			mStage.setScene(scene);
 		}
 		
 		catch(IOException e)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Exception when starting battle. \n" + e.getMessage());
+			LoggerController.logEvent(LoggingTypes.Error, "Exception when starting battle. \n" + e.getMessage());
 		}
 	}
 
@@ -196,8 +216,10 @@ public class Startup extends Application
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
+		
+		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 
-		changeScene(SceneType.Path_1);
+		changeScene(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1);
 	}
 
 	public static String getPlayerName()

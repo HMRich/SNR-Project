@@ -3,7 +3,9 @@ package application.controllers.overworld_cells;
 import application.LoggerStartUp;
 import application.Startup;
 import application.controllers.LoggerController;
+import application.enums.Direction;
 import application.enums.LoggingTypes;
+import application.enums.WarpPoints;
 import application.models.StarterTownModel;
 import application.trainers.Trainer;
 import application.views.overworld_cells.StarterTownCell;
@@ -21,7 +23,7 @@ public class StarterTownController extends AbstractController
 
 		if(model == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Making Starter Town Model null.");
+			LoggerController.logEvent(LoggingTypes.Error, "Making Starter Town Model null.");
 			throw new IllegalArgumentException("Making Starter Town Model null.");
 		}
 
@@ -89,6 +91,31 @@ public class StarterTownController extends AbstractController
 			{
 				mClickQueue.dequeue().run();
 			}
+		}
+	}
+
+	@Override
+	public void movePlayer(WarpPoints warpPoint)
+	{
+		if(warpPoint == null)
+			return;
+		
+		switch(warpPoint)
+		{
+			case Starter_Town_Path_1_Exit:
+				mPlayer.setX(1456);
+				mPlayer.setY(298);
+				mView.setPlayerFacing(Direction.Left);
+				break;
+				
+			case Starter_Town_House_1:
+				mPlayer.setX(485);
+				mPlayer.setY(599);
+				mView.setPlayerFacing(Direction.Down);
+				break;
+
+			default:
+				break;
 		}
 	}
 }

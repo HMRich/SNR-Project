@@ -11,7 +11,7 @@ public abstract class Result
 	{
 		if(dialogue == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Null Dialogue was passed in ItemResult.");
+			LoggerController.logEvent(LoggingTypes.Error, "Null Dialogue was passed in ItemResult.");
 			throw new IllegalArgumentException("Null Dialogue was passed in ItemResult.");
 		}
 

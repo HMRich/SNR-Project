@@ -97,6 +97,16 @@ public class PlayerSprite
 		toRemoveFrom.getChildren().removeAll(mContent);
 	}
 	
+	public DoubleProperty xProp()
+	{
+		return mImage.xProperty();
+	}
+	
+	public DoubleProperty yProp()
+	{
+		return mImage.yProperty();
+	}
+	
 	public double getX()
 	{
 		return mImage.getX();
@@ -156,7 +166,7 @@ public class PlayerSprite
 	{
 		if(image == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Tried making Player Sprite null.");
+			LoggerController.logEvent(LoggingTypes.Error, "Tried making Player Sprite null.");
 			return;
 		}
 		
