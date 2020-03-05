@@ -1,5 +1,8 @@
 package application;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import application.abillities.Ability;
 import application.enums.Gender;
 import application.enums.Species;
@@ -141,6 +144,20 @@ public class Anature
 	public void setSecondaryType(Type secondaryType)
 	{
 		mSecondaryType = secondaryType;
+	}
+
+	public ArrayList<Type> getTypes()
+	{
+		ArrayList<Type> types = new ArrayList<Type>();
+		if(mPrimaryType != null)
+		{
+			types.add(mPrimaryType);
+		}
+		if(mSecondaryType != null)
+		{
+			types.add(mSecondaryType);
+		}
+		return types;
 	}
 
 	public Species getSpecies()
@@ -340,10 +357,16 @@ public class Anature
 
 		return mName + result;
 	}
-	
+
 	public double getHpPercent()
 	{
 		return mCurrHp / mTotalHp;
+	}
+
+	public Anature getClone()
+	{
+		return new Anature(mName, mOwner, mLevel, mCurrentXp, mGender, mMoves, new Type[] {mPrimaryType, mSecondaryType}, mSpecies, mIsShiny,
+				mIndexNum, mAbility, mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed, mAccuracy);
 	}
 
 }
