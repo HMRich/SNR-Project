@@ -144,6 +144,15 @@ public class Anature
 	{
 		mSecondaryType = secondaryType;
 	}
+	
+	public void setTyes(Type[] types)
+	{
+		if(types.length == 2)
+		{
+			setSecondaryType(types[1]);
+		}
+		setPrimaryType(types[0]);
+	}
 
 	public ArrayList<Type> getTypes()
 	{

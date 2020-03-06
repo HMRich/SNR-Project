@@ -23,11 +23,6 @@ public class AnatureBuilder
 {
 	public static Anature createAnature(Species species, int level)
 	{
-		String playersName = "<No Name>";
-		if(Startup.getPlayerName() != null)
-		{
-			playersName = Startup.getPlayerName();
-		}
 		MoveSet moves = generateMoveSet(species, level);
 		Gender gender = null;
 		Type[] types = new Type[2];
@@ -105,7 +100,7 @@ public class AnatureBuilder
 			return null;
 		}
 
-		return new Anature(species.toString(), playersName, level, 0, gender, moves, types, species, isShiny, indexNum, ability, attack,
+		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability, attack,
 				specialAttack, defense, specialDefense, hp, speed, accuracy);
 	}
 

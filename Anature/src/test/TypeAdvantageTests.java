@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
 import application.Anature;
-import application.AnatureBuilder;
 import application.MoveSet;
 import application.TypeAdvantage;
 import application.abillities.Ability;
@@ -34,7 +32,7 @@ public class TypeAdvantageTests
 	private static Anature baseAnature;
 
 	@BeforeAll
-	public static void generateAnature()
+	public static void generateBaseAnature()
 	{
 		String name = "<Test Creature>";
 		String ownerName = "<Test Owner>";
@@ -60,7 +58,7 @@ public class TypeAdvantageTests
 	}
 
 	@TestTemplate
-	@ExtendWith(TestTempalte.class)
+	@ExtendWith(AdvantageValueTestTempalte.class)
 	public void testEquals(TypeEffectivenessTestCase testCase)
 	{
 		Assert.assertEquals(TypeAdvantage.advantageType(testCase.attacker, testCase.defender), testCase.expectedEffectiveness);
@@ -69,20 +67,13 @@ public class TypeAdvantageTests
 	private static TypeEffectivenessTestCase createTestCase(Type[] sourceTypes, Type[] targetTypes, AttackEffectiveness expectedResult)
 	{
 		Anature sourceAnature = baseAnature.getClone();
-		for(Type type : sourceTypes)
-		{
-			sourceAnature.setPrimaryType(type);
-		}
+		sourceAnature.setTyes(sourceTypes);
 		Anature targetAnature = baseAnature.getClone();
-		for(Type type : targetTypes)
-		{
-			targetAnature.setPrimaryType(type);
-		}
-
+		targetAnature.setTyes(targetTypes);
 		return new TypeEffectivenessTestCase(sourceAnature, targetAnature, expectedResult);
 	}
 
-	public static class TestTempalte implements TestTemplateInvocationContextProvider
+	public static class AdvantageValueTestTempalte implements TestTemplateInvocationContextProvider
 	{
 		@Override
 		public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext arg0)
@@ -735,7 +726,31 @@ public class TypeAdvantageTests
 			{ Type.Fairy }, new Type[]
 			{ Type.Steel }, AttackEffectiveness.NotEffective)), addCase(createTestCase(new Type[]
 			{ Type.Fairy }, new Type[]
-			{ Type.Fairy }, AttackEffectiveness.Normal)));
+			{ Type.Fairy }, AttackEffectiveness.Normal)), addCase(createTestCase(new Type[]
+			{ Type.Electric }, new Type[]
+			{ Type.Water, Type.Ground }, AttackEffectiveness.NoEffect)), addCase(createTestCase(new Type[]
+			{ Type.Electric }, new Type[]
+			{ Type.Ice, Type.Ground }, AttackEffectiveness.NoEffect)), addCase(createTestCase(new Type[]
+			{ Type.Electric }, new Type[]
+			{ Type.Electric, Type.Ground }, AttackEffectiveness.NoEffect)),
+
+					addCase(createTestCase(new Type[]
+					{ Type.Electric }, new Type[]
+					{ Type.Water, Type.Grass }, AttackEffectiveness.NotEffective)), addCase(createTestCase(new Type[]
+					{ Type.Electric }, new Type[]
+					{ Type.Ice, Type.Grass }, AttackEffectiveness.NotEffective)), addCase(createTestCase(new Type[]
+					{ Type.Electric }, new Type[]
+					{ Type.Electric, Type.Grass }, AttackEffectiveness.NotEffective)),
+
+					addCase(createTestCase(new Type[]
+					{ Type.Electric }, new Type[]
+					{ Type.Water, Type.Fire }, AttackEffectiveness.Normal)), addCase(createTestCase(new Type[]
+					{ Type.Electric }, new Type[]
+					{ Type.Normal, Type.Fire }, AttackEffectiveness.Normal)),
+
+					addCase(createTestCase(new Type[]
+					{ Type.Electric }, new Type[]
+					{ Type.Water, Type.Flying }, AttackEffectiveness.SuperEffective)));
 		}
 
 		@Override
