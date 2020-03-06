@@ -1,6 +1,5 @@
 package application;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.abillities.Ability;

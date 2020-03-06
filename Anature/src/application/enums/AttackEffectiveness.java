@@ -2,5 +2,5 @@ package application.enums;
 
 public enum AttackEffectiveness
 {
-	NoEffect, NotEffective, Normal, SuperEffective, Error
+	NoEffect, NotEffective, Normal, SuperEffective, NotSet, Error
 }

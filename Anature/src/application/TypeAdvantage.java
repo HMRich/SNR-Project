@@ -13,7 +13,7 @@ public class TypeAdvantage
 
 	public static AttackEffectiveness advantageType(Anature attacker, Anature defender)
 	{
-		AttackEffectiveness attackEffectiveness = AttackEffectiveness.Normal;
+		AttackEffectiveness attackEffectiveness = AttackEffectiveness.NotSet;
 		ArrayList<Type> attackerTypes = attacker.getTypes();
 		ArrayList<Type> defenderTypes = defender.getTypes();
 		for(Type attackerType : attackerTypes)
@@ -23,12 +23,17 @@ public class TypeAdvantage
 				attackEffectiveness = checkAdvantage(attackerType, defenderType, attackEffectiveness);
 			}
 		}
+		if(attackEffectiveness == AttackEffectiveness.NotSet)
+		{
+			LoggerController.logEvent(LoggingTypes.Default, "attackerEffectiveness was not set. Take a look at the logic for type advantage.");
+			return AttackEffectiveness.Error;
+		}
 		return attackEffectiveness;
 	}
 
 	public static AttackEffectiveness moveEffectiveness(Move attackerMove, Anature defender)
 	{
-		AttackEffectiveness attackEffectiveness = AttackEffectiveness.Normal;
+		AttackEffectiveness attackEffectiveness = AttackEffectiveness.SuperEffective;
 		Type attackMoveType = attackerMove.getType();
 		ArrayList<Type> defenderTypes = defender.getTypes();
 		for(Type defenderType : defenderTypes)
@@ -116,7 +121,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -149,7 +154,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.SuperEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -176,7 +181,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -203,7 +208,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -242,7 +247,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -275,7 +280,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -317,7 +322,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -347,7 +352,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.SuperEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -380,7 +385,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.SuperEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -407,7 +412,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -431,7 +436,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -470,7 +475,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -500,7 +505,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -521,7 +526,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -539,7 +544,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NoEffect, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -563,7 +568,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -593,7 +598,7 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.SuperEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
@@ -620,13 +625,13 @@ public class TypeAdvantage
 				return compareEffectiveness(AttackEffectiveness.NotEffective, attackEffectiveness);
 
 			default:
-				return attackEffectiveness;
+				return AttackEffectiveness.Normal;
 		}
 	}
 
 	private static AttackEffectiveness compareEffectiveness(AttackEffectiveness newEffectiveness, AttackEffectiveness currentEffectiveness)
 	{
-		switch(currentEffectiveness)
+		switch(newEffectiveness)
 		{
 			case NoEffect:
 				return AttackEffectiveness.NoEffect;
