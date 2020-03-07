@@ -47,7 +47,7 @@
             </ImageView>
             <ImageView fx:id="mTrainerImage" fitHeight="425.0" fitWidth="444.0" layoutX="418.0" layoutY="240.0" pickOnBounds="true" smooth="false">
                <image>
-                  <Image url="@../../resources/images/trainers/Kelly.png" />
+                  <Image url="@../../resources/images/trainers/kelly/Kelly.png" />
                </image>
             </ImageView>
             <ImageView fx:id="mDialogueImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true">

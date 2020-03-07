@@ -20,7 +20,7 @@ public class Backpack
 	{
 		if(toAdd == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Null Item cannot be added.");
+			LoggerController.logEvent(LoggingTypes.Error, "Null Item cannot be added.");
 			throw new IllegalArgumentException("Null Item cannot be added.");
 		}
 
