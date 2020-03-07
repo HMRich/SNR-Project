@@ -8,6 +8,7 @@ import application.enums.AiChoice;
 import application.enums.TrainerIds;
 import application.enums.Type;
 import application.items.Item;
+import javafx.scene.image.Image;
 
 public class Trainer
 {
@@ -76,9 +77,18 @@ public class Trainer
 		return mName;
 	}
 
-	public String getSpritePath()
+	public TrainerIds getId()
 	{
-		return "/resources/images/trainers/" + mId.toString() + ".png";
+		return mId;
+	}
+
+	public Image getBattleSprite()
+	{
+		if(mId == TrainerIds.Wild)
+			return null;
+		
+		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + "/"
+				+ mId.toString() + ".png").toExternalForm(), 1000.0, 1000.0, true, false);
 	}
 
 	public ArrayList<Anature> getAnatures()
@@ -104,5 +114,25 @@ public class Trainer
 			index = 0;
 		}
 		return index;
+	}
+	
+	public boolean canBattle()
+	{
+		if(mAnatures.size() == 0)
+		{
+			return false;
+		}
+		
+		boolean result = false;
+		for(Anature anature : mAnatures)
+		{
+			if(anature.getCurrHp() == 0)
+			{
+				result = true;
+				break;
+			}
+		}
+		
+		return !result;
 	}
 }

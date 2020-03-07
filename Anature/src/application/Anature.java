@@ -6,6 +6,7 @@ import application.abillities.Ability;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.Type;
+import javafx.scene.image.Image;
 
 public class Anature
 {
@@ -376,5 +377,14 @@ public class Anature
 		return new Anature(mName, mOwner, mLevel, mCurrentXp, mGender, mMoves, new Type[] {mPrimaryType, mSecondaryType}, mSpecies, mIsShiny,
 				mIndexNum, mAbility, mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed, mAccuracy);
 	}
-
+	
+	public Image getFrontSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+	
+	public Image getBackSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true, false);
+	}
 }
