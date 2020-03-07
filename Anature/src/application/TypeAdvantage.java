@@ -25,7 +25,7 @@ public class TypeAdvantage
 		}
 		if(attackEffectiveness == AttackEffectiveness.NotSet)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "attackerEffectiveness was not set. Take a look at the logic for type advantage.");
+			LoggerController.logEvent(LoggingTypes.Error, "attackerEffectiveness was not set. Take a look at the logic for type advantage.");
 			return AttackEffectiveness.Error;
 		}
 		return attackEffectiveness;
@@ -102,7 +102,7 @@ public class TypeAdvantage
 				return fairyType(defenderType, attackEffectiveness);
 
 			default:
-				LoggerController.logEvent(LoggingTypes.Default, "attackerType was not available. Was the type " + attackEffectiveness.toString() + " missing?");
+				LoggerController.logEvent(LoggingTypes.Error, "attackerType was not available. Was the type " + attackEffectiveness.toString() + " missing?");
 				return AttackEffectiveness.Error;
 		}
 	}
@@ -680,7 +680,7 @@ public class TypeAdvantage
 				return AttackEffectiveness.Error;
 
 			default:
-				LoggerController.logEvent(LoggingTypes.Default, "currentEffectiveness was not available. Was the effectiveness "
+				LoggerController.logEvent(LoggingTypes.Error, "currentEffectiveness was not available. Was the effectiveness "
 						+ currentEffectiveness.toString() + " missing? Setting Attack Effectiveness to \"Error\".");
 				return AttackEffectiveness.Error;
 		}

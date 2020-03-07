@@ -1,24 +1,11 @@
 package application.items;
 
-import application.Anature;
-import application.ItemResult;
-import application.enums.ItemIds;
+import application.enums.items.ItemIds;
 
-public class GreatPotion extends Item
+public class GreatPotion extends HealthPotion
 {
-	private int mHealthPoints = 50;
-
-	public GreatPotion()
+	public GreatPotion(int healAmount)
 	{
-		super(ItemIds.Great_Potion, "Great Potion");
-	}
-
-	public ItemResult useItem(Anature target)
-	{
-		double oldHp = target.getCurrHp();
-		String dialogue = target.healAnature(mHealthPoints);
-		double newHp = target.getCurrHp();
-		
-		return new ItemResult(dialogue, newHp - oldHp);
+		super(ItemIds.Great_Potion, "Great Potion", healAmount);
 	}
 }

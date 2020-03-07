@@ -13,6 +13,7 @@ import application.Player;
 import application.Startup;
 import application.animations.*;
 import application.enums.*;
+import application.items.HealthPotion;
 import application.items.Item;
 import application.items.ItemPool;
 import application.moves.Move;
@@ -753,15 +754,15 @@ public class BattleController
 	private void updateMoves(Anature playerCurr)
 	{
 		MoveSet moves = playerCurr.getMoves(); // TODO Make move btn color change based on move type
-		Move move1 = moves.getMove(0);
-		Move move2 = moves.getMove(1);
-		Move move3 = moves.getMove(2);
-		Move move4 = moves.getMove(3);
+		Move move1 = moves.getMove(1);
+		Move move2 = moves.getMove(2);
+		Move move3 = moves.getMove(3);
+		Move move4 = moves.getMove(4);
 
-		updateMove(move1, moves.getMovePoints(0), mShowMoveOne, mAttackNameOneTxt, mAttackMpOneTxt);
-		updateMove(move2, moves.getMovePoints(1), mShowMoveTwo, mAttackNameTwoTxt, mAttackMpTwoTxt);
-		updateMove(move3, moves.getMovePoints(2), mShowMoveThree, mAttackNameThreeTxt, mAttackMpThreeTxt);
-		updateMove(move4, moves.getMovePoints(3), mShowMoveFour, mAttackNameFourTxt, mAttackMpFourTxt);
+		updateMove(move1, moves.getMovePoints(1), mShowMoveOne, mAttackNameOneTxt, mAttackMpOneTxt);
+		updateMove(move2, moves.getMovePoints(2), mShowMoveTwo, mAttackNameTwoTxt, mAttackMpTwoTxt);
+		updateMove(move3, moves.getMovePoints(3), mShowMoveThree, mAttackNameThreeTxt, mAttackMpThreeTxt);
+		updateMove(move4, moves.getMovePoints(4), mShowMoveFour, mAttackNameFourTxt, mAttackMpFourTxt);
 	}
 
 	private void updateMove(Move moveToCheck, int currMp, BooleanProperty showMove, StringProperty nameTxt, StringProperty mpTxt)
@@ -1096,7 +1097,7 @@ public class BattleController
 					@Override
 					public void run()
 					{
-						Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
+						HealthPotion selectedItem = ItemPool.getHealthPotion(mItemList.getSelectionModel().getSelectedItem());
 
 						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change
 																													// it so u can
@@ -1227,7 +1228,7 @@ public class BattleController
 
 								catch(InterruptedException e)
 								{
-									LoggerController.logEvent(LoggingTypes.Default, e.getMessage());
+									LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
 								}
 
 								OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureFront, Duration.millis(400), true);

@@ -2,6 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
 import application.moves.Move;
 
 public class MoveSet
@@ -78,7 +80,9 @@ public class MoveSet
 				return setMovePoints(moveNumber);
 
 			default:
-				throw new IllegalStateException("moveNumber was not in a valid value.");
+				LoggerController.logEvent(LoggingTypes.Error,
+						"IllegalStateException in MoveSet.java, Method: setMove(int moveNumber, Move move). Passed moveNumber was not 1-4.");
+				return false;
 		}
 	}
 
@@ -123,7 +127,7 @@ public class MoveSet
 				throw new IllegalStateException("moveNumber was not in a vaild state.");
 		}
 	}
-	
+
 	public boolean setMovePoints(int moveNumber)
 	{
 		if(hasMove(moveNumber))

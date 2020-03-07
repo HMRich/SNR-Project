@@ -5,27 +5,86 @@ import java.util.Random;
 
 import application.controllers.LoggerController;
 import application.enums.*;
+import application.items.HealthPotion;
 import application.items.Item;
+import application.items.ItemPool;
 
 public class BaseAI
 {
-	public final AiChoice useItem(ArrayList<Item> items, Anature currentAnature, double healthThreshold)
+	public final boolean willUseHealthPotion(ArrayList<HealthPotion> healthPotions, Anature currentAnature, double healthThreshold)
 	{
-		if(healthThreshold > 1)
+		if(healthPotions == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Exception in BaseAI class, healthThreshold was above 1.0.");
-			throw new IllegalArgumentException("healthThreshold was above the value 1.0, healthThrshold should be below 1.0.");
-		}
-		
-		if(!items.isEmpty() && currentAnature.getHpPercent() < healthThreshold)
-		{
-			return AiChoice.Item_Consumed;
+			LoggerController.logEvent(LoggingTypes.Error,
+					"IllegalArgumentException in BaseAI.java, Method: useItem(ArrayList<Item> items, Anature currentAnature, double healthThreshold), items value was null.");
 		}
 
-		else
+		if(currentAnature == null)
 		{
-			return AiChoice.No_Choice;
+			LoggerController.logEvent(LoggingTypes.Error,
+					"IllegalArgumentException in BaseAI.java, Method: useItem(ArrayList<Item> items, Anature currentAnature, double healthThreshold), currentAnature value was null.");
 		}
+
+		if(healthThreshold > 1)
+		{
+			LoggerController.logEvent(LoggingTypes.Error,
+					"IllegalArgumentException in BaseAI.java, Method: useItem(ArrayList<Item> items, Anature currentAnature, double healthThreshold), healthThreshold value was above 1.0.");
+		}
+
+		double anatureHpPercent = currentAnature.getHpPercent();
+
+		boolean currentAnatureAtThreshold = anatureHpPercent < healthThreshold;
+		boolean trainerHasHealthPotion = !healthPotions.isEmpty();
+
+		return trainerHasHealthPotion && currentAnatureAtThreshold;
+	}
+
+	public Item itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
+	{
+		if(healthPotions == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error,
+					"IllegalArgumentException in BaseAI.java, Method: itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature), items value was null.");
+		}
+
+		if(currentAnature == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error,
+					"IllegalArgumentException in BaseAI.java, Method: itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature), currentAnature value was null.");
+		}
+
+		double currentAnatureHpPercent = currentAnature.getHpPercent();
+
+		Item itemToUse = null;
+		double anaturePercentAfterItemUse = 0;
+
+		for(HealthPotion healthPotion : healthPotions)
+		{
+			int itemHealAmount = ItemPool.getHealthPotion(healthPotion.getItemId()).getHealAmount();
+			double healPercent = itemHealAmount / currentAnature.getTotalHp();
+
+			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
+			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);
+
+			if(anaturePercentAfterItemUse == 0 || anatureHpPercentIfItemUsed > anaturePercentAfterItemUse && !willOverheal)
+			{
+				anaturePercentAfterItemUse = anatureHpPercentIfItemUsed;
+				itemToUse = healthPotion;
+			}
+		}
+
+		if(itemToUse == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error,
+					"IllegalStateException in BaseAI.java, Method: itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature), itemToUse value was null.");
+		}
+
+		return itemToUse;
+	}
+
+	private boolean willHealthPotionOverheal(double percentAfterHeal)
+	{
+		return percentAfterHeal > 1;
 	}
 
 	public AiChoice switchAnature(ArrayList<Anature> anatures, Type[] types, int switchThreshold, Anature currentAnature)
@@ -40,23 +99,18 @@ public class BaseAI
 
 	public AiChoice chooseMove(MoveSet anatureMoves)
 	{
-		ArrayList<AiChoice> choiceArray = new ArrayList<AiChoice>();
-		
-		boolean hasMove1 = anatureMoves.getMove(0) != null;
-		boolean hasMove2 = anatureMoves.getMove(1) != null;
-		boolean hasMove3 = anatureMoves.getMove(2) != null;
-		boolean hasMove4 = anatureMoves.getMove(3) != null;
-		
-		if(hasMove1)
-			choiceArray.add(AiChoice.Move1);
-		if(hasMove2)
-			choiceArray.add(AiChoice.Move2);
-		if(hasMove3)
-			choiceArray.add(AiChoice.Move3);
-		if(hasMove4)
-			choiceArray.add(AiChoice.Move4);
-		
-		return choiceArray.get(new Random().nextInt(choiceArray.size()));
+		ArrayList<AiChoice> choices = new ArrayList<AiChoice>();
+
+		if(anatureMoves.hasMove(1))
+			choices.add(AiChoice.Move1);
+		if(anatureMoves.hasMove(2))
+			choices.add(AiChoice.Move2);
+		if(anatureMoves.hasMove(3))
+			choices.add(AiChoice.Move3);
+		if(anatureMoves.hasMove(4))
+			choices.add(AiChoice.Move4);
+
+		return choices.get(new Random().nextInt(choices.size()));
 	}
 
 	private final boolean willSwitch(int switchThreshold)

@@ -2,7 +2,7 @@ package application.items;
 
 import application.Anature;
 import application.ItemResult;
-import application.enums.ItemIds;
+import application.enums.items.ItemIds;
 
 public abstract class Item
 {
