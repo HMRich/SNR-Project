@@ -56,7 +56,7 @@ public class FightManager
 		if((playerAnatureMove.getAccuracy() / playerAnature.getTempAccuracy()) > (Math.random() + .1))
 		{
 			playerAnatureMove.activateMove(playerAnature, enemyAnature);
-			moves.useMp(indexOfMove);
+			moves.useMovePoint(indexOfMove);
 
 			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
 
@@ -95,7 +95,7 @@ public class FightManager
 		if((enemyAnatureMove.getAccuracy() / enemyAnature.getTempAccuracy()) > (Math.random() + .1))
 		{
 			enemyAnatureMove.activateMove(enemyAnature, playerAnature);
-			moves.useMp(indexOfMove);
+			moves.useMovePoint(indexOfMove);
 
 			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
 
