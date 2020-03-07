@@ -1,4 +1,4 @@
-package application.views;
+package application.views.elements;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.image.Image;
@@ -15,7 +15,7 @@ public class ImageLayer extends Pane
 		mHeight = height;
 		mZoom = zoom;
 
-		getChildren().add(new application.views.ZoomableImage(image, mZoom, mWidth, mHeight));
+		getChildren().add(new ZoomableImage(image, mZoom, mWidth, mHeight));
 
 		minWidthProperty().bind(mZoom.multiply(mWidth).multiply(1.4));
 		maxWidthProperty().bind(mZoom.multiply(mWidth).multiply(1.4));
