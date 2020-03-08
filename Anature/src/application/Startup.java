@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.controllers.overworld_cells.GrassTownController;
 import application.controllers.overworld_cells.PathOneController;
 import application.controllers.overworld_cells.StarterTownController;
 import application.enums.ItemIds;
@@ -14,6 +15,7 @@ import application.enums.WarpPoints;
 import application.items.ItemPool;
 import application.models.StarterTownModel;
 import application.trainers.Trainer;
+import application.views.overworld_cells.GrassTownCell;
 import application.views.overworld_cells.PathOneCell;
 import application.views.overworld_cells.StarterTownCell;
 import javafx.application.Application;
@@ -40,6 +42,10 @@ public class Startup extends Application
 //	private static PathOneModel mPathOneModel;
 	private static PathOneCell mPathOneView;
 	private static PathOneController mPathOneController;
+
+//	private static GrassTownModel mGrassTownModel;
+	private static GrassTownCell mGrassTownView;
+	private static GrassTownController mGrassTownController;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -153,6 +159,29 @@ public class Startup extends Application
 					
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Path 1");
 					mStage.setScene(pathOneScene);
+					break;
+					
+				case Grass_Town:
+//					if(mGrassTownModel == null)
+//					{
+//						mGrassTownModel = new StarterTownModel();
+//					}
+					
+					if(mGrassTownView == null)
+					{
+						mGrassTownView = new GrassTownCell(mLogger);
+					}
+					
+					if(mGrassTownController == null)
+					{
+						mGrassTownController = new GrassTownController(mLogger, mGrassTownView);
+					}
+
+					Scene grassTownScene = mGrassTownView.getScene();
+					mGrassTownController.movePlayer(warpPoint);
+					
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Grass Town");
+					mStage.setScene(grassTownScene);
 					break;
 					
 				default:
