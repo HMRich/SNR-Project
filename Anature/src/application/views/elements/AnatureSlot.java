@@ -1,4 +1,4 @@
-package application.views;
+package application.views.elements;
 
 import application.enums.Gender;
 import javafx.beans.property.BooleanProperty;

@@ -44,7 +44,7 @@ public class ItemPool
 
 		else
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Try to get an item by an invalid String: " + input);
+			LoggerController.logEvent(LoggingTypes.Error, "Try to get an item by an invalid String: " + input);
 			return null;
 		}
 
@@ -55,7 +55,7 @@ public class ItemPool
 
 		catch(Exception e)
 		{
-			LoggerController.logEvent(LoggingTypes.Default, "Try to get an item by an invalid String: " + input);
+			LoggerController.logEvent(LoggingTypes.Error, "Try to get an item by an invalid String: " + input);
 			return null;
 		}
 

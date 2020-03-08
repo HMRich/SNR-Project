@@ -63,7 +63,7 @@ public class TrainerBuilder
 
 							if(toAdd == null)
 							{
-								LoggerController.logEvent(LoggingTypes.Default, "Trainer Builder tried to retrieve an item with an invalid Id.");
+								LoggerController.logEvent(LoggingTypes.Error, "Trainer Builder tried to retrieve an item with an invalid Id.");
 							}
 
 							else
@@ -74,7 +74,7 @@ public class TrainerBuilder
 
 						catch(Exception e)
 						{
-							LoggerController.logEvent(LoggingTypes.Default, "Trainer Builder tried to retrieve an item with an invalid Id.");
+							LoggerController.logEvent(LoggingTypes.Error, "Trainer Builder tried to retrieve an item with an invalid Id.");
 						}
 					}
 				}
