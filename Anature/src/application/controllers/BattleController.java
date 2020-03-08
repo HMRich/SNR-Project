@@ -381,6 +381,53 @@ public class BattleController
 		mDialogueTxtArea.layoutXProperty().bind(scene.widthProperty().divide(4.6));
 		mDialogueTxtArea.fontProperty().bind(fontProperty);
 	}
+	
+	private void onPlayerAnatureDeath() {
+		boolean isThereAliveAnatureInParty = false;
+		for(Anature anature: mPlayer.getAnatures()) {
+			if(anature.getCurrHp() > 0) {
+				isThereAliveAnatureInParty = true;
+			}
+		}
+		
+		if(isThereAliveAnatureInParty) {
+			onSwitchBtn();
+			mShowSwitchBackBtn.set(false); 
+		} else {
+			mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
+			
+			mShowBtns.set(false);
+			
+			mClickQueue.clear();
+			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+			
+			mCanClick.set(true);
+			mToEnd = true;
+		}
+	}
+	
+	private void onEnemyAnatureDeath() {
+		boolean isThereAliveAnatureInParty = false;
+		for(Anature anature: mEnemyTrainer.getAnatures()) {
+			if(anature.getCurrHp() > 0) {
+				isThereAliveAnatureInParty = true;
+			}
+		}
+		
+		if(isThereAliveAnatureInParty) {
+			System.out.println("Choosing enemy anature yet to be implemented!");
+		} else {
+			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
+
+			mShowBtns.set(false);
+
+			mClickQueue.clear();
+			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+
+			mCanClick.set(true);
+			mToEnd = true;
+		}
+	}
 
 	private void onPlayerAnatureDeath()
 	{
