@@ -16,6 +16,7 @@ import application.views.elements.PlayerSprite;
 import application.views.elements.WarpPointBox;
 import application.views.overworld_cells.AbstractCell;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -231,17 +232,20 @@ public abstract class AbstractController
 								
 								mPlayer.showEmote();
 								
-								try
+								Platform.runLater(() ->
 								{
-									Thread.sleep(1000);
-								}
-								
-								catch(InterruptedException e)
-								{
-									LoggerController.logEvent(LoggingTypes.Error, "Sleep when presenting the emote was interrupted.");
-								}
-								
-								Startup.startBattle(wildEncounter);
+									try
+									{
+										Thread.sleep(250);
+									}
+									
+									catch(InterruptedException e)
+									{
+										LoggerController.logEvent(LoggingTypes.Error, "Sleep when presenting the emote was interrupted.");
+									}
+									
+									Startup.startBattle(wildEncounter);
+								});
 							}
 						}
 					}

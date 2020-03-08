@@ -41,11 +41,11 @@ public class PlayerSprite
 		mBoxCollision.setFill(Color.BLUE);
 		mBoxCollision.visibleProperty().bind(showCollisionProp);
 		
-		mEmote = new ImageView(new Image(getClass().getResource("/resources/images/icons/Exclamation.png").toExternalForm(), 100, 100, true, false));
+		mEmote = new ImageView(new Image(getClass().getResource("/resources/images/symbols/Exclamation.png").toExternalForm(), 100, 100, true, false));
 		mEmote.fitWidthProperty().bind(mImage.fitWidthProperty().divide(2));
-		mEmote.fitHeightProperty().bind(mImage.fitHeightProperty().divide(2));
+		mEmote.fitHeightProperty().bind(mEmote.fitWidthProperty());
 		mEmote.xProperty().bind(mImage.xProperty().add(mImage.getFitWidth() / 4));
-		mEmote.yProperty().bind(mImage.yProperty().subtract(40));
+		mEmote.yProperty().bind(mImage.yProperty().subtract(30));
 		mEmote.visibleProperty().bind(mShowEmote);
 		
 		createCollisionBoxes();
