@@ -222,9 +222,26 @@ public abstract class AbstractController
 							{
 								LoggerController.logEvent(LoggingTypes.Misc, "Player has encountered a wild Anature.");
 								Trainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
-								Startup.startBattle(wildEncounter);
 								
 								mView.mCanMove = false;
+								mView.mUp = false;
+								mView.mDown = false;
+								mView.mRight = false;
+								mView.mLeft = false;
+								
+								mPlayer.showEmote();
+								
+								try
+								{
+									Thread.sleep(1000);
+								}
+								
+								catch(InterruptedException e)
+								{
+									LoggerController.logEvent(LoggingTypes.Error, "Sleep when presenting the emote was interrupted.");
+								}
+								
+								Startup.startBattle(wildEncounter);
 							}
 						}
 					}

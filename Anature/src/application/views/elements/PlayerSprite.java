@@ -6,6 +6,7 @@ import application.controllers.LoggerController;
 import application.enums.LoggingTypes;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -16,14 +17,15 @@ import javafx.scene.shape.Rectangle;
 
 public class PlayerSprite
 {
-	private ImageView mImage;
+	private ImageView mImage, mEmote;
 	private Rectangle mBoxCollision, mTopCollision, mBotCollision, mRightCollision, mLeftCollision;
-	private BooleanProperty mShowCollision;
+	private BooleanProperty mShowCollision, mShowEmote;
 	private ArrayList<Node> mContent;
 	
 	public PlayerSprite(Image sprite, double startingX, double startingY, DoubleProperty zoom, BooleanProperty showCollisionProp)
 	{
 		mShowCollision = showCollisionProp;
+		mShowEmote = new SimpleBooleanProperty(false);
 		
 		mImage = new ImageView(sprite);
 		mImage.fitWidthProperty().bind(zoom.multiply(24));
@@ -39,8 +41,16 @@ public class PlayerSprite
 		mBoxCollision.setFill(Color.BLUE);
 		mBoxCollision.visibleProperty().bind(showCollisionProp);
 		
+		mEmote = new ImageView(new Image(getClass().getResource("/resources/images/icons/Exclamation.png").toExternalForm(), 100, 100, true, false));
+		mEmote.fitWidthProperty().bind(mImage.fitWidthProperty().divide(2));
+		mEmote.fitHeightProperty().bind(mImage.fitHeightProperty().divide(2));
+		mEmote.xProperty().bind(mImage.xProperty().add(mImage.getFitWidth() / 4));
+		mEmote.yProperty().bind(mImage.yProperty().subtract(40));
+		mEmote.visibleProperty().bind(mShowEmote);
+		
 		createCollisionBoxes();
 		mContent = new ArrayList<Node>();
+		mContent.add(mEmote);
 		mContent.add(mImage);
 		mContent.add(mBoxCollision);
 		mContent.add(mTopCollision);
@@ -196,5 +206,20 @@ public class PlayerSprite
 	public Bounds getLeftBounds()
 	{
 		return mLeftCollision.getBoundsInLocal();
+	}
+	
+	public boolean isEmoteShown()
+	{
+		return mShowEmote.get();
+	}
+	
+	public void showEmote()
+	{
+		mShowEmote.set(true);
+	}
+	
+	public void hideEmote()
+	{
+		mShowEmote.set(false);
 	}
 }
