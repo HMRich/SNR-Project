@@ -2,6 +2,7 @@ package application.moves;
 
 import application.Anature;
 import application.enums.MoveIds;
+import application.enums.StatusEffects;
 import application.enums.Type;
 
 public class Flamethrower extends Move
@@ -20,5 +21,6 @@ public class Flamethrower extends Move
 	public void activateMove(Anature source, Anature target)
 	{
 		target.takeDamage(mDamageDone);
+		target.setStatus(StatusEffects.Burn);
 	}
 }

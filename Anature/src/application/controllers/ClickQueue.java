@@ -5,7 +5,7 @@ public class ClickQueue
 	private class Node
 	{
 		private Runnable mData;
-		private Node mNext;
+		public Node mNext;
 
 		public Node(Runnable toRun)
 		{
@@ -42,6 +42,13 @@ public class ClickQueue
 	public void enqueue(Runnable val)
 	{
 		Node node = new Node(val);
+		System.out.println("Queue is at size: " + mSize);
+		
+		if(mHead == null)
+			System.out.println("HEad is null");
+		
+		if(mTail == null)
+			System.out.println("Tail is null");
 		
 		if(mSize == 0)
 		{
@@ -80,6 +87,7 @@ public class ClickQueue
 		if(mSize == 0)
 		{
 			mHead = node;
+			mTail = node; 
 		}
 		
 		else

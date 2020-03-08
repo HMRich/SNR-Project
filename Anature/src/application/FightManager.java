@@ -55,7 +55,6 @@ public class FightManager
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
 		
-		statusEffect(playerAnature); 
 		
 		if(playerAnatureMove.getMoveId() == MoveIds.Skip_Turn) {
 			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
@@ -108,7 +107,6 @@ public class FightManager
 
 		Move enemyAnatureMove = moves.getMove(indexOfMove);
 		
-		statusEffect(enemyAnature); 
 		
 		if(enemyAnatureMove.getMoveId() == MoveIds.Skip_Turn) {
 			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
@@ -196,28 +194,7 @@ public class FightManager
 		}
 	}
 	
-	private void statusEffect(Anature anature) {
-		StatusEffects status = anature.getStatus(); 
-		
-		switch(status) {
-			case Sleep:
-			break; 
-			
-			case Paralysis:
-				break;
-				
-			case Burn:
-				anature.takeDamage(anature.getTotalHp()*0.125);
-				break;
-				
-			case None:
-				break;
-		default:
-			break;
-			
-		}
-		
-	}
+	
 
 	public ArrayList<Anature> getPlayerTeam()
 	{

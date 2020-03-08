@@ -8,7 +8,6 @@ public class MoveResult extends Result
 	private String mMpTxt;
 	private int mMoveIndex;//NOTE: a moveIndex of -1 means that the move was skipped
 	private boolean mIsPlayer;
-	private StatusEffects mPlayerStatus, mEnemyStatus;
 	
 	public MoveResult(double damageDone, String dialogueTxt, int moveIndex, String mpTxt, boolean isPlayer)
 	{
