@@ -1,5 +1,7 @@
-package application.views;
+package application.views.elements;
 
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,6 +23,13 @@ public class ZoomableImage extends Region
 		mHeight = height;
 
 		mCanvas = new Canvas();
+		mCanvas.setOnMouseClicked(event ->
+		{
+			if(LoggerController.isMouseLocationEnabled())
+			{
+				LoggerController.logEvent(LoggingTypes.Mouse, "Mouse click at X: " + event.getX() + " Y: " + event.getY() + " on the image.");
+			}
+		});
 		mCanvas.widthProperty().bind(mZoom.multiply(mWidth).multiply(1.4));
 		mCanvas.heightProperty().bind(mZoom.multiply(mHeight).multiply(1.4));
 

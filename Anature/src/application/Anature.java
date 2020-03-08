@@ -5,6 +5,7 @@ import application.enums.Gender;
 import application.enums.Species;
 import application.enums.Type;
 import application.enums.StatusEffects;
+import javafx.scene.image.Image;
 
 public class Anature
 {
@@ -352,5 +353,14 @@ public class Anature
 
 		return mName + result;
 	}
-
+	
+	public Image getFrontSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+	
+	public Image getBackSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true, false);
+	}
 }
