@@ -42,13 +42,7 @@ public class ClickQueue
 	public void enqueue(Runnable val)
 	{
 		Node node = new Node(val);
-		System.out.println("Queue is at size: " + mSize);
 		
-		if(mHead == null)
-			System.out.println("HEad is null");
-		
-		if(mTail == null)
-			System.out.println("Tail is null");
 		
 		if(mSize == 0)
 		{

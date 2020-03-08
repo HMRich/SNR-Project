@@ -444,7 +444,6 @@ public class BattleController
 			@Override
 			public void handle(Event event)
 			{
-				System.out.println("This is the OnMouseClicked");
 				
 				if(mCanClick.get())
 				{
@@ -1236,9 +1235,9 @@ public class BattleController
 		mDialogueTxt.set(statusDialogue);
 		ProgressBarDecrease decrease;
 		if(isPlayer) {
-			decrease = new ProgressBarDecrease(mEnemyHp, Duration.millis(3000), damageDone);
-		} else {
 			decrease = new ProgressBarDecrease(mPlayerHp, Duration.millis(3000), damageDone);
+		} else {
+			decrease = new ProgressBarDecrease(mEnemyHp, Duration.millis(3000), damageDone);
 		}
 		
 		decrease.setOnFinished(event -> mCanClick.set(true));
@@ -1311,9 +1310,9 @@ public class BattleController
 					@Override
 					public void run() {
 						if(isPlayer) {
-							mStatusIconPlayer.setImage(mSleepStatusIcon);
-						} else {
 							mStatusIconEnemy.setImage(mSleepStatusIcon);
+						} else {
+							mStatusIconPlayer.setImage(mSleepStatusIcon);
 						}
 						
 						mDialogueTxt.set(anature.getName() +  " is fast asleep!");
@@ -1346,9 +1345,9 @@ public class BattleController
 					@Override
 					public void run() {
 						if(isPlayer) {
-							mStatusIconPlayer.setImage(mParalyzedStatusIcon);
-						} else {
 							mStatusIconEnemy.setImage(mParalyzedStatusIcon);
+						} else {
+							mStatusIconPlayer.setImage(mParalyzedStatusIcon);
 						}
 						
 						mDialogueTxt.set(anature.getName() +  " is paralysed! It may not be able to move!");
@@ -1393,9 +1392,9 @@ public class BattleController
 					public void run() {
 						
 						if(isPlayer) {
-							mStatusIconPlayer.setImage(mBurnStatusIcon);
-						} else {
 							mStatusIconEnemy.setImage(mBurnStatusIcon);
+						} else {
+							mStatusIconPlayer.setImage(mBurnStatusIcon);
 						}
 						
 						mDialogueTxt.set(anature.getName() +  " is burned! ");
