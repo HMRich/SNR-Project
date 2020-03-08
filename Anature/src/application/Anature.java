@@ -145,7 +145,7 @@ public class Anature
 	{
 		mSecondaryType = secondaryType;
 	}
-	
+
 	public void setTyes(Type[] types)
 	{
 		if(types.length == 2)
@@ -374,17 +374,21 @@ public class Anature
 
 	public Anature getClone()
 	{
-		return new Anature(mName, mOwner, mLevel, mCurrentXp, mGender, mMoves, new Type[] {mPrimaryType, mSecondaryType}, mSpecies, mIsShiny,
-				mIndexNum, mAbility, mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed, mAccuracy);
+		return new Anature(mName, mOwner, mLevel, mCurrentXp, mGender, new MoveSet(mMoves.getMove(1), mMoves.getMove(2), mMoves.getMove(3), mMoves.getMove(4)),
+				new Type[]
+				{ mPrimaryType, mSecondaryType }, mSpecies, mIsShiny, mIndexNum, mAbility, mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed,
+				mAccuracy);
 	}
-	
+
 	public Image getFrontSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true,
+				false);
 	}
-	
+
 	public Image getBackSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true,
+				false);
 	}
 }

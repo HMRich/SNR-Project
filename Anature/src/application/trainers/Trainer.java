@@ -45,7 +45,7 @@ public class Trainer
 
 	public final AiChoice useTurn(Anature playerAnature)
 	{
-		AiChoice itemResult = mAi.useItem(mItems, mCurrentAnature, mHealthThreshold);
+		AiChoice itemResult = mAi.willUseHealthPotion(mItems, mCurrentAnature, mHealthThreshold);
 
 		if(itemResult.equals(AiChoice.No_Choice))
 		{
@@ -86,9 +86,9 @@ public class Trainer
 	{
 		if(mId == TrainerIds.Wild)
 			return null;
-		
-		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + "/"
-				+ mId.toString() + ".png").toExternalForm(), 1000.0, 1000.0, true, false);
+
+		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + "/" + mId.toString() + ".png").toExternalForm(),
+				1000.0, 1000.0, true, false);
 	}
 
 	public ArrayList<Anature> getAnatures()
@@ -115,14 +115,14 @@ public class Trainer
 		}
 		return index;
 	}
-	
+
 	public boolean canBattle()
 	{
 		if(mAnatures.size() == 0)
 		{
 			return false;
 		}
-		
+
 		boolean result = false;
 		for(Anature anature : mAnatures)
 		{
@@ -132,7 +132,7 @@ public class Trainer
 				break;
 			}
 		}
-		
+
 		return !result;
 	}
 }

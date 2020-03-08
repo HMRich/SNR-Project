@@ -1,4 +1,4 @@
-package application.enums.items;
+package application.enums;
 
 public enum ItemIds
 {

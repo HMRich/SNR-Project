@@ -3,8 +3,8 @@ package application;
 import java.util.ArrayList;
 
 import application.controllers.LoggerController;
+import application.enums.ItemIds;
 import application.enums.LoggingTypes;
-import application.enums.items.ItemIds;
 import application.items.Item;
 
 public class Backpack

@@ -16,10 +16,10 @@ import application.DatabaseConnection;
 import application.controllers.LoggerController;
 import application.enums.AiIds;
 import application.enums.DatabaseType;
+import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
-import application.enums.items.ItemIds;
 import application.items.Item;
 import application.items.ItemPool;
 

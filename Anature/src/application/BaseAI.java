@@ -33,13 +33,13 @@ public class BaseAI
 
 		double anatureHpPercent = currentAnature.getHpPercent();
 
-		boolean currentAnatureAtThreshold = anatureHpPercent < healthThreshold;
+		boolean currentAnatureAtThreshold = anatureHpPercent <= healthThreshold;
 		boolean trainerHasHealthPotion = !healthPotions.isEmpty();
 
 		return trainerHasHealthPotion && currentAnatureAtThreshold;
 	}
 
-	public Item itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
+	public HealthPotion itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
 	{
 		if(healthPotions == null)
 		{
@@ -55,7 +55,7 @@ public class BaseAI
 
 		double currentAnatureHpPercent = currentAnature.getHpPercent();
 
-		Item itemToUse = null;
+		HealthPotion itemToUse = null;
 		double anaturePercentAfterItemUse = 0;
 
 		for(HealthPotion healthPotion : healthPotions)
@@ -65,6 +65,9 @@ public class BaseAI
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);
+
+			// TODO there is some logic here that allows trainers to use master potion even
+			// it there may be a better option that allows for less over healing.
 
 			if(anaturePercentAfterItemUse == 0 || anatureHpPercentIfItemUsed > anaturePercentAfterItemUse && !willOverheal)
 			{
@@ -97,17 +100,21 @@ public class BaseAI
 		return AiChoice.No_Choice;
 	}
 
-	public AiChoice chooseMove(MoveSet anatureMoves)
+	
+	// TODO Add a advantage threshold??
+	public AiChoice chooseMove(Anature source, Anature target)
 	{
 		ArrayList<AiChoice> choices = new ArrayList<AiChoice>();
+		
+		MoveSet moves = source.getMoves();
 
-		if(anatureMoves.hasMove(1))
+		if(moves.hasMove(1))
 			choices.add(AiChoice.Move1);
-		if(anatureMoves.hasMove(2))
+		if(moves.hasMove(2))
 			choices.add(AiChoice.Move2);
-		if(anatureMoves.hasMove(3))
+		if(moves.hasMove(3))
 			choices.add(AiChoice.Move3);
-		if(anatureMoves.hasMove(4))
+		if(moves.hasMove(4))
 			choices.add(AiChoice.Move4);
 
 		return choices.get(new Random().nextInt(choices.size()));

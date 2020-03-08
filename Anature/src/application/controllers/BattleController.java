@@ -644,14 +644,14 @@ public class BattleController
 		updateMoves(playerCurr);
 		updateSwitch(player.getAnatures(), player.getSelectedIndex());
 		updateBagMenu();
-		
+
 		mAnatureFront.setImage(enemyCurr.getFrontSprite());
-		
+
 		startInto(player, enemyTrainer, enemyCurr);
 
 		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(), enemyTrainer.getName());
 	}
-	
+
 	private void startInto(Player player, Trainer enemyTrainer, Anature enemyCurr)
 	{
 		mClickQueue.enqueue(new Runnable()
@@ -693,14 +693,14 @@ public class BattleController
 				}
 			}
 		});
-		
+
 		if(enemyTrainer.getId() == TrainerIds.Wild)
 		{
 			mAnatureFront.setOpacity(100);
 			startIntroSlides(true);
 			mDialogueTxt.set(player.getName() + " has encountered a wild " + enemyCurr.getName() + "!");
 		}
-		
+
 		else
 		{
 			mAnatureFront.setOpacity(0);
@@ -708,17 +708,16 @@ public class BattleController
 			mDialogueTxt.set(enemyTrainer.getName() + " has started a battle with " + player.getName() + "!");
 		}
 	}
-	
+
 	private void startIntroSlides(boolean isWild)
 	{
 		XSlideAnimation playerSlide = new XSlideAnimation(mPlayerImage, Duration.millis(1500), 1, 7);
 		playerSlide.setOnFinished(event -> mCanClick.set(true));
 		playerSlide.play();
-		
 
 		XSlideAnimation xPlayerGroundSlide = new XSlideAnimation(mPlayerGroundImage, Duration.millis(1500), 1.1, 8);
 		xPlayerGroundSlide.play();
-		
+
 		if(!isWild)
 		{
 			XSlideAnimation trainerSlide = new XSlideAnimation(mTrainerImage, Duration.millis(1500), 1, 1.8);
@@ -727,7 +726,7 @@ public class BattleController
 			XSlideAnimation xTrainerGroundSlide = new XSlideAnimation(mTrainerGroundImage, Duration.millis(1500), 1.05, 2.05);
 			xTrainerGroundSlide.play();
 		}
-		
+
 		else
 		{
 			mTrainerGroundImage.layoutXProperty().bind(mTrainerGroundImage.getScene().widthProperty().divide(2.05));
@@ -745,7 +744,7 @@ public class BattleController
 		mPlayerXpTotal.set(100); // TODO change to a standard
 
 		mPlayerLvl.set(playerCurr.getLevel());
-		
+
 		mAnatureBack.setImage(playerCurr.getBackSprite());
 
 		updateMoves(playerCurr);
@@ -1097,7 +1096,7 @@ public class BattleController
 					@Override
 					public void run()
 					{
-						HealthPotion selectedItem = ItemPool.getHealthPotion(mItemList.getSelectionModel().getSelectedItem());
+						Item selectedItem = ItemPool.getItem(mItemList.getSelectionModel().getSelectedItem());
 
 						ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change
 																													// it so u can

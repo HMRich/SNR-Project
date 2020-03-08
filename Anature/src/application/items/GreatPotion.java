@@ -1,6 +1,6 @@
 package application.items;
 
-import application.enums.items.ItemIds;
+import application.enums.ItemIds;
 
 public class GreatPotion extends HealthPotion
 {

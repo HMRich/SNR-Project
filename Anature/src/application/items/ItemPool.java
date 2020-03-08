@@ -2,111 +2,106 @@ package application.items;
 
 import java.util.HashMap;
 
-import application.enums.items.ItemIds;
+import application.controllers.LoggerController;
+import application.enums.ItemIds;
+import application.enums.LoggingTypes;
 
 public class ItemPool
 {
-//	private static HashMap<ItemIds, Item> mItems;
-	private static HashMap<ItemIds, HealthPotion> mHealthPotions;
+	private static HashMap<ItemIds, Item> mItems;
 
-//	public static Item getItem(ItemIds itemId)
-//	{
-//		if(mItems == null)
-//		{
-//			generateItems();
-//		}
-//
-//		return mItems.get(itemId);
-//	}
-	
+	public static Item getItem(ItemIds itemId)
+	{
+		if(mItems == null)
+		{
+			generateItems();
+		}
+
+		return mItems.get(itemId);
+	}
+
 	public static HealthPotion getHealthPotion(ItemIds itemId)
 	{
-		if(mHealthPotions == null)
+		if(isHealthPotion(itemId))
 		{
-			generateHealthPotions();
+			return (HealthPotion) mItems.get(itemId);
 		}
-		
-		return mHealthPotions.get(itemId);
+		return null;
 	}
-	
-//	private static void generateItems()
-//	{
-//		mItems = new HashMap<ItemIds, Item>();
-//	}
 
-	private static void generateHealthPotions()
+	private static void generateItems()
 	{
-		mHealthPotions = new HashMap<ItemIds, HealthPotion>();
+		mItems = new HashMap<ItemIds, Item>();
 		int potionHealAmount = 20;
-		mHealthPotions.put(ItemIds.Potion, new Potion(potionHealAmount));
+		mItems.put(ItemIds.Potion, new Potion(potionHealAmount));
 		int greatPotionHealAmount = 50;
-		mHealthPotions.put(ItemIds.Great_Potion, new GreatPotion(greatPotionHealAmount));
+		mItems.put(ItemIds.Great_Potion, new GreatPotion(greatPotionHealAmount));
 		int ultraPotionHealAmount = 200;
-		mHealthPotions.put(ItemIds.Ultra_Potion, new UltraPotion(ultraPotionHealAmount));
+		mItems.put(ItemIds.Ultra_Potion, new UltraPotion(ultraPotionHealAmount));
 		int masterPotionHealAmount = Integer.MAX_VALUE;
-		mHealthPotions.put(ItemIds.Master_Potion, new MasterPotion(masterPotionHealAmount));
+		mItems.put(ItemIds.Master_Potion, new MasterPotion(masterPotionHealAmount));
 	}
-	
-	private boolean isHealthPotion(ItemIds itemId)
+
+	private static boolean isHealthPotion(ItemIds itemId)
 	{
 		switch(itemId)
 		{
 			case Potion:
 				return true;
-				
+
 			case Great_Potion:
 				return true;
-				
+
 			case Ultra_Potion:
 				return true;
-				
+
 			case Master_Potion:
 				return true;
-				
+
 			default:
 				return false;
 		}
 	}
 
-//	public static Item getItems(String input)
-//	{
-//		String toCheck = input;
-//		ItemIds id = null;
-//
-//		if(input.contains(" "))
-//		{
-//			String[] parts = input.split(" ");
-//
-//			if(parts.length == 3)
-//			{
-//				toCheck = parts[0] + "_" + parts[1];
-//			}
-//
-//			else
-//			{
-//				toCheck = parts[0];
-//			}
-//
-//			toCheck = toCheck.substring(0, toCheck.length() - 1);
-//		}
-//
-//		else
-//		{
-//			LoggerController.logEvent(LoggingTypes.Error, "Try to get an item by an invalid String: " + input);
-//			return null;
-//		}
-//
-//		try
-//		{
-//			id = ItemIds.valueOf(toCheck);
-//		}
-//
-//		catch(Exception e)
-//		{
-//			LoggerController.logEvent(LoggingTypes.Error, "Try to get an item by an invalid String: " + input);
-//			return null;
-//		}
-//
-//		return getItems(id);
-//	}
+	public static Item getItem(String input)
+	{
+		String toCheck = input;
+		ItemIds id = null;
+
+		if(input.contains(" "))
+		{
+			String[] parts = input.split(" ");
+
+			if(parts.length == 3)
+			{
+				toCheck = parts[0] + "_" + parts[1];
+			}
+
+			else
+			{
+				toCheck = parts[0];
+			}
+
+			toCheck = toCheck.substring(0, toCheck.length() - 1);
+		}
+
+		else
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Try to get an item by an invalid String: " + input);
+			return null;
+		}
+
+		try
+		{
+			id = ItemIds.valueOf(toCheck);
+		}
+
+		catch(Exception e)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Try to get an item by an invalid String: " + input);
+			return null;
+		}
+
+		return getItem(id);
+	}
 }

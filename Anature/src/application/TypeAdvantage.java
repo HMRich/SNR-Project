@@ -14,8 +14,10 @@ public class TypeAdvantage
 	public static AttackEffectiveness advantageType(Anature attacker, Anature defender)
 	{
 		AttackEffectiveness attackEffectiveness = AttackEffectiveness.NotSet;
+
 		ArrayList<Type> attackerTypes = attacker.getTypes();
 		ArrayList<Type> defenderTypes = defender.getTypes();
+
 		for(Type attackerType : attackerTypes)
 		{
 			for(Type defenderType : defenderTypes)
@@ -23,24 +25,49 @@ public class TypeAdvantage
 				attackEffectiveness = checkAdvantage(attackerType, defenderType, attackEffectiveness);
 			}
 		}
+
 		if(attackEffectiveness == AttackEffectiveness.NotSet)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "attackerEffectiveness was not set. Take a look at the logic for type advantage.");
 			return AttackEffectiveness.Error;
 		}
+
 		return attackEffectiveness;
 	}
 
 	public static AttackEffectiveness moveEffectiveness(Move attackerMove, Anature defender)
 	{
-		AttackEffectiveness attackEffectiveness = AttackEffectiveness.SuperEffective;
+		AttackEffectiveness attackEffectiveness = AttackEffectiveness.NotSet;
+
 		Type attackMoveType = attackerMove.getType();
 		ArrayList<Type> defenderTypes = defender.getTypes();
+
 		for(Type defenderType : defenderTypes)
 		{
 			attackEffectiveness = checkAdvantage(attackMoveType, defenderType, attackEffectiveness);
 		}
+
 		return attackEffectiveness;
+	}
+
+	public int compareAdvantage(AttackEffectiveness effectivenessToCheck, AttackEffectiveness effectivenessToCheckAgainst)
+	{
+		if(effectivenessToCheck == effectivenessToCheckAgainst)
+		{
+			return 0;
+		}
+
+		AttackEffectiveness returnedEffectiveness = compareEffectiveness(effectivenessToCheck, effectivenessToCheckAgainst);
+
+		if(returnedEffectiveness == effectivenessToCheck)
+		{
+			return -1;
+		}
+
+		else
+		{
+			return 1;
+		}
 	}
 
 	private static AttackEffectiveness checkAdvantage(Type attackerType, Type defenderType, AttackEffectiveness attackEffectiveness)
@@ -680,8 +707,8 @@ public class TypeAdvantage
 				return AttackEffectiveness.Error;
 
 			default:
-				LoggerController.logEvent(LoggingTypes.Error, "currentEffectiveness was not available. Was the effectiveness "
-						+ currentEffectiveness.toString() + " missing? Setting Attack Effectiveness to \"Error\".");
+				LoggerController.logEvent(LoggingTypes.Error, "currentEffectiveness was not available. Was the effectiveness " + currentEffectiveness.toString()
+						+ " missing? Setting Attack Effectiveness to \"Error\".");
 				return AttackEffectiveness.Error;
 		}
 	}

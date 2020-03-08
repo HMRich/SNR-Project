@@ -2,7 +2,7 @@ package application.items;
 
 import application.Anature;
 import application.ItemResult;
-import application.enums.items.ItemIds;
+import application.enums.ItemIds;
 
 public abstract class HealthPotion extends Item
 {
