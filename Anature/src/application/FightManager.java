@@ -10,7 +10,6 @@ import application.abillities.ToughSkin;
 import application.abillities.Tyrannize;
 import application.enums.AbilityIds;
 import application.enums.MoveIds;
-import application.enums.StatusEffects;
 import application.items.Item;
 import application.moves.Move;
 
@@ -33,6 +32,24 @@ public class FightManager
 		mPlayerIndex = 0;
 		mEnemyIndex = 0;
 		mTurnCount = 0;
+	}
+	
+	public void applyDamage(boolean isPlayer, int index, double damage)
+	{
+		ArrayList<Anature> team = null;
+		
+		if(isPlayer)
+		{
+			team = mPlayerTeam;
+		}
+		
+		else
+		{
+			team = mEnemyTeam;
+		}
+		
+		Anature selected = team.get(index);
+		selected.takeDamage(damage);
 	}
 
 	public MoveResult attackEnemy(int indexOfMove)
