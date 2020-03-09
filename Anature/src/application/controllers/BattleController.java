@@ -492,6 +492,8 @@ public class BattleController
 		createBindsImageView(mSwitchBtn, scene, 2.71, 1.5, 8.31, 21.818, mShowSwitch);
 		mSwitchBtn.setOnMouseClicked(event ->
 		{
+			event.consume();
+			
 			if(mShowSwitchBackBtn.get())
 			{
 				activateTurn(BattleChoice.Switch);
@@ -542,7 +544,7 @@ public class BattleController
 
 	private void setUpStatuses(Scene scene)
 	{
-		createBindsImageView(mStatusIconPlayer, scene, 1.578, 1.909, 26.122, 34.285);
+		createBindsImageView(mStatusIconPlayer, scene, 1.578, 1.909, 26.122, 34.285, mShowPlayerBars);
 		mStatusIconPlayer.setImage(null);
 
 		createBindsImageView(mStatusIconEnemy, scene, 3.122, 6.79, 26.122, 34.285);
@@ -883,6 +885,7 @@ public class BattleController
 		mPlayerXpTotal.set(100); // TODO change to a standard
 
 		mPlayerLvl.set(playerCurr.getLevel());
+		updateStatusIcon(mStatusIconPlayer, playerCurr);
 
 		mAnatureBack.setImage(playerCurr.getBackSprite());
 
@@ -1333,18 +1336,9 @@ public class BattleController
 							LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
 						}
 
-								catch(InterruptedException e)
-								{
-									LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
-								}
-
-								OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
-								fadeInNew.setOnFinished(actionEvent -> mCanClick.set(true));
-								fadeInNew.play();
-							}
-						});
-
-						fadeOld.play();
+						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
+						fadeInNew.setOnFinished(actionEvent -> mCanClick.set(true));
+						fadeInNew.play();
 						mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
 					}
 				});
@@ -1353,7 +1347,6 @@ public class BattleController
 				mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
 			}
 		});
-
 	}
 
 	private void enemyTurn(AiChoice enemyTurn)
@@ -1490,7 +1483,6 @@ public class BattleController
 
 	private void onSwitchBtn()
 	{
-
 		updateSwitch(mPlayer.getAnatures(), mSwitchIndexSelected);
 		mShowSwitch.set(true);
 		mShowBtns.set(false);
@@ -1635,6 +1627,31 @@ public class BattleController
 
 			default:
 				mClickQueue.enqueue(runnable);
+
+				break;
+		}
+	}
+	
+	private void updateStatusIcon(ImageView icon, Anature toCheck)
+	{
+		StatusEffects anatureStatus = toCheck.getStatus();
+
+		switch(anatureStatus)
+		{
+			case Sleep:
+				icon.setImage(mSleepStatusIcon);
+				break;
+
+			case Paralysis:
+				icon.setImage(mParalyzedStatusIcon);
+				break;
+
+			case Burn:
+				icon.setImage(mBurnStatusIcon);
+				break;
+
+			default:
+				icon.setImage(null);
 
 				break;
 		}
