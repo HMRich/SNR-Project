@@ -157,7 +157,6 @@ public class BattleController
 		mShowMoveSeTwo = new SimpleBooleanProperty(false);
 		mShowMoveSeThree = new SimpleBooleanProperty(false);
 		mShowMoveSeFour = new SimpleBooleanProperty(false);
-		
 
 		mShowBtns = new SimpleBooleanProperty(false);
 		mShowSwitchBackBtn = new SimpleBooleanProperty(false);
@@ -381,47 +380,59 @@ public class BattleController
 		mDialogueTxtArea.layoutXProperty().bind(scene.widthProperty().divide(4.6));
 		mDialogueTxtArea.fontProperty().bind(fontProperty);
 	}
-	
-	private void onPlayerAnatureDeath() {
+
+	private void onPlayerAnatureDeath()
+	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature: mPlayer.getAnatures()) {
-			if(anature.getCurrHp() > 0) {
+		for(Anature anature : mPlayer.getAnatures())
+		{
+			if(anature.getCurrHp() > 0)
+			{
 				isThereAliveAnatureInParty = true;
 			}
 		}
-		
-		if(isThereAliveAnatureInParty) {
+
+		if(isThereAliveAnatureInParty)
+		{
 			onSwitchBtn();
-			mShowSwitchBackBtn.set(false); 
-		} else {
+			mShowSwitchBackBtn.set(false);
+		}
+		else
+		{
 			mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
-			
+
 			mShowBtns.set(false);
-			
+
 			mClickQueue.clear();
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures! You quickly run back to the nearest Rest Station!")); 
+			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures! You quickly run back to the nearest Rest Station!"));
 			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
-			
+
 			mCanClick.set(true);
 			mToEnd = true;
 		}
 	}
-	
-	private void onEnemyAnatureDeath() {
+
+	private void onEnemyAnatureDeath()
+	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature: mEnemyTrainer.getAnatures()) {
-			if(anature.getCurrHp() > 0) {
+		for(Anature anature : mEnemyTrainer.getAnatures())
+		{
+			if(anature.getCurrHp() > 0)
+			{
 				isThereAliveAnatureInParty = true;
 			}
 		}
-		
-		if(isThereAliveAnatureInParty) {
+
+		if(isThereAliveAnatureInParty)
+		{
 			System.out.println("Choosing enemy anature yet to be implemented!");
-		} else {
+		}
+		else
+		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-			
+
 			mShowBtns.set(false);
-			
+
 			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + " !"));
 			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
