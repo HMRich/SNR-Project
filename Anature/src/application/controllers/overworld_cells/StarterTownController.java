@@ -1,5 +1,7 @@
 package application.controllers.overworld_cells;
 
+import java.util.ArrayList;
+
 import application.LoggerStartUp;
 import application.Startup;
 import application.controllers.LoggerController;
@@ -8,6 +10,7 @@ import application.enums.LoggingTypes;
 import application.enums.WarpPoints;
 import application.models.StarterTownModel;
 import application.trainers.Trainer;
+import application.views.elements.TrainerSprite;
 import application.views.overworld_cells.StarterTownCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -34,22 +37,7 @@ public class StarterTownController extends AbstractController
 	@Override
 	protected void timerHook(double elapsedSeconds)
 	{
-		int trainerIndex = mView.mKelly.getIndex(mView.getBackground());
-		int playerIndex = mPlayer.getIndex(mView.getBackground());
-
-		if(mPlayer.getBoxY() > mView.mKelly.getCollisionY() && playerIndex < trainerIndex)
-		{
-			mPlayer.removeFromContainer(mView.getBackground());
-			mPlayer.addToContainer(mView.getBackground(), trainerIndex + 1);
-		}
-
-		else if(mPlayer.getBoxY() <= mView.mKelly.getCollisionY() && playerIndex > trainerIndex)
-		{
-			mPlayer.removeFromContainer(mView.getBackground());
-			mPlayer.addToContainer(mView.getBackground(), trainerIndex);
-		}
 		
-		mView.mKelly.update(mPlayer, mSpeed, elapsedSeconds);
 	}
 
 	@Override
@@ -57,45 +45,48 @@ public class StarterTownController extends AbstractController
 	{
 		if(event.getCode() == KeyCode.E)
 		{
-			if(mView.mKelly.interact(mPlayer, mView.getPlayerFacing()) && mClickQueue.isEmpty())
+			for(TrainerSprite trainer : mView.getTrainerSprites())
 			{
-				mView.mCanMove = false;
-
-				if(mKellyTrainer.canBattle())
+				if(trainer.interact(mPlayer, mView.getPlayerFacing()) && mClickQueue.isEmpty())
 				{
-					mView.showDialogue("Hi there, my name is Kelly!");
-					mClickQueue.enqueue(() -> mView.showDialogue("Let's battle!"));
-					mClickQueue.enqueue(() ->
+					mView.mCanMove = false;
+
+					if(mKellyTrainer.canBattle())
 					{
-						mView.mRight = false;
-						mView.mLeft = false;
-						mView.mDown = false;
-						mView.mUp = false;
-						mView.mCanMove = true;
-						mView.hideDialogue();
-						
-						Startup.startBattle(mKellyTrainer);
-					});
+						mView.showDialogue("Hi there, my name is Kelly!");
+						mClickQueue.enqueue(() -> mView.showDialogue("Let's battle!"));
+						mClickQueue.enqueue(() ->
+						{
+							mView.mRight = false;
+							mView.mLeft = false;
+							mView.mDown = false;
+							mView.mUp = false;
+							mView.mCanMove = true;
+							mView.hideDialogue();
+							
+							Startup.startBattle(mKellyTrainer);
+						});
+					}
+					
+					else
+					{
+						mView.showDialogue("Nice battle!");
+						mClickQueue.enqueue(() ->
+						{
+							mView.hideDialogue();
+							mView.mCanMove = true;
+						});
+					}
 				}
 				
 				else
 				{
-					mView.showDialogue("Nice battle!");
-					mClickQueue.enqueue(() ->
+					Runnable toRun = mClickQueue.dequeue();
+					
+					if(toRun != null)
 					{
-						mView.hideDialogue();
-						mView.mCanMove = true;
-					});
-				}
-			}
-			
-			else
-			{
-				Runnable toRun = mClickQueue.dequeue();
-				
-				if(toRun != null)
-				{
-					toRun.run();
+						toRun.run();
+					}
 				}
 			}
 		}

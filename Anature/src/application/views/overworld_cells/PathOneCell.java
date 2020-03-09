@@ -1,13 +1,18 @@
 package application.views.overworld_cells;
 
 import application.LoggerStartUp;
+import application.enums.Direction;
 import application.enums.SceneType;
+import application.enums.TrainerIds;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
+import application.views.elements.TrainerSprite;
 import javafx.scene.image.Image;
 
 public class PathOneCell extends AbstractCell
 {
+	public TrainerSprite mKelly;
+	
 	public PathOneCell(LoggerStartUp logger)
 	{
 		super(logger, 427, 468);
@@ -71,5 +76,27 @@ public class PathOneCell extends AbstractCell
 	{
 		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_Path_1_Exit, 0, 256, 13, 207);
 		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1, 953, 1682, 183, 21); // TODO only for demo
+	}
+
+	@Override
+	protected void createTrainers()
+	{
+		double[][] keyFrames = new double[][]
+		{
+			{1388, 177},
+			{158, 177},
+			{158, 133},
+			{1388, 133},
+		};
+		
+		Direction[] keyFrameDirections = new Direction[]
+		{
+			Direction.Down, Direction.Left, Direction.Up, Direction.Right
+		};
+		
+		int startingFrame = 1;
+		
+		mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, keyFrameDirections, startingFrame);
+		addTrainer(mKelly);
 	}
 }

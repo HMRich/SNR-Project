@@ -21,25 +21,7 @@ public class StarterTownCell extends AbstractCell
 	@Override
 	protected void addToBackground()
 	{
-		double[][] keyFrames = new double[][]
-		{
-			{427, 1310},
-			{427, 1390},
-			{480, 1390},
-			{480, 1310},
-		};
-		
-		Direction[] keyFrameDirections = new Direction[]
-		{
-			Direction.Left, Direction.Down, Direction.Right, Direction.Up
-		};
-		
-		int startingFrame = 1;
-		
-		mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, keyFrameDirections, startingFrame);
-
-		mCollisions.add(mKelly.getCollisionBox());
-		mKelly.addToContainer(mBackground);
+		// Nothing to add
 	}
 
 	@Override
@@ -93,5 +75,14 @@ public class StarterTownCell extends AbstractCell
 	protected void createWarpPoints()
 	{
 		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Starter_Town_Exit, 1518, 267, 35, 168);
+	}
+
+	@Override
+	protected void createTrainers()
+	{
+		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
+		
+		mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, new double[0][], new Direction[0], 0, dialogue, true);
+		addTrainer(mKelly);
 	}
 }

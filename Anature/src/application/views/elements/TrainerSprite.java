@@ -2,8 +2,11 @@ package application.views.elements;
 
 import java.util.ArrayList;
 
+import application.controllers.LoggerController;
 import application.enums.Direction;
+import application.enums.LoggingTypes;
 import application.enums.TrainerIds;
+import application.trainers.Trainer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Bounds;
@@ -30,12 +33,17 @@ public class TrainerSprite
 	private double[][] mKeyFrames;
 	private Direction[] mKeyFrameDirections;
 	
+	private String[] mDialogue;
+	private boolean mHasBattle;
+	private Trainer mTrainer;
+	
 	public TrainerSprite(double x, double y, TrainerIds id, Direction facing, DoubleProperty zoom, BooleanProperty showProperty, 
-			double[][] keyFrames, Direction[] keyFrameDirections, int startingFrame)
+			double[][] keyFrames, Direction[] keyFrameDirections, int startingFrame, String[] dialogue, boolean hasBattle)
 	{
 		mId = id;
 		mShowCollision = showProperty;
-		
+		mDialogue = dialogue;
+		mHasBattle = hasBattle;
 		mFacing = facing;
 		createSprites();
 		
@@ -153,6 +161,22 @@ public class TrainerSprite
 		return mBoxCollision.getY();
 	}
 	
+	public Trainer getTrainerModel()
+	{
+		return mTrainer;
+	}
+	
+	public void setTrainerModel(Trainer trainer)
+	{
+		if(trainer == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Tried giving trainer sprite a null model.");
+			return;
+		}
+		
+		mTrainer = trainer;
+	}
+	
 	public boolean interact(PlayerSprite playerSprite, Direction playerFacing)
 	{
 		mCanMove = false;
@@ -259,11 +283,8 @@ public class TrainerSprite
 		mDown = false;
 		mRight = false;
 		mLeft = false;
-		
-//		System.out.println("X: " + mSprite.getX() + " Y: " + mSprite.getY());
-//		System.out.println(goalY);
-//		System.out.println("------------------------------------------------------------------------");
-		if((goalX - 10 < mSprite.getX() && mSprite.getX() < goalX + 10) || (goalY - 10 < mSprite.getY() && mSprite.getY() < goalY + 10))
+
+		if((goalX - 10 < mSprite.getX() && mSprite.getX() < goalX + 10) && (goalY - 10 < mSprite.getY() && mSprite.getY() < goalY + 10))
 		{
 			mFrame++;
 			

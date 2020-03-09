@@ -8,15 +8,33 @@ import javafx.scene.input.KeyEvent;
 
 public class PathOneController extends AbstractController
 {
+	private PathOneCell mView;
+	
 	public PathOneController(LoggerStartUp logger, PathOneCell view)
 	{
 		super(logger, view);
+		mView = view;
 	}
 
 	@Override
 	protected void timerHook(double elapsedSeconds)
 	{
+		int trainerIndex = mView.mKelly.getIndex(mView.getBackground());
+		int playerIndex = mPlayer.getIndex(mView.getBackground());
+
+		if(mPlayer.getBoxY() > mView.mKelly.getCollisionY() && playerIndex < trainerIndex)
+		{
+			mPlayer.removeFromContainer(mView.getBackground());
+			mPlayer.addToContainer(mView.getBackground(), trainerIndex + 1);
+		}
+
+		else if(mPlayer.getBoxY() <= mView.mKelly.getCollisionY() && playerIndex > trainerIndex)
+		{
+			mPlayer.removeFromContainer(mView.getBackground());
+			mPlayer.addToContainer(mView.getBackground(), trainerIndex);
+		}
 		
+		mView.mKelly.update(mPlayer, mSpeed, elapsedSeconds);
 	}
 
 	@Override

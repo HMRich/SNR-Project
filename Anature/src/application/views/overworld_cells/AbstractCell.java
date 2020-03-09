@@ -11,6 +11,7 @@ import application.enums.SceneType;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import application.views.elements.PlayerSprite;
+import application.views.elements.TrainerSprite;
 import application.views.elements.WarpPointBox;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -50,6 +51,7 @@ public abstract class AbstractCell
 	protected ImageLayer mBackground;
 	protected ArrayList<Rectangle> mCollisions, mGrassPatches;
 	protected ArrayList<WarpPointBox> mWarpPoints;
+	protected ArrayList<TrainerSprite> mTrainerSprites;
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 
@@ -66,6 +68,7 @@ public abstract class AbstractCell
 		mCollisions = new ArrayList<Rectangle>();
 		mGrassPatches = new ArrayList<Rectangle>();
 		mWarpPoints = new ArrayList<WarpPointBox>();
+		mTrainerSprites = new ArrayList<TrainerSprite>();
 		mCanMove = true;
 
 		mHeight = height;
@@ -88,6 +91,13 @@ public abstract class AbstractCell
 		createCollisons();
 		createGrassPatches();
 		createWarpPoints();
+		createTrainers();
+		
+		for(TrainerSprite trainer : mTrainerSprites)
+		{
+			mCollisions.add(trainer.getCollisionBox());
+			trainer.addToContainer(mBackground);
+		}
 
 		mBackground.getChildren().addAll(mWarpPoints);
 		mBackground.getChildren().addAll(mGrassPatches);
@@ -111,6 +121,8 @@ public abstract class AbstractCell
 		
 		setUpDialogueBox(cell);
 	}
+	
+	protected abstract void createTrainers();
 
 	protected abstract void addToBackground();
 
@@ -231,6 +243,17 @@ public abstract class AbstractCell
 		
 		return rect;
 	}
+	
+	protected void addTrainer(TrainerSprite trainer)
+	{
+		if(trainer == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Tried to add a trainer spite that was null.");
+			return;
+		}
+		
+		mTrainerSprites.add(trainer);
+	}
 
 	public Scene getScene()
 	{
@@ -314,6 +337,11 @@ public abstract class AbstractCell
 	public ArrayList<WarpPointBox> getWarpPoints()
 	{
 		return mWarpPoints;
+	}
+	
+	public ArrayList<TrainerSprite> getTrainerSprites()
+	{
+		return mTrainerSprites;
 	}
 	
 	public void showDialogue(String txt)

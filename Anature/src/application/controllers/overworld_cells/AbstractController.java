@@ -1,5 +1,6 @@
 package application.controllers.overworld_cells;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import application.LoggerStartUp;
@@ -13,6 +14,7 @@ import application.enums.WarpPoints;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
 import application.views.elements.PlayerSprite;
+import application.views.elements.TrainerSprite;
 import application.views.elements.WarpPointBox;
 import application.views.overworld_cells.AbstractCell;
 import javafx.animation.AnimationTimer;
@@ -139,6 +141,29 @@ public abstract class AbstractController
 		return true;
 	}
 	
+	private void updateTrainers(double elapsedSeconds)
+	{
+		for(TrainerSprite trainer : mView.getTrainerSprites())
+		{
+			int trainerIndex = trainer.getIndex(mView.getBackground());
+			int playerIndex = mPlayer.getIndex(mView.getBackground());
+
+			if(mPlayer.getBoxY() > trainer.getCollisionY() && playerIndex < trainerIndex)
+			{
+				mPlayer.removeFromContainer(mView.getBackground());
+				mPlayer.addToContainer(mView.getBackground(), trainerIndex + 1);
+			}
+
+			else if(mPlayer.getBoxY() <= trainer.getCollisionY() && playerIndex > trainerIndex)
+			{
+				mPlayer.removeFromContainer(mView.getBackground());
+				mPlayer.addToContainer(mView.getBackground(), trainerIndex);
+			}
+			
+			trainer.update(mPlayer, mSpeed, elapsedSeconds);
+		}
+	}
+	
 	private void activateTimer()
 	{
 		mTimer = new AnimationTimer()
@@ -162,6 +187,7 @@ public abstract class AbstractController
 				double deltaY = 0;
 
 				timerHook(elapsedSeconds);
+				updateTrainers(elapsedSeconds);
 
 				if(mView.mCanMove)
 				{
