@@ -256,6 +256,10 @@
                   <Image url="@../../resources/images/items/Potion.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="mStatusIconPlayer" fitHeight="26.0" fitWidth="81.0" layoutX="870.0" layoutY="18.0" pickOnBounds="true">
+            </ImageView>
+            <ImageView fx:id="mStatusIconEnemy" fitHeight="26.0" fitWidth="81.0" layoutX="870.0" layoutY="18.0" pickOnBounds="true">
+            </ImageView>
          </children>
       </Pane>
    </center>
