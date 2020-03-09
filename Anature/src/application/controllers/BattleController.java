@@ -405,7 +405,7 @@ public class BattleController
 
 			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures! You quickly run back to the nearest Rest Station!"));
-			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+			mClickQueue.enqueue(() -> Startup.changeScene(null, null));
 
 			mCanClick.set(true);
 			mToEnd = true;
@@ -435,7 +435,7 @@ public class BattleController
 
 			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + " !"));
-			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
+			mClickQueue.enqueue(() -> Startup.changeScene(null, null));
 
 			mCanClick.set(true);
 			mToEnd = true;
