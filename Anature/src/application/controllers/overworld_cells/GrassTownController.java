@@ -3,12 +3,12 @@ package application.controllers.overworld_cells;
 import application.LoggerStartUp;
 import application.enums.Direction;
 import application.enums.WarpPoints;
-import application.views.overworld_cells.PathOneCell;
+import application.views.overworld_cells.GrassTownCell;
 import javafx.scene.input.KeyEvent;
 
-public class PathOneController extends AbstractController
+public class GrassTownController extends AbstractController
 {
-	public PathOneController(LoggerStartUp logger, PathOneCell view)
+	public GrassTownController(LoggerStartUp logger, GrassTownCell view)
 	{
 		super(logger, view);
 	}
@@ -16,12 +16,14 @@ public class PathOneController extends AbstractController
 	@Override
 	protected void timerHook()
 	{
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected void keyPressHook(KeyEvent event)
 	{
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -33,16 +35,10 @@ public class PathOneController extends AbstractController
 		
 		switch(warpPoint)
 		{
-			case Path_1_Starter_Town_Exit:
-				mPlayer.setX(45);
-				mPlayer.setY(269);
-				mView.setPlayerFacing(Direction.Right);
-				break;
-				
-			case Path_1_Grass_Town_Exit:
-				mPlayer.setX(1000);
-				mPlayer.setY(1595);
-				mView.setPlayerFacing(Direction.Up);
+			case Grass_Town_Path_1:
+				mPlayer.setX(1030);
+				mPlayer.setY(25);
+				mView.setPlayerFacing(Direction.Down);
 				break;
 
 			default:
