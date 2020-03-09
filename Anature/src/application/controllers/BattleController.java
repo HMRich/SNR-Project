@@ -442,67 +442,6 @@ public class BattleController
 		}
 	}
 
-	private void onPlayerAnatureDeath()
-	{
-		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature : mPlayer.getAnatures())
-		{
-			if(anature.getCurrHp() > 0)
-			{
-				isThereAliveAnatureInParty = true;
-			}
-		}
-
-		if(isThereAliveAnatureInParty)
-		{
-			onSwitchBtn();
-			mShowSwitchBackBtn.set(false);
-		}
-		else
-		{
-			mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
-
-			mShowBtns.set(false);
-
-			mClickQueue.clear();
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures! You quickly run back to the nearest Rest Station!"));
-			mClickQueue.enqueue(() -> Startup.changeScene(null, null));
-
-			mCanClick.set(true);
-			mToEnd = true;
-		}
-	}
-
-	private void onEnemyAnatureDeath()
-	{
-		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature : mEnemyTrainer.getAnatures())
-		{
-			if(anature.getCurrHp() > 0)
-			{
-				isThereAliveAnatureInParty = true;
-			}
-		}
-
-		if(isThereAliveAnatureInParty)
-		{
-			System.out.println("Choosing enemy anature yet to be implemented!");
-		}
-		else
-		{
-			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-
-			mShowBtns.set(false);
-
-			mClickQueue.clear();
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + " !"));
-			mClickQueue.enqueue(() -> Startup.changeScene(null, null));
-
-			mCanClick.set(true);
-			mToEnd = true;
-		}
-	}
-
 	private void setUpClickTracker(Scene scene)
 	{
 		scene.setOnMouseClicked(new EventHandler<Event>()
@@ -554,7 +493,7 @@ public class BattleController
 		mSwitchBtn.setOnMouseClicked(event ->
 		{
 			event.consume();
-			
+
 			if(mShowSwitchBackBtn.get())
 			{
 				activateTurn(BattleChoice.Switch);
@@ -565,7 +504,7 @@ public class BattleController
 				{
 					return;
 				}
-				
+
 				activateSwitch();
 				mClickQueue.enqueue(new Runnable()
 				{
@@ -1470,7 +1409,7 @@ public class BattleController
 		{
 			damageDone = mEnemyHp.get();
 		}
-		
+
 		else if(!result.isPlayer() && damageDone > mPlayerHp.get())
 		{
 			damageDone = mPlayerHp.get();
@@ -1518,7 +1457,7 @@ public class BattleController
 		{
 			decrease = new ProgressBarDecrease(mPlayerHp, Duration.millis(3000), damageDone);
 		}
-		
+
 		else
 		{
 			decrease = new ProgressBarDecrease(mEnemyHp, Duration.millis(3000), damageDone);
@@ -1691,7 +1630,7 @@ public class BattleController
 				break;
 		}
 	}
-	
+
 	private void updateStatusIcon(ImageView icon, Anature toCheck)
 	{
 		StatusEffects anatureStatus = toCheck.getStatus();
