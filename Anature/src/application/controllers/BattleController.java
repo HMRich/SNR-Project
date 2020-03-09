@@ -1228,69 +1228,60 @@ public class BattleController
 
 	private void enemyTurn(AiChoice enemyTurn)
 	{
-//			switch(enemyTurn)
-//			{
-//				case Move1:
-//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 0, BattleChoice.Attack_1, new Runnable()
-//					{
-//						@Override
-//						public void run()
-//						{
-//							healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp);
-//							
-//						}
-//					});
-//					break;
-//
-//				case Move2:
-//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 1, BattleChoice.Attack_2, new Runnable()
-//					{
-//						@Override
-//						public void run()
-//						{
-//							healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
-//							
-//						}
-//					});
-//					break;
-//
-//				case Move3:
-//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 2, BattleChoice.Attack_3, new Runnable()
-//					{
-//						@Override
-//						public void run()
-//						{
-//							healthDrainMove(mFightManager.attackPlayer(2), mPlayerHp);
-//							
-//						}
-//					});
-//					break;
-//
-//				case Move4:
-//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 3, BattleChoice.Attack_4, new Runnable()
-//					{
-//						@Override
-//						public void run()
-//						{
-//							healthDrainMove(mFightManager.attackPlayer(3), mPlayerHp);
-//							
-//						}
-//					});
-//					break;
-//
-//				default:
-//					return;
-			
-//		}
-		statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 1, BattleChoice.Attack_4, new Runnable()
-				{
-					@Override
-					public void run()
+			switch(enemyTurn)
+			{
+				case Move1:
+					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 0, BattleChoice.Attack_1, new Runnable()
 					{
-						healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
-						
-					}
-				});
+						@Override
+						public void run()
+						{
+							healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp);
+							
+						}
+					});
+					break;
+
+				case Move2:
+					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 1, BattleChoice.Attack_2, new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
+							
+						}
+					});
+					break;
+
+				case Move3:
+					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 2, BattleChoice.Attack_3, new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							healthDrainMove(mFightManager.attackPlayer(2), mPlayerHp);
+							
+						}
+					});
+					break;
+
+				case Move4:
+					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 3, BattleChoice.Attack_4, new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							healthDrainMove(mFightManager.attackPlayer(3), mPlayerHp);
+							
+						}
+					});
+					break;
+
+				default:
+					return;
+			
+		}
 	}
 
 	private void healthDrainMove(MoveResult result, DoubleProperty toChange)
