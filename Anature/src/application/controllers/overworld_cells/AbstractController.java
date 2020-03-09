@@ -17,6 +17,7 @@ import application.views.elements.TrainerSprite;
 import application.views.elements.WarpPointBox;
 import application.views.overworld_cells.AbstractCell;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -247,9 +248,29 @@ public abstract class AbstractController
 							{
 								LoggerController.logEvent(LoggingTypes.Misc, "Player has encountered a wild Anature.");
 								Trainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
-								Startup.startBattle(wildEncounter);
 								
 								mView.mCanMove = false;
+								mView.mUp = false;
+								mView.mDown = false;
+								mView.mRight = false;
+								mView.mLeft = false;
+								
+								mPlayer.showEmote();
+								
+								Platform.runLater(() ->
+								{
+									try
+									{
+										Thread.sleep(250);
+									}
+									
+									catch(InterruptedException e)
+									{
+										LoggerController.logEvent(LoggingTypes.Error, "Sleep when presenting the emote was interrupted.");
+									}
+									
+									Startup.startBattle(wildEncounter);
+								});
 							}
 						}
 					}

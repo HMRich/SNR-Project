@@ -267,6 +267,7 @@ public abstract class AbstractCell
 		mUp = false;
 		mDown = false;
 		mCanMove = true;
+		mPlayer.hideEmote();
 		
 		return mScene;
 	}
