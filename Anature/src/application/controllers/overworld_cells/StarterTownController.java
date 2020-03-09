@@ -32,7 +32,7 @@ public class StarterTownController extends AbstractController
 	}
 
 	@Override
-	protected void timerHook()
+	protected void timerHook(double elapsedSeconds)
 	{
 		int trainerIndex = mView.mKelly.getIndex(mView.getBackground());
 		int playerIndex = mPlayer.getIndex(mView.getBackground());
@@ -48,6 +48,8 @@ public class StarterTownController extends AbstractController
 			mPlayer.removeFromContainer(mView.getBackground());
 			mPlayer.addToContainer(mView.getBackground(), trainerIndex);
 		}
+		
+		mView.mKelly.update(mPlayer, mSpeed, elapsedSeconds);
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class StarterTownController extends AbstractController
 	{
 		if(event.getCode() == KeyCode.E)
 		{
-			if(mView.mKelly.interact(mPlayer, mView.getPlayerFacing()) != null && mClickQueue.isEmpty())
+			if(mView.mKelly.interact(mPlayer, mView.getPlayerFacing()) && mClickQueue.isEmpty())
 			{
 				mView.mCanMove = false;
 
@@ -89,7 +91,12 @@ public class StarterTownController extends AbstractController
 			
 			else
 			{
-				mClickQueue.dequeue().run();
+				Runnable toRun = mClickQueue.dequeue();
+				
+				if(toRun != null)
+				{
+					toRun.run();
+				}
 			}
 		}
 	}

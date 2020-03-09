@@ -26,8 +26,8 @@ public abstract class AbstractController
 {
 	private LoggerStartUp mLogger;
 	protected AbstractCell mView;
-	private final int mSpeed = 300; // pixels / second
-	private double mSpeedMultiplier;
+	protected final int mSpeed = 300; // pixels / second
+	protected double mSpeedMultiplier;
 	private AnimationTimer mTimer;
 	protected PlayerSprite mPlayer;
 	protected ClickQueue mClickQueue;
@@ -64,7 +64,7 @@ public abstract class AbstractController
 		activateTimer();
 	}
 
-	protected abstract void timerHook();
+	protected abstract void timerHook(double elapsedSeconds);
 
 	protected abstract void keyPressHook(KeyEvent event);
 	
@@ -161,7 +161,7 @@ public abstract class AbstractController
 				double deltaX = 0;
 				double deltaY = 0;
 
-				timerHook();
+				timerHook(elapsedSeconds);
 
 				if(mView.mCanMove)
 				{

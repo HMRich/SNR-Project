@@ -3,6 +3,7 @@ package application.views.elements;
 import java.util.ArrayList;
 
 import application.enums.Direction;
+import application.enums.TrainerIds;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Bounds;
@@ -16,42 +17,29 @@ import javafx.scene.shape.Rectangle;
 public class TrainerSprite
 {
 	private ImageView mSprite;
-	private Image mUpSprite, mDownSprite, mLeftSprite, mRightSprite;
+	private TrainerIds mId;
 	private Rectangle mBoxCollision, mTopCollision, mBotCollision, mRightCollision, mLeftCollision;
 	private BooleanProperty mShowCollision;
 	private ArrayList<Node> mContent;
 	
-	public TrainerSprite(double x, double y, Image down, Image up, Image left, Image right, Direction playerFacing, DoubleProperty zoom, BooleanProperty showProperty)
+	private boolean mUp, mDown, mLeft, mRight, mCanMove;
+	private Direction mFacing;
+	private Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
+	
+	private int mFrame;
+	private double[][] mKeyFrames;
+	private Direction[] mKeyFrameDirections;
+	
+	public TrainerSprite(double x, double y, TrainerIds id, Direction facing, DoubleProperty zoom, BooleanProperty showProperty, 
+			double[][] keyFrames, Direction[] keyFrameDirections, int startingFrame)
 	{
+		mId = id;
 		mShowCollision = showProperty;
 		
-		Image toUse = null;
+		mFacing = facing;
+		createSprites();
 		
-		mUpSprite = up;
-		mDownSprite = down;
-		mLeftSprite = left;
-		mRightSprite = right;
-		
-		switch(playerFacing)
-		{
-			case Left:
-				toUse = left;
-				break;
-				
-			case Right:
-				toUse = right;
-				break;
-				
-			case Up:
-				toUse = up;
-				break;
-				
-			default:
-				toUse = down;
-				break;
-		}
-		
-		mSprite = new ImageView(toUse);
+		updateSprite();
 		mSprite.setFitHeight(29 * zoom.get());
 		mSprite.setFitWidth(24 * zoom.get());
 		mSprite.setX(x);
@@ -72,6 +60,11 @@ public class TrainerSprite
 		mContent.add(mBotCollision);
 		mContent.add(mLeftCollision);
 		mContent.add(mRightCollision);
+		
+		mKeyFrames = keyFrames;
+		mKeyFrameDirections = keyFrameDirections;
+		mFrame = startingFrame;
+		mCanMove = true;
 	}
 	
 	private void createCollisionBoxes()
@@ -107,6 +100,29 @@ public class TrainerSprite
 		mRightCollision.visibleProperty().bind(mShowCollision);
 	}
 	
+	private void createSprites()
+	{
+		mWalkUpImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/up_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
+		mWalkDownImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/down_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
+		mWalkRightImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/right_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
+		mWalkLeftImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/left_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
+
+		mStandUpImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/up_stand.png").toExternalForm(), 100.0, 100.0, true, false);
+		mStandDownImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/down_stand.png").toExternalForm(), 100.0, 100.0, true, false);
+		mStandRightImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/right_stand.png").toExternalForm(), 100.0, 100.0, true, false);
+		mStandLeftImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
+				"/left_stand.png").toExternalForm(), 100.0, 100.0, true, false);
+		
+		mSprite = new ImageView(mStandDownImg);
+	}
+	
 	public void addToContainer(Pane pane)
 	{
 		pane.getChildren().addAll(mContent);
@@ -137,36 +153,258 @@ public class TrainerSprite
 		return mBoxCollision.getY();
 	}
 	
-	public String interact(PlayerSprite playerSprite, Direction playerFacing)
+	public boolean interact(PlayerSprite playerSprite, Direction playerFacing)
 	{
+		mCanMove = false;
+		mUp = false;
+		mDown = false;
+		mLeft = false;
+		mRight = false;
+		
 		if(playerSprite.getTopBounds().intersects(mBotCollision.getBoundsInParent()) && playerFacing == Direction.Up)
 		{
-			mSprite.setImage(mDownSprite);
-			
-			return "";
+			mFacing = Direction.Down;
+			return true;
 		}
 		
 		else if(playerSprite.getBotBounds().intersects(mTopCollision.getBoundsInParent()) && playerFacing == Direction.Down)
 		{
-			mSprite.setImage(mUpSprite);
-			
-			return "";
+			mFacing = Direction.Up;
+			return true;
 		}
 		
 		else if(playerSprite.getRightBounds().intersects(mLeftCollision.getBoundsInParent()) && playerFacing == Direction.Right)
 		{
-			mSprite.setImage(mLeftSprite);
-			
-			return "";
+			mFacing = Direction.Left;
+			return true;
 		}
 		
 		else if(playerSprite.getLeftBounds().intersects(mRightCollision.getBoundsInParent()) && playerFacing == Direction.Left)
 		{
-			mSprite.setImage(mRightSprite);
+			mFacing = Direction.Right;
+			return true;
+		}
+
+		mCanMove = true;
+		return false;
+	}
+	
+	public void update(PlayerSprite player, double speed, double elapsedSeconds)
+	{
+		if(mCanMove && mKeyFrames.length != 0)
+		{
+			updateFrame();
+
+			double deltaX = 0, deltaY = 0;
 			
-			return "";
+			if(mRight)
+			{
+				deltaX += speed;
+			}
+
+			if(mLeft)
+			{
+				deltaX -= speed;
+			}
+
+			if(mDown)
+			{
+				deltaY += speed;
+			}
+
+			if(mUp)
+			{
+				deltaY -= speed;
+			}
+
+			updateSprite();
+
+			double oldX = mSprite.getX();
+			double oldY = mSprite.getY();
+
+			mSprite.setX(mSprite.getX() + deltaX * elapsedSeconds);
+			mSprite.setY(mSprite.getY() + deltaY * elapsedSeconds);
+			
+			if(player.getTopBounds().intersects(mBotCollision.getBoundsInParent()) && mFacing == Direction.Down ||
+					player.getBotBounds().intersects(mTopCollision.getBoundsInParent()) && mFacing == Direction.Up)
+			{
+				mSprite.setY(oldY);
+			}
+			
+			if(player.getRightBounds().intersects(mLeftCollision.getBoundsInParent()) && mFacing == Direction.Right ||
+					player.getLeftBounds().intersects(mRightCollision.getBoundsInParent()) && mFacing == Direction.Left)
+			{
+				mSprite.setX(oldX);
+			}
+			
+			if(player.getBoxBounds().intersects(mBoxCollision.getBoundsInParent()))
+			{
+				mSprite.setX(oldX);
+				mSprite.setY(oldY);
+			}
 		}
 		
-		return null;
+		else
+		{
+			updateSprite();
+		}
+	}
+	
+	private void updateFrame()
+	{
+		int goalX = (int) mKeyFrames[mFrame][0];
+		int goalY = (int) mKeyFrames[mFrame][1];
+		
+		mUp = false;
+		mDown = false;
+		mRight = false;
+		mLeft = false;
+		
+//		System.out.println("X: " + mSprite.getX() + " Y: " + mSprite.getY());
+//		System.out.println(goalY);
+//		System.out.println("------------------------------------------------------------------------");
+		if((goalX - 10 < mSprite.getX() && mSprite.getX() < goalX + 10) || (goalY - 10 < mSprite.getY() && mSprite.getY() < goalY + 10))
+		{
+			mFrame++;
+			
+			if(mFrame >= mKeyFrames.length)
+			{
+				mFrame = 0;
+			}
+		}
+		
+		else
+		{
+			turnOnDirection(mKeyFrameDirections[mFrame]);
+		}
+	}
+	
+	private void turnOnDirection(Direction toTurnOn)
+	{
+		switch(toTurnOn)
+		{
+			case Down:
+				mDown = true;
+				break;
+				
+			case Left:
+				mLeft = true;
+				break;
+				
+			case Right:
+				mRight = true;
+				break;
+				
+			case Up:
+				mUp = true;
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	private void updateSprite()
+	{
+		if(mUp && mDown && mLeft && mRight)
+		{
+			if(mSprite.getImage().equals(mStandDownImg))
+				return;
+
+			mSprite.setImage(mStandDownImg);
+			mFacing = Direction.Down;
+		}
+
+		else if(mRight && mLeft && mUp)
+		{
+			if(mSprite.getImage().equals(mWalkUpImg))
+				return;
+
+			mSprite.setImage(mWalkUpImg);
+			mFacing = Direction.Up;
+		}
+
+		else if(mRight && mLeft && mDown)
+		{
+			if(mSprite.getImage().equals(mWalkDownImg))
+				return;
+
+			mSprite.setImage(mWalkDownImg);
+			mFacing = Direction.Down;
+		}
+
+		else if(mUp && mDown && mRight)
+		{
+			if(mSprite.getImage().equals(mWalkRightImg))
+				return;
+
+			mSprite.setImage(mWalkRightImg);
+			mFacing = Direction.Right;
+		}
+
+		else if(mUp && mDown && mLeft)
+		{
+			if(mSprite.getImage().equals(mWalkLeftImg))
+				return;
+
+			mSprite.setImage(mWalkLeftImg);
+			mFacing = Direction.Left;
+		}
+
+		else if((mUp && mDown) || (mRight && mLeft))
+		{
+			mSprite.setImage(mStandDownImg);
+			mFacing = Direction.Down;
+		}
+
+		else if(mRight && !mSprite.getImage().equals(mWalkRightImg))
+		{
+			mSprite.setImage(mWalkRightImg);
+			mFacing = Direction.Right;
+		}
+
+		else if(mLeft && !mSprite.getImage().equals(mWalkLeftImg))
+		{
+			mSprite.setImage(mWalkLeftImg);
+			mFacing = Direction.Left;
+		}
+
+		else if(mDown && !mSprite.getImage().equals(mWalkDownImg) && !mLeft && !mRight)
+		{
+			mSprite.setImage(mWalkDownImg);
+			mFacing = Direction.Down;
+		}
+
+		else if(mUp && !mSprite.getImage().equals(mWalkUpImg) && !mLeft && !mRight)
+		{
+			mSprite.setImage(mWalkUpImg);
+			mFacing = Direction.Up;
+		}
+
+		else if(!mUp && !mDown && !mRight && !mLeft)
+		{
+			switch(mFacing)
+			{
+				case Up:
+					if(!mSprite.getImage().equals(mStandUpImg))
+						mSprite.setImage(mStandUpImg);
+					break;
+
+				case Right:
+					if(!mSprite.getImage().equals(mStandRightImg))
+						mSprite.setImage(mStandRightImg);
+					break;
+
+				case Left:
+					if(!mSprite.getImage().equals(mStandLeftImg))
+						mSprite.setImage(mStandLeftImg);
+					break;
+
+				default:
+					if(!mSprite.getImage().equals(mStandDownImg))
+						mSprite.setImage(mStandDownImg);
+					break;
+			}
+		}
 	}
 }

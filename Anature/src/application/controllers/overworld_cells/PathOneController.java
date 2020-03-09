@@ -14,7 +14,7 @@ public class PathOneController extends AbstractController
 	}
 
 	@Override
-	protected void timerHook()
+	protected void timerHook(double elapsedSeconds)
 	{
 		
 	}

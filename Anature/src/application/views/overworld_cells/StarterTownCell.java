@@ -3,6 +3,7 @@ package application.views.overworld_cells;
 import application.LoggerStartUp;
 import application.enums.Direction;
 import application.enums.SceneType;
+import application.enums.TrainerIds;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import application.views.elements.TrainerSprite;
@@ -20,11 +21,22 @@ public class StarterTownCell extends AbstractCell
 	@Override
 	protected void addToBackground()
 	{
-		Image up = new Image(getClass().getResource("/resources/images/trainers/kelly/up_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image down = new Image(getClass().getResource("/resources/images/trainers/kelly/down_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image right = new Image(getClass().getResource("/resources/images/trainers/kelly/right_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image left = new Image(getClass().getResource("/resources/images/trainers/kelly/left_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		mKelly = new TrainerSprite(427, 1310, down, up, left, right, Direction.Down, mZoom, mShowCollision);
+		double[][] keyFrames = new double[][]
+		{
+			{427, 1310},
+			{427, 1390},
+			{480, 1390},
+			{480, 1310},
+		};
+		
+		Direction[] keyFrameDirections = new Direction[]
+		{
+			Direction.Left, Direction.Down, Direction.Right, Direction.Up
+		};
+		
+		int startingFrame = 1;
+		
+		mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, keyFrameDirections, startingFrame);
 
 		mCollisions.add(mKelly.getCollisionBox());
 		mKelly.addToContainer(mBackground);
