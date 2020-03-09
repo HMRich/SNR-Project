@@ -85,20 +85,15 @@ public class PathOneCell extends AbstractCell
 		{
 			{1388, 177},
 			{158, 177},
-			{158, 133},
-			{1388, 133},
-		};
-		
-		Direction[] keyFrameDirections = new Direction[]
-		{
-			Direction.Down, Direction.Left, Direction.Up, Direction.Right
+			{158, 63},
+			{1388, 63},
 		};
 		
 		int startingFrame = 1;
 
 		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
 		
-		mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, keyFrameDirections, startingFrame, dialogue, true, "Kelly");
+		mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, startingFrame, dialogue, true, "Kelly");
 		addTrainer(mKelly);
 	}
 }

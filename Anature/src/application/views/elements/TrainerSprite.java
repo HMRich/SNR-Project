@@ -31,7 +31,6 @@ public class TrainerSprite
 	
 	private int mFrame;
 	private double[][] mKeyFrames;
-	private Direction[] mKeyFrameDirections;
 	
 	private String[] mDialogue;
 	private boolean mHasBattle;
@@ -39,7 +38,7 @@ public class TrainerSprite
 	private String mName;	
 	
 	public TrainerSprite(double x, double y, TrainerIds id, Direction facing, DoubleProperty zoom, BooleanProperty showProperty, 
-			double[][] keyFrames, Direction[] keyFrameDirections, int startingFrame, String[] dialogue, boolean hasBattle, String name)
+			double[][] keyFrames, int startingFrame, String[] dialogue, boolean hasBattle, String name)
 	{
 		mId = id;
 		mShowCollision = showProperty;
@@ -81,7 +80,6 @@ public class TrainerSprite
 		mContent.add(mRightCollision);
 		
 		mKeyFrames = keyFrames;
-		mKeyFrameDirections = keyFrameDirections;
 		mFrame = startingFrame;
 		mCanMove = true;
 	}
@@ -324,32 +322,35 @@ public class TrainerSprite
 		
 		else
 		{
-			turnOnDirection(mKeyFrameDirections[mFrame]);
-		}
-	}
-	
-	private void turnOnDirection(Direction toTurnOn)
-	{
-		switch(toTurnOn)
-		{
-			case Down:
-				mDown = true;
-				break;
-				
-			case Left:
+			int lastFrame = mFrame - 1;
+			
+			if(lastFrame < 0)
+			{
+				lastFrame = mKeyFrames.length - 1;
+			}
+			
+			double oldX = (int) mKeyFrames[lastFrame][0];
+			double oldY = (int) mKeyFrames[lastFrame][1];
+			
+			if(oldX > goalX)
+			{
 				mLeft = true;
-				break;
-				
-			case Right:
+			}
+			
+			else if(oldX < goalX)
+			{
 				mRight = true;
-				break;
-				
-			case Up:
+			}
+			
+			else if(oldY > goalY)
+			{
 				mUp = true;
-				break;
-
-			default:
-				break;
+			}
+			
+			else if(oldY < goalY)
+			{
+				mDown = true;
+			}
 		}
 	}
 
