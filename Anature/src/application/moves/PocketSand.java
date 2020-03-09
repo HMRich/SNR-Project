@@ -7,7 +7,7 @@ import application.enums.Type;
 public class PocketSand extends Move
 {
 
-	public PocketSand(String name, int totalMovePoints, MoveIds moveId, boolean doesDamage, boolean isPhysicalAttack, double accuracyStat, Type enumType)
+	public PocketSand()
 	{
 		super("Pocket Sand", 15, MoveIds.Pocket_Sand , false, false, 100, Type.Ground);
 	}
