@@ -23,7 +23,7 @@ public class Anature
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types, Species species, boolean isShiny,
-			int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense, int totalHp, int speed, int accuracy)
+			int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense, int totalHp, int speed, int accuracy, StatusEffects status)
 	{
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
@@ -49,6 +49,7 @@ public class Anature
 		}
 
 		mSpecies = species;
+		mStatus = status; 
 		mIsShiny = isShiny;
 		mIndexNum = indexNum;
 		mAbility = ability;

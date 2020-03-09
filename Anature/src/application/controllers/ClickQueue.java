@@ -5,7 +5,7 @@ public class ClickQueue
 	private class Node
 	{
 		private Runnable mData;
-		public Node mNext;
+		private Node mNext;
 
 		public Node(Runnable toRun)
 		{

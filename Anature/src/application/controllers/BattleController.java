@@ -306,7 +306,7 @@ public class BattleController
 	private void setUpAnatureGenders(Scene scene)
 	{
 		createBindsImageView(mPlayerGender, scene, 1.79, 1.93, 57, 31);
-		createBindsImageView(mEnemyGender, scene, 2.8, 7, 57, 31);
+		createBindsImageView(mEnemyGender, scene, 2.77, 7, 57, 31);
 	}
 
 	private void setUpBtnGrid(Scene scene)
@@ -471,10 +471,10 @@ public class BattleController
 
 	private void setUpStatuses(Scene scene)
 	{
-		createBindsImageView(mStatusIconPlayer, scene, 3.122, 6.79, 26.122, 34.285);
+		createBindsImageView(mStatusIconPlayer, scene, 1.278, 1.909, 26.122, 34.285);
 		mStatusIconPlayer.setImage(null);
 
-		createBindsImageView(mStatusIconEnemy, scene, 1.278, 1.909, 26.122, 34.285);
+		createBindsImageView(mStatusIconEnemy, scene, 3.122, 6.79, 26.122, 34.285);
 		mStatusIconEnemy.setImage(null);
 	}
 	
@@ -601,30 +601,30 @@ public class BattleController
 		createBindsImageView(mAttackImgOne, scene, 4.5, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveOne));
 		createBindsTxt(mAttackNameOne, scene, 4.39, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackNameOneTxt);
 		createBindsTxt(mAttackMpOne, scene, 4.39, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackMpOneTxt);
-		mAttackImgOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
-		mAttackNameOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
-		mAttackMpOne.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_1));
+		mAttackImgOne.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_1); event.consume();});
+		mAttackNameOne.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_1); event.consume();});
+		mAttackMpOne.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_1); event.consume();});
 
 		createBindsImageView(mAttackImgTwo, scene, 4.5, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveTwo));
 		createBindsTxt(mAttackNameTwo, scene, 4.39, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackNameTwoTxt);
 		createBindsTxt(mAttackMpTwo, scene, 4.39, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackMpTwoTxt);
-		mAttackImgTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
-		mAttackNameTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
-		mAttackMpTwo.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_2));
+		mAttackImgTwo.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_2); event.consume();});
+		mAttackNameTwo.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_2); event.consume();});
+		mAttackMpTwo.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_2); event.consume();});
 
 		createBindsImageView(mAttackImgThree, scene, 1.515, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveThree));
 		createBindsTxt(mAttackNameThree, scene, 1.507, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackNameThreeTxt);
 		createBindsTxt(mAttackMpThree, scene, 1.507, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackMpThreeTxt);
-		mAttackImgThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
-		mAttackNameThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
-		mAttackMpThree.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_3));
+		mAttackImgThree.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_3); event.consume();});
+		mAttackNameThree.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_3); event.consume();});
+		mAttackMpThree.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_3); event.consume();});
 
 		createBindsImageView(mAttackImgFour, scene, 1.515, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveFour));
 		createBindsTxt(mAttackNameFour, scene, 1.507, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackNameFourTxt);
 		createBindsTxt(mAttackMpFour, scene, 1.507, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackMpFourTxt);
-		mAttackImgFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
-		mAttackNameFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
-		mAttackMpFour.setOnMouseClicked(event -> activateTurn(BattleChoice.Attack_4));
+		mAttackImgFour.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_4); event.consume();});
+		mAttackNameFour.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_4); event.consume();});
+		mAttackMpFour.setOnMouseClicked(event -> {activateTurn(BattleChoice.Attack_4); event.consume();});
 	}
 
 	private double getFontSize(Scene scene)
@@ -1097,27 +1097,64 @@ public class BattleController
 		{
 			case Attack_1:
 				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(0), mEnemyHp));
-				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 0);
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 0, BattleChoice.Attack_1, new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						healthDrainMove(mFightManager.attackEnemy(0), mEnemyHp); 
+						
+					}
+				});
 				break;
 
 			case Attack_2:
 				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp));
-				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 1);
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 1, BattleChoice.Attack_2, new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp); 
+						
+					}
+				});
 				break;
 
 			case Attack_3:
 				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp));
-				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 2);
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 2, BattleChoice.Attack_3, new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp); 
+						
+					}
+				});
 				break;
 
 			case Attack_4:
 				//mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp));
-				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 3);
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, 3, BattleChoice.Attack_4, new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp); 
+						
+					}
+				});
 				break;
 
 			case Item:
-				mClickQueue.enqueue(new Runnable()
+				statusEffectForTurn(mFightManager.getPlayerTeam().get(0), true, -1, BattleChoice.Item, new Runnable()
 				{
+					
 					@Override
 					public void run()
 					{
@@ -1128,7 +1165,8 @@ public class BattleController
 						healthGain(result, mPlayerHp);
 
 						mPlayer.getBackpack().removeItem(selectedItem.getItemId());
-						updateBagMenu();
+						updateBagMenu(); 
+						
 					}
 				});
 				break;
@@ -1190,42 +1228,81 @@ public class BattleController
 
 	private void enemyTurn(AiChoice enemyTurn)
 	{
-		if(enemyTurn.equals(AiChoice.Move1) || enemyTurn.equals(AiChoice.Move2) || enemyTurn.equals(AiChoice.Move3) || enemyTurn.equals(AiChoice.Move4))
-		{
-//			mClickQueue.enqueue(new Runnable()
+//			switch(enemyTurn)
 //			{
-//				@Override
-//				public void run()
-//				{
-////					healthDrain(mFightManager.attackPlayer(Integer.parseInt(enemyTurn.charAt(4) + "")), mPlayerHp);
-//					healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp); // TODO Change to above when Demo is Done!
-//				}
-//			});
+//				case Move1:
+//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 0, BattleChoice.Attack_1, new Runnable()
+//					{
+//						@Override
+//						public void run()
+//						{
+//							healthDrainMove(mFightManager.attackPlayer(0), mPlayerHp);
+//							
+//						}
+//					});
+//					break;
+//
+//				case Move2:
+//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 1, BattleChoice.Attack_2, new Runnable()
+//					{
+//						@Override
+//						public void run()
+//						{
+//							healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
+//							
+//						}
+//					});
+//					break;
+//
+//				case Move3:
+//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 2, BattleChoice.Attack_3, new Runnable()
+//					{
+//						@Override
+//						public void run()
+//						{
+//							healthDrainMove(mFightManager.attackPlayer(2), mPlayerHp);
+//							
+//						}
+//					});
+//					break;
+//
+//				case Move4:
+//					statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 3, BattleChoice.Attack_4, new Runnable()
+//					{
+//						@Override
+//						public void run()
+//						{
+//							healthDrainMove(mFightManager.attackPlayer(3), mPlayerHp);
+//							
+//						}
+//					});
+//					break;
+//
+//				default:
+//					return;
 			
-//					  mClickQueue.enqueue(new Runnable() {
-//							
-//							@Override
-//							public void run() {
-//								healthDrainMove(mFightManager.attackPlayer(0), 
-//										  mPlayerHp);
-//							}
-//							
-//						});
-			statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 1);
-		}
+//		}
+		statusEffectForTurn(mFightManager.getEnemyTeam().get(0), false, 1, BattleChoice.Attack_4, new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
+						
+					}
+				});
 	}
 
 	private void healthDrainMove(MoveResult result, DoubleProperty toChange)
 	{
 		double damageDone = result.getDamageDone(); 
-		if(result.isPlayer()) {
-			if(damageDone > mEnemyHp.doubleValue()) {
-				damageDone = mEnemyHp.doubleValue(); 
-			}
-		} else {
-			if(damageDone > mPlayerHp.doubleValue()) {
-				damageDone = mPlayerHp.doubleValue(); 
-			}
+		if(result.isPlayer() && damageDone > mEnemyHp.doubleValue()) {
+			
+			damageDone = mEnemyHp.doubleValue(); 
+			
+		} else if(damageDone > mPlayerHp.doubleValue()) {
+			damageDone = mPlayerHp.doubleValue(); 
+			
 		}
 		
 		mDialogueTxt.set(result.getDialogue());
@@ -1320,31 +1397,23 @@ public class BattleController
 		mShowBtns.set(true);
 	}
 	
-	private void statusEffectForTurn(Anature anature, boolean isPlayer, int indexOfMove) {
+	private void statusEffectForTurn(Anature anature, boolean isPlayer, int indexOfMove, BattleChoice battleChoice, Runnable runnable) {
 		StatusEffects anatureStatus = anature.getStatus();
+		
 		
 		switch (anatureStatus) {
 			case Sleep:
-				mClickQueue.enqueueToFront(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(isPlayer) {
-							mFightManager.attackEnemy(-1);
-						} else {
-							mFightManager.attackPlayer(-1);
-						}
-					}
-				});
-
+				if(battleChoice == BattleChoice.Item) {
+					mClickQueue.enqueue(runnable);
+				}
 				mClickQueue.enqueueToFront(new Runnable() {
 	
 					@Override
 					public void run() {
 						if(isPlayer) {
-							mStatusIconEnemy.setImage(mSleepStatusIcon);
-						} else {
 							mStatusIconPlayer.setImage(mSleepStatusIcon);
+						} else {
+							mStatusIconEnemy.setImage(mSleepStatusIcon);
 						}
 						
 						mDialogueTxt.set(anature.getName() +  " is fast asleep!");
@@ -1354,32 +1423,20 @@ public class BattleController
 	
 			case Paralysis:
 				
-				mClickQueue.enqueueToFront(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(Math.random() > 0.25) {
-								healthDrainMove(isPlayer ? mFightManager.attackEnemy(indexOfMove) : mFightManager.attackPlayer(indexOfMove),
-												isPlayer ? mPlayerHp : mEnemyHp);
-							
-						} else {
-							if(isPlayer) {
-								mFightManager.attackEnemy(-1); 
-							} else {
-								mFightManager.attackPlayer(-1); 
-							}
-						}
-					}
-				});
+				if(battleChoice == BattleChoice.Item) {
+					mClickQueue.enqueue(runnable);
+				} else if(Math.random() > 0.25) {
+					mClickQueue.enqueue(runnable);  
+				} 
 				
 				mClickQueue.enqueueToFront(new Runnable() {
 	
 					@Override
 					public void run() {
 						if(isPlayer) {
-							mStatusIconEnemy.setImage(mParalyzedStatusIcon);
-						} else {
 							mStatusIconPlayer.setImage(mParalyzedStatusIcon);
+						} else {
+							mStatusIconEnemy.setImage(mParalyzedStatusIcon);
 						}
 						
 						mDialogueTxt.set(anature.getName() +  " is paralysed! It may not be able to move!");
@@ -1390,64 +1447,58 @@ public class BattleController
 				break;
 				
 			case Burn:
-				mClickQueue.enqueueToFront(new Runnable() {
-	
-					@Override
-					public void run() {
-						
-						if(isPlayer) {
-							healthDrainMove(mFightManager.attackEnemy(indexOfMove),
-									mEnemyHp);
-						} else {
-							healthDrainMove(mFightManager.attackPlayer(indexOfMove),
-									mPlayerHp);
-						}
-					}
-					
-				});
+				mClickQueue.enqueue(runnable);
 				
 				mClickQueue.enqueueToFront(new Runnable() {
 					
 					@Override
 					public void run() {
 						
-							healthDrainStatus(anature.getName() + "is hurt because it is burned!", 
+							healthDrainStatus(anature.getName() + " is hurt because it is burned!", 
 									(double) anature.getTotalHp()/16, 
 									isPlayer);
 					}
 					
 				});
 				
-				mClickQueue.enqueueToFront(new Runnable() {
-					
-					@Override
-					public void run() {
+				if(isPlayer && mStatusIconPlayer.getImage() != mBurnStatusIcon) {
+					mClickQueue.enqueueToFront(new Runnable() {
 						
-						if(isPlayer) {
-							mStatusIconEnemy.setImage(mBurnStatusIcon);
-						} else {
+						@Override
+						public void run() {
+							
 							mStatusIconPlayer.setImage(mBurnStatusIcon);
+							
+							mDialogueTxt.set(anature.getName() +  " is burned! ");
+							mCanClick.set(true);
+							
 						}
 						
-						mDialogueTxt.set(anature.getName() +  " is burned! ");
-						mCanClick.set(true);
+					});
+				} else if(!isPlayer && mStatusIconEnemy.getImage() != mBurnStatusIcon) {
+					mClickQueue.enqueueToFront(new Runnable() {
 						
-					}
-					
-				});
+						@Override
+						public void run() {
+							
+							mStatusIconEnemy.setImage(mBurnStatusIcon);
+							
+							mDialogueTxt.set(anature.getName() +  " is burned! ");
+							mCanClick.set(true);
+							
+						}
+						
+					});
+				}
+				
 				break;
 				
 			default:
-				if(isPlayer) {
-				mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackEnemy(indexOfMove), 
-														  mEnemyHp));
-				} else {
-					mClickQueue.enqueue(() -> healthDrainMove(mFightManager.attackPlayer(indexOfMove),
-															  mPlayerHp)); 
-				}
+				mClickQueue.enqueue(runnable);
 				
 				break; 
 		}
+		
 		
 	}
 
