@@ -1339,7 +1339,6 @@ public class BattleController
 						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
 						fadeInNew.setOnFinished(actionEvent -> mCanClick.set(true));
 						fadeInNew.play();
-						mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
 					}
 				});
 
@@ -1483,6 +1482,7 @@ public class BattleController
 
 	private void onSwitchBtn()
 	{
+
 		updateSwitch(mPlayer.getAnatures(), mSwitchIndexSelected);
 		mShowSwitch.set(true);
 		mShowBtns.set(false);
