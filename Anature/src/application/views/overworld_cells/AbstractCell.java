@@ -209,6 +209,11 @@ public abstract class AbstractCell
 	{
 		mCollisions.add(createRectangle(x, y, width, height));
 	}
+	
+	protected void addCollisionRectangleUsingCoords(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
+	{
+		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY));
+	}
 
 	protected void addGrassPatchRectangle(double x, double y, double width, double height)
 	{

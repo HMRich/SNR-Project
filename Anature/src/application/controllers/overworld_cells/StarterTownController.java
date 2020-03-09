@@ -109,8 +109,8 @@ public class StarterTownController extends AbstractController
 				break;
 				
 			case Starter_Town_House_1:
-				mPlayer.setX(485);
-				mPlayer.setY(599);
+				mPlayer.setX(545);
+				mPlayer.setY(542);
 				mView.setPlayerFacing(Direction.Down);
 				break;
 
