@@ -2,7 +2,9 @@ package application;
 
 import java.util.ArrayList;
 import java.util.Random;
-import application.enums.*;
+
+import application.enums.AiChoice;
+import application.enums.Type;
 import application.items.Item;
 
 public class BaseAI
@@ -35,28 +37,33 @@ public class BaseAI
 		return AiChoice.No_Choice;
 	}
 
-	public AiChoice chooseMove()
+	public AiChoice chooseMove(Anature source)
 	{
-		double random = Math.random();
-		if(random < 0.25)
+		ArrayList<AiChoice> choices = new ArrayList<AiChoice>();
+
+		MoveSet moves = source.getMoves();
+
+		if(moves.hasMove(1))
 		{
-			return AiChoice.Move1;
+			choices.add(AiChoice.Move1);
+		}
+		
+		if(moves.hasMove(2))
+		{
+			choices.add(AiChoice.Move2);
+		}
+		
+		if(moves.hasMove(3))
+		{
+			choices.add(AiChoice.Move3);
+		}
+		
+		if(moves.hasMove(4))
+		{
+			choices.add(AiChoice.Move4);
 		}
 
-		else if(random > 0.25 && random <= 0.50)
-		{
-			return AiChoice.Move2;
-		}
-
-		else if(random > 0.50 && random <= 0.75)
-		{
-			return AiChoice.Move3;
-		}
-
-		else
-		{
-			return AiChoice.Move4;
-		}
+		return choices.get(new Random().nextInt(choices.size()));
 	}
 
 	private final boolean willSwitch(int switchThreshold)
