@@ -156,10 +156,9 @@ public class BattleController
 		mShowMoveSeTwo = new SimpleBooleanProperty(false);
 		mShowMoveSeThree = new SimpleBooleanProperty(false);
 		mShowMoveSeFour = new SimpleBooleanProperty(false);
-		
 
 		mShowBtns = new SimpleBooleanProperty(false);
-		mShowSwitchBackBtn = new SimpleBooleanProperty(false); 
+		mShowSwitchBackBtn = new SimpleBooleanProperty(false);
 		mFightManager = null;
 		mEnemyTrainer = null;
 		mClickQueue = new ClickQueue();
@@ -373,47 +372,59 @@ public class BattleController
 		mDialogueTxtArea.layoutXProperty().bind(scene.widthProperty().divide(4.6));
 		mDialogueTxtArea.fontProperty().bind(fontProperty);
 	}
-	
-	private void onPlayerAnatureDeath() {
+
+	private void onPlayerAnatureDeath()
+	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature: mPlayer.getAnatures()) {
-			if(anature.getCurrHp() > 0) {
+		for(Anature anature : mPlayer.getAnatures())
+		{
+			if(anature.getCurrHp() > 0)
+			{
 				isThereAliveAnatureInParty = true;
 			}
 		}
-		
-		if(isThereAliveAnatureInParty) {
+
+		if(isThereAliveAnatureInParty)
+		{
 			onSwitchBtn();
-			mShowSwitchBackBtn.set(false); 
-		} else {
+			mShowSwitchBackBtn.set(false);
+		}
+		else
+		{
 			mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
-			
+
 			mShowBtns.set(false);
-			
+
 			mClickQueue.clear();
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures! You quickly run back to the nearest Rest Station!")); 
+			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures! You quickly run back to the nearest Rest Station!"));
 			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
-			
+
 			mCanClick.set(true);
 			mToEnd = true;
 		}
 	}
-	
-	private void onEnemyAnatureDeath() {
+
+	private void onEnemyAnatureDeath()
+	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature: mEnemyTrainer.getAnatures()) {
-			if(anature.getCurrHp() > 0) {
+		for(Anature anature : mEnemyTrainer.getAnatures())
+		{
+			if(anature.getCurrHp() > 0)
+			{
 				isThereAliveAnatureInParty = true;
 			}
 		}
-		
-		if(isThereAliveAnatureInParty) {
+
+		if(isThereAliveAnatureInParty)
+		{
 			System.out.println("Choosing enemy anature yet to be implemented!");
-		} else {
+		}
+		else
+		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-			
+
 			mShowBtns.set(false);
-			
+
 			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + " !"));
 			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
@@ -471,10 +482,14 @@ public class BattleController
 		createBindsImageView(mSwitchDialogue, scene, 1, 1, mShowSwitch);
 
 		createBindsImageView(mSwitchBtn, scene, 2.71, 1.5, 8.31, 21.818, mShowSwitch);
-		mSwitchBtn.setOnMouseClicked(event -> {
-			if(mShowSwitchBackBtn.get()) {
+		mSwitchBtn.setOnMouseClicked(event ->
+		{
+			if(mShowSwitchBackBtn.get())
+			{
 				activateTurn(BattleChoice.Switch);
-			} else {
+			}
+			else
+			{
 				activateSwitch();
 				mClickQueue.enqueue(new Runnable()
 				{
@@ -698,14 +713,14 @@ public class BattleController
 		updateMoves(playerCurr);
 		updateSwitch(player.getAnatures(), player.getSelectedIndex());
 		updateBagMenu();
-		
+
 		mAnatureFront.setImage(enemyCurr.getFrontSprite());
-		
+
 		startInto(player, enemyTrainer, enemyCurr);
 
 		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(), enemyTrainer.getName());
 	}
-	
+
 	private void startInto(Player player, Trainer enemyTrainer, Anature enemyCurr)
 	{
 		mClickQueue.enqueue(new Runnable()
@@ -747,14 +762,14 @@ public class BattleController
 				}
 			}
 		});
-		
+
 		if(enemyTrainer.getId() == TrainerIds.Wild)
 		{
 			mAnatureFront.setOpacity(100);
 			startIntroSlides(true);
 			mDialogueTxt.set(player.getName() + " has encountered a wild " + enemyCurr.getName() + "!");
 		}
-		
+
 		else
 		{
 			mAnatureFront.setOpacity(0);
@@ -762,17 +777,16 @@ public class BattleController
 			mDialogueTxt.set(enemyTrainer.getName() + " has started a battle with " + player.getName() + "!");
 		}
 	}
-	
+
 	private void startIntroSlides(boolean isWild)
 	{
 		XSlideAnimation playerSlide = new XSlideAnimation(mPlayerImage, Duration.millis(1500), 1, 7);
 		playerSlide.setOnFinished(event -> mCanClick.set(true));
 		playerSlide.play();
-		
 
 		XSlideAnimation xPlayerGroundSlide = new XSlideAnimation(mPlayerGroundImage, Duration.millis(1500), 1.1, 8);
 		xPlayerGroundSlide.play();
-		
+
 		if(!isWild)
 		{
 			XSlideAnimation trainerSlide = new XSlideAnimation(mTrainerImage, Duration.millis(1500), 1, 1.8);
@@ -781,7 +795,7 @@ public class BattleController
 			XSlideAnimation xTrainerGroundSlide = new XSlideAnimation(mTrainerGroundImage, Duration.millis(1500), 1.05, 2.05);
 			xTrainerGroundSlide.play();
 		}
-		
+
 		else
 		{
 			mTrainerGroundImage.layoutXProperty().bind(mTrainerGroundImage.getScene().widthProperty().divide(2.05));
@@ -799,7 +813,7 @@ public class BattleController
 		mPlayerXpTotal.set(100); // TODO change to a standard
 
 		mPlayerLvl.set(playerCurr.getLevel());
-		
+
 		mAnatureBack.setImage(playerCurr.getBackSprite());
 
 		updateMoves(playerCurr);
@@ -1080,12 +1094,13 @@ public class BattleController
 	private void activateTurn(BattleChoice choice)
 	{
 		Anature anatureForSwitching = mPlayer.getAnatures().get(mSwitchIndexSelected);
-		
-		if(anatureForSwitching.getCurrHp() <= 0) {
-			
-			return; 
+
+		if(anatureForSwitching.getCurrHp() <= 0)
+		{
+
+			return;
 		}
-		
+
 		mShowBtns.set(false);
 		Anature enemyCurr = mFightManager.getEnemyTeam().get(0);
 		Anature playerCurr = mFightManager.getPlayerTeam().get(0);
@@ -1179,18 +1194,18 @@ public class BattleController
 						mDialogueTxt.set("You clicked on Escape!\nThat has yet to be implemented!");
 						mCanClick.set(true);
 					}
-					
-					
+
 				});
 				break;
 
 			case Switch:
-				activateSwitch(); 
+				activateSwitch();
 				break;
 		}
 	}
 
-	private void activateSwitch() {
+	private void activateSwitch()
+	{
 		mClickQueue.enqueue(new Runnable()
 		{
 			@Override
@@ -1229,7 +1244,7 @@ public class BattleController
 				mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
 			}
 		});
-		
+
 	}
 
 	private void enemyTurn(AiChoice enemyTurn)
@@ -1299,13 +1314,13 @@ public class BattleController
 
 	private void onSwitchBtn()
 	{
-		
+
 		updateSwitch(mPlayer.getAnatures(), mSwitchIndexSelected);
 		mShowSwitch.set(true);
 		mShowBtns.set(false);
 		mShowPlayerBars.set(false);
 		mShowSwitchBackBtn.set(true);
-		
+
 	}
 
 	private void onBagBtn()
