@@ -391,6 +391,7 @@ public class BattleController
 			mShowBtns.set(false);
 			
 			mClickQueue.clear();
+			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures! You quickly run back to the nearest Rest Station!")); 
 			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
 			
 			mCanClick.set(true);
@@ -410,10 +411,11 @@ public class BattleController
 			System.out.println("Choosing enemy anature yet to be implemented!");
 		} else {
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-
+			
 			mShowBtns.set(false);
-
+			
 			mClickQueue.clear();
+			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + " !"));
 			mClickQueue.enqueue(() -> Startup.changeScene(SceneType.Starter_Town));
 
 			mCanClick.set(true);
