@@ -3,6 +3,7 @@ package application.views.overworld_cells;
 import application.LoggerStartUp;
 import application.enums.Direction;
 import application.enums.SceneType;
+import application.enums.TrainerIds;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import application.views.elements.TrainerSprite;
@@ -10,8 +11,6 @@ import javafx.scene.image.Image;
 
 public class StarterTownCell extends AbstractCell
 {
-	public TrainerSprite mKelly;
-
 	public StarterTownCell(LoggerStartUp logger)
 	{
 		super(logger, 468, 427);
@@ -20,14 +19,7 @@ public class StarterTownCell extends AbstractCell
 	@Override
 	protected void addToBackground()
 	{
-		Image up = new Image(getClass().getResource("/resources/images/trainers/kelly/up_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image down = new Image(getClass().getResource("/resources/images/trainers/kelly/down_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image right = new Image(getClass().getResource("/resources/images/trainers/kelly/right_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image left = new Image(getClass().getResource("/resources/images/trainers/kelly/left_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		mKelly = new TrainerSprite(427, 1310, down, up, left, right, Direction.Down, mZoom, mShowCollision);
-
-		mCollisions.add(mKelly.getCollisionBox());
-		mKelly.addToContainer(mBackground);
+		// Nothing to add
 	}
 
 	@Override
@@ -81,5 +73,14 @@ public class StarterTownCell extends AbstractCell
 	protected void createWarpPoints()
 	{
 		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Starter_Town_Exit, 1667, 239, 33, 155);
+	}
+
+	@Override
+	protected void createTrainers()
+	{
+		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
+		
+		TrainerSprite mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, new double[0][], 0, dialogue, true, "Kelly");
+		addTrainer(mKelly);
 	}
 }

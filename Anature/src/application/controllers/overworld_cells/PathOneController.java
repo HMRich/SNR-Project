@@ -1,20 +1,39 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
+import application.controllers.LoggerController;
 import application.enums.Direction;
+import application.enums.LoggingTypes;
 import application.enums.WarpPoints;
+import application.models.PathOneModel;
+import application.views.elements.TrainerSprite;
 import application.views.overworld_cells.PathOneCell;
 import javafx.scene.input.KeyEvent;
 
 public class PathOneController extends AbstractController
 {
-	public PathOneController(LoggerStartUp logger, PathOneCell view)
+	public PathOneController(LoggerStartUp logger, PathOneCell view, PathOneModel model)
 	{
 		super(logger, view);
+
+		if(model == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Making Path One Model null.");
+			throw new IllegalArgumentException("Making Path One Model null.");
+		}
+		
+		for(TrainerSprite trainer : mView.getTrainerSprites())
+		{
+			if(trainer.getName().compareTo("Kelly") == 0)
+			{
+				trainer.setTrainerModel(model.getKelly());
+				break;
+			}
+		}
 	}
 
 	@Override
-	protected void timerHook()
+	protected void timerHook(double elapsedSeconds)
 	{
 		
 	}

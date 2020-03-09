@@ -1,9 +1,12 @@
 package application.views.overworld_cells;
 
 import application.LoggerStartUp;
+import application.enums.Direction;
 import application.enums.SceneType;
+import application.enums.TrainerIds;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
+import application.views.elements.TrainerSprite;
 import javafx.scene.image.Image;
 
 public class PathOneCell extends AbstractCell
@@ -72,5 +75,24 @@ public class PathOneCell extends AbstractCell
 	{
 		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_Path_1_Exit, 0, 235, 23, 161);
 		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1, 1038, 1537, 209, 16); // TODO only for demo
+	}
+
+	@Override
+	protected void createTrainers()
+	{
+		double[][] keyFrames = new double[][]
+		{
+			{1388, 177},
+			{158, 177},
+			{158, 63},
+			{1388, 63},
+		};
+		
+		int startingFrame = 1;
+
+		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
+		
+		TrainerSprite mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, startingFrame, dialogue, true, "Kelly");
+		addTrainer(mKelly);
 	}
 }
