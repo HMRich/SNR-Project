@@ -12,6 +12,7 @@ import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.WarpPoints;
 import application.items.ItemPool;
+import application.models.PathOneModel;
 import application.models.StarterTownModel;
 import application.trainers.Trainer;
 import application.views.overworld_cells.PathOneCell;
@@ -37,7 +38,7 @@ public class Startup extends Application
 	private static StarterTownCell mStarterTownView;
 	private static StarterTownController mStarterTownController;
 
-//	private static PathOneModel mPathOneModel;
+	private static PathOneModel mPathOneModel;
 	private static PathOneCell mPathOneView;
 	private static PathOneController mPathOneController;
 
@@ -133,10 +134,10 @@ public class Startup extends Application
 					break;
 
 				case Path_1:
-//					if(mPathOneModel == null)
-//					{
-//						mPathOneModel = new StarterTownModel();
-//					}
+					if(mPathOneModel == null)
+					{
+						mPathOneModel = new PathOneModel();
+					}
 					
 					if(mPathOneView == null)
 					{
@@ -145,7 +146,7 @@ public class Startup extends Application
 					
 					if(mPathOneController == null)
 					{
-						mPathOneController = new PathOneController(mLogger, mPathOneView);
+						mPathOneController = new PathOneController(mLogger, mPathOneView, mPathOneModel);
 					}
 
 					Scene pathOneScene = mPathOneView.getScene();

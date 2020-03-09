@@ -1,6 +1,5 @@
 package application.controllers.overworld_cells;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import application.LoggerStartUp;
@@ -323,6 +322,67 @@ public abstract class AbstractController
 		if(!on)
 		{
 			keyPressHook(event);
+			
+			if(event.getCode() == KeyCode.E)
+			{
+				trainerEvents();
+			}
+		}
+	}
+	
+	private void trainerEvents()
+	{
+		for(TrainerSprite trainer : mView.getTrainerSprites())
+		{
+			if(trainer.interact(mPlayer, mView.getPlayerFacing()) && mClickQueue.isEmpty())
+			{
+				mView.mCanMove = false;
+
+				String[] dialogue = trainer.getDialogue();
+				
+				mView.showDialogue(dialogue[0]);
+				
+				for(int i = 1; i < dialogue.length; i++)
+				{
+					String toDisplay = dialogue[i];
+					mClickQueue.enqueue(() -> mView.showDialogue(toDisplay));
+				}
+
+				if(trainer.getTrainerModel() != null && trainer.getTrainerModel().canBattle())
+				{
+					
+					mClickQueue.enqueue(() ->
+					{
+						mView.mRight = false;
+						mView.mLeft = false;
+						mView.mDown = false;
+						mView.mUp = false;
+						mView.mCanMove = true;
+						mView.hideDialogue();
+						
+						Startup.startBattle(trainer.getTrainerModel());
+					});
+				}
+				
+				else
+				{
+					mClickQueue.enqueue(() ->
+					{
+						mView.hideDialogue();
+						mView.mCanMove = true;
+					});
+				}
+			}
+			
+			else
+			{
+				Runnable toRun = mClickQueue.dequeue();
+				
+				if(toRun != null)
+				{
+					toRun.run();
+				}
+			}
 		}
 	}
 

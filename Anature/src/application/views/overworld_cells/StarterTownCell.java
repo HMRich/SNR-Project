@@ -82,7 +82,7 @@ public class StarterTownCell extends AbstractCell
 	{
 		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
 		
-		mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, new double[0][], new Direction[0], 0, dialogue, true);
+		mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, new double[0][], new Direction[0], 0, dialogue, true, "Kelly");
 		addTrainer(mKelly);
 	}
 }

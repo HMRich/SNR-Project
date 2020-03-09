@@ -95,8 +95,10 @@ public class PathOneCell extends AbstractCell
 		};
 		
 		int startingFrame = 1;
+
+		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
 		
-		mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, keyFrameDirections, startingFrame);
+		mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, keyFrameDirections, startingFrame, dialogue, true, "Kelly");
 		addTrainer(mKelly);
 	}
 }

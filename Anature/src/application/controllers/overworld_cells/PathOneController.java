@@ -1,40 +1,41 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
+import application.controllers.LoggerController;
 import application.enums.Direction;
+import application.enums.LoggingTypes;
 import application.enums.WarpPoints;
+import application.models.PathOneModel;
+import application.views.elements.TrainerSprite;
 import application.views.overworld_cells.PathOneCell;
 import javafx.scene.input.KeyEvent;
 
 public class PathOneController extends AbstractController
 {
-	private PathOneCell mView;
-	
-	public PathOneController(LoggerStartUp logger, PathOneCell view)
+	public PathOneController(LoggerStartUp logger, PathOneCell view, PathOneModel model)
 	{
 		super(logger, view);
-		mView = view;
+
+		if(model == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Making Path One Model null.");
+			throw new IllegalArgumentException("Making Path One Model null.");
+		}
+		
+		for(TrainerSprite trainer : mView.getTrainerSprites())
+		{
+			if(trainer.getName().compareTo("Kelly") == 0)
+			{
+				trainer.setTrainerModel(model.getKelly());
+				break;
+			}
+		}
 	}
 
 	@Override
 	protected void timerHook(double elapsedSeconds)
 	{
-		int trainerIndex = mView.mKelly.getIndex(mView.getBackground());
-		int playerIndex = mPlayer.getIndex(mView.getBackground());
-
-		if(mPlayer.getBoxY() > mView.mKelly.getCollisionY() && playerIndex < trainerIndex)
-		{
-			mPlayer.removeFromContainer(mView.getBackground());
-			mPlayer.addToContainer(mView.getBackground(), trainerIndex + 1);
-		}
-
-		else if(mPlayer.getBoxY() <= mView.mKelly.getCollisionY() && playerIndex > trainerIndex)
-		{
-			mPlayer.removeFromContainer(mView.getBackground());
-			mPlayer.addToContainer(mView.getBackground(), trainerIndex);
-		}
 		
-		mView.mKelly.update(mPlayer, mSpeed, elapsedSeconds);
 	}
 
 	@Override

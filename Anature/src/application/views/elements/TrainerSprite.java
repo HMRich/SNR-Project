@@ -36,9 +36,10 @@ public class TrainerSprite
 	private String[] mDialogue;
 	private boolean mHasBattle;
 	private Trainer mTrainer;
+	private String mName;	
 	
 	public TrainerSprite(double x, double y, TrainerIds id, Direction facing, DoubleProperty zoom, BooleanProperty showProperty, 
-			double[][] keyFrames, Direction[] keyFrameDirections, int startingFrame, String[] dialogue, boolean hasBattle)
+			double[][] keyFrames, Direction[] keyFrameDirections, int startingFrame, String[] dialogue, boolean hasBattle, String name)
 	{
 		mId = id;
 		mShowCollision = showProperty;
@@ -46,6 +47,16 @@ public class TrainerSprite
 		mHasBattle = hasBattle;
 		mFacing = facing;
 		createSprites();
+		
+		if(name == null)
+		{
+			mName = mId.toString();
+		}
+		
+		else
+		{
+			mName = name;
+		}
 		
 		updateSprite();
 		mSprite.setFitHeight(29 * zoom.get());
@@ -161,6 +172,11 @@ public class TrainerSprite
 		return mBoxCollision.getY();
 	}
 	
+	public String getName()
+	{
+		return mName;
+	}
+	
 	public Trainer getTrainerModel()
 	{
 		return mTrainer;
@@ -175,6 +191,18 @@ public class TrainerSprite
 		}
 		
 		mTrainer = trainer;
+	}
+	
+	public String[] getDialogue()
+	{
+		if(mHasBattle && mTrainer.canBattle())
+			return mDialogue;
+		
+		else if(mHasBattle && !mTrainer.canBattle())
+			return new String[] {"Nice Battle!"};
+		
+		else
+			return new String[] {"Nice to meet you!"};
 	}
 	
 	public boolean interact(PlayerSprite playerSprite, Direction playerFacing)

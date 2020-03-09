@@ -1,25 +1,17 @@
 package application.controllers.overworld_cells;
 
-import java.util.ArrayList;
-
 import application.LoggerStartUp;
-import application.Startup;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.WarpPoints;
 import application.models.StarterTownModel;
-import application.trainers.Trainer;
 import application.views.elements.TrainerSprite;
 import application.views.overworld_cells.StarterTownCell;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class StarterTownController extends AbstractController
 {
-	private StarterTownCell mView;
-	private Trainer mKellyTrainer;
-
 	public StarterTownController(LoggerStartUp logger, StarterTownCell view, StarterTownModel model)
 	{
 		super(logger, view);
@@ -30,8 +22,16 @@ public class StarterTownController extends AbstractController
 			throw new IllegalArgumentException("Making Starter Town Model null.");
 		}
 
-		mView = view;
-		mKellyTrainer = model.getKelly();
+//		mView = view;
+		
+		for(TrainerSprite trainer : mView.getTrainerSprites())
+		{
+			if(trainer.getName().compareTo("Kelly") == 0)
+			{
+				trainer.setTrainerModel(model.getKelly());
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -43,53 +43,7 @@ public class StarterTownController extends AbstractController
 	@Override
 	protected void keyPressHook(KeyEvent event)
 	{
-		if(event.getCode() == KeyCode.E)
-		{
-			for(TrainerSprite trainer : mView.getTrainerSprites())
-			{
-				if(trainer.interact(mPlayer, mView.getPlayerFacing()) && mClickQueue.isEmpty())
-				{
-					mView.mCanMove = false;
-
-					if(mKellyTrainer.canBattle())
-					{
-						mView.showDialogue("Hi there, my name is Kelly!");
-						mClickQueue.enqueue(() -> mView.showDialogue("Let's battle!"));
-						mClickQueue.enqueue(() ->
-						{
-							mView.mRight = false;
-							mView.mLeft = false;
-							mView.mDown = false;
-							mView.mUp = false;
-							mView.mCanMove = true;
-							mView.hideDialogue();
-							
-							Startup.startBattle(mKellyTrainer);
-						});
-					}
-					
-					else
-					{
-						mView.showDialogue("Nice battle!");
-						mClickQueue.enqueue(() ->
-						{
-							mView.hideDialogue();
-							mView.mCanMove = true;
-						});
-					}
-				}
-				
-				else
-				{
-					Runnable toRun = mClickQueue.dequeue();
-					
-					if(toRun != null)
-					{
-						toRun.run();
-					}
-				}
-			}
-		}
+		
 	}
 
 	@Override
