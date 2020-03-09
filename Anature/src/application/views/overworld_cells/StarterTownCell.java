@@ -11,8 +11,6 @@ import javafx.scene.image.Image;
 
 public class StarterTownCell extends AbstractCell
 {
-	public TrainerSprite mKelly;
-
 	public StarterTownCell(LoggerStartUp logger)
 	{
 		super(logger, 427, 468);
@@ -82,7 +80,7 @@ public class StarterTownCell extends AbstractCell
 	{
 		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
 		
-		mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, new double[0][], 0, dialogue, true, "Kelly");
+		TrainerSprite mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, new double[0][], 0, dialogue, true, "Kelly");
 		addTrainer(mKelly);
 	}
 }

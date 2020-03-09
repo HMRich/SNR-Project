@@ -21,8 +21,6 @@ public class StarterTownController extends AbstractController
 			LoggerController.logEvent(LoggingTypes.Error, "Making Starter Town Model null.");
 			throw new IllegalArgumentException("Making Starter Town Model null.");
 		}
-
-//		mView = view;
 		
 		for(TrainerSprite trainer : mView.getTrainerSprites())
 		{

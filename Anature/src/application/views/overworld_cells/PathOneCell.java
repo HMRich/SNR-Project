@@ -11,8 +11,6 @@ import javafx.scene.image.Image;
 
 public class PathOneCell extends AbstractCell
 {
-	public TrainerSprite mKelly;
-	
 	public PathOneCell(LoggerStartUp logger)
 	{
 		super(logger, 427, 468);
@@ -93,7 +91,7 @@ public class PathOneCell extends AbstractCell
 
 		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
 		
-		mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, startingFrame, dialogue, true, "Kelly");
+		TrainerSprite mKelly = new TrainerSprite(keyFrames[0][0], keyFrames[0][1], TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, keyFrames, startingFrame, dialogue, true, "Kelly");
 		addTrainer(mKelly);
 	}
 }

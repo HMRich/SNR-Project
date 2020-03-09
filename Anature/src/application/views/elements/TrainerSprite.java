@@ -193,14 +193,10 @@ public class TrainerSprite
 	
 	public String[] getDialogue()
 	{
-		if(mHasBattle && mTrainer.canBattle())
-			return mDialogue;
-		
-		else if(mHasBattle && !mTrainer.canBattle())
+		if(mHasBattle && !mTrainer.canBattle())
 			return new String[] {"Nice Battle!"};
-		
-		else
-			return new String[] {"Nice to meet you!"};
+
+		return mDialogue;
 	}
 	
 	public boolean interact(PlayerSprite playerSprite, Direction playerFacing)
