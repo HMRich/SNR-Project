@@ -493,7 +493,7 @@ public class BattleController
 		mSwitchBtn.setOnMouseClicked(event ->
 		{
 			event.consume();
-
+			
 			if(mShowSwitchBackBtn.get())
 			{
 				activateTurn(BattleChoice.Switch);
@@ -504,7 +504,7 @@ public class BattleController
 				{
 					return;
 				}
-
+				
 				activateSwitch();
 				mClickQueue.enqueue(new Runnable()
 				{
@@ -1482,6 +1482,7 @@ public class BattleController
 
 	private void onSwitchBtn()
 	{
+
 		updateSwitch(mPlayer.getAnatures(), mSwitchIndexSelected);
 		mShowSwitch.set(true);
 		mShowBtns.set(false);
@@ -1630,7 +1631,7 @@ public class BattleController
 				break;
 		}
 	}
-
+	
 	private void updateStatusIcon(ImageView icon, Anature toCheck)
 	{
 		StatusEffects anatureStatus = toCheck.getStatus();
