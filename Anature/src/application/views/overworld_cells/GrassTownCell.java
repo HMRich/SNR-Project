@@ -10,7 +10,7 @@ public class GrassTownCell extends AbstractCell
 {
 	public GrassTownCell(LoggerStartUp logger)
 	{
-		super(logger, 427, 468);
+		super(logger, 468, 427);
 	}
 
 	@Override
@@ -44,17 +44,17 @@ public class GrassTownCell extends AbstractCell
 	@Override
 	protected void createCollisons()
 	{
-		addCollisionRectangle(136, 290, 309, 145);
-		addCollisionRectangle(1242, 382, 236, 105);
-		addCollisionRectangle(860, 793, 377, 113);
-		addCollisionRectangle(800, 1375, 252, 127);
-		addCollisionRectangle(202, 1201, 236, 102);
+		addCollisionRectangle(150, 263, 341, 136);
+		addCollisionRectangle(1361, 347, 257, 98);
+		addCollisionRectangle(942, 722, 416, 104);
+		addCollisionRectangle(221, 1096, 259, 92);
+		addCollisionRectangle(878, 1256, 275, 116);
 		
-		addCollisionRectangle(31, 0, 897, 119);
-		addCollisionRectangle(1211, 0, 304, 119);
-		addCollisionRectangle(1515, 100, 40, 1525);
-		addCollisionRectangle(51, 1640, 1500, 60);
-		addCollisionRectangle(0, 104, 51, 1540);
+		addCollisionRectangle(16, 0, 1006, 120);
+		addCollisionRectangle(1327, 0, 369, 120);
+		addCollisionRectangle(1662, 76, 41, 1405);
+		addCollisionRectangle(51, 1491, 1642, 41);
+		addCollisionRectangle(0, 74, 60, 1417);
 	}
 
 	@Override
@@ -67,6 +67,6 @@ public class GrassTownCell extends AbstractCell
 	@Override
 	protected void createWarpPoints()
 	{
-		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Grass_Town_Exit, 955, 0, 243, 60);
+		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Grass_Town_Exit, 1021, 0, 301, 60);
 	}
 }
