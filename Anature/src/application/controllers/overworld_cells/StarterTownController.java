@@ -103,8 +103,8 @@ public class StarterTownController extends AbstractController
 		switch(warpPoint)
 		{
 			case Starter_Town_Path_1_Exit:
-				mPlayer.setX(1456);
-				mPlayer.setY(298);
+				mPlayer.setX(1588);
+				mPlayer.setY(276);
 				mView.setPlayerFacing(Direction.Left);
 				break;
 				

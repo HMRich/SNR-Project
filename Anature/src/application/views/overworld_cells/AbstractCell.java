@@ -215,9 +215,9 @@ public abstract class AbstractCell
 		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY));
 	}
 
-	protected void addGrassPatchRectangle(double x, double y, double width, double height)
+	protected void addGrassPatchRectangle(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
 	{
-		Rectangle rect = createRectangle(x, y, width, height);
+		Rectangle rect = createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY);
 		rect.setFill(Color.DARKGREEN);
 		mGrassPatches.add(rect);
 	}

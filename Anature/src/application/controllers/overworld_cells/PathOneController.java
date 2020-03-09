@@ -35,7 +35,7 @@ public class PathOneController extends AbstractController
 		{
 			case Path_1_Starter_Town_Exit:
 				mPlayer.setX(45);
-				mPlayer.setY(292);
+				mPlayer.setY(269);
 				mView.setPlayerFacing(Direction.Right);
 				break;
 
