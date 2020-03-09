@@ -9,7 +9,7 @@ public class SleepDeprived implements Ability
 	public static void activateAbility()
 	{
 		// TODO once statuses are added implement this method
-		LoggerController.logEvent(LoggingTypes.Default, "Not Yet Implemented: SleepDeprived");
+		LoggerController.logEvent(LoggingTypes.Error, "Not Yet Implemented: SleepDeprived");
 	}
 
 	@Override
