@@ -15,6 +15,7 @@ import application.enums.DatabaseType;
 import application.enums.Gender;
 import application.enums.MoveIds;
 import application.enums.Species;
+import application.enums.StatusEffects;
 import application.enums.Type;
 import application.moves.Move;
 import application.moves.MovePool;
@@ -101,7 +102,7 @@ public class AnatureBuilder
 		}
 
 		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability, attack,
-				specialAttack, defense, specialDefense, hp, speed, accuracy);
+				specialAttack, defense, specialDefense, hp, speed, accuracy, StatusEffects.None);
 	}
 
 	private static MoveSet generateMoveSet(Species species, int level)

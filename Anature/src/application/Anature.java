@@ -6,6 +6,7 @@ import application.abillities.Ability;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.Type;
+import application.enums.StatusEffects;
 import javafx.scene.image.Image;
 
 public class Anature
@@ -16,6 +17,7 @@ public class Anature
 	private MoveSet mMoves;
 	private Type mPrimaryType, mSecondaryType;
 	private Species mSpecies;
+	private StatusEffects mStatus = StatusEffects.None;
 	private boolean mIsShiny;
 	private Ability mAbility;
 	private int mIndexNum;
@@ -23,7 +25,7 @@ public class Anature
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types, Species species, boolean isShiny,
-			int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense, int totalHp, int speed, int accuracy)
+			int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense, int totalHp, int speed, int accuracy, StatusEffects status)
 	{
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
@@ -49,6 +51,7 @@ public class Anature
 		}
 
 		mSpecies = species;
+		mStatus = status; 
 		mIsShiny = isShiny;
 		mIndexNum = indexNum;
 		mAbility = ability;
@@ -332,6 +335,16 @@ public class Anature
 	public void setAccuracy(int mAccuracy)
 	{
 		this.mAccuracy = mAccuracy;
+	}
+	
+	public StatusEffects getStatus()
+	{
+		return mStatus;
+	}
+
+	public void setStatus(StatusEffects mStatus)
+	{
+		this.mStatus = mStatus;
 	}
 
 	public void resetTempStats()
