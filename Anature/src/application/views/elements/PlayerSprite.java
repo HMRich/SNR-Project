@@ -19,6 +19,7 @@ public class PlayerSprite
 {
 	private ImageView mImage, mEmote;
 	private Rectangle mBoxCollision, mTopCollision, mBotCollision, mRightCollision, mLeftCollision;
+	private Rectangle mULCornerCollision, mURCornerCollision, mLLCornerCollision, mLRCornerCollision, mTotalCollision;
 	private BooleanProperty mShowCollision, mShowEmote;
 	private ArrayList<Node> mContent;
 	
@@ -52,19 +53,26 @@ public class PlayerSprite
 		mContent = new ArrayList<Node>();
 		mContent.add(mEmote);
 		mContent.add(mImage);
+
+		mContent.add(mTotalCollision);
 		mContent.add(mBoxCollision);
 		mContent.add(mTopCollision);
 		mContent.add(mBotCollision);
 		mContent.add(mLeftCollision);
 		mContent.add(mRightCollision);
+		
+		mContent.add(mULCornerCollision);
+		mContent.add(mURCornerCollision);
+		mContent.add(mLLCornerCollision);
+		mContent.add(mLRCornerCollision);
 	}
 	
 	private void createCollisionBoxes()
 	{
 		mTopCollision = new Rectangle();
 		mTopCollision.xProperty().bind(mBoxCollision.xProperty());
-		mTopCollision.yProperty().bind(mBoxCollision.yProperty());
-		mTopCollision.widthProperty().bind(mBoxCollision.widthProperty().add(5));
+		mTopCollision.yProperty().bind(mBoxCollision.yProperty().subtract(5));
+		mTopCollision.widthProperty().bind(mBoxCollision.widthProperty());
 		mTopCollision.setHeight(5);
 		mTopCollision.visibleProperty().bind(mShowCollision);
 		mTopCollision.setFill(Color.RED);
@@ -72,24 +80,64 @@ public class PlayerSprite
 		mBotCollision = new Rectangle();
 		mBotCollision.xProperty().bind(mBoxCollision.xProperty());
 		mBotCollision.yProperty().bind(mBoxCollision.yProperty().add(mBoxCollision.heightProperty()));
-		mBotCollision.widthProperty().bind(mBoxCollision.widthProperty().add(5));
+		mBotCollision.widthProperty().bind(mBoxCollision.widthProperty());
 		mBotCollision.setHeight(5);
 		mBotCollision.visibleProperty().bind(mShowCollision);
 		mBotCollision.setFill(Color.RED);
 
 		mLeftCollision = new Rectangle();
-		mLeftCollision.xProperty().bind(mBoxCollision.xProperty());
+		mLeftCollision.xProperty().bind(mBoxCollision.xProperty().subtract(5));
 		mLeftCollision.yProperty().bind(mBoxCollision.yProperty());
 		mLeftCollision.setWidth(5);
-		mLeftCollision.heightProperty().bind(mBoxCollision.heightProperty().add(5));
+		mLeftCollision.heightProperty().bind(mBoxCollision.heightProperty());
 		mLeftCollision.visibleProperty().bind(mShowCollision);
 
 		mRightCollision = new Rectangle();
 		mRightCollision.xProperty().bind(mBoxCollision.xProperty().add(mBoxCollision.widthProperty()));
 		mRightCollision.yProperty().bind(mBoxCollision.yProperty());
 		mRightCollision.setWidth(5);
-		mRightCollision.heightProperty().bind(mBoxCollision.heightProperty().add(5));
+		mRightCollision.heightProperty().bind(mBoxCollision.heightProperty());
 		mRightCollision.visibleProperty().bind(mShowCollision);
+		
+		mULCornerCollision = new Rectangle();
+		mULCornerCollision.xProperty().bind(mBoxCollision.xProperty().subtract(5));
+		mULCornerCollision.yProperty().bind(mBoxCollision.yProperty().subtract(5));
+		mULCornerCollision.setWidth(5);
+		mULCornerCollision.setHeight(5);
+		mULCornerCollision.visibleProperty().bind(mShowCollision);
+		mULCornerCollision.setFill(Color.GREEN);
+		
+		mURCornerCollision = new Rectangle();
+		mURCornerCollision.xProperty().bind(mBoxCollision.xProperty().add(mBoxCollision.widthProperty()));
+		mURCornerCollision.yProperty().bind(mBoxCollision.yProperty().subtract(5));
+		mURCornerCollision.setWidth(5);
+		mURCornerCollision.setHeight(5);
+		mURCornerCollision.visibleProperty().bind(mShowCollision);
+		mURCornerCollision.setFill(Color.GREEN);
+		
+		mLLCornerCollision = new Rectangle();
+		mLLCornerCollision.xProperty().bind(mBoxCollision.xProperty().subtract(5));
+		mLLCornerCollision.yProperty().bind(mBoxCollision.yProperty().add(mBoxCollision.heightProperty()));
+		mLLCornerCollision.setWidth(5);
+		mLLCornerCollision.setHeight(5);
+		mLLCornerCollision.visibleProperty().bind(mShowCollision);
+		mLLCornerCollision.setFill(Color.GREEN);
+		
+		mLRCornerCollision = new Rectangle();
+		mLRCornerCollision.xProperty().bind(mBoxCollision.xProperty().add(mBoxCollision.widthProperty()));
+		mLRCornerCollision.yProperty().bind(mBoxCollision.yProperty().add(mBoxCollision.heightProperty()));
+		mLRCornerCollision.setWidth(5);
+		mLRCornerCollision.setHeight(5);
+		mLRCornerCollision.visibleProperty().bind(mShowCollision);
+		mLRCornerCollision.setFill(Color.GREEN);
+		
+		mTotalCollision = new Rectangle();
+		mTotalCollision.widthProperty().bind(mBoxCollision.widthProperty().add(10));
+		mTotalCollision.heightProperty().bind(mBoxCollision.heightProperty().add(10));
+		mTotalCollision.xProperty().bind(mBoxCollision.xProperty().subtract(5));
+		mTotalCollision.yProperty().bind(mBoxCollision.yProperty().subtract(5));
+		mTotalCollision.setFill(Color.BLACK);
+		mTotalCollision.visibleProperty().bind(mShowCollision);
 	}
 	
 	public void addToContainer(Pane toAddTo)
@@ -183,6 +231,11 @@ public class PlayerSprite
 		mImage.setImage(image);
 	}
 	
+	public Bounds getTotalBounds()
+	{
+		return mTotalCollision.getBoundsInLocal();
+	}
+	
 	public Bounds getBoxBounds()
 	{
 		return mBoxCollision.getBoundsInLocal();
@@ -206,6 +259,26 @@ public class PlayerSprite
 	public Bounds getLeftBounds()
 	{
 		return mLeftCollision.getBoundsInLocal();
+	}
+	
+	public Bounds getUpperRightBounds()
+	{
+		return mURCornerCollision.getBoundsInLocal();
+	}
+	
+	public Bounds getUpperLeftBounds()
+	{
+		return mULCornerCollision.getBoundsInLocal();
+	}
+	
+	public Bounds getLowerRightBounds()
+	{
+		return mLRCornerCollision.getBoundsInLocal();
+	}
+	
+	public Bounds getLowerLeftBounds()
+	{
+		return mLLCornerCollision.getBoundsInLocal();
 	}
 	
 	public boolean isEmoteShown()

@@ -283,7 +283,7 @@ public class TrainerSprite
 				mSprite.setX(oldX);
 			}
 			
-			if(player.getBoxBounds().intersects(mBoxCollision.getBoundsInParent()))
+			if(player.getTotalBounds().intersects(mBoxCollision.getBoundsInParent()))
 			{
 				mSprite.setX(oldX);
 				mSprite.setY(oldY);

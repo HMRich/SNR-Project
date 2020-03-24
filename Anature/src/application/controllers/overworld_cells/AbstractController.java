@@ -105,39 +105,55 @@ public abstract class AbstractController
 
 	private boolean xCollisionCheck()
 	{
-		Bounds left = mPlayer.getLeftBounds();
 		Bounds right = mPlayer.getRightBounds();
-
+		Bounds upRight = mPlayer.getUpperRightBounds();
+		Bounds botRight = mPlayer.getLowerRightBounds();
+		
+		Bounds left = mPlayer.getLeftBounds();
+		Bounds upLeft = mPlayer.getUpperLeftBounds();
+		Bounds botLeft = mPlayer.getLowerLeftBounds();
+		
 		for(Rectangle toCheck : mView.getCollisions())
 		{
-			boolean rightCheck = right.intersects(toCheck.getBoundsInParent());
-			boolean leftCheck = left.intersects(toCheck.getBoundsInParent());
+			boolean check = 
+					right.intersects(toCheck.getBoundsInParent()) || 
+					upRight.intersects(toCheck.getBoundsInParent()) || botRight.intersects(toCheck.getBoundsInParent()) ||
+					left.intersects(toCheck.getBoundsInParent()) || 
+					upLeft.intersects(toCheck.getBoundsInParent()) || botLeft.intersects(toCheck.getBoundsInParent());
 
-			if((rightCheck && !leftCheck) || (leftCheck && !rightCheck))
+			if(check)
 			{
 				return false;
 			}
 		}
-
+		
 		return true;
 	}
 
 	private boolean yCollisionCheck()
 	{
 		Bounds top = mPlayer.getTopBounds();
+		Bounds upLeft = mPlayer.getUpperLeftBounds();
+		Bounds upRight = mPlayer.getUpperRightBounds();
+		
 		Bounds bot = mPlayer.getBotBounds();
-
+		Bounds botLeft = mPlayer.getLowerLeftBounds();
+		Bounds botRight = mPlayer.getLowerRightBounds();
+		
 		for(Rectangle toCheck : mView.getCollisions())
 		{
-			boolean topCheck = top.intersects(toCheck.getBoundsInParent());
-			boolean botCheck = bot.intersects(toCheck.getBoundsInParent());
+			boolean check = 
+					top.intersects(toCheck.getBoundsInParent()) || 
+					upLeft.intersects(toCheck.getBoundsInParent()) || upRight.intersects(toCheck.getBoundsInParent()) ||
+					bot.intersects(toCheck.getBoundsInParent()) || 
+					botLeft.intersects(toCheck.getBoundsInParent()) || botRight.intersects(toCheck.getBoundsInParent());
 
-			if((topCheck && !botCheck) || (botCheck && !topCheck))
+			if(check)
 			{
 				return false;
 			}
 		}
-
+		
 		return true;
 	}
 	
@@ -216,20 +232,27 @@ public abstract class AbstractController
 					double oldX = mPlayer.getX();
 					double oldY = mPlayer.getY();
 
-					mPlayer.setX(mView.clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayer.getFitWidth()));
-					mPlayer.setY(mView.clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayer.getFitHeight()));
+					
 					
 					if(LoggerController.isCollisionEnabled())
 					{
+						mPlayer.setX(mView.clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayer.getFitWidth()));
 						if(!xCollisionCheck())
 						{
 							mPlayer.setX(oldX);
 						}
-						
+
+						mPlayer.setY(mView.clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayer.getFitHeight()));
 						if(!yCollisionCheck())
 						{
 							mPlayer.setY(oldY);
 						}
+					}
+					
+					else
+					{
+						mPlayer.setX(mView.clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayer.getFitWidth()));
+						mPlayer.setY(mView.clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayer.getFitHeight()));
 					}
 					
 					if(checkGrassPatch())
