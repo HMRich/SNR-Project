@@ -14,7 +14,7 @@ public class GrassTownController extends AbstractController
 	}
 
 	@Override
-	protected void timerHook()
+	protected void timerHook(double elapsedSeconds)
 	{
 		// TODO Auto-generated method stub
 		
@@ -36,8 +36,8 @@ public class GrassTownController extends AbstractController
 		switch(warpPoint)
 		{
 			case Grass_Town_Path_1:
-				mPlayer.setX(1030);
-				mPlayer.setY(25);
+				mPlayer.setX(1135);
+				mPlayer.setY(45);
 				mView.setPlayerFacing(Direction.Down);
 				break;
 

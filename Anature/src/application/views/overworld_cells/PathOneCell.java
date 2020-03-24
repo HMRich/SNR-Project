@@ -74,7 +74,7 @@ public class PathOneCell extends AbstractCell
 	protected void createWarpPoints()
 	{
 		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_Path_1_Exit, 0, 235, 23, 161);
-		addWarpPoint(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1, 1038, 1537, 209, 16); // TODO only for demo
+		addWarpPoint(SceneType.Grass_Town, WarpPoints.Grass_Town_Path_1, 1038, 1537, 209, 16);
 	}
 
 	@Override

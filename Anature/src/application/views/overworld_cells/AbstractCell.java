@@ -148,9 +148,9 @@ public abstract class AbstractCell
 		dialogueBox.layoutXProperty().bind(mScene.widthProperty().divide(91.428));
 		dialogueBox.layoutYProperty().bind(mScene.heightProperty().divide(1.306));
 		dialogueBox.visibleProperty().bind(mShowDialogueProperty);
-		
+
 		ImageView dialogueClickIndicator = new ImageView(
-				new Image(getClass().getResource("/resources/images/battle/BattleScreen_Clickindicator.png").toExternalForm(), 1000.0, 1000.0, true, false));
+				new Image(getClass().getResource("/resources/images/battle/BattleScreen_ClickIndicator.png").toExternalForm(), 1000.0, 1000.0, true, false));
 		
 		dialogueClickIndicator.fitWidthProperty().bind(mScene.widthProperty().divide(35.55));
 		dialogueClickIndicator.fitHeightProperty().bind(mScene.heightProperty().divide(25.714));

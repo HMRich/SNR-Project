@@ -69,4 +69,11 @@ public class GrassTownCell extends AbstractCell
 	{
 		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Grass_Town_Exit, 1021, 0, 301, 60);
 	}
+
+	@Override
+	protected void createTrainers()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }
