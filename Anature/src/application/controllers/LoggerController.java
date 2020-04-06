@@ -39,6 +39,8 @@ public class LoggerController
 		mCollision.bind(mCollisionRadio.selectedProperty());
 		
 		onRadioToggle();
+		
+		mLoggingText.addListener((observable, oldValue, newValue) -> mLoggingTextArea.setScrollTop(Double.MAX_VALUE));
 	}
 
 	public void onRadioToggle()

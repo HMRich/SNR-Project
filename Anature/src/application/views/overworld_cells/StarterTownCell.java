@@ -3,6 +3,7 @@ package application.views.overworld_cells;
 import application.LoggerStartUp;
 import application.enums.Direction;
 import application.enums.SceneType;
+import application.enums.TrainerIds;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import application.views.elements.TrainerSprite;
@@ -10,24 +11,15 @@ import javafx.scene.image.Image;
 
 public class StarterTownCell extends AbstractCell
 {
-	public TrainerSprite mKelly;
-
 	public StarterTownCell(LoggerStartUp logger)
 	{
-		super(logger, 427, 468);
+		super(logger, 468, 427);
 	}
 
 	@Override
 	protected void addToBackground()
 	{
-		Image up = new Image(getClass().getResource("/resources/images/trainers/kelly/up_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image down = new Image(getClass().getResource("/resources/images/trainers/kelly/down_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image right = new Image(getClass().getResource("/resources/images/trainers/kelly/right_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		Image left = new Image(getClass().getResource("/resources/images/trainers/kelly/left_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		mKelly = new TrainerSprite(427, 1310, down, up, left, right, Direction.Down, mZoom, mShowCollision);
-
-		mCollisions.add(mKelly.getCollisionBox());
-		mKelly.addToContainer(mBackground);
+		// Nothing to add
 	}
 
 	@Override
@@ -54,21 +46,21 @@ public class StarterTownCell extends AbstractCell
 	protected void createCollisons()
 	{
 		// Border
-		addCollisionRectangle(277, 55, 1151, 70);
-		addCollisionRectangle(1428, 55, 125, 160);
-		addCollisionRectangle(1428, 440, 125, 1213);
-		addCollisionRectangle(101, 1640, 1352, 15);
-		addCollisionRectangle(90, 680, 15, 1000);
-		addCollisionRectangle(90, 660, 200, 15);
-		addCollisionRectangle(277, 37, 15, 620);
+		addCollisionRectangleUsingCoords(279, 51, 1584, 99);
+		addCollisionRectangleUsingCoords(1563, 75, 1702, 192);
+		addCollisionRectangleUsingCoords(1563, 398, 1702, 1514);
+		addCollisionRectangleUsingCoords(86, 1486, 1665, 1530);
+		addCollisionRectangleUsingCoords(0, 564, 104, 1503);
+		addCollisionRectangleUsingCoords(46, 538, 304, 590);
+		addCollisionRectangleUsingCoords(220, 43, 304, 585);
 
 		// Houses
-		addCollisionRectangle(446, 510, 250, 127);
-		addCollisionRectangle(1077, 794, 250, 127);
-		addCollisionRectangle(236, 1180, 250, 127);
+		addCollisionRectangleUsingCoords(487, 464, 765, 583);
+		addCollisionRectangleUsingCoords(1179, 721, 1455, 838);
+		addCollisionRectangleUsingCoords(260, 1078, 534, 1196);
 		
 		// Tree
-		addCollisionRectangle(948, 1144, 137, 92);
+		addCollisionRectangleUsingCoords(1043, 1045, 1192, 1129);
 	}
 
 	@Override
@@ -80,6 +72,15 @@ public class StarterTownCell extends AbstractCell
 	@Override
 	protected void createWarpPoints()
 	{
-		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Starter_Town_Exit, 1518, 267, 35, 168);
+		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Starter_Town_Exit, 1667, 239, 33, 155);
+	}
+
+	@Override
+	protected void createTrainers()
+	{
+		String[] dialogue = new String[] {"Hi there, my name is Kelly!", "Let's Battle!"};
+		
+		TrainerSprite mKelly = new TrainerSprite(427, 1310, TrainerIds.Kelly, Direction.Down, mZoom, mShowCollision, new double[0][], 0, dialogue, true, "Kelly");
+		addTrainer(mKelly);
 	}
 }

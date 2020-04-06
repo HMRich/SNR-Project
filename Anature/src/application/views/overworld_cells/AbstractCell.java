@@ -11,6 +11,7 @@ import application.enums.SceneType;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import application.views.elements.PlayerSprite;
+import application.views.elements.TrainerSprite;
 import application.views.elements.WarpPointBox;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -50,6 +51,7 @@ public abstract class AbstractCell
 	protected ImageLayer mBackground;
 	protected ArrayList<Rectangle> mCollisions, mGrassPatches;
 	protected ArrayList<WarpPointBox> mWarpPoints;
+	protected ArrayList<TrainerSprite> mTrainerSprites;
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 
@@ -66,6 +68,7 @@ public abstract class AbstractCell
 		mCollisions = new ArrayList<Rectangle>();
 		mGrassPatches = new ArrayList<Rectangle>();
 		mWarpPoints = new ArrayList<WarpPointBox>();
+		mTrainerSprites = new ArrayList<TrainerSprite>();
 		mCanMove = true;
 
 		mHeight = height;
@@ -88,6 +91,13 @@ public abstract class AbstractCell
 		createCollisons();
 		createGrassPatches();
 		createWarpPoints();
+		createTrainers();
+		
+		for(TrainerSprite trainer : mTrainerSprites)
+		{
+			mCollisions.add(trainer.getCollisionBox());
+			trainer.addToContainer(mBackground);
+		}
 
 		mBackground.getChildren().addAll(mWarpPoints);
 		mBackground.getChildren().addAll(mGrassPatches);
@@ -111,6 +121,8 @@ public abstract class AbstractCell
 		
 		setUpDialogueBox(cell);
 	}
+	
+	protected abstract void createTrainers();
 
 	protected abstract void addToBackground();
 
@@ -136,9 +148,9 @@ public abstract class AbstractCell
 		dialogueBox.layoutXProperty().bind(mScene.widthProperty().divide(91.428));
 		dialogueBox.layoutYProperty().bind(mScene.heightProperty().divide(1.306));
 		dialogueBox.visibleProperty().bind(mShowDialogueProperty);
-		
+
 		ImageView dialogueClickIndicator = new ImageView(
-				new Image(getClass().getResource("/resources/images/battle/BattleScreen_Clickindicator.png").toExternalForm(), 1000.0, 1000.0, true, false));
+				new Image(getClass().getResource("/resources/images/battle/BattleScreen_ClickIndicator.png").toExternalForm(), 1000.0, 1000.0, true, false));
 		
 		dialogueClickIndicator.fitWidthProperty().bind(mScene.widthProperty().divide(35.55));
 		dialogueClickIndicator.fitHeightProperty().bind(mScene.heightProperty().divide(25.714));
@@ -209,10 +221,15 @@ public abstract class AbstractCell
 	{
 		mCollisions.add(createRectangle(x, y, width, height));
 	}
-
-	protected void addGrassPatchRectangle(double x, double y, double width, double height)
+	
+	protected void addCollisionRectangleUsingCoords(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
 	{
-		Rectangle rect = createRectangle(x, y, width, height);
+		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY));
+	}
+
+	protected void addGrassPatchRectangle(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
+	{
+		Rectangle rect = createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY);
 		rect.setFill(Color.DARKGREEN);
 		mGrassPatches.add(rect);
 	}
@@ -231,6 +248,17 @@ public abstract class AbstractCell
 		
 		return rect;
 	}
+	
+	protected void addTrainer(TrainerSprite trainer)
+	{
+		if(trainer == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Tried to add a trainer spite that was null.");
+			return;
+		}
+		
+		mTrainerSprites.add(trainer);
+	}
 
 	public Scene getScene()
 	{
@@ -239,6 +267,7 @@ public abstract class AbstractCell
 		mUp = false;
 		mDown = false;
 		mCanMove = true;
+		mPlayer.hideEmote();
 		
 		return mScene;
 	}
@@ -314,6 +343,11 @@ public abstract class AbstractCell
 	public ArrayList<WarpPointBox> getWarpPoints()
 	{
 		return mWarpPoints;
+	}
+	
+	public ArrayList<TrainerSprite> getTrainerSprites()
+	{
+		return mTrainerSprites;
 	}
 	
 	public void showDialogue(String txt)

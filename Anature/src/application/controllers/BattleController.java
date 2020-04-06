@@ -506,6 +506,17 @@ public class BattleController
 				}
 				
 				activateSwitch();
+
+				try
+				{
+					Thread.sleep(10);
+				}
+
+				catch(InterruptedException e)
+				{
+					LoggerController.logEvent(LoggingTypes.Error, "The pause in-between activateSwitch() & the rest ui enqueue was interrupted.");
+				}
+				
 				mClickQueue.enqueue(new Runnable()
 				{
 					@Override
