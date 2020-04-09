@@ -1,13 +1,17 @@
 package application;
 
+import application.abillities.AbilityResult;
+import application.enums.StatusEffects;
+
 public class MoveResult extends Result
 {
 	private double mDamageDone;
 	private String mMpTxt;
 	private int mMoveIndex;//NOTE: a moveIndex of -1 means that the move was skipped
 	private boolean mIsPlayer;
-	
-	public MoveResult(double damageDone, String dialogueTxt, int moveIndex, String mpTxt, boolean isPlayer)
+	private AbilityResult mEnemyAbilityResult;
+	private AbilityResult mPlayerAbilityResult;
+	public MoveResult(double damageDone, String dialogueTxt, int moveIndex, String mpTxt, boolean isPlayer, AbilityResult EnemyAbilityResult, AbilityResult PlayerAbilityResult)
 	{
 		super(dialogueTxt);
 
@@ -18,6 +22,8 @@ public class MoveResult extends Result
 		mMpTxt = mpTxt;
 		mMoveIndex = moveIndex;
 		mIsPlayer = isPlayer;
+		mEnemyAbilityResult = EnemyAbilityResult;
+		mPlayerAbilityResult = PlayerAbilityResult;
 	}
 
 	public double getDamageDone()
@@ -38,6 +44,16 @@ public class MoveResult extends Result
 	public boolean isPlayer()
 	{
 		return mIsPlayer;
+	}
+	
+	public AbilityResult getEnemyAbilityResult() 
+	{
+		return mEnemyAbilityResult;
+	}
+
+	public AbilityResult getPlayerAbilityResult() 
+	{
+		return mPlayerAbilityResult;
 	}
 	
 }

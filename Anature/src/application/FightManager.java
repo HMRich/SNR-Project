@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 
+import application.abillities.AbilityResult;
 import application.abillities.Determination;
 import application.abillities.Grumble;
 import application.abillities.SleepDeprived;
@@ -61,25 +62,27 @@ public class FightManager
 		double oldHp = enemyAnature.getCurrHp();
 
 		MoveSet moves = mPlayerTeam.get(mPlayerIndex).getMoves();
+		AbilityResult playerResult = abilityUse(playerAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, null, enemyAnature.getCurrHp());
 		if((moves.getMovePoints(indexOfMove) <= 0) && (indexOfMove != -1)) // TODO Fully implement Struggle
 		{
 			playerAnature.takeDamage(10);
 			enemyAnature.takeDamage(20);
 
 			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true);
+					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true, null, playerResult);
 		}
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
 		
-		
+		/* i'm not sure how you want to add enemy/player result to this
+		 * 
 		if(playerAnatureMove.getMoveId() == MoveIds.Skip_Turn) {
-			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
+			AbilityResult enemyResult = abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
 			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
 					mPlayerName + "'s " + playerAnature.getName() + " could not attack " + mEnemyName + "'s " + enemyAnature.getName() + "because it has " + playerAnature.getStatus() + "!", -1,
 					"-1/" + playerAnatureMove.getTotalMovePoints(), false);
 		}
-		
+		*/
 		// This if statement checks if the move is going to miss
 		if((playerAnatureMove.getAccuracy() / playerAnature.getTempAccuracy()) > (Math.random() + .1))
 		{
@@ -87,17 +90,17 @@ public class FightManager
 			playerAnatureMove.activateMove(playerAnature, enemyAnature);
 			moves.useMp(indexOfMove);
 
-			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
+			AbilityResult enemyResult = abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
 
 			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
 					mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!", indexOfMove,
-					moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
+					moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true, enemyResult, playerResult);
 		}
 		
 		else
 		{
 			return new MoveResult(0, mPlayerName + "'s " + playerAnature.getName() + " missed " + mEnemyName + "'s " + enemyAnature.getName() + "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true, null, playerResult);
 		}
 
 	}
@@ -171,7 +174,7 @@ public class FightManager
 		}
 	}
 
-	public void abilityUse(AbilityIds abilityId, Anature attackingAnature, Anature targetAnature, Move move, double oldHp)
+	public AbilityResult abilityUse(AbilityIds abilityId, Anature attackingAnature, Anature targetAnature, Move move, double oldHp)
 	{
 		boolean skipTurn = (move.getMoveId() == MoveIds.Skip_Turn);
 		switch(abilityId)
