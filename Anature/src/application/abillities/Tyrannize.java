@@ -5,9 +5,10 @@ import application.enums.AbilityIds;
 
 public class Tyrannize implements Ability
 {
-	public static void activateAbility(Anature target)
+	public static String activateAbility(Anature target)
 	{
 		target.setTempAttack((int)(target.getTempAttack() * .9));
+		return target.getName() + "'s attack was lowered!";
 	}
 
 	public AbilityIds getAbilityId()
