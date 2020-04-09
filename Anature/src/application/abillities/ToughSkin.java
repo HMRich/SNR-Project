@@ -6,13 +6,15 @@ import application.moves.Move;
 
 public class ToughSkin implements Ability
 {
-	public static void activateAbility(Anature attackingAnature, Anature targetAnature, Move move, double oldHp)
+	public static String activateAbility(Anature attackingAnature, Anature targetAnature, Move move, double oldHp)
 	{
 		if(move.isPhysicalAttack())
 		{
 			double hpDifference = oldHp - targetAnature.getCurrHp();
 			targetAnature.setCurrHp((int) (hpDifference * 0.80));
+			return targetAnature.getName() + " took less damage because of their Tough Skin!";
 		}
+		return "";
 	}
 
 	@Override

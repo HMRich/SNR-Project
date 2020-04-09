@@ -116,23 +116,24 @@ public class FightManager
 		double oldHp = playerAnature.getCurrHp();
 
 		MoveSet moves = mEnemyTeam.get(mEnemyIndex).getMoves();
+		AbilityResult enemyResult = abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, playerAnature, null, playerAnature.getCurrHp());
 		if((moves.getMovePoints(indexOfMove) <= 0) && (indexOfMove != -1)) // TODO Fully implement Struggle
 		{
 			enemyAnature.takeDamage(10);
 			playerAnature.takeDamage(20);
 
 			return new MoveResult(oldHp - playerAnature.getCurrHp(),
-					mEnemyName + "'s " + enemyAnature.getName() + " Flaied at " + mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false);
+					mEnemyName + "'s " + enemyAnature.getName() + " Flaied at " + mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false, enemyResult, null);
 		}
 
 		Move enemyAnatureMove = moves.getMove(indexOfMove);
 		
 		
 		if(enemyAnatureMove.getMoveId() == MoveIds.Skip_Turn) {
-			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
+			
 			return new MoveResult(oldHp - playerAnature.getCurrHp(),
 					mEnemyName + "'s " + enemyAnature.getName() + " could not attack " + mPlayerName + "'s " + playerAnature.getName() + "because it has " + enemyAnature.getStatus() + "!", -1,
-					"-1/" + enemyAnatureMove.getTotalMovePoints(), false);
+					"-1/" + enemyAnatureMove.getTotalMovePoints(), false, enemyResult, null);
 		}
 		
 		if((enemyAnatureMove.getAccuracy() / enemyAnature.getTempAccuracy()) > (Math.random() + .1))
@@ -142,17 +143,17 @@ public class FightManager
 			enemyAnatureMove.activateMove(enemyAnature, playerAnature);
 			moves.useMp(indexOfMove);
 
-			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
+			AbilityResult playerResult = abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
 
 			return new MoveResult(oldHp - playerAnature.getCurrHp(),
 					mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!", indexOfMove,
-					moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+					moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false, enemyResult, playerResult);
 		}
 		
 		else
 		{
 			return new MoveResult(0, mEnemyName + "'s " + enemyAnature.getName() + " missed " + mPlayerName + "'s " + playerAnature.getName() + "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false, enemyResult, null);
 		}
 	}
 
@@ -176,11 +177,17 @@ public class FightManager
 
 	public AbilityResult abilityUse(AbilityIds abilityId, Anature attackingAnature, Anature targetAnature, Move move, double oldHp)
 	{
+		String dialogue;
+		AbilityResult result = new AbilityResult("", false);
 		boolean skipTurn = (move.getMoveId() == MoveIds.Skip_Turn);
 		switch(abilityId)
 		{
 			case Determination:
-				Determination.activateAbility(targetAnature, move, oldHp);
+				dialogue = Determination.activateAbility(targetAnature, move, oldHp);
+				if (!dialogue.equals(""))
+				{
+					result = new AbilityResult(dialogue, true);
+				}
 				break;
 
 			case Dry_Skin:
@@ -188,11 +195,11 @@ public class FightManager
 				break;
 
 			case Tyrannize:
-				Tyrannize.activateAbility(targetAnature);
-				break;
-
-			case Iron_Barbs:
-
+				dialogue = Tyrannize.activateAbility(targetAnature);
+				if (getTurnNumber() == 1) 
+				{
+					result =  new AbilityResult(dialogue, true);
+				}
 				break;
 
 			case SleepDeprived:
@@ -200,18 +207,26 @@ public class FightManager
 				break;
 
 			case ToughSkin:
-				ToughSkin.activateAbility(attackingAnature, targetAnature, move, oldHp);
+				dialogue = ToughSkin.activateAbility(attackingAnature, targetAnature, move, oldHp);
+				if (!dialogue.equals(""))
+				{
+					result = new AbilityResult(dialogue,true);
+				}
 				break;
 
-			case Grumble:
+			case Grumble: // change to a move ;^)
 				Grumble.activateAbility(targetAnature, getTurnNumber());
 				break;
 			case Spiky:
-				if(!skipTurn) {
-					Spiky.activateAbility(attackingAnature, targetAnature, move);
+				dialogue = Spiky.activateAbility(attackingAnature, targetAnature, move);
+				if (!dialogue.equals(""))
+				{
+					result =  new AbilityResult(dialogue, true);
 				}
+				
 				break;
 		}
+		return result; 
 	}
 	
 	
