@@ -20,7 +20,8 @@ public class Trainer
 	private BaseAI mAi;
 	private int mHealthThreshold;
 	private int mSwitchThreshold;
-
+	private int tokens = 100;
+	
 	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<Item> items, Anature currentAnature, BaseAI ai, int healthThreshold,
 			int switchThreshold)
 	{
@@ -82,6 +83,11 @@ public class Trainer
 		return mId;
 	}
 
+	public int getTokens() 
+	{
+		return tokens;
+	}
+	
 	public Image getBattleSprite()
 	{
 		if(mId == TrainerIds.Wild)
@@ -115,4 +121,6 @@ public class Trainer
 		
 		return !result;
 	}
+	
+	
 }

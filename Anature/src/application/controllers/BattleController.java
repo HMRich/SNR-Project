@@ -381,7 +381,7 @@ public class BattleController
 		mDialogueTxtArea.fontProperty().bind(fontProperty);
 	}
 
-	private void onPlayerAnatureDeath()
+	private void onPlayerAnatureDeath(int cost)
 	{
 		boolean isThereAliveAnatureInParty = false;
 		for(Anature anature : mPlayer.getAnatures())
@@ -399,7 +399,7 @@ public class BattleController
 		}
 		else
 		{
-			mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated!");
+			mDialogueTxt.set(mFightManager.getPlayerTeam().get(0).getName() + " has been defeated! " + mPlayer.getName() + " paid " + cost + " Tokens!" );
 
 			mShowBtns.set(false);
 
@@ -429,7 +429,7 @@ public class BattleController
 		}
 		else
 		{
-			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
+			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated! " + mPlayer.getName() + " got " + mEnemyTrainer.getTokens() + " Tokens!");
 
 			mShowBtns.set(false);
 
@@ -465,11 +465,22 @@ public class BattleController
 
 						if(mPlayerHp.get() <= 0) // TODO Just for Demo. Change to do swapping here.
 						{
-							onPlayerAnatureDeath();
+							int cost;
+							if (mPlayer.getTokens() <= 0) 
+							{
+								cost = 0;
+							}
+							else 
+							{
+								cost = (int)(mPlayer.getTokens()* .1);
+							}
+							mPlayer.setTokens(mPlayer.getTokens() - cost);
+							onPlayerAnatureDeath(cost);
 						}
 
 						else if(mEnemyHp.get() == 0)
 						{
+							mPlayer.setTokens(mPlayer.getTokens() + mEnemyTrainer.getTokens());
 							onEnemyAnatureDeath();
 						}
 

@@ -59,15 +59,31 @@ public class FightManager
 		Anature playerAnature = mPlayerTeam.get(mPlayerIndex);
 		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
 		double oldHp = enemyAnature.getCurrHp();
-
+		String dialogTxt;
+		
 		MoveSet moves = mPlayerTeam.get(mPlayerIndex).getMoves();
 		if((moves.getMovePoints(indexOfMove) <= 0) && (indexOfMove != -1)) // TODO Fully implement Struggle
 		{
 			playerAnature.takeDamage(10);
 			enemyAnature.takeDamage(20);
 
-			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true);
+			if(enemyAnature.getCurrHp() <= 0)
+			{
+				int lvlBeforeXp = playerAnature.getLevel();
+				playerAnature.setCurrentXp(playerAnature.getCurrentXp() + 10);
+				dialogTxt = mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "! "
+						+ playerAnature.getName() + " gained 10 xp!";
+				if (lvlBeforeXp != playerAnature.getLevel()) {
+					dialogTxt = dialogTxt + playerAnature.getName() + " has leveled up! ";
+				}
+			}
+			else
+			{
+				dialogTxt = mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!";
+			}
+
+			return new MoveResult(oldHp - enemyAnature.getCurrHp(), dialogTxt, -1, "1", true);
+
 		}
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
@@ -89,8 +105,22 @@ public class FightManager
 
 			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
 
-			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!", indexOfMove,
+			if(enemyAnature.getCurrHp() <= 0)
+			{
+				int lvlBeforeXp = playerAnature.getLevel();
+				playerAnature.setCurrentXp(playerAnature.getCurrentXp() + 10);
+				dialogTxt = mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "! "
+						+ playerAnature.getName() + " gained 10 xp! ";
+				if (lvlBeforeXp != playerAnature.getLevel()) {
+					dialogTxt = dialogTxt + playerAnature.getName() + " has leveled up! ";
+				}
+			}
+			else
+			{
+				dialogTxt = mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!";
+			}
+			
+			return new MoveResult(oldHp - enemyAnature.getCurrHp(), dialogTxt, indexOfMove,
 					moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
 		}
 		
