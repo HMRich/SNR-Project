@@ -1,6 +1,7 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
+import application.Player;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
@@ -12,9 +13,9 @@ import javafx.scene.input.KeyEvent;
 
 public class PathOneController extends AbstractController
 {
-	public PathOneController(LoggerStartUp logger, PathOneCell view, PathOneModel model)
+	public PathOneController(LoggerStartUp logger, PathOneCell view, PathOneModel model, Player playerModel)
 	{
-		super(logger, view);
+		super(logger, view, playerModel);
 
 		if(model == null)
 		{
@@ -53,14 +54,14 @@ public class PathOneController extends AbstractController
 		switch(warpPoint)
 		{
 			case Path_1_Starter_Town_Exit:
-				mPlayer.setX(45);
-				mPlayer.setY(269);
+				mPlayerView.setX(45);
+				mPlayerView.setY(269);
 				mView.setPlayerFacing(Direction.Right);
 				break;
 				
 			case Path_1_Grass_Town_Exit:
-				mPlayer.setX(1131);
-				mPlayer.setY(1433);
+				mPlayerView.setX(1131);
+				mPlayerView.setY(1433);
 				mView.setPlayerFacing(Direction.Up);
 				break;
 

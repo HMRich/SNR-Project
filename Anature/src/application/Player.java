@@ -122,4 +122,20 @@ public class Player
 
 		mSelectedIndex = selectedIndex;
 	}
+	
+	public boolean canBattle()
+	{
+		boolean canBattle = true;
+		
+		for(Anature anature : mPartyAnature)
+		{
+			if(anature.getCurrHp() <= 0)
+			{
+				canBattle = false;
+				break;
+			}
+		}
+		
+		return canBattle;
+	}
 }

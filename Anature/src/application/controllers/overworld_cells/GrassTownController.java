@@ -1,6 +1,7 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
+import application.Player;
 import application.enums.Direction;
 import application.enums.WarpPoints;
 import application.views.overworld_cells.GrassTownCell;
@@ -8,9 +9,9 @@ import javafx.scene.input.KeyEvent;
 
 public class GrassTownController extends AbstractController
 {
-	public GrassTownController(LoggerStartUp logger, GrassTownCell view)
+	public GrassTownController(LoggerStartUp logger, GrassTownCell view, Player playerModel)
 	{
-		super(logger, view);
+		super(logger, view, playerModel);
 	}
 
 	@Override
@@ -36,8 +37,8 @@ public class GrassTownController extends AbstractController
 		switch(warpPoint)
 		{
 			case Grass_Town_Path_1:
-				mPlayer.setX(1135);
-				mPlayer.setY(45);
+				mPlayerView.setX(1135);
+				mPlayerView.setY(45);
 				mView.setPlayerFacing(Direction.Down);
 				break;
 
