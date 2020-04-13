@@ -11,6 +11,7 @@ import application.MoveResult;
 import application.MoveSet;
 import application.Player;
 import application.Startup;
+import application.abillities.AbilityResult;
 import application.animations.*;
 import application.enums.*;
 import application.items.Item;
@@ -1341,6 +1342,8 @@ public class BattleController
 
 	private void playerTurn(BattleChoice choice, Runnable nextTurn)
 	{
+		Anature playerAnature = mFightManager.getPlayerAnature();
+		
 		switch(choice)
 		{
 			case Attack_1:
@@ -1349,6 +1352,7 @@ public class BattleController
 					healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp);
 					activateAfterTurn(nextTurn);
 				}, "Player Attack 1");
+				useAttack(playerAnature, true, BattleChoice.Attack_1, 1);
 				break;
 
 			case Attack_2:
@@ -1357,6 +1361,7 @@ public class BattleController
 					healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp);
 					activateAfterTurn(nextTurn);
 				}, "Player Attack 2");
+				useAttack(playerAnature, true, BattleChoice.Attack_2, 2);
 				break;
 
 			case Attack_3:
@@ -1365,6 +1370,7 @@ public class BattleController
 					healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp);
 					activateAfterTurn(nextTurn);
 				}, "Player Attack 3");
+				useAttack(playerAnature, true, BattleChoice.Attack_3, 3);
 				break;
 
 			case Attack_4:
@@ -1373,6 +1379,7 @@ public class BattleController
 					healthDrainMove(mFightManager.attackEnemy(4), mEnemyHp);
 					activateAfterTurn(nextTurn);
 				}, "Player Attack 4");
+				useAttack(playerAnature, true, BattleChoice.Attack_4, 4);
 				break;
 
 			case Item:
@@ -1387,6 +1394,10 @@ public class BattleController
 					updateBagMenu();
 					activateAfterTurn(nextTurn);
 				}, "Player Item Use");
+						mPlayer.getBackpack().removeItem(selectedItem.getItemId());
+						updateBagMenu();
+					}
+				});
 				break;
 
 			case Escape:
@@ -1496,9 +1507,111 @@ public class BattleController
 		}, "Activate Switch");
 	}
 
+	private void enemyTurn(AiChoice enemyTurn)
+	{
+		Anature enemyAnature = mFightManager.getEnemyAnature();
+		
+		switch(enemyTurn)
+		{
+			case Move1:
+				useAttack(enemyAnature, false, BattleChoice.Attack_1, 1);
+				break;
+
+			case Move2:
+				useAttack(enemyAnature, false, BattleChoice.Attack_2, 2);
+				break;
+
+			case Move3:
+				useAttack(enemyAnature, false, BattleChoice.Attack_3, 3);
+				break;
+
+			case Move4:
+				useAttack(enemyAnature, false, BattleChoice.Attack_4, 4);
+				break;
+
+			default:
+				return;
+		}
+	}
+	
+	private void useAttack(Anature anature, boolean isPlayer, BattleChoice choice, int moveNum)
+	{
+		statusEffectForTurn(anature, isPlayer, choice, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				MoveResult moveResult = mFightManager.attack(isPlayer, moveNum);
+				AbilityResult abiliyResult = moveResult.getAbilityResult();
+				ArrayList<String> moveDialogue = moveResult.getDialogue();
+				
+				if(!moveResult.doesDamage())
+				{
+					mDialogueTxt.set(moveDialogue.get(0));
+					
+					try
+					{
+						Thread.sleep(10);
+					}
+					
+					catch(InterruptedException e)
+					{
+						LoggerController.logEvent(LoggingTypes.Error, "Thread was interrupted during sleep after non-physical movedialogue was set.");
+					}
+					
+					for(int i = 1; i < moveDialogue.size(); i++)
+					{
+						String dialogue = moveDialogue.get(i);
+						mClickQueue.enqueue(() -> 
+						{
+							mDialogueTxt.set(dialogue);
+							mCanClick.set(true);
+						});
+					}
+					
+					mCanClick.set(true);
+				}
+				
+				for(String dialogue : abiliyResult.getDialogue())
+				{
+					mClickQueue.enqueue(() -> 
+					{
+						mDialogueTxt.set(dialogue);
+						mCanClick.set(true);
+					});
+				}
+				
+				if(moveResult.doesDamage())
+				{
+					if(isPlayer)
+					{
+						healthDrainMove(moveResult, mEnemyHp);
+					}
+					
+					else
+					{
+						healthDrainMove(moveResult, mPlayerHp);
+					}
+				}
+			}
+		});
+	}
+
 	private void healthDrainMove(MoveResult result, DoubleProperty toChange)
 	{
-		double damageDone = result.getDamageDone();
+		Anature anatureToDamage = null;
+		
+		if(!result.isPlayer())
+		{
+			anatureToDamage = mFightManager.getPlayerAnature();
+		}
+		
+		else
+		{
+			anatureToDamage = mFightManager.getEnemyAnature();
+		}
+		
+		double damageDone = toChange.get() - anatureToDamage.getCurrHp();
 		if(result.isPlayer() && damageDone > mEnemyHp.get())
 		{
 			damageDone = mEnemyHp.get();
@@ -1509,7 +1622,19 @@ public class BattleController
 			damageDone = mPlayerHp.get();
 		}
 
-		mDialogueTxt.set(result.getDialogue());
+		ArrayList<String> dialogue = result.getDialogue();
+		mDialogueTxt.set(dialogue.get(0));
+		
+		for(int i = 1; i < dialogue.size(); i++)
+		{
+			String toAdd = dialogue.get(i);
+			mClickQueue.enqueue(() -> 
+			{
+				mDialogueTxt.set(toAdd);
+				mCanClick.set(true);
+			});
+		}
+		
 		ProgressBarDecrease decrease = new ProgressBarDecrease(toChange, Duration.millis(3000), damageDone);
 		decrease.setOnFinished(event -> 
 		{
@@ -1517,7 +1642,7 @@ public class BattleController
 		});
 		decrease.play();
 
-		if(result.isPlayer())
+		if(result.isPlayer()) // TODO MOVE TO AFTER PLAYER ACTIVATES TURN
 		{
 			StringProperty mpTxt = null;
 			switch(result.getMoveIndex())
@@ -1585,7 +1710,7 @@ public class BattleController
 		if(result.getHpGained() < 5)
 			duration = 100;
 
-		mDialogueTxt.set(result.getDialogue());
+		mDialogueTxt.set(result.getDialogue().get(0));
 		ProgressBarIncrease increase = new ProgressBarIncrease(toChange, Duration.millis(duration), result.getHpGained());
 		increase.setOnFinished(event -> 
 		{

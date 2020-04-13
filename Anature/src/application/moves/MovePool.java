@@ -21,7 +21,9 @@ public class MovePool
 	{
 		mMoves = new HashMap<MoveIds, Move>();
 		mMoves.put(MoveIds.Tackle, new Tackle());
+		mMoves.put(MoveIds.Grumble, new Grumble());
 		mMoves.put(MoveIds.Flamethrower, new Flamethrower());
+		mMoves.put(MoveIds.Struggle, new Struggle());
 		mMoves.put(MoveIds.Skip_Turn, new SkipTurn()); 
 	}
 }

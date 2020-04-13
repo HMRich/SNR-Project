@@ -1,18 +1,17 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import application.abillities.AbilityResult;
 import application.abillities.Determination;
-import application.abillities.Grumble;
-import application.abillities.SleepDeprived;
 import application.abillities.Spiky;
-import application.abillities.ToughSkin;
 import application.abillities.Tyrannize;
 import application.enums.AbilityIds;
 import application.enums.MoveIds;
 import application.items.Item;
 import application.moves.Move;
+import application.moves.MovePool;
 
 public class FightManager
 {
@@ -52,6 +51,89 @@ public class FightManager
 		Anature selected = team.get(index);
 		selected.takeDamage(damage);
 	}
+	
+	public void useStruggle(boolean isPlayerAttacking)
+	{
+		attack(isPlayerAttacking, -1);
+	}
+	
+	public MoveResult attack(boolean isPlayerAttacking, int indexOfMove)
+	{
+		Anature userAnature = null;
+		Anature targetAnature = null;
+		
+		if(isPlayerAttacking)
+		{
+			checkNulls(mPlayerTeam, indexOfMove);
+			
+			userAnature = mPlayerTeam.get(mPlayerIndex);
+			targetAnature = mEnemyTeam.get(mEnemyIndex);
+		}
+		
+		else
+		{
+			checkNulls(mEnemyTeam, indexOfMove);
+			
+			userAnature = mEnemyTeam.get(mEnemyIndex);
+			targetAnature = mPlayerTeam.get(mPlayerIndex);
+		}
+
+		int oldUserHp = userAnature.getCurrHp();
+		int oldTargetHp = targetAnature.getCurrHp();
+		ArrayList<String> dialogue = new ArrayList<String>();
+		MoveSet moveSet = userAnature.getMoves();
+		Move move = moveSet.getMove(indexOfMove);
+		
+		if(indexOfMove <= 0)
+		{
+			move = MovePool.getMove(MoveIds.Struggle);
+		}
+		
+		AbilityIds userAbility = userAnature.getAbility().getAbilityId();
+		AbilityIds targetAbilityIds = targetAnature.getAbility().getAbilityId();
+		
+		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbility, userAnature, targetAnature, move);
+
+		if(!canAttackAbilityResult.isActiviated())
+		{
+			activateAttack(userAnature, targetAnature, move, dialogue);
+		}
+		
+		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityIds, targetAnature, userAnature, move, oldTargetHp);
+		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbility, userAnature, targetAnature, move, oldUserHp);
+		
+		ArrayList<String> afterTurnDialogue = new ArrayList<String>();
+		afterTurnDialogue.addAll(canAttackAbilityResult.getDialogue());
+		afterTurnDialogue.addAll(targetAfterTurnAbilityResult.getDialogue());
+		afterTurnDialogue.addAll(userAfterTurnAbilityResult.getDialogue());
+		
+		boolean abilitiesWereActivated = false;
+		if(canAttackAbilityResult.isActiviated() || targetAfterTurnAbilityResult.isActiviated() || userAfterTurnAbilityResult.isActiviated())
+		{
+			abilitiesWereActivated = true;
+		}
+		
+		AbilityResult afterTurn = new AbilityResult(afterTurnDialogue, abilitiesWereActivated);
+		
+		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, move.doesDamage());				
+	}
+	
+	private void activateAttack(Anature userAnature, Anature targetAnature, Move move, ArrayList<String> dialogue)
+	{
+		Random rng = new Random();
+		int anatureAccuracy = userAnature.getAccuracy() + userAnature.getTempAccuracy();
+		if(anatureAccuracy > 100)
+		{
+			anatureAccuracy = 100;
+		}
+		
+		double totalAccuracy = (move.getAccuracy() * 0.01) * (anatureAccuracy * 0.01);
+		if(rng.nextInt(101) < totalAccuracy * 100)
+		{
+			move.activateMove(userAnature, targetAnature);
+			dialogue.add(userAnature.getName() + " used " + move.getName() + " on " + targetAnature.getName());
+		}
+	}
 
 	public MoveResult attackEnemy(int indexOfMove)
 	{
@@ -69,7 +151,7 @@ public class FightManager
 			enemyAnature.takeDamage(20);
 
 			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true, null, playerResult);
+					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true);
 		}
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
@@ -94,18 +176,16 @@ public class FightManager
 
 			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
 					mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!", indexOfMove,
-					moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true, enemyResult, playerResult);
+					moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
 		}
 		
 		else
 		{
 			return new MoveResult(0, mPlayerName + "'s " + playerAnature.getName() + " missed " + mEnemyName + "'s " + enemyAnature.getName() + "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true, null, playerResult);
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
 		}
 
 	}
-
-	
 
 	public MoveResult attackPlayer(int indexOfMove)
 	{
@@ -123,7 +203,7 @@ public class FightManager
 			playerAnature.takeDamage(20);
 
 			return new MoveResult(oldHp - playerAnature.getCurrHp(),
-					mEnemyName + "'s " + enemyAnature.getName() + " Flaied at " + mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false, enemyResult, null);
+					mEnemyName + "'s " + enemyAnature.getName() + " Flaied at " + mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false);
 		}
 
 		Move enemyAnatureMove = moves.getMove(indexOfMove);
@@ -133,7 +213,7 @@ public class FightManager
 			
 			return new MoveResult(oldHp - playerAnature.getCurrHp(),
 					mEnemyName + "'s " + enemyAnature.getName() + " could not attack " + mPlayerName + "'s " + playerAnature.getName() + "because it has " + enemyAnature.getStatus() + "!", -1,
-					"-1/" + enemyAnatureMove.getTotalMovePoints(), false, enemyResult, null);
+					"-1/" + enemyAnatureMove.getTotalMovePoints(), false);
 		}
 		
 		if((enemyAnatureMove.getAccuracy() / enemyAnature.getTempAccuracy()) > (Math.random() + .1))
@@ -147,13 +227,13 @@ public class FightManager
 
 			return new MoveResult(oldHp - playerAnature.getCurrHp(),
 					mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!", indexOfMove,
-					moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false, enemyResult, playerResult);
+					moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
 		}
 		
 		else
 		{
 			return new MoveResult(0, mEnemyName + "'s " + enemyAnature.getName() + " missed " + mPlayerName + "'s " + playerAnature.getName() + "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false, enemyResult, null);
+					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
 		}
 	}
 
@@ -203,20 +283,17 @@ public class FightManager
 				break;
 
 			case SleepDeprived:
-				SleepDeprived.activateAbility(); // TODO add functionality
+//				SleepDeprived.activateAbility(); // TODO add functionality
 				break;
 
 			case ToughSkin:
-				dialogue = ToughSkin.activateAbility(attackingAnature, targetAnature, move, oldHp);
-				if (!dialogue.equals(""))
-				{
-					result = new AbilityResult(dialogue,true);
-				}
+//				dialogue = ToughSkin.activateAbility(attackingAnature, targetAnature, move, oldHp);
+//				if (!dialogue.equals(""))
+//				{
+//					result = new AbilityResult(dialogue,true);
+//				}
 				break;
 
-			case Grumble: // change to a move ;^)
-				Grumble.activateAbility(targetAnature, getTurnNumber());
-				break;
 			case Spiky:
 				dialogue = Spiky.activateAbility(attackingAnature, targetAnature, move);
 				if (!dialogue.equals(""))
