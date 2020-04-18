@@ -208,6 +208,7 @@ public class BattleController
 		setUpMoveSelection(scene);
 
 		setUpStatuses(scene);
+		setUpAnatureAnimations(scene);
 	}
 
 	private void setUpBgImages(Scene scene)
@@ -238,6 +239,13 @@ public class BattleController
 		createBindsImageView(mAnatureFront, scene, 1.75, 7.5, 5.5, 3.5);
 		createBindsImageView(mAnatureBack, scene, 5, 2.9, 4, 2.5);
 		mAnatureBack.setOpacity(0);
+	}
+	
+	private void setUpAnatureAnimations(Scene scene)
+	{
+		//TODO:Create two new image views for animations in scene builder
+		createBindsImageView(mAnatureFront, scene, 1.75, 7.5, 5.5, 3.5);
+		createBindsImageView(mAnatureBack, scene, 5, 2.9, 4, 2.5);
 	}
 
 	private void setUpAnatureNames(Scene scene)
