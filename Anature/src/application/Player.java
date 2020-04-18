@@ -125,13 +125,13 @@ public class Player
 	
 	public boolean canBattle()
 	{
-		boolean canBattle = true;
+		boolean canBattle = false;
 		
 		for(Anature anature : mPartyAnature)
 		{
-			if(anature.getCurrHp() <= 0)
+			if(anature.getCurrHp() > 0)
 			{
-				canBattle = false;
+				canBattle = true;
 				break;
 			}
 		}
