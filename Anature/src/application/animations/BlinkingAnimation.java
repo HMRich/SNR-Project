@@ -16,7 +16,6 @@ public class BlinkingAnimation extends Transition
 		setCycleCount(Animation.INDEFINITE);
 	}
 	
-	
 	@Override
 	protected void interpolate(double frac)
 	{

@@ -96,7 +96,7 @@ public class Startup extends Application
 	{
 		double width = mStage.getWidth();
 		double height = mStage.getHeight();
-		
+
 		if(type == null)
 		{
 			type = mLastSceneType;
@@ -111,7 +111,7 @@ public class Startup extends Application
 					Parent introRoot = introLoader.load();
 					Scene intro = new Scene(introRoot);
 					intro.setOnKeyReleased(mKeyListener);
-					
+
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Intro");
 					mStage.setScene(intro);
 					break;
@@ -121,17 +121,17 @@ public class Startup extends Application
 					{
 						mStarterTownModel = new StarterTownModel();
 					}
-					
+
 					if(mStarterTownView == null)
 					{
 						mStarterTownView = new StarterTownCell(mLogger);
 					}
-					
+
 					if(mStarterTownController == null)
 					{
 						mStarterTownController = new StarterTownController(mLogger, mStarterTownView, mStarterTownModel, mPlayer);
 					}
-					
+
 					Scene townScene = mStarterTownView.getScene();
 					mStarterTownController.movePlayer(warpPoint);
 
@@ -144,12 +144,12 @@ public class Startup extends Application
 					{
 						mPathOneModel = new PathOneModel();
 					}
-					
+
 					if(mPathOneView == null)
 					{
 						mPathOneView = new PathOneCell(mLogger);
 					}
-					
+
 					if(mPathOneController == null)
 					{
 						mPathOneController = new PathOneController(mLogger, mPathOneView, mPathOneModel, mPlayer);
@@ -157,22 +157,22 @@ public class Startup extends Application
 
 					Scene pathOneScene = mPathOneView.getScene();
 					mPathOneController.movePlayer(warpPoint);
-					
+
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Path 1");
 					mStage.setScene(pathOneScene);
 					break;
-					
+
 				case Grass_Town:
 //					if(mGrassTownModel == null)
 //					{
 //						mGrassTownModel = new StarterTownModel();
 //					}
-					
+
 					if(mGrassTownView == null)
 					{
 						mGrassTownView = new GrassTownCell(mLogger);
 					}
-					
+
 					if(mGrassTownController == null)
 					{
 						mGrassTownController = new GrassTownController(mLogger, mGrassTownView, mPlayer);
@@ -180,11 +180,11 @@ public class Startup extends Application
 
 					Scene grassTownScene = mGrassTownView.getScene();
 					mGrassTownController.movePlayer(warpPoint);
-					
+
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Grass Town");
 					mStage.setScene(grassTownScene);
 					break;
-					
+
 				default:
 					break;
 			}
@@ -202,14 +202,14 @@ public class Startup extends Application
 		mStage.setWidth(width);
 		mStage.setHeight(height);
 	}
-	
+
 	public static void startBattle(Trainer toBattle)
 	{
 		try
 		{
 			double width = mStage.getWidth();
 			double height = mStage.getHeight();
-			
+
 			FXMLLoader loader = new FXMLLoader(Startup.class.getResource("/application/views/BattleView.fxml"));
 			Parent root = loader.load();
 			Scene scene = new Scene(root);
@@ -218,16 +218,16 @@ public class Startup extends Application
 			BattleController controller = (BattleController) loader.getController();
 			controller.setUpBindingsAndElements(scene);
 			controller.updateElements(mPlayer, toBattle);
-			
+
 			mStage.setWidth(width);
 			mStage.setHeight(height);
-			
+
 			mLastSceneType = mCurrSceneType;
-			
+
 			LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Battle");
 			mStage.setScene(scene);
 		}
-		
+
 		catch(IOException e)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "Exception when starting battle. \n" + e.getMessage());
@@ -246,7 +246,7 @@ public class Startup extends Application
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
-		
+
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 
 		changeScene(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1);

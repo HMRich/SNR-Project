@@ -6,13 +6,14 @@ import application.enums.Type;
 
 public class Grumble extends Move
 {
+	private static int mTotalMp = 25;
 	private static double mAccuracyStat = 100;
 	private static boolean mDoesDamage = false;
 	private static boolean mIsPhysicalAttack = false;
 
 	public Grumble()
 	{
-		super("Grumble", 15, MoveIds.Grumble, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Normal);
+		super("Grumble", mTotalMp, MoveIds.Grumble, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Normal);
 	}
 
 	@Override
