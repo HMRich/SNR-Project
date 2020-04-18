@@ -129,7 +129,7 @@ public class Startup extends Application
 					
 					if(mStarterTownController == null)
 					{
-						mStarterTownController = new StarterTownController(mLogger, mStarterTownView, mStarterTownModel);
+						mStarterTownController = new StarterTownController(mLogger, mStarterTownView, mStarterTownModel, mPlayer);
 					}
 					
 					Scene townScene = mStarterTownView.getScene();
@@ -152,7 +152,7 @@ public class Startup extends Application
 					
 					if(mPathOneController == null)
 					{
-						mPathOneController = new PathOneController(mLogger, mPathOneView, mPathOneModel);
+						mPathOneController = new PathOneController(mLogger, mPathOneView, mPathOneModel, mPlayer);
 					}
 
 					Scene pathOneScene = mPathOneView.getScene();
@@ -175,7 +175,7 @@ public class Startup extends Application
 					
 					if(mGrassTownController == null)
 					{
-						mGrassTownController = new GrassTownController(mLogger, mGrassTownView);
+						mGrassTownController = new GrassTownController(mLogger, mGrassTownView, mPlayer);
 					}
 
 					Scene grassTownScene = mGrassTownView.getScene();

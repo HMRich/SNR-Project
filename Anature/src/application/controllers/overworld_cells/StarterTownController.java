@@ -1,6 +1,7 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
+import application.Player;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
@@ -12,9 +13,9 @@ import javafx.scene.input.KeyEvent;
 
 public class StarterTownController extends AbstractController
 {
-	public StarterTownController(LoggerStartUp logger, StarterTownCell view, StarterTownModel model)
+	public StarterTownController(LoggerStartUp logger, StarterTownCell view, StarterTownModel model, Player playerModel)
 	{
-		super(logger, view);
+		super(logger, view, playerModel);
 
 		if(model == null)
 		{
@@ -53,14 +54,14 @@ public class StarterTownController extends AbstractController
 		switch(warpPoint)
 		{
 			case Starter_Town_Path_1_Exit:
-				mPlayer.setX(1588);
-				mPlayer.setY(276);
+				mPlayerView.setX(1588);
+				mPlayerView.setY(276);
 				mView.setPlayerFacing(Direction.Left);
 				break;
 				
 			case Starter_Town_House_1:
-				mPlayer.setX(545);
-				mPlayer.setY(542);
+				mPlayerView.setX(545);
+				mPlayerView.setY(542);
 				mView.setPlayerFacing(Direction.Down);
 				break;
 
