@@ -1,7 +1,5 @@
 package application;
 
-import application.enums.StatusEffects;
-
 public class MoveResult extends Result
 {
 	private double mDamageDone;

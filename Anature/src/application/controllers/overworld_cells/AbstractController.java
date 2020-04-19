@@ -3,6 +3,7 @@ package application.controllers.overworld_cells;
 import java.util.Random;
 
 import application.LoggerStartUp;
+import application.Player;
 import application.Startup;
 import application.controllers.ClickQueue;
 import application.controllers.LoggerController;
@@ -13,9 +14,11 @@ import application.enums.WarpPoints;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
 import application.views.elements.PlayerSprite;
+import application.views.elements.TrainerSprite;
 import application.views.elements.WarpPointBox;
 import application.views.overworld_cells.AbstractCell;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -26,15 +29,16 @@ public abstract class AbstractController
 {
 	private LoggerStartUp mLogger;
 	protected AbstractCell mView;
-	private final int mSpeed = 300; // pixels / second
-	private double mSpeedMultiplier;
+	protected final int mSpeed = 300; // pixels / second
+	protected double mSpeedMultiplier;
 	private AnimationTimer mTimer;
-	protected PlayerSprite mPlayer;
+	protected PlayerSprite mPlayerView;
+	protected Player mPlayerModel;
 	protected ClickQueue mClickQueue;
 
 	protected Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
 	
-	public AbstractController(LoggerStartUp logger, AbstractCell view)
+	public AbstractController(LoggerStartUp logger, AbstractCell view, Player playerModel)
 	{
 		if(view == null)
 		{
@@ -43,7 +47,8 @@ public abstract class AbstractController
 		}
 		
 		mView = view;
-		mPlayer = mView.getPlayer();
+		mPlayerView = mView.getPlayer();
+		mPlayerModel = playerModel;
 		mLogger = logger;
 		mSpeedMultiplier = 1;
 		mClickQueue = new ClickQueue();
@@ -64,7 +69,7 @@ public abstract class AbstractController
 		activateTimer();
 	}
 
-	protected abstract void timerHook();
+	protected abstract void timerHook(double elapsedSeconds);
 
 	protected abstract void keyPressHook(KeyEvent event);
 	
@@ -72,7 +77,7 @@ public abstract class AbstractController
 
 	private boolean checkGrassPatch()
 	{
-		Bounds player = mPlayer.getBoxBounds();
+		Bounds player = mPlayerView.getBoxBounds();
 		boolean result = false;
 		
 		for(Rectangle toCheck : mView.getGrassPatches())
@@ -88,7 +93,7 @@ public abstract class AbstractController
 
 	private WarpPointBox checkWarpPoints()
 	{
-		Bounds player = mPlayer.getBoxBounds();
+		Bounds player = mPlayerView.getBoxBounds();
 		
 		for(WarpPointBox toCheck : mView.getWarpPoints())
 		{
@@ -103,40 +108,79 @@ public abstract class AbstractController
 
 	private boolean xCollisionCheck()
 	{
-		Bounds left = mPlayer.getLeftBounds();
-		Bounds right = mPlayer.getRightBounds();
-
+		Bounds right = mPlayerView.getRightBounds();
+		Bounds upRight = mPlayerView.getUpperRightBounds();
+		Bounds botRight = mPlayerView.getLowerRightBounds();
+		
+		Bounds left = mPlayerView.getLeftBounds();
+		Bounds upLeft = mPlayerView.getUpperLeftBounds();
+		Bounds botLeft = mPlayerView.getLowerLeftBounds();
+		
 		for(Rectangle toCheck : mView.getCollisions())
 		{
-			boolean rightCheck = right.intersects(toCheck.getBoundsInParent());
-			boolean leftCheck = left.intersects(toCheck.getBoundsInParent());
+			boolean check = 
+					right.intersects(toCheck.getBoundsInParent()) || 
+					upRight.intersects(toCheck.getBoundsInParent()) || botRight.intersects(toCheck.getBoundsInParent()) ||
+					left.intersects(toCheck.getBoundsInParent()) || 
+					upLeft.intersects(toCheck.getBoundsInParent()) || botLeft.intersects(toCheck.getBoundsInParent());
 
-			if((rightCheck && !leftCheck) || (leftCheck && !rightCheck))
+			if(check)
 			{
 				return false;
 			}
 		}
-
+		
 		return true;
 	}
 
 	private boolean yCollisionCheck()
 	{
-		Bounds top = mPlayer.getTopBounds();
-		Bounds bot = mPlayer.getBotBounds();
-
+		Bounds top = mPlayerView.getTopBounds();
+		Bounds upLeft = mPlayerView.getUpperLeftBounds();
+		Bounds upRight = mPlayerView.getUpperRightBounds();
+		
+		Bounds bot = mPlayerView.getBotBounds();
+		Bounds botLeft = mPlayerView.getLowerLeftBounds();
+		Bounds botRight = mPlayerView.getLowerRightBounds();
+		
 		for(Rectangle toCheck : mView.getCollisions())
 		{
-			boolean topCheck = top.intersects(toCheck.getBoundsInParent());
-			boolean botCheck = bot.intersects(toCheck.getBoundsInParent());
+			boolean check = 
+					top.intersects(toCheck.getBoundsInParent()) || 
+					upLeft.intersects(toCheck.getBoundsInParent()) || upRight.intersects(toCheck.getBoundsInParent()) ||
+					bot.intersects(toCheck.getBoundsInParent()) || 
+					botLeft.intersects(toCheck.getBoundsInParent()) || botRight.intersects(toCheck.getBoundsInParent());
 
-			if((topCheck && !botCheck) || (botCheck && !topCheck))
+			if(check)
 			{
 				return false;
 			}
 		}
-
+		
 		return true;
+	}
+	
+	private void updateTrainers(double elapsedSeconds)
+	{
+		for(TrainerSprite trainer : mView.getTrainerSprites())
+		{
+			int trainerIndex = trainer.getIndex(mView.getBackground());
+			int playerIndex = mPlayerView.getIndex(mView.getBackground());
+
+			if(mPlayerView.getBoxY() > trainer.getCollisionY() && playerIndex < trainerIndex)
+			{
+				mPlayerView.removeFromContainer(mView.getBackground());
+				mPlayerView.addToContainer(mView.getBackground(), trainerIndex + 1);
+			}
+
+			else if(mPlayerView.getBoxY() <= trainer.getCollisionY() && playerIndex > trainerIndex)
+			{
+				mPlayerView.removeFromContainer(mView.getBackground());
+				mPlayerView.addToContainer(mView.getBackground(), trainerIndex);
+			}
+			
+			trainer.update(mPlayerView, mSpeed, elapsedSeconds);
+		}
 	}
 	
 	private void activateTimer()
@@ -161,7 +205,8 @@ public abstract class AbstractController
 				double deltaX = 0;
 				double deltaY = 0;
 
-				timerHook();
+				timerHook(elapsedSeconds);
+				updateTrainers(elapsedSeconds);
 
 				if(mView.mCanMove)
 				{
@@ -187,34 +232,41 @@ public abstract class AbstractController
 
 					updatePcSprite();
 
-					double oldX = mPlayer.getX();
-					double oldY = mPlayer.getY();
+					double oldX = mPlayerView.getX();
+					double oldY = mPlayerView.getY();
 
-					mPlayer.setX(mView.clampRange(mPlayer.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayer.getFitWidth()));
-					mPlayer.setY(mView.clampRange(mPlayer.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayer.getFitHeight()));
+					
 					
 					if(LoggerController.isCollisionEnabled())
 					{
+						mPlayerView.setX(mView.clampRange(mPlayerView.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayerView.getFitWidth()));
 						if(!xCollisionCheck())
 						{
-							mPlayer.setX(oldX);
+							mPlayerView.setX(oldX);
 						}
-						
+
+						mPlayerView.setY(mView.clampRange(mPlayerView.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayerView.getFitHeight()));
 						if(!yCollisionCheck())
 						{
-							mPlayer.setY(oldY);
+							mPlayerView.setY(oldY);
 						}
+					}
+					
+					else
+					{
+						mPlayerView.setX(mView.clampRange(mPlayerView.getX() + deltaX * elapsedSeconds, 0, mView.getMapWidth() - mPlayerView.getFitWidth()));
+						mPlayerView.setY(mView.clampRange(mPlayerView.getY() + deltaY * elapsedSeconds, 0, mView.getMapHeight() - mPlayerView.getFitHeight()));
 					}
 					
 					if(checkGrassPatch())
 					{
-						double currX = mPlayer.getX();
-						double currY = mPlayer.getY();
+						double currX = mPlayerView.getX();
+						double currY = mPlayerView.getY();
 						
 						if(currX > mLastWildX + 100 || currX < mLastWildX - 100 || currY > mLastWildY + 100 || currY < mLastWildY - 100)
 						{
-							mLastWildX = mPlayer.getX();
-							mLastWildY = mPlayer.getY();
+							mLastWildX = mPlayerView.getX();
+							mLastWildY = mPlayerView.getY();
 							
 							Random r = new Random();
 
@@ -222,9 +274,29 @@ public abstract class AbstractController
 							{
 								LoggerController.logEvent(LoggingTypes.Misc, "Player has encountered a wild Anature.");
 								Trainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
-								Startup.startBattle(wildEncounter);
 								
 								mView.mCanMove = false;
+								mView.mUp = false;
+								mView.mDown = false;
+								mView.mRight = false;
+								mView.mLeft = false;
+								
+								mPlayerView.showEmote();
+								
+								Platform.runLater(() ->
+								{
+									try
+									{
+										Thread.sleep(250);
+									}
+									
+									catch(InterruptedException e)
+									{
+										LoggerController.logEvent(LoggingTypes.Error, "Sleep when presenting the emote was interrupted.");
+									}
+									
+									Startup.startBattle(wildEncounter);
+								});
 							}
 						}
 					}
@@ -297,6 +369,66 @@ public abstract class AbstractController
 		if(!on)
 		{
 			keyPressHook(event);
+			
+			if(event.getCode() == KeyCode.E)
+			{
+				trainerEvents();
+			}
+		}
+	}
+	
+	private void trainerEvents()
+	{
+		for(TrainerSprite trainer : mView.getTrainerSprites())
+		{
+			if(trainer.interact(mPlayerView, mView.getPlayerFacing()) && mClickQueue.isEmpty())
+			{
+				mView.mCanMove = false;
+
+				String[] dialogue = trainer.getDialogue();
+				
+				mView.showDialogue(dialogue[0]);
+				
+				for(int i = 1; i < dialogue.length; i++)
+				{
+					String toDisplay = dialogue[i];
+					mClickQueue.enqueue(() -> mView.showDialogue(toDisplay), "Show Dialogue");
+				}
+
+				if(mPlayerModel.canBattle() && trainer.getTrainerModel() != null && trainer.getTrainerModel().canBattle())
+				{
+					mClickQueue.enqueue(() ->
+					{
+						mView.mRight = false;
+						mView.mLeft = false;
+						mView.mDown = false;
+						mView.mUp = false;
+						mView.mCanMove = true;
+						mView.hideDialogue();
+						
+						Startup.startBattle(trainer.getTrainerModel());
+					}, "Start Battle");
+				}
+				
+				else
+				{
+					mClickQueue.enqueue(() ->
+					{
+						mView.hideDialogue();
+						mView.mCanMove = true;
+					}, "End Dialogue");
+				}
+			}
+			
+			else
+			{
+				Runnable toRun = mClickQueue.dequeue();
+				
+				if(toRun != null)
+				{
+					toRun.run();
+				}
+			}
 		}
 	}
 
@@ -304,76 +436,76 @@ public abstract class AbstractController
 	{
 		if(mView.mUp && mView.mDown && mView.mLeft && mView.mRight)
 		{
-			if(mPlayer.getImage().equals(mStandDownImg))
+			if(mPlayerView.getImage().equals(mStandDownImg))
 				return;
 
-			mPlayer.setImage(mStandDownImg);
+			mPlayerView.setImage(mStandDownImg);
 			mView.setPlayerFacing(Direction.Down);
 		}
 
 		else if(mView.mRight && mView.mLeft && mView.mUp)
 		{
-			if(mPlayer.getImage().equals(mWalkUpImg))
+			if(mPlayerView.getImage().equals(mWalkUpImg))
 				return;
 
-			mPlayer.setImage(mWalkUpImg);
+			mPlayerView.setImage(mWalkUpImg);
 			mView.setPlayerFacing(Direction.Up);
 		}
 
 		else if(mView.mRight && mView.mLeft && mView.mDown)
 		{
-			if(mPlayer.getImage().equals(mWalkDownImg))
+			if(mPlayerView.getImage().equals(mWalkDownImg))
 				return;
 
-			mPlayer.setImage(mWalkDownImg);
+			mPlayerView.setImage(mWalkDownImg);
 			mView.setPlayerFacing(Direction.Down);
 		}
 
 		else if(mView.mUp && mView.mDown && mView.mRight)
 		{
-			if(mPlayer.getImage().equals(mWalkRightImg))
+			if(mPlayerView.getImage().equals(mWalkRightImg))
 				return;
 
-			mPlayer.setImage(mWalkRightImg);
+			mPlayerView.setImage(mWalkRightImg);
 			mView.setPlayerFacing(Direction.Right);
 		}
 
 		else if(mView.mUp && mView.mDown && mView.mLeft)
 		{
-			if(mPlayer.getImage().equals(mWalkLeftImg))
+			if(mPlayerView.getImage().equals(mWalkLeftImg))
 				return;
 
-			mPlayer.setImage(mWalkLeftImg);
+			mPlayerView.setImage(mWalkLeftImg);
 			mView.setPlayerFacing(Direction.Left);
 		}
 
 		else if((mView.mUp && mView.mDown) || (mView.mRight && mView.mLeft))
 		{
-			mPlayer.setImage(mStandDownImg);
+			mPlayerView.setImage(mStandDownImg);
 			mView.setPlayerFacing(Direction.Down);
 		}
 
-		else if(mView.mRight && !mPlayer.getImage().equals(mWalkRightImg))
+		else if(mView.mRight && !mPlayerView.getImage().equals(mWalkRightImg))
 		{
-			mPlayer.setImage(mWalkRightImg);
+			mPlayerView.setImage(mWalkRightImg);
 			mView.setPlayerFacing(Direction.Right);
 		}
 
-		else if(mView.mLeft && !mPlayer.getImage().equals(mWalkLeftImg))
+		else if(mView.mLeft && !mPlayerView.getImage().equals(mWalkLeftImg))
 		{
-			mPlayer.setImage(mWalkLeftImg);
+			mPlayerView.setImage(mWalkLeftImg);
 			mView.setPlayerFacing(Direction.Left);
 		}
 
-		else if(mView.mDown && !mPlayer.getImage().equals(mWalkDownImg) && !mView.mLeft && !mView.mRight)
+		else if(mView.mDown && !mPlayerView.getImage().equals(mWalkDownImg) && !mView.mLeft && !mView.mRight)
 		{
-			mPlayer.setImage(mWalkDownImg);
+			mPlayerView.setImage(mWalkDownImg);
 			mView.setPlayerFacing(Direction.Down);
 		}
 
-		else if(mView.mUp && !mPlayer.getImage().equals(mWalkUpImg) && !mView.mLeft && !mView.mRight)
+		else if(mView.mUp && !mPlayerView.getImage().equals(mWalkUpImg) && !mView.mLeft && !mView.mRight)
 		{
-			mPlayer.setImage(mWalkUpImg);
+			mPlayerView.setImage(mWalkUpImg);
 			mView.setPlayerFacing(Direction.Up);
 		}
 
@@ -382,23 +514,23 @@ public abstract class AbstractController
 			switch(mView.getPlayerFacing())
 			{
 				case Up:
-					if(!mPlayer.getImage().equals(mStandUpImg))
-						mPlayer.setImage(mStandUpImg);
+					if(!mPlayerView.getImage().equals(mStandUpImg))
+						mPlayerView.setImage(mStandUpImg);
 					break;
 
 				case Right:
-					if(!mPlayer.getImage().equals(mStandRightImg))
-						mPlayer.setImage(mStandRightImg);
+					if(!mPlayerView.getImage().equals(mStandRightImg))
+						mPlayerView.setImage(mStandRightImg);
 					break;
 
 				case Left:
-					if(!mPlayer.getImage().equals(mStandLeftImg))
-						mPlayer.setImage(mStandLeftImg);
+					if(!mPlayerView.getImage().equals(mStandLeftImg))
+						mPlayerView.setImage(mStandLeftImg);
 					break;
 
 				default:
-					if(!mPlayer.getImage().equals(mStandDownImg))
-						mPlayer.setImage(mStandDownImg);
+					if(!mPlayerView.getImage().equals(mStandDownImg))
+						mPlayerView.setImage(mStandDownImg);
 					break;
 			}
 		}

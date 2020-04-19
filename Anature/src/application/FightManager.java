@@ -210,17 +210,25 @@ public class FightManager
 				break;
 		}
 	}
-	
-	
 
 	public ArrayList<Anature> getPlayerTeam()
 	{
 		return mPlayerTeam;
 	}
+	
+	public Anature getPlayerAnature()
+	{
+		return mPlayerTeam.get(mPlayerIndex);
+	}
 
 	public ArrayList<Anature> getEnemyTeam()
 	{
 		return mEnemyTeam;
+	}
+	
+	public Anature getEnemyAnature()
+	{
+		return mEnemyTeam.get(mEnemyIndex);
 	}
 
 	private int getTurnNumber()
