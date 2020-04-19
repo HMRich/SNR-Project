@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import application.controllers.LoggerController;
 import application.enums.LoggingTypes;
+import application.enums.MoveIds;
 import application.moves.Move;
 import application.moves.MovePool;
 
@@ -85,7 +86,7 @@ public class MoveSet
 				return setMovePoints(moveNumber);
 
 			case -1:
-				break;
+				return false;
 
 			default:
 				LoggerController.logEvent(LoggingTypes.Error,

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import application.Anature;
 import application.BaseAI;
 import application.enums.AiChoice;
+import application.enums.AttackEffectiveness;
 import application.enums.TrainerIds;
 import application.enums.Type;
 import application.items.HealthPotion;
@@ -25,7 +26,7 @@ public class Trainer
 	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<HealthPotion> potions, Anature currentAnature, BaseAI ai, int healthThreshold,
 			int switchThreshold)
 	{
-		if(id == null && name == null && anatures == null && potions == null && currentAnature == null && ai == null)
+		if(id == null || name == null || anatures == null || potions == null || currentAnature == null || ai == null)
 			throw new IllegalArgumentException("Null Parameter");
 
 		mId = id;
@@ -43,12 +44,12 @@ public class Trainer
 	 */
 	public void switchAnature()
 	{
-		mAi.switchAnature(mAnatures, new Type[]
-		{ mCurrentAnature.getPrimaryType(), mCurrentAnature.getSecondaryType() }, 25, mCurrentAnature);
-	};
+		mAi.switchAnature(mAnatures, AttackEffectiveness.Normal, mCurrentAnature);
+	}
 
 	public final AiChoice useTurn(Anature playerAnature)
 	{
+		boolean willUseHealthPotion = mAi.willUseHealthPotion(mPotions, mCurrentAnature, 0.25);
 		AiChoice itemResult = mAi.willUseHealthPotion(mPotions, mCurrentAnature, mHealthThreshold);
 
 		if(itemResult.equals(AiChoice.No_Choice))
@@ -100,7 +101,7 @@ public class Trainer
 		return mAnatures;
 	}
 
-	public ArrayList<Item> getItmes()
+	public ArrayList<HealthPotion> getItmes()
 	{
 		return mPotions;
 	}

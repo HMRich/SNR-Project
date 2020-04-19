@@ -50,6 +50,7 @@ public class TypeAdvantage
 		return attackEffectiveness;
 	}
 
+	// TODO Is this even used?
 	public int compareAdvantage(AttackEffectiveness effectivenessToCheck, AttackEffectiveness effectivenessToCheckAgainst)
 	{
 		if(effectivenessToCheck == effectivenessToCheckAgainst)
@@ -68,6 +69,26 @@ public class TypeAdvantage
 		{
 			return 1;
 		}
+	}
+	
+	public static boolean isNoEffect(AttackEffectiveness effectiveness)
+	{
+		return effectiveness == AttackEffectiveness.NoEffect;
+	}
+	
+	public static boolean isAboveNoEffect(AttackEffectiveness effectiveness)
+	{
+		return effectiveness != AttackEffectiveness.NoEffect;
+	}
+	
+	public static boolean isAboveNotEffective(AttackEffectiveness effectiveness)
+	{
+		return effectiveness != AttackEffectiveness.NotEffective && isAboveNoEffect(effectiveness);
+	}
+	
+	public static boolean isAboveNormal(AttackEffectiveness effectiveness)
+	{
+		return effectiveness != AttackEffectiveness.Normal && isAboveNotEffective(effectiveness);
 	}
 
 	private static AttackEffectiveness checkAdvantage(Type attackerType, Type defenderType, AttackEffectiveness attackEffectiveness)

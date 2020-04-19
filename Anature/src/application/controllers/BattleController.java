@@ -829,8 +829,6 @@ public class BattleController
 
 		startInto(player, enemyTrainer, enemyCurr);
 
-		startIntro(player, enemyTrainer, enemyCurr);
-
 		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(), enemyTrainer.getName());
 	}
 
@@ -1380,7 +1378,7 @@ public class BattleController
 			case Item:
 				mClickQueue.enqueue(() -> 
 				{
-					Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
+					Item selectedItem = ItemPool.getItem(mItemList.getSelectionModel().getSelectedItem());
 
 					ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other anatures
 					healthGain(result, mPlayerHp);

@@ -390,7 +390,7 @@ public class Anature
 		return new Anature(mName, mOwner, mLevel, mCurrentXp, mGender, new MoveSet(mMoves.getMove(1), mMoves.getMove(2), mMoves.getMove(3), mMoves.getMove(4)),
 				new Type[]
 				{ mPrimaryType, mSecondaryType }, mSpecies, mIsShiny, mIndexNum, mAbility, mAttack, mSpecialAttack, mDefense, mSpecialDefense, mTotalHp, mSpeed,
-				mAccuracy);
+				mAccuracy, mStatus);
 	}
 
 	public Image getFrontSprite()

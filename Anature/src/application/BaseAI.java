@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import application.controllers.LoggerController;
-import application.enums.*;
+import application.enums.AiChoice;
+import application.enums.AttackEffectiveness;
+import application.enums.LoggingTypes;
 import application.items.HealthPotion;
-import application.items.Item;
 import application.items.ItemPool;
 
 public class BaseAI
@@ -42,7 +43,7 @@ public class BaseAI
 		return trainerHasHealthPotion && currentAnatureAtThreshold;
 	}
 
-	public HealthPotion itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
+	public HealthPotion healthPotionToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
 	{
 		if(healthPotions == null)
 		{
@@ -58,7 +59,7 @@ public class BaseAI
 
 		double currentAnatureHpPercent = currentAnature.getHpPercent();
 
-		HealthPotion itemToUse = null;
+		HealthPotion healthPotionToUse = null;
 		double anaturePercentAfterItemUse = 0;
 
 		for(HealthPotion healthPotion : healthPotions)
@@ -75,28 +76,26 @@ public class BaseAI
 			if(anaturePercentAfterItemUse == 0 || anatureHpPercentIfItemUsed > anaturePercentAfterItemUse && !willOverheal)
 			{
 				anaturePercentAfterItemUse = anatureHpPercentIfItemUsed;
-				itemToUse = healthPotion;
+				healthPotionToUse = healthPotion;
 			}
 		}
 
-		if(itemToUse == null)
+		if(healthPotionToUse == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error,
 					"IllegalStateException in BaseAI.java, Method: itemToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature), itemToUse value was null.");
 		}
 
-		return itemToUse;
+		return healthPotionToUse;
 	}
 
-	public AiChoice switchAnature(ArrayList<Anature> anatures, Type[] types, int switchThreshold, Anature currentAnature)
+	public boolean willSwitchAnature(ArrayList<Anature> anatures, AttackEffectiveness switchThreshold, Anature currentAnature, Anature enemyAnature)
 	{
-		boolean hasAnature = !anatures.isEmpty();
-		if(hasAnature && isAnatureAtTypeDisadvantage(types) && willSwitch(switchThreshold))
-		{
-			return AiChoice.Switch_Anature;
-		}
+		boolean hasOtherAnature = !anatures.isEmpty() && anatures.size() > 1;
+		boolean currentAnatureIsAtTypeDisavantage = isAnatureAtTypeDisadvantage(currentAnature, enemyAnature, switchThreshold);
+		boolean hasAnatureWithTypeAdvantage = hasAnAnatureWithTypeAdvantage(anatures, currentAnature, enemyAnature, switchThreshold);
 		
-		return AiChoice.No_Choice;
+		return hasOtherAnature && currentAnatureIsAtTypeDisavantage && hasAnatureWithTypeAdvantage;
 	}
 	
 	// TODO Add a advantage threshold??
@@ -126,23 +125,54 @@ public class BaseAI
 		return percentAfterHeal > 1;
 	}
 
+	private boolean isAnatureAtTypeDisadvantage(Anature currentAnature, Anature enemyAnature, AttackEffectiveness switchThreshold)
+	{
+		AttackEffectiveness effectiveness = TypeAdvantage.advantageType(currentAnature, enemyAnature);
+		boolean isEffectivenessNotAboveNotEffective = !isAboveEffectivenessThreshold(effectiveness, switchThreshold);
+		
+		return isEffectivenessNotAboveNotEffective;
+	}
 	
-	private final boolean willSwitch(int switchThreshold)
+	private boolean isAnatureAtTypeAdvantage(Anature currentAnature, Anature enemyAnature, AttackEffectiveness switchThreshold)
 	{
-		return isAnatureAtThreshold(switchThreshold);
+		return !isAnatureAtTypeDisadvantage(currentAnature, enemyAnature, switchThreshold);
+	}
+	
+	private boolean isAboveEffectivenessThreshold(AttackEffectiveness effectiveness, AttackEffectiveness switchThreshold)
+	{
+		switch (switchThreshold)
+		{
+			case NoEffect:
+				return TypeAdvantage.isNoEffect(effectiveness);
+				
+			case NotEffective:
+				return TypeAdvantage.isAboveNoEffect(effectiveness);
+				
+			case Normal:
+				return TypeAdvantage.isAboveNoEffect(effectiveness);
+				
+			case SuperEffective:
+				return TypeAdvantage.isAboveNormal(effectiveness);
+				
+			default:
+				LoggerController.logEvent(LoggingTypes.Error,
+						"IllegalArgumentException in BaseAI.java, Method: isAboveEffectivenessThreshold(AttackEffectiveness effectiveness, AttackEffectiveness switchThreshold), items value was " + switchThreshold.toString() + ".");
+				return false;
+		}
 	}
 
-	private boolean isAnatureAtTypeDisadvantage(Type[] types)
+	private boolean hasAnAnatureWithTypeAdvantage(ArrayList<Anature> anatures, Anature currentAnature, Anature enemyAnature, AttackEffectiveness switchThreshold)
 	{
-		return false; // TODO We need to make Type Logic
+		AttackEffectiveness currentEffectiveness = TypeAdvantage.advantageType(currentAnature, enemyAnature);
+		
+		for(Anature anature : anatures)
+		{
+			if(isAnatureAtTypeAdvantage(anature, enemyAnature, currentEffectiveness))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
-	private boolean isAnatureAtThreshold(int switchThreshold)
-	{
-		if(switchThreshold == 0)
-			return false;
-
-		Random r = new Random();
-		return r.nextInt(101) <= switchThreshold;
-	}
 }

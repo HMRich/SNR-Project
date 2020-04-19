@@ -24,6 +24,7 @@ import application.abillities.Spiky;
 import application.enums.AttackEffectiveness;
 import application.enums.Gender;
 import application.enums.Species;
+import application.enums.StatusEffects;
 import application.enums.Type;
 
 @DisplayName("Type Advantage Tests")
@@ -53,8 +54,9 @@ public class TypeAdvantageTests
 		int totalHp = 10;
 		int speed = 10;
 		int accuracy = 10;
+		StatusEffects statusEffects = StatusEffects.None;
 		baseAnature = new Anature(name, ownerName, level, currentxp, gender, moves, types, species, isShiny, indexNum, ability, attack, specialAttack, defense,
-				specialDefense, totalHp, speed, accuracy);
+				specialDefense, totalHp, speed, accuracy, statusEffects);
 	}
 
 	@TestTemplate
