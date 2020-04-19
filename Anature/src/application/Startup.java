@@ -219,24 +219,26 @@ public class Startup extends Application
 			controller.setUpBindingsAndElements(scene);
 			controller.updateElements(mPlayer, toBattle);
 
-			mStage.setWidth(width);
-			mStage.setHeight(height);
-
 			mLastSceneType = mCurrSceneType;
 
 			LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Battle");
 			mStage.setScene(scene);
+
+			mStage.setWidth(width);
+			mStage.setHeight(height);
 		}
 
 		catch(IOException e)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "Exception when starting battle. \n" + e.getMessage());
+			LoggerController.logEvent(LoggingTypes.Error, "Exception when starting battle. \n" + e.getStackTrace());
 		}
 	}
 
 	public static void createDemo()
 	{
-		mPlayer.addAnatures(AnatureBuilder.createAnature(Species.Null, 15));
+		Anature first = AnatureBuilder.createAnature(Species.Null, 15);
+		first.setName("Main Null");
+		mPlayer.addAnatures(first);
 
 		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.setName("Other Null");

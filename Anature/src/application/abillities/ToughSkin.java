@@ -8,21 +8,21 @@ import application.moves.Move;
 
 public class ToughSkin implements Ability
 {
-	public static String activateAbility(Anature userAnature, Move moveThatAttacked, int userOldHp)
+	public static String activateAbility(Anature userAnature, Move moveThatAttacked, int userOldHp, boolean attackMissed)
 	{
 		if(userAnature == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Determination was null.");
+			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Tough Skin was null.");
 			return "";
 		}
 		
 		else if(moveThatAttacked == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "moveThatAttacked parameter in Determination was null.");
+			LoggerController.logEvent(LoggingTypes.Error, "moveThatAttacked parameter in Tough Skin was null.");
 			return "";
 		}
 		
-		else if(moveThatAttacked != null && moveThatAttacked.isPhysicalAttack())
+		else if(moveThatAttacked != null && moveThatAttacked.isPhysicalAttack() && !attackMissed)
 		{
 			double damageDealt = userOldHp - userAnature.getCurrHp();
 			userAnature.setCurrHp(userOldHp - (int) (damageDealt * 0.8));

@@ -22,7 +22,7 @@ public class AbilityActivation
 		switch(abilityId)
 		{
 			case Tyrannize: // Intimidate
-				result = new AbilityResult(Tyrannize.activateAbility(targetAnature), true);
+				result = new AbilityResult(Tyrannize.activateAbility(userAnature, targetAnature), true);
 				break;
 
 			default:
@@ -54,7 +54,8 @@ public class AbilityActivation
 		return result;
 	}
 
-	public static AbilityResult useAbilityAfterAttack(AbilityIds abilityId, Anature userAnature, Anature targetAnature, Move moveThatAttacked, int userOldHp)
+	public static AbilityResult useAbilityAfterAttack(AbilityIds abilityId, Anature userAnature, Anature targetAnature, Move moveThatAttacked, 
+			int userOldHp, boolean isUserAttacking, boolean attackMissed)
 	{
 		ArrayList<String> dialogue = new ArrayList<String>();
 		AbilityResult result = new AbilityResult(dialogue, false);
@@ -71,11 +72,11 @@ public class AbilityActivation
 				break;
 
 			case ToughSkin: // Fluffy (but for all physical moves)
-				abilityTxt = ToughSkin.activateAbility(userAnature, moveThatAttacked, userOldHp);
+				abilityTxt = ToughSkin.activateAbility(userAnature, moveThatAttacked, userOldHp, attackMissed);
 				break;
 
 			case Spiky: // Rough Skin
-				abilityTxt = Spiky.activateAbility(userAnature, targetAnature, moveThatAttacked);
+				abilityTxt = Spiky.activateAbility(userAnature, targetAnature, moveThatAttacked, isUserAttacking, attackMissed);
 				break;
 
 			default:

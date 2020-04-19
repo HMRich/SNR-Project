@@ -8,13 +8,20 @@ import application.moves.Move;
 
 public class Spiky implements Ability
 {
-	public static String activateAbility(Anature userAnature, Anature targetAnature, Move moveThatAttacked)
+	public static String activateAbility(Anature userAnature, Anature targetAnature, Move moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
 	{
 		String result = "";
-		
-		if(!hasNull(userAnature, targetAnature, moveThatAttacked) && moveThatAttacked.isPhysicalAttack())
+
+		if(!hasNull(userAnature, targetAnature, moveThatAttacked) && moveThatAttacked.isPhysicalAttack() && !isUserAttacking && !attackMissed)
 		{
-			targetAnature.setCurrHp(targetAnature.getCurrHp() - (targetAnature.getTotalHp() / 8));
+			int newHp = targetAnature.getCurrHp() - (targetAnature.getTotalHp() / 8);
+			
+			if(newHp < 0)
+			{
+				newHp = 0;
+			}
+			
+			targetAnature.setCurrHp(newHp);
 			result = targetAnature.getName() + " got hurt from attacking " + userAnature.getName() + "'s spikes!";
 		}
 		

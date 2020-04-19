@@ -77,7 +77,7 @@ public class BattleController
 			mSwitchSelectedAbilityName, mSwitchSelectedAbilityDesc;
 	@FXML private ImageView mStatusIconPlayer, mStatusIconEnemy;
 	private Image mSwitchPageOneImg, mSwitchPageTwoImg, mItemTabSelected, mItemTabDeselected, mItemPotion, mItemGreatPotion, mItemUltraPotion,
-			mItemMasterPotion, mBurnStatusIcon, mParalyzedStatusIcon, mSleepStatusIcon;
+			mItemMasterPotion, mBurnStatusIcon, mParalyzedStatusIcon, mSleepStatusIcon, mMaleIcon, mFemaleIcon;
 
 	@FXML private ImageView mItemSelectionBg, mItemDialogue, mSelectedItem, mItemBackBtn, mItemUseBtn, mItemPotionsTab, mItemAnaCubeTab, mStatusTab;
 	@FXML private ListView<String> mItemList;
@@ -184,6 +184,9 @@ public class BattleController
 		mBurnStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Burn.png").toExternalForm());
 		mParalyzedStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Paralyzed.png").toExternalForm());
 		mSleepStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Sleep.png").toExternalForm());
+		
+		mMaleIcon = new Image(getClass().getResource("/resources/images/battle/Male_Symbol.png").toExternalForm());
+		mFemaleIcon = new Image(getClass().getResource("/resources/images/battle/Female_Symbol.png").toExternalForm());
 	}
 
 	public void setUpBindingsAndElements(Scene scene)
@@ -815,7 +818,7 @@ public class BattleController
 		mEnemyHpTotal.set(enemyCurr.getTotalHp());
 
 		mEnemyLvl.set(enemyCurr.getLevel());
-
+		
 		mPlayer = player;
 		mEnemyTrainer = enemyTrainer;
 
@@ -824,6 +827,8 @@ public class BattleController
 		updateMoves(playerCurr);
 		updateSwitch(player.getAnatures(), player.getSelectedIndex());
 		updateBagMenu();
+		updateGender(playerCurr, true);
+		updateGender(enemyCurr, false);
 
 		mAnatureFront.setImage(enemyCurr.getFrontSprite());
 
@@ -846,7 +851,16 @@ public class BattleController
 					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
 					{
 						OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200), true);
-						back.setOnFinished(event -> mShowBtns.set(true));
+						back.setOnFinished(event -> 
+						{
+							boolean isPlayer = true;
+							
+							activateEntryAbility(isPlayer);
+							activateEntryAbility(!isPlayer);
+							
+							mClickQueue.enqueue(() -> resetGui(), "Reset Gui");
+							mCanClick.set(true);
+						});
 						back.play();
 
 						mPlayerImage.setVisible(false);
@@ -1134,6 +1148,34 @@ public class BattleController
 
 		mItemList.setItems(items);
 	}
+	
+	private void updateGender(Anature anature, boolean isPlayer)
+	{
+		Image toUse = mMaleIcon;
+		
+		switch(anature.getGender())
+		{
+			case Female:
+				toUse = mFemaleIcon;
+				break;
+				
+			case Male:
+				break;
+				
+			default:
+				toUse = null;
+		}
+		
+		if(isPlayer)
+		{
+			mPlayerGender.setImage(toUse);
+		}
+		
+		else
+		{
+			mEnemyGender.setImage(toUse);
+		}
+	}
 
 	private void onItemSelect()
 	{
@@ -1383,11 +1425,7 @@ public class BattleController
 				break;
 
 			case Escape:
-				mClickQueue.enqueue(() ->
-				{
-					mDialogueTxt.set("You clicked on Escape!\nThat has yet to be implemented!");
-					mCanClick.set(true);
-				}, "Player Escape");
+				enqueueDialogue("You clicked on Escape!\nThat has yet to be implemented!", "Player Escape");
 				break;
 
 			case Switch:
@@ -1474,6 +1512,13 @@ public class BattleController
 						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
 						fadeInNew.setOnFinished(actionEvent ->
 						{
+							AbilityResult entryResult = mFightManager.activateEntryAbility(true);
+							
+							for(String dialogue : entryResult.getDialogue())
+							{
+								enqueueDialogue(dialogue, "Player Entry Ability Dialogue");
+							}
+							
 							if(nextTurn != null)
 							{
 								activateAfterTurn(nextTurn);
@@ -1490,35 +1535,42 @@ public class BattleController
 			}
 		}, "Activate Switch");
 	}
+	
+	private void activateEntryAbility(boolean isPlayer)
+	{
+		AbilityResult result = mFightManager.activateEntryAbility(isPlayer);
+		
+		for(String dialogue : result.getDialogue())
+		{
+			enqueueDialogue(dialogue, "Entry ability of player: " + isPlayer);
+		}
+	}
 
 	private void useAttack(Anature anature, boolean isPlayer, BattleChoice choice, int moveNum)
 	{
 		MoveResult moveResult = mFightManager.attack(isPlayer, moveNum);
 		AbilityResult abilityResult = moveResult.getAbilityResult();
 		ArrayList<String> moveDialogue = moveResult.getDialogue();
+		Move move = moveResult.getMove();
 
-		if(!moveResult.doesDamage())
+		try
+		{
+			Thread.sleep(10);
+		}
+
+		catch(InterruptedException e)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Thread was interrupted during sleep in useAttack.");
+		}
+		
+		if(!move.doesDamage())
 		{
 			mDialogueTxt.set(moveDialogue.get(0));
-
-			try
-			{
-				Thread.sleep(10);
-			}
-
-			catch(InterruptedException e)
-			{
-				LoggerController.logEvent(LoggingTypes.Error, "Thread was interrupted during sleep after non-physical movedialogue was set.");
-			}
 
 			for(int i = 1; i < moveDialogue.size(); i++)
 			{
 				String dialogue = moveDialogue.get(i);
-				mClickQueue.enqueue(() ->
-				{
-					mDialogueTxt.set(dialogue);
-					mCanClick.set(true);
-				}, "Move Dialogue");
+				enqueueDialogue(dialogue, "Move Dialogue");
 			}
 
 			mCanClick.set(true);
@@ -1526,50 +1578,49 @@ public class BattleController
 
 		for(String dialogue : abilityResult.getDialogue())
 		{
-			mClickQueue.enqueue(() ->
-			{
-				mDialogueTxt.set(dialogue);
-				mCanClick.set(true);
-			}, "Ability Dialogue");
+			enqueueDialogue(dialogue, "Ability Dialogue");
 		}
 
-		if(moveResult.doesDamage())
+		if(move.doesDamage())
 		{
-			if(isPlayer)
-			{
-				healthDrainMove(moveResult, mEnemyHp);
-			}
-
-			else
-			{
-				healthDrainMove(moveResult, mPlayerHp);
-			}
+			healthDrainMove(moveResult, !isPlayer);
 		}
 	}
 
-	private void healthDrainMove(MoveResult result, DoubleProperty toChange)
+	private void healthDrainMove(MoveResult result, boolean playerWasTarget)
 	{
-		Anature anatureToDamage = null;
+		Anature userAnature = null, targetAnature = null;
+		DoubleProperty userOldHp, targetOldHp;
 
 		if(!result.isPlayer())
 		{
-			anatureToDamage = mFightManager.getPlayerAnature();
+			targetAnature = mFightManager.getPlayerAnature();
+			userAnature = mFightManager.getEnemyAnature();
+			
+			userOldHp = mEnemyHp;
+			targetOldHp = mPlayerHp;
 		}
 
 		else
 		{
-			anatureToDamage = mFightManager.getEnemyAnature();
+			targetAnature = mFightManager.getEnemyAnature();
+			userAnature = mFightManager.getPlayerAnature();
+			
+			userOldHp = mPlayerHp;
+			targetOldHp = mEnemyHp;
 		}
 
-		double damageDone = toChange.get() - anatureToDamage.getCurrHp();
-		if(result.isPlayer() && damageDone > mEnemyHp.get())
+		double damageDoneToTarget = targetOldHp.get() - targetAnature.getCurrHp();
+		double damageDoneToUser = userOldHp.get() - userAnature.getCurrHp();
+		
+		if(result.isPlayer() && damageDoneToTarget > mEnemyHp.get())
 		{
-			damageDone = mEnemyHp.get();
+			damageDoneToTarget = mEnemyHp.get();
 		}
 
-		else if(!result.isPlayer() && damageDone > mPlayerHp.get())
+		else if(!result.isPlayer() && damageDoneToTarget > mPlayerHp.get())
 		{
-			damageDone = mPlayerHp.get();
+			damageDoneToTarget = mPlayerHp.get();
 		}
 
 		ArrayList<String> dialogue = result.getDialogue();
@@ -1578,31 +1629,56 @@ public class BattleController
 		for(int i = 1; i < dialogue.size(); i++)
 		{
 			String toAdd = dialogue.get(i);
-			mClickQueue.enqueue(() ->
-			{
-				mDialogueTxt.set(toAdd);
-				mCanClick.set(true);
-			}, "Move Dialogue in health drain");
+			enqueueDialogue(toAdd, "Move Dialogue in health drain");
 		}
 
-		ProgressBarDecrease decrease = new ProgressBarDecrease(toChange, Duration.millis(3000), damageDone);
-		decrease.setOnFinished(event -> mCanClick.set(true));
-		decrease.play();
+		if(damageDoneToTarget != 0)
+		{
+			ProgressBarDecrease decreaseTargetHp = new ProgressBarDecrease(targetOldHp, Duration.millis(3000), damageDoneToTarget);
+			decreaseTargetHp.setOnFinished(event -> 
+			{
+				if(damageDoneToUser > 0)
+				{
+					ProgressBarDecrease decreaseUserHp = new ProgressBarDecrease(userOldHp, Duration.millis(3000), damageDoneToUser);
+					decreaseUserHp.setOnFinished(userEvent -> mCanClick.set(true));
+					decreaseUserHp.play();
+				}
+				
+				else
+				{
+					mCanClick.set(true);
+				}
+			});
+			decreaseTargetHp.play();
+		}
+		
+		else
+		{
+			mCanClick.set(true);
+		}
 	}
 
 	private void healthDrainStatus(String statusDialogue, double damageDone, boolean isPlayer, Runnable nextTurn)
 	{
 		mDialogueTxt.set(statusDialogue);
-		ProgressBarDecrease decrease;
+		
+		DoubleProperty toDamage = null;
 		if(isPlayer)
 		{
-			decrease = new ProgressBarDecrease(mPlayerHp, Duration.millis(3000), damageDone);
+			toDamage = mPlayerHp;
 		}
-
+		
 		else
 		{
-			decrease = new ProgressBarDecrease(mEnemyHp, Duration.millis(3000), damageDone);
+			toDamage = mEnemyHp;
 		}
+		
+		if(toDamage.get() - damageDone < 0)
+		{
+			damageDone = toDamage.get();
+		}
+		
+		ProgressBarDecrease decrease = new ProgressBarDecrease(toDamage, Duration.millis(3000), damageDone);
 
 		if(nextTurn == null)
 		{
@@ -1672,6 +1748,15 @@ public class BattleController
 		mDialogueTxt.set("What will you do?");
 		mCanClick.set(false);
 	}
+	
+	private void enqueueDialogue(String dialogue, String id)
+	{
+		mClickQueue.enqueue(() ->
+		{
+			mDialogueTxt.set(dialogue);
+			mCanClick.set(true);
+		}, id);
+	}
 
 	private boolean beforeTurnStatusCheck(boolean isPlayer, Anature anature)
 	{
@@ -1684,21 +1769,13 @@ public class BattleController
 				break;
 
 			case Paralysis:
-				mClickQueue.enqueue(() ->
-				{
-					mDialogueTxt.set(anature.getName() + " is paralysed! It may not be able to move!");
-					mCanClick.set(true);
-				}, "Paralysis Before Turn");
+				enqueueDialogue(anature.getName() + " is paralysed! It may not be able to move!", "Paralysis Before Turn");
 
 				canAttack = Math.random() <= 0.25;
 
 				if(!canAttack)
 				{
-					mClickQueue.enqueue(() ->
-					{
-						mDialogueTxt.set(anature.getName() + " could not attack because of the paralysis!");
-						mCanClick.set(true);
-					}, "Paralysis Before Turn - Can't Attack");
+					enqueueDialogue(anature.getName() + " could not attack because of the paralysis!", "Paralysis Before Turn - Can't Attack");
 				}
 				break;
 
@@ -1707,20 +1784,12 @@ public class BattleController
 
 				if(wakeUp)
 				{
-					mClickQueue.enqueue(() ->
-					{
-						mDialogueTxt.set(anature.getName() + " woke up!");
-						mCanClick.set(true);
-					}, "Sleep Before Turn - Woke Up");
+					enqueueDialogue(anature.getName() + " woke up!", "Sleep Before Turn - Woke Up");
 				}
 
 				else
 				{
-					mClickQueue.enqueue(() ->
-					{
-						mDialogueTxt.set(anature.getName() + " is fast asleep!");
-						mCanClick.set(true);
-					}, "Sleep Before Turn");
+					enqueueDialogue(anature.getName() + " is fast asleep!", "Sleep Before Turn");
 					canAttack = false;
 				}
 				break;
@@ -1752,27 +1821,15 @@ public class BattleController
 			switch(anatureStatus)
 			{
 				case Burn:
-					mClickQueue.enqueue(() ->
-					{
-						mDialogueTxt.set(anature.getName() + " is burned!");
-						mCanClick.set(true);
-					}, "Burn After Turn");
+					enqueueDialogue(anature.getName() + " is burned!", "Burn After Turn");
 					break;
 
 				case Paralysis:
-					mClickQueue.enqueue(() ->
-					{
-						mDialogueTxt.set(anature.getName() + " is now paralyzed!");
-						mCanClick.set(true);
-					}, "Paralysis After Turn");
+					enqueueDialogue(anature.getName() + " is now paralyzed!", "Paralysis After Turn");
 					break;
 
 				case Sleep:
-					mClickQueue.enqueue(() ->
-					{
-						mDialogueTxt.set(anature.getName() + " fell asleep!");
-						mCanClick.set(true);
-					}, "Sleep After Turn");
+					enqueueDialogue(anature.getName() + " fell asleep!", "Sleep After Turn");
 					break;
 
 				default:
