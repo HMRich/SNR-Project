@@ -7,6 +7,7 @@ import application.BaseAI;
 import application.enums.AiChoice;
 import application.enums.TrainerIds;
 import application.enums.Type;
+import application.items.HealthPotion;
 import application.items.Item;
 import javafx.scene.image.Image;
 
@@ -15,28 +16,31 @@ public class Trainer
 	private TrainerIds mId;
 	private String mName;
 	private ArrayList<Anature> mAnatures;
-	private ArrayList<Item> mItems;
+	private ArrayList<HealthPotion> mPotions;
 	private Anature mCurrentAnature;
 	private BaseAI mAi;
 	private int mHealthThreshold;
 	private int mSwitchThreshold;
 
-	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<Item> items, Anature currentAnature, BaseAI ai, int healthThreshold,
+	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<HealthPotion> potions, Anature currentAnature, BaseAI ai, int healthThreshold,
 			int switchThreshold)
 	{
-		if(id == null && name == null && anatures == null && items == null && currentAnature == null && ai == null)
+		if(id == null && name == null && anatures == null && potions == null && currentAnature == null && ai == null)
 			throw new IllegalArgumentException("Null Parameter");
 
 		mId = id;
 		mName = name;
 		mAnatures = anatures;
-		mItems = items;
+		mPotions = potions;
 		mCurrentAnature = currentAnature;
 		mAi = ai;
 		mHealthThreshold = healthThreshold;
 		mSwitchThreshold = switchThreshold;
 	}
 
+	/*
+	 * PUBLIC METHODS
+	 */
 	public void switchAnature()
 	{
 		mAi.switchAnature(mAnatures, new Type[]
@@ -45,7 +49,7 @@ public class Trainer
 
 	public final AiChoice useTurn(Anature playerAnature)
 	{
-		AiChoice itemResult = mAi.willUseHealthPotion(mItems, mCurrentAnature, mHealthThreshold);
+		AiChoice itemResult = mAi.willUseHealthPotion(mPotions, mCurrentAnature, mHealthThreshold);
 
 		if(itemResult.equals(AiChoice.No_Choice))
 		{
@@ -98,7 +102,7 @@ public class Trainer
 
 	public ArrayList<Item> getItmes()
 	{
-		return mItems;
+		return mPotions;
 	}
 
 	public Anature getCurrentAnature()

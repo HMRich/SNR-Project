@@ -11,6 +11,9 @@ import application.items.ItemPool;
 
 public class BaseAI
 {
+	/*
+	 * PUBLIC METHODS
+	 */
 	public final boolean willUseHealthPotion(ArrayList<HealthPotion> healthPotions, Anature currentAnature, double healthThreshold)
 	{
 		if(healthPotions == null)
@@ -67,7 +70,7 @@ public class BaseAI
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);
 
 			// TODO there is some logic here that allows trainers to use master potion even
-			// it there may be a better option that allows for less over healing.
+			// if there may be a better option that allows for less over healing.
 
 			if(anaturePercentAfterItemUse == 0 || anatureHpPercentIfItemUsed > anaturePercentAfterItemUse && !willOverheal)
 			{
@@ -85,21 +88,16 @@ public class BaseAI
 		return itemToUse;
 	}
 
-	private boolean willHealthPotionOverheal(double percentAfterHeal)
-	{
-		return percentAfterHeal > 1;
-	}
-
 	public AiChoice switchAnature(ArrayList<Anature> anatures, Type[] types, int switchThreshold, Anature currentAnature)
 	{
-		if(!anatures.isEmpty() && isAnatureAtTypeDisadvantage(types) && willSwitch(switchThreshold))
+		boolean hasAnature = !anatures.isEmpty();
+		if(hasAnature && isAnatureAtTypeDisadvantage(types) && willSwitch(switchThreshold))
 		{
 			return AiChoice.Switch_Anature;
 		}
-
+		
 		return AiChoice.No_Choice;
 	}
-
 	
 	// TODO Add a advantage threshold??
 	public AiChoice chooseMove(Anature source, Anature target)
@@ -107,7 +105,7 @@ public class BaseAI
 		ArrayList<AiChoice> choices = new ArrayList<AiChoice>();
 		
 		MoveSet moves = source.getMoves();
-
+		
 		if(moves.hasMove(1))
 			choices.add(AiChoice.Move1);
 		if(moves.hasMove(2))
@@ -116,10 +114,19 @@ public class BaseAI
 			choices.add(AiChoice.Move3);
 		if(moves.hasMove(4))
 			choices.add(AiChoice.Move4);
-
+		
 		return choices.get(new Random().nextInt(choices.size()));
 	}
+	
+	/*
+	 * PRIVATE METHODS
+	 */
+	private boolean willHealthPotionOverheal(double percentAfterHeal)
+	{
+		return percentAfterHeal > 1;
+	}
 
+	
 	private final boolean willSwitch(int switchThreshold)
 	{
 		return isAnatureAtThreshold(switchThreshold);
