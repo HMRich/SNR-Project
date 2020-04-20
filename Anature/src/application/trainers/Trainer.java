@@ -7,9 +7,7 @@ import application.BaseAI;
 import application.enums.AiChoice;
 import application.enums.AttackEffectiveness;
 import application.enums.TrainerIds;
-import application.enums.Type;
 import application.items.HealthPotion;
-import application.items.Item;
 import javafx.scene.image.Image;
 
 public class Trainer
@@ -20,11 +18,11 @@ public class Trainer
 	private ArrayList<HealthPotion> mPotions;
 	private Anature mCurrentAnature;
 	private BaseAI mAi;
-	private int mHealthThreshold;
-	private int mSwitchThreshold;
+	private double mHealthThreshold;
+	private AttackEffectiveness mSwitchThreshold;
 
-	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<HealthPotion> potions, Anature currentAnature, BaseAI ai, int healthThreshold,
-			int switchThreshold)
+	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<HealthPotion> potions, Anature currentAnature, BaseAI ai, double healthThreshold,
+			AttackEffectiveness switchThreshold)
 	{
 		if(id == null || name == null || anatures == null || potions == null || currentAnature == null || ai == null)
 			throw new IllegalArgumentException("Null Parameter");
@@ -42,39 +40,26 @@ public class Trainer
 	/*
 	 * PUBLIC METHODS
 	 */
-	public void switchAnature()
-	{
-		mAi.switchAnature(mAnatures, AttackEffectiveness.Normal, mCurrentAnature);
-	}
-
 	public final AiChoice useTurn(Anature playerAnature)
 	{
-		boolean willUseHealthPotion = mAi.willUseHealthPotion(mPotions, mCurrentAnature, 0.25);
-		AiChoice itemResult = mAi.willUseHealthPotion(mPotions, mCurrentAnature, mHealthThreshold);
-
-		if(itemResult.equals(AiChoice.No_Choice))
+		boolean willUseHealthPotion = mAi.willUseHealthPotion(mPotions, mCurrentAnature, mHealthThreshold);
+		
+		// TODO Make a Result Object for useTurn()
+		if(willUseHealthPotion)
 		{
-			Type[] types = null;
-
-			if(playerAnature.getSecondaryType() != null)
-				types = new Type[]
-				{ playerAnature.getPrimaryType(), playerAnature.getSecondaryType() };
-
-			else
-				types = new Type[]
-				{ playerAnature.getPrimaryType() };
-
-			AiChoice switchResult = mAi.switchAnature(mAnatures, types, mSwitchThreshold, mCurrentAnature);
-
-			if(switchResult.equals(AiChoice.No_Choice))
-			{
-				return mAi.chooseMove(mCurrentAnature.getMoves());
-			}
-
-			return switchResult;
+			HealthPotion healthPotionToUse = mAi.healthPotionToUse(mPotions, mCurrentAnature);
+			return AiChoice.Item_Consumed;
 		}
+		
+		boolean willSwitchAnature = mAi.willSwitchAnature(mAnatures, playerAnature, mCurrentAnature, mSwitchThreshold);
 
-		return itemResult;
+		if(willSwitchAnature)
+		{
+			Anature anatureToSwitchTo = mAi.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature, mSwitchThreshold);
+			return AiChoice.Switch_Anature;
+		}
+		
+		return mAi.chooseMove(mCurrentAnature, playerAnature);
 	}
 
 	public String getName()

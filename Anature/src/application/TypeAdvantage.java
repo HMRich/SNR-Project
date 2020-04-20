@@ -49,6 +49,28 @@ public class TypeAdvantage
 
 		return attackEffectiveness;
 	}
+	
+	public static AttackEffectiveness parseInt(int value)
+	{
+		switch(value)
+		{
+			case 0:
+				return AttackEffectiveness.NoEffect;
+			
+			case 1:
+				return AttackEffectiveness.NotEffective;
+			
+			case 2:
+				return AttackEffectiveness.Normal;
+				
+			case 3:
+				return AttackEffectiveness.SuperEffective;
+				
+			default:
+				LoggerController.logEvent(LoggingTypes.Error, "IllegalArgumentException in TypeAdvantage.java Method: parseInt(int value), passed value was not within the range 0 - 3.");
+				return AttackEffectiveness.Error;
+		}
+	}
 
 	// TODO Is this even used?
 	public int compareAdvantage(AttackEffectiveness effectivenessToCheck, AttackEffectiveness effectivenessToCheckAgainst)

@@ -13,13 +13,16 @@ import application.Anature;
 import application.AnatureBuilder;
 import application.BaseAI;
 import application.DatabaseConnection;
+import application.TypeAdvantage;
 import application.controllers.LoggerController;
 import application.enums.AiIds;
+import application.enums.AttackEffectiveness;
 import application.enums.DatabaseType;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
+import application.items.HealthPotion;
 import application.items.Item;
 import application.items.ItemPool;
 
@@ -27,10 +30,11 @@ public class TrainerBuilder
 {
 	public static Trainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
 	{
-		ArrayList<Item> items = new ArrayList<Item>();
+		ArrayList<HealthPotion> items = new ArrayList<HealthPotion>();
 		ArrayList<Anature> party = new ArrayList<Anature>();
 		BaseAI ai = null;
-		int switchThreshold = 0, healthThreshold = 0;
+		AttackEffectiveness switchThreshold = AttackEffectiveness.NotSet;
+		double healthThreshold = 0;
 		String name = "";
 
 		try
@@ -59,7 +63,7 @@ public class TrainerBuilder
 					{
 						try
 						{
-							Item toAdd = ItemPool.getHealthPotion(ItemIds.valueOf(itemId)); // TODO redo ItemPool.java file to decouple
+							HealthPotion toAdd = ItemPool.getHealthPotion(ItemIds.valueOf(itemId)); // TODO redo ItemPool.java file to decouple
 
 							if(toAdd == null)
 							{
@@ -90,8 +94,8 @@ public class TrainerBuilder
 
 				ai = AiPool.getAi(AiIds.valueOf(aiStr));
 
-				switchThreshold = Integer.parseInt(switchStr);
-				healthThreshold = Integer.parseInt(healthStr);
+				healthThreshold = Double.parseDouble(healthStr);
+				switchThreshold = TypeAdvantage.parseInt(Integer.parseInt(switchStr));
 			}
 
 			results.close();

@@ -89,7 +89,7 @@ public class BaseAI
 		return healthPotionToUse;
 	}
 
-	public boolean willSwitchAnature(ArrayList<Anature> anatures, AttackEffectiveness switchThreshold, Anature currentAnature, Anature enemyAnature)
+	public boolean willSwitchAnature(ArrayList<Anature> anatures, Anature enemyAnature, Anature currentAnature, AttackEffectiveness switchThreshold)
 	{
 		boolean hasOtherAnature = !anatures.isEmpty() && anatures.size() > 1;
 		boolean currentAnatureIsAtTypeDisavantage = isAnatureAtTypeDisadvantage(currentAnature, enemyAnature, switchThreshold);
@@ -115,6 +115,22 @@ public class BaseAI
 			choices.add(AiChoice.Move4);
 		
 		return choices.get(new Random().nextInt(choices.size()));
+	}
+	
+	public Anature chooseNewAnature(ArrayList<Anature> anatures, Anature currentAnature, Anature enemyAnature, AttackEffectiveness switchThreshold)
+	{
+		Anature anatureToReturn = currentAnature;
+		AttackEffectiveness anatureEffectiveness = TypeAdvantage.advantageType(currentAnature, enemyAnature);
+		
+		for(Anature anature : anatures)
+		{
+			if(isAnatureAtTypeAdvantage(anature, enemyAnature, anatureEffectiveness))
+			{
+				anatureToReturn = anature;
+				anatureEffectiveness = TypeAdvantage.advantageType(anatureToReturn, enemyAnature);
+			}
+		}
+		return currentAnature;
 	}
 	
 	/*
