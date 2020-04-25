@@ -6,10 +6,11 @@ import application.enums.Type;
 
 public class PocketSand extends Move
 {
-
+	private static int mTotalMp = 25;
+	
 	public PocketSand()
 	{
-		super("Pocket Sand", 15, MoveIds.Pocket_Sand , false, false, 100, Type.Ground);
+		super("Pocket Sand", mTotalMp, MoveIds.Pocket_Sand , false, false, 100, Type.Ground);
 	}
 
 	@Override
