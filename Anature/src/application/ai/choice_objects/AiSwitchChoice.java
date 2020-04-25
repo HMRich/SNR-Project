@@ -1,5 +1,6 @@
-package application;
+package application.ai.choice_objects;
 
+import application.Anature;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;

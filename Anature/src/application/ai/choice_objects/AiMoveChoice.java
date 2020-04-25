@@ -1,10 +1,10 @@
-package application;
+package application.ai.choice_objects;
 
+import application.ai.choice_objects.AiFinalChoice;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;
 import application.moves.Move;
-import application.AiFinalChoice;
 
 public class AiMoveChoice extends AiFinalChoice implements AiChoiceObject<Move>
 {

@@ -1,4 +1,4 @@
-package application;
+package application.ai.choice_objects;
 
 import application.enums.AiChoice;
 

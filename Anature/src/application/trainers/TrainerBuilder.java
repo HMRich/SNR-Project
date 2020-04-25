@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import application.AiPool;
 import application.Anature;
 import application.AnatureBuilder;
-import application.BaseAI;
 import application.DatabaseConnection;
 import application.TypeAdvantage;
+import application.ai.AI;
+import application.ai.AiPool;
 import application.controllers.LoggerController;
 import application.enums.AiIds;
 import application.enums.AttackEffectiveness;
@@ -23,7 +23,6 @@ import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
 import application.items.HealthPotion;
-import application.items.Item;
 import application.items.ItemPool;
 
 public class TrainerBuilder
@@ -32,7 +31,7 @@ public class TrainerBuilder
 	{
 		ArrayList<HealthPotion> items = new ArrayList<HealthPotion>();
 		ArrayList<Anature> party = new ArrayList<Anature>();
-		BaseAI ai = null;
+		AI ai = null;
 		AttackEffectiveness switchThreshold = AttackEffectiveness.NotSet;
 		double healthThreshold = 0;
 		String name = "";
@@ -108,6 +107,11 @@ public class TrainerBuilder
 			return null;
 		}
 
-		return new Trainer(id, name, party, items, party.get(0), ai, healthThreshold, switchThreshold);
+		return new Trainer().setTrainerId(id)
+				.setTrainerName(name)
+				.setAnatureParty(party)
+				.setPotions(items)
+				.setCurrentAnature(party.get(0))
+				.setAi(ai);
 	}
 }

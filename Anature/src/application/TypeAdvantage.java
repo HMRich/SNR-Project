@@ -10,8 +10,11 @@ import application.moves.Move;
 
 public class TypeAdvantage
 {
+	/*
+	 * PUBLIC METHODS
+	 */
 
-	public static AttackEffectiveness advantageType(Anature attacker, Anature defender)
+	public static AttackEffectiveness anatureEffectiveness(Anature attacker, Anature defender)
 	{
 		AttackEffectiveness attackEffectiveness = AttackEffectiveness.NotSet;
 
@@ -49,25 +52,75 @@ public class TypeAdvantage
 
 		return attackEffectiveness;
 	}
-	
+
 	public static AttackEffectiveness parseInt(int value)
 	{
 		switch(value)
 		{
 			case 0:
 				return AttackEffectiveness.NoEffect;
-			
+
 			case 1:
 				return AttackEffectiveness.NotEffective;
-			
+
 			case 2:
 				return AttackEffectiveness.Normal;
-				
+
 			case 3:
 				return AttackEffectiveness.SuperEffective;
-				
+
 			default:
-				LoggerController.logEvent(LoggingTypes.Error, "IllegalArgumentException in TypeAdvantage.java Method: parseInt(int value), passed value was not within the range 0 - 3.");
+				LoggerController.logEvent(LoggingTypes.Error,
+						"IllegalArgumentException in TypeAdvantage.java Method: parseInt(int value), passed value was not within the range 0 - 3.");
+				return AttackEffectiveness.Error;
+		}
+	}
+
+	public static AttackEffectiveness decrementEffectiveness(AttackEffectiveness value)
+	{
+		switch(value)
+		{
+			case NoEffect:
+				return AttackEffectiveness.NoEffect;
+
+			case NotEffective:
+				return AttackEffectiveness.NoEffect;
+
+			case Normal:
+				return AttackEffectiveness.NotEffective;
+
+			case SuperEffective:
+				return AttackEffectiveness.Normal;
+
+			default:
+				LoggerController.logEvent(LoggingTypes.Error,
+						"IllegalArgumentException in TypeAdvantage.java Method: decrementEffectiveness(AttackEffectiveness value), passed value was not valid. Value was "
+								+ value.toString() + ".");
+				return AttackEffectiveness.Error;
+		}
+	}
+
+	// TODO Is this even used?
+	public static AttackEffectiveness incrementEffectiveness(AttackEffectiveness value)
+	{
+		switch(value)
+		{
+			case NoEffect:
+				return AttackEffectiveness.NotEffective;
+
+			case NotEffective:
+				return AttackEffectiveness.Normal;
+
+			case Normal:
+				return AttackEffectiveness.SuperEffective;
+
+			case SuperEffective:
+				return AttackEffectiveness.SuperEffective;
+
+			default:
+				LoggerController.logEvent(LoggingTypes.Error,
+						"IllegalArgumentException in TypeAdvantage.java Method: incrementEffectiveness(AttackEffectiveness value), passed value was not valid. Value was "
+								+ value.toString() + ".");
 				return AttackEffectiveness.Error;
 		}
 	}
@@ -92,26 +145,30 @@ public class TypeAdvantage
 			return 1;
 		}
 	}
-	
+
 	public static boolean isNoEffect(AttackEffectiveness effectiveness)
 	{
 		return effectiveness == AttackEffectiveness.NoEffect;
 	}
-	
+
 	public static boolean isAboveNoEffect(AttackEffectiveness effectiveness)
 	{
 		return effectiveness != AttackEffectiveness.NoEffect;
 	}
-	
+
 	public static boolean isAboveNotEffective(AttackEffectiveness effectiveness)
 	{
 		return effectiveness != AttackEffectiveness.NotEffective && isAboveNoEffect(effectiveness);
 	}
-	
+
 	public static boolean isAboveNormal(AttackEffectiveness effectiveness)
 	{
 		return effectiveness != AttackEffectiveness.Normal && isAboveNotEffective(effectiveness);
 	}
+
+	/*
+	 * PRIVATE METHODS
+	 */
 
 	private static AttackEffectiveness checkAdvantage(Type attackerType, Type defenderType, AttackEffectiveness attackEffectiveness)
 	{

@@ -1,4 +1,4 @@
-package application;
+package application.ai.choice_objects;
 
 import application.controllers.LoggerController;
 import application.enums.AiChoice;

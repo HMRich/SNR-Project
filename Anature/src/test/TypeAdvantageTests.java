@@ -63,7 +63,7 @@ public class TypeAdvantageTests
 	@ExtendWith(AdvantageValueTestTempalte.class)
 	public void testEquals(TypeEffectivenessTestCase testCase)
 	{
-		Assert.assertEquals(TypeAdvantage.advantageType(testCase.attacker, testCase.defender), testCase.expectedEffectiveness);
+		Assert.assertEquals(TypeAdvantage.anatureEffectiveness(testCase.attacker, testCase.defender), testCase.expectedEffectiveness);
 	}
 
 	private static TypeEffectivenessTestCase createTestCase(Type[] sourceTypes, Type[] targetTypes, AttackEffectiveness expectedResult)

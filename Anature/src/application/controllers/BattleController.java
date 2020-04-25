@@ -3,7 +3,6 @@ package application.controllers;
 import java.util.ArrayList;
 import java.util.Random;
 
-import application.AiChoiceObject;
 import application.Anature;
 import application.Backpack;
 import application.FightManager;
@@ -12,6 +11,7 @@ import application.MoveResult;
 import application.MoveSet;
 import application.Player;
 import application.Startup;
+import application.ai.choice_objects.AiChoiceObject;
 import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
@@ -447,7 +447,7 @@ public class BattleController
 	private void onEnemyAnatureDeath()
 	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature : mEnemyTrainer.getAnatures())
+		for(Anature anature : mEnemyTrainer.getAnatureParty())
 		{
 			if(anature.getCurrHp() > 0)
 			{
@@ -817,7 +817,7 @@ public class BattleController
 
 	public void updateElements(Player player, Trainer enemyTrainer)
 	{
-		Anature enemyCurr = enemyTrainer.getAnatures().get(0);
+		Anature enemyCurr = enemyTrainer.getAnatureParty().get(0);
 		Anature playerCurr = player.getAnatures().get(0);
 
 		mEnemyName.set(enemyCurr.getName());
@@ -840,7 +840,7 @@ public class BattleController
 
 		startIntro(player, enemyTrainer, enemyCurr);
 
-		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(), enemyTrainer.getName());
+		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatureParty(), player.getName(), enemyTrainer.getName());
 	}
 
 	private void startIntro(Player player, Trainer enemyTrainer, Anature enemyCurr)
@@ -1476,6 +1476,9 @@ public class BattleController
 				{
 					activateEnemySwitch(enemyTurn, nextTurn);
 				}, "Enemy Anature Switch");
+				
+			default:
+				return;
 		}
 	}
 

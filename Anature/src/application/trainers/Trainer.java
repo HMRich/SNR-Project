@@ -2,13 +2,13 @@ package application.trainers;
 
 import java.util.ArrayList;
 
-import application.AiChoiceObject;
-import application.AiHealthPotionChoice;
-import application.AiMoveChoice;
-import application.AiSwitchChoice;
 import application.Anature;
-import application.BaseAI;
-import application.enums.AttackEffectiveness;
+import application.ai.AI;
+import application.ai.choice_objects.AiChoiceObject;
+import application.ai.choice_objects.AiHealthPotionChoice;
+import application.ai.choice_objects.AiMoveChoice;
+import application.ai.choice_objects.AiNoChoice;
+import application.ai.choice_objects.AiSwitchChoice;
 import application.enums.TrainerIds;
 import application.items.HealthPotion;
 import javafx.scene.image.Image;
@@ -20,87 +20,136 @@ public class Trainer
 	private ArrayList<Anature> mAnatures;
 	private ArrayList<HealthPotion> mPotions;
 	private Anature mCurrentAnature;
-	private BaseAI mAi;
-	private double mHealthThreshold;
-	private AttackEffectiveness mSwitchThreshold;
-
-	public Trainer(TrainerIds id, String name, ArrayList<Anature> anatures, ArrayList<HealthPotion> potions, Anature currentAnature, BaseAI ai, double healthThreshold,
-			AttackEffectiveness switchThreshold)
-	{
-		if(id == null || name == null || anatures == null || potions == null || currentAnature == null || ai == null)
-			throw new IllegalArgumentException("Null Parameter");
-
-		setTrainerId(id);
-		setTrainerName(name);
-		setAnatures(anatures);
-		mPotions = potions;
-		mCurrentAnature = currentAnature;
-		mAi = ai;
-		mHealthThreshold = healthThreshold;
-		mSwitchThreshold = switchThreshold;
-	}
+	private AI mAi;
 	
+	// TODO make default triner stats
+	Trainer()
+	{
+		
+	}
+
 	/*
-	 * Gets, Sets
+	 * PACKAGE SETS
 	 */
-	private void setTrainerId(TrainerIds trainerId)
+
+	Trainer setTrainerId(TrainerIds trainerId)
 	{
 		if(trainerId == null)
 		{
 			throw new IllegalArgumentException("Passed value \"trainerId\" was null.");
 		}
 		mId = trainerId;
+		return this;
 	}
-	
-	private void setTrainerName(String name)
+
+	Trainer setTrainerName(String name)
 	{
-		if(name == null || name.trim().isEmpty())
+		if(name == null || name.trim()
+				.isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 		mName = name;
+		return this;
 	}
-	
-	private void setAnatureParty(ArrayList<Anature> anatures)
+
+	Trainer setAnatureParty(ArrayList<Anature> anatures)
 	{
-		// TODO talk with team about if we should allow the trainer anatures variable to be empty
+		// TODO talk with team about if we should allow the trainer anatures variable to
+		// be empty
 		if(anatures == null)
 		{
 			throw new IllegalArgumentException("Passed value \"anatures\" was null.");
 		}
 		mAnatures = anatures;
+		return this;
 	}
-	
-	private void set
+
+	Trainer setPotions(ArrayList<HealthPotion> potions)
+	{
+		if(potions == null)
+		{
+			throw new IllegalArgumentException("Passed value \"potions\" was null.");
+		}
+		mPotions = potions;
+		return this;
+	}
+
+	Trainer setCurrentAnature(Anature anature)
+	{
+		if(anature == null)
+		{
+			throw new IllegalArgumentException("Passed value \"anature\" was null.");
+		}
+		mCurrentAnature = anature;
+		return this;
+	}
+
+	Trainer setAi(AI ai)
+	{
+		if(ai == null)
+		{
+			throw new IllegalArgumentException("Passed value \"ai\" was null.");
+		}
+		mAi = ai;
+		return this;
+	}
 
 	/*
-	 * PUBLIC METHODS
+	 * PUBLIC GETS
 	 */
-	public String getName()
-	{
-		return mName;
-	}
 
 	public TrainerIds getId()
 	{
 		return mId;
 	}
 
+	public String getName()
+	{
+		return mName;
+	}
+
+	public ArrayList<Anature> getAnatureParty()
+	{
+		return mAnatures;
+	}
+
+	public ArrayList<HealthPotion> getHealthPotions()
+	{
+		return mPotions;
+	}
+
+	public Anature getCurrentAnature()
+	{
+		return mCurrentAnature;
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
 	public Image getBattleSprite()
 	{
 		if(mId == TrainerIds.Wild)
 			return null;
 
-		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + "/" + mId.toString() + ".png").toExternalForm(),
-				1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString()
+				.toLowerCase() + "/" + mId.toString() + ".png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
 	}
 
-	public ArrayList<Anature> getAnatures()
+	// TODO We need to get rid of this method
+	public int getNextAnature(int index)
 	{
-		return mAnatures;
+		index++;
+		if(index >= mAnatures.size())
+		{
+			index = 0;
+		}
+		return index;
 	}
-	
-	// TODO get rid of this method. It most likely does not belong here
+
+	// TODO We need to move this method. It most likely does not belong here
 	public int getAnatureIndex(Anature anature)
 	{
 		int index = 0;
@@ -113,26 +162,6 @@ public class Trainer
 			index++;
 		}
 		return -1;
-	}
-	
-	public ArrayList<HealthPotion> getItmes()
-	{
-		return mPotions;
-	}
-
-	public Anature getCurrentAnature()
-	{
-		return mCurrentAnature;
-	}
-
-	public int getNextAnature(int index)
-	{
-		index++;
-		if(index >= mAnatures.size())
-		{
-			index = 0;
-		}
-		return index;
 	}
 
 	public boolean canBattle()
@@ -154,26 +183,29 @@ public class Trainer
 
 		return !result;
 	}
-	
+
 	public final AiChoiceObject<?> useTurn(Anature playerAnature)
 	{
-		boolean currentAnatureHasFainted = mCurrentAnature.getCurrHp() == 0;
-		
-		if(currentAnatureHasFainted)
-			return chooseAnature(playerAnature);
-		
-		boolean willUseHealthPotion = mAi.willUseHealthPotion(mPotions, mCurrentAnature, mHealthThreshold);
-		
+		boolean willUseHealthPotion = mAi.willUseHealthPotion(mPotions, mCurrentAnature);
+
 		if(willUseHealthPotion)
 			return chooseHealthPotion();
-		
-		boolean willSwitchAnature = mAi.willSwitchAnature(mAnatures, playerAnature, mCurrentAnature, mSwitchThreshold);
-	
+
+		boolean willSwitchAnature = mAi.willSwitchAnature(mAnatures, playerAnature, mCurrentAnature);
+
 		if(willSwitchAnature)
 			return chooseAnature(playerAnature);
-		
-		return chooseMove(playerAnature);
+
+		AiMoveChoice moveChoice = chooseMove(playerAnature);
+		if(moveChoice != null)
+			return moveChoice;
+
+		return new AiNoChoice();
 	}
+
+	/*
+	 * PRIVATE METHODS
+	 */
 
 	private AiHealthPotionChoice chooseHealthPotion()
 	{
@@ -181,14 +213,14 @@ public class Trainer
 		AiHealthPotionChoice healthPotionChoice = new AiHealthPotionChoice(healthPotionToUse);
 		return healthPotionChoice;
 	}
-	
+
 	private AiSwitchChoice chooseAnature(Anature playerAnature)
 	{
-		Anature anatureToSwitchTo = mAi.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature, mSwitchThreshold);
+		Anature anatureToSwitchTo = mAi.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
 		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
 		return switchChoice;
 	}
-	
+
 	private AiMoveChoice chooseMove(Anature playerAnature)
 	{
 		AiMoveChoice moveChoice = mAi.chooseMove(mCurrentAnature, playerAnature);
