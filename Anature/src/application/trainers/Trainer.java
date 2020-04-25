@@ -90,7 +90,22 @@ public class Trainer
 	{
 		return mAnatures;
 	}
-
+	
+	// TODO get rid of this method. It most likely does not belong here
+	public int getAnatureIndex(Anature anature)
+	{
+		int index = 0;
+		for(Anature currentAnature : mAnatures)
+		{
+			if(currentAnature.equals(anature))
+			{
+				return index;
+			}
+			index++;
+		}
+		return -1;
+	}
+	
 	public ArrayList<HealthPotion> getItmes()
 	{
 		return mPotions;

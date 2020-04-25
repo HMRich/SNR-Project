@@ -38,4 +38,10 @@ public class AiSwitchChoice extends AiFinalChoice implements AiChoiceObject<Anat
 	{
 		return getAnature();
 	}
+
+	@Override
+	public AiChoice getAiChoice()
+	{
+		return getChoice();
+	}
 }

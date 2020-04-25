@@ -39,4 +39,10 @@ public class AiHealthPotionChoice extends AiFinalChoice implements AiChoiceObjec
 	{
 		return getHealthPotion();
 	}
+
+	@Override
+	public AiChoice getAiChoice()
+	{
+		return getChoice();
+	}
 }

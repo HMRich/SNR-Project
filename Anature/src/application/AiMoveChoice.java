@@ -39,4 +39,10 @@ public class AiMoveChoice extends AiFinalChoice implements AiChoiceObject<Move>
 	{
 		return getMove();
 	}
+
+	@Override
+	public AiChoice getAiChoice()
+	{
+		return getChoice();
+	}
 }
