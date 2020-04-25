@@ -64,7 +64,7 @@ public class Anature
 		resetTempStats();
 	}
 
-	public MoveSet getMoves()
+	public MoveSet getMoveSet()
 	{
 		return mMoves;
 	}

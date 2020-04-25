@@ -2,9 +2,12 @@ package application.trainers;
 
 import java.util.ArrayList;
 
+import application.AiChoiceObject;
+import application.AiHealthPotionChoice;
+import application.AiMoveChoice;
+import application.AiSwitchChoice;
 import application.Anature;
 import application.BaseAI;
-import application.enums.AiChoice;
 import application.enums.AttackEffectiveness;
 import application.enums.TrainerIds;
 import application.items.HealthPotion;
@@ -40,15 +43,15 @@ public class Trainer
 	/*
 	 * PUBLIC METHODS
 	 */
-	public final AiChoice useTurn(Anature playerAnature)
+	public final AiChoiceObject<?> useTurn(Anature playerAnature)
 	{
 		boolean willUseHealthPotion = mAi.willUseHealthPotion(mPotions, mCurrentAnature, mHealthThreshold);
 		
-		// TODO Make a Result Object for useTurn()
 		if(willUseHealthPotion)
 		{
 			HealthPotion healthPotionToUse = mAi.healthPotionToUse(mPotions, mCurrentAnature);
-			return AiChoice.Item_Consumed;
+			AiHealthPotionChoice healthPotionChoice = new AiHealthPotionChoice(healthPotionToUse);
+			return healthPotionChoice;
 		}
 		
 		boolean willSwitchAnature = mAi.willSwitchAnature(mAnatures, playerAnature, mCurrentAnature, mSwitchThreshold);
@@ -56,10 +59,12 @@ public class Trainer
 		if(willSwitchAnature)
 		{
 			Anature anatureToSwitchTo = mAi.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature, mSwitchThreshold);
-			return AiChoice.Switch_Anature;
+			AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
+			return switchChoice;
 		}
 		
-		return mAi.chooseMove(mCurrentAnature, playerAnature);
+		AiMoveChoice moveChoice = mAi.chooseMove(mCurrentAnature, playerAnature);
+		return moveChoice;
 	}
 
 	public String getName()

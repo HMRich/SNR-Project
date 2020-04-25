@@ -60,7 +60,7 @@ public class FightManager
 		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
 		double oldHp = enemyAnature.getCurrHp();
 
-		MoveSet moves = mPlayerTeam.get(mPlayerIndex).getMoves();
+		MoveSet moves = mPlayerTeam.get(mPlayerIndex).getMoveSet();
 		if((moves.getMovePoints(indexOfMove) <= 0) && (indexOfMove != -1)) // TODO Fully implement Struggle
 		{
 			playerAnature.takeDamage(10);
@@ -112,7 +112,7 @@ public class FightManager
 		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
 		double oldHp = playerAnature.getCurrHp();
 
-		MoveSet moves = mEnemyTeam.get(mEnemyIndex).getMoves();
+		MoveSet moves = mEnemyTeam.get(mEnemyIndex).getMoveSet();
 		if((moves.getMovePoints(indexOfMove) <= 0) && (indexOfMove != -1)) // TODO Fully implement Struggle
 		{
 			enemyAnature.takeDamage(10);
@@ -248,12 +248,12 @@ public class FightManager
 			throw new NullPointerException("Enemy Anature was null, String or Result Object?");
 		}
 
-		if(team.get(0).getMoves() == null)
+		if(team.get(0).getMoveSet() == null)
 		{
 			throw new NullPointerException("Anature's MoveSet was null, String or Result Object?");
 		}
 
-		if(team.get(0).getMoves().getMove(indexOfMove) == null)
+		if(team.get(0).getMoveSet().getMove(indexOfMove) == null)
 		{
 			throw new NullPointerException("Anature's Move was null, String or Result Object?");
 		}

@@ -3,6 +3,7 @@ package application.controllers;
 import java.util.ArrayList;
 import java.util.Random;
 
+import application.AiChoiceObject;
 import application.Anature;
 import application.Backpack;
 import application.FightManager;
@@ -11,9 +12,18 @@ import application.MoveResult;
 import application.MoveSet;
 import application.Player;
 import application.Startup;
-import application.animations.*;
-import application.enums.*;
-import application.items.HealthPotion;
+import application.animations.BlinkingAnimation;
+import application.animations.OpacityAnimation;
+import application.animations.PlayerAnimation;
+import application.animations.ProgressBarDecrease;
+import application.animations.ProgressBarIncrease;
+import application.animations.XSlideAnimation;
+import application.enums.AiChoice;
+import application.enums.BattleChoice;
+import application.enums.Gender;
+import application.enums.LoggingTypes;
+import application.enums.StatusEffects;
+import application.enums.TrainerIds;
 import application.items.Item;
 import application.items.ItemPool;
 import application.moves.Move;
@@ -169,7 +179,7 @@ public class BattleController
 		mSwitchIndexSelected = 0;
 		mToEnd = false;
 		mPlayerFaintSequenceActive = false;
-		
+
 		mSwitchPageOneImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page1.png").toExternalForm());
 		mSwitchPageTwoImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page2.png").toExternalForm());
 
@@ -406,19 +416,19 @@ public class BattleController
 					mShowSwitchBackBtn.set(false);
 				}
 			};
-			
+
 			if(!afterAllTurnsStatusCheck(false, mFightManager.getEnemyAnature(), showSwitch))
 			{
 				showSwitch.run();
 			}
-			
+
 			else
 			{
 				mPlayerFaintSequenceActive = true;
 				mClickQueue.dequeue().run();
 			}
 		}
-		
+
 		else
 		{
 			mDialogueTxt.set("You have no Anature left!");
@@ -452,7 +462,7 @@ public class BattleController
 				System.out.println("Choosing enemy anature yet to be implemented!"); // TODO
 			});
 		}
-		
+
 		else
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
@@ -476,7 +486,7 @@ public class BattleController
 			public void handle(Event event)
 			{
 				event.consume();
-				
+
 				if(mCanClick.get())
 				{
 					Runnable toRun = mClickQueue.dequeue();
@@ -520,7 +530,7 @@ public class BattleController
 		mSwitchBtn.setOnMouseClicked(event ->
 		{
 			event.consume();
-			
+
 			if(mShowSwitchBackBtn.get())
 			{
 				activateTurn(BattleChoice.Switch);
@@ -531,7 +541,7 @@ public class BattleController
 				{
 					return;
 				}
-				
+
 				activateSwitch(null);
 
 				try
@@ -543,7 +553,7 @@ public class BattleController
 				{
 					LoggerController.logEvent(LoggingTypes.Error, "The pause in-between activateSwitch() & the rest ui enqueue was interrupted.");
 				}
-				
+
 				mClickQueue.enqueue(new Runnable()
 				{
 					@Override
@@ -932,7 +942,7 @@ public class BattleController
 
 	private void updateMoves(Anature playerCurr)
 	{
-		MoveSet moves = playerCurr.getMoves(); // TODO Make move btn color change based on move type
+		MoveSet moves = playerCurr.getMoveSet(); // TODO Make move btn color change based on move type
 		Move move1 = moves.getMove(1);
 		Move move2 = moves.getMove(2);
 		Move move3 = moves.getMove(3);
@@ -1215,7 +1225,7 @@ public class BattleController
 		Anature enemyCurr = mFightManager.getEnemyAnature();
 		Anature playerCurr = mFightManager.getPlayerAnature();
 
-		AiChoice enemyTurn = mEnemyTrainer.useTurn(playerCurr);
+		AiChoiceObject<?> enemyTurn = mEnemyTrainer.useTurn(playerCurr);
 
 		int whoGoesFirst = playerCurr.getSpeed() - enemyCurr.getSpeed();
 
@@ -1229,7 +1239,7 @@ public class BattleController
 		{
 			whoGoesFirst = 0;
 		}
-		
+
 		Runnable resetGui = new Runnable()
 		{
 			@Override
@@ -1239,27 +1249,27 @@ public class BattleController
 				{
 					mClickQueue.enqueue(() -> resetGui(), "Reset GUI");
 				}
-				
+
 				else
 				{
 					resetGui();
 				}
 			}
 		};
-		
+
 		Runnable afterTurns = () ->
 		{
 			boolean activatedPlayer = false;
 			boolean activatedEnemy = false;
-			
+
 			activatedPlayer = afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), null);
 			activatedEnemy = afterAllTurnsStatusCheck(false, mFightManager.getEnemyAnature(), resetGui);
-			
+
 			if(!activatedPlayer && !activatedEnemy)
 			{
 				mCanClick.set(true);
 			}
-			
+
 			if(!activatedEnemy)
 			{
 				resetGui.run();
@@ -1267,50 +1277,50 @@ public class BattleController
 		};
 
 		mCanClick.set(false);
-		
+
 		if(whoGoesFirst == 0) // Player goes first
 		{
-			activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice, () -> 
-			activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn, afterTurns));
+			activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice,
+					() -> activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn, afterTurns));
 		}
 
 		else // Enemy goes first
 		{
-			activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn, () -> 
-			activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice, afterTurns));
+			activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn,
+					() -> activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice, afterTurns));
 		}
 
 		onBackBtn();
 		mShowBtns.set(false);
 		mClickQueue.dequeue().run();
 	}
-	
+
 	private void activatePlayerTurn(Anature playerCurr, Anature enemyCurr, BattleChoice choice, Runnable nextTurn)
 	{
 		if(beforeTurnStatusCheck(true, playerCurr) || choice == BattleChoice.Item || choice == BattleChoice.Switch)
 		{
 			playerTurn(choice, nextTurn);
 		}
-		
+
 		else
 		{
 			mClickQueue.enqueue(nextTurn, "Next Turn");
 		}
 	}
-	
-	private void activateEnemyTurn(Anature playerCurr, Anature enemyCurr, AiChoice enemyTurn, Runnable nextTurn)
+
+	private void activateEnemyTurn(Anature playerCurr, Anature enemyCurr, AiChoiceObject<?> enemyTurn, Runnable nextTurn)
 	{
 		if(beforeTurnStatusCheck(false, enemyCurr) || enemyTurn == AiChoice.Item_Consumed || enemyTurn == AiChoice.Switch_Anature)
 		{
 			enemyTurn(enemyTurn, nextTurn);
 		}
-		
+
 		else
 		{
 			mClickQueue.enqueue(nextTurn, "Next Turn");
 		}
 	}
-	
+
 	private void activateAfterTurn(Runnable nextTurn)
 	{
 		mClickQueue.enqueue(() ->
@@ -1344,7 +1354,7 @@ public class BattleController
 		switch(choice)
 		{
 			case Attack_1:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp);
 					activateAfterTurn(nextTurn);
@@ -1352,7 +1362,7 @@ public class BattleController
 				break;
 
 			case Attack_2:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp);
 					activateAfterTurn(nextTurn);
@@ -1360,7 +1370,7 @@ public class BattleController
 				break;
 
 			case Attack_3:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp);
 					activateAfterTurn(nextTurn);
@@ -1368,7 +1378,7 @@ public class BattleController
 				break;
 
 			case Attack_4:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackEnemy(4), mEnemyHp);
 					activateAfterTurn(nextTurn);
@@ -1376,11 +1386,12 @@ public class BattleController
 				break;
 
 			case Item:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					Item selectedItem = ItemPool.getItem(mItemList.getSelectionModel().getSelectedItem());
 
-					ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other anatures
+					ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other
+																												// anatures
 					healthGain(result, mPlayerHp);
 
 					mPlayer.getBackpack().removeItem(selectedItem.getItemId());
@@ -1408,7 +1419,7 @@ public class BattleController
 		switch(enemyTurn)
 		{
 			case Move1:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
 					activateAfterTurn(nextTurn);
@@ -1416,7 +1427,7 @@ public class BattleController
 				break;
 
 			case Move2:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackPlayer(2), mPlayerHp);
 					activateAfterTurn(nextTurn);
@@ -1424,7 +1435,7 @@ public class BattleController
 				break;
 
 			case Move3:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackPlayer(3), mPlayerHp);
 					activateAfterTurn(nextTurn);
@@ -1432,12 +1443,18 @@ public class BattleController
 				break;
 
 			case Move4:
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					healthDrainMove(mFightManager.attackPlayer(4), mPlayerHp);
 					activateAfterTurn(nextTurn);
 				}, "Enemy Attack 4");
 				break;
+
+			case Item_Consumed:
+				mClickQueue.enqueue(() ->
+				{
+					healthGain(mFightManager.itemUse(false, mFightManager.getEnemyIndex(), mFightManager), toChange);
+				}, "Enemy Item Use");
 
 			default:
 				return;
@@ -1452,7 +1469,7 @@ public class BattleController
 			public void run()
 			{
 				mPlayerFaintSequenceActive = false;
-				
+
 				mFightManager.setPlayerSelectedIndex(mSwitchIndexSelected);
 				Anature oldAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
 				mPlayer.setSelectedIndex(mSwitchIndexSelected);
@@ -1477,13 +1494,13 @@ public class BattleController
 						}
 
 						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
-						fadeInNew.setOnFinished(actionEvent -> 
+						fadeInNew.setOnFinished(actionEvent ->
 						{
 							if(nextTurn != null)
 							{
 								activateAfterTurn(nextTurn);
 							}
-							
+
 							mCanClick.set(true);
 						});
 						fadeInNew.play();
@@ -1511,7 +1528,7 @@ public class BattleController
 
 		mDialogueTxt.set(result.getDialogue());
 		ProgressBarDecrease decrease = new ProgressBarDecrease(toChange, Duration.millis(3000), damageDone);
-		decrease.setOnFinished(event -> 
+		decrease.setOnFinished(event ->
 		{
 			mCanClick.set(true);
 		});
@@ -1560,21 +1577,20 @@ public class BattleController
 			decrease = new ProgressBarDecrease(mEnemyHp, Duration.millis(3000), damageDone);
 		}
 
-		
 		if(nextTurn == null)
 		{
 			decrease.setOnFinished(event -> mCanClick.set(true));
 		}
-		
+
 		else
 		{
-			decrease.setOnFinished(event -> 
+			decrease.setOnFinished(event ->
 			{
 				mClickQueue.enqueue(nextTurn, "Health Drain Next Turn");
 				mCanClick.set(true);
 			});
 		}
-		
+
 		decrease.play();
 	}
 
@@ -1587,7 +1603,7 @@ public class BattleController
 
 		mDialogueTxt.set(result.getDialogue());
 		ProgressBarIncrease increase = new ProgressBarIncrease(toChange, Duration.millis(duration), result.getHpGained());
-		increase.setOnFinished(event -> 
+		increase.setOnFinished(event ->
 		{
 			mCanClick.set(true);
 		});
@@ -1625,58 +1641,58 @@ public class BattleController
 		mShowMoveSe.set(false);
 		mShowBtns.set(true);
 	}
-	
+
 	private void resetGui()
 	{
 		mShowBtns.set(true);
 		mDialogueTxt.set("What will you do?");
 		mCanClick.set(false);
 	}
-	
+
 	private boolean beforeTurnStatusCheck(boolean isPlayer, Anature anature)
 	{
 		StatusEffects anatureStatus = anature.getStatus();
 		boolean canAttack = true;
-		
+
 		switch(anatureStatus)
 		{
 			case Burn:
 				break;
-				
+
 			case Paralysis:
 				mClickQueue.enqueue(() ->
 				{
 					mDialogueTxt.set(anature.getName() + " is paralysed! It may not be able to move!");
 					mCanClick.set(true);
 				}, "Paralysis Before Turn");
-				
+
 				canAttack = Math.random() <= 0.25;
-				
+
 				if(!canAttack)
 				{
-					mClickQueue.enqueue(() -> 
+					mClickQueue.enqueue(() ->
 					{
 						mDialogueTxt.set(anature.getName() + " could not attack because of the paralysis!");
 						mCanClick.set(true);
 					}, "Paralysis Before Turn - Can't Attack");
 				}
 				break;
-				
+
 			case Sleep:
 				boolean wakeUp = Math.random() <= 0.1;
-				
+
 				if(wakeUp)
 				{
-					mClickQueue.enqueue(() -> 
+					mClickQueue.enqueue(() ->
 					{
 						mDialogueTxt.set(anature.getName() + " woke up!");
 						mCanClick.set(true);
 					}, "Sleep Before Turn - Woke Up");
 				}
-				
+
 				else
 				{
-					mClickQueue.enqueue(() -> 
+					mClickQueue.enqueue(() ->
 					{
 						mDialogueTxt.set(anature.getName() + " is fast asleep!");
 						mCanClick.set(true);
@@ -1684,29 +1700,29 @@ public class BattleController
 					canAttack = false;
 				}
 				break;
-				
+
 			default:
 				break;
 		}
-		
+
 		return canAttack;
 	}
-	
+
 	private void afterTurnStatusCheck(boolean isPlayer, Anature anature)
 	{
 		StatusEffects anatureStatus = anature.getStatus();
 		boolean wasChanged = false;
-		
+
 		if(isPlayer)
 		{
 			wasChanged = updateStatusIcon(mStatusIconPlayer, anature);
 		}
-		
+
 		else
 		{
 			wasChanged = updateStatusIcon(mStatusIconEnemy, anature);
 		}
-		
+
 		if(wasChanged)
 		{
 			switch(anatureStatus)
@@ -1726,7 +1742,7 @@ public class BattleController
 						mCanClick.set(true);
 					}, "Paralysis After Turn");
 					break;
-					
+
 				case Sleep:
 					mClickQueue.enqueue(() ->
 					{
@@ -1734,27 +1750,27 @@ public class BattleController
 						mCanClick.set(true);
 					}, "Sleep After Turn");
 					break;
-					
+
 				default:
 					break;
 			}
 		}
 	}
-	
+
 	private boolean afterAllTurnsStatusCheck(boolean isPlayer, Anature anature, Runnable nextTurn)
 	{
 		StatusEffects anatureStatus = anature.getStatus();
-		
+
 		if(isPlayer)
 		{
 			updateStatusIcon(mStatusIconPlayer, anature);
 		}
-		
+
 		else
 		{
 			updateStatusIcon(mStatusIconEnemy, anature);
 		}
-		
+
 		switch(anatureStatus)
 		{
 			case Burn:
@@ -1763,22 +1779,22 @@ public class BattleController
 					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getTotalHp() / 16, isPlayer, nextTurn);
 					mFightManager.applyDamage(isPlayer, 0, anature.getTotalHp() / 16);
 				}, "Burn After All Turns");
-				
+
 				return true;
-				
+
 			case Paralysis:
 				break;
-				
+
 			case Sleep:
 				break;
-				
+
 			default:
 				break;
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean updateStatusIcon(ImageView icon, Anature toCheck)
 	{
 		StatusEffects anatureStatus = toCheck.getStatus();
@@ -1814,7 +1830,7 @@ public class BattleController
 				icon.setImage(null);
 				break;
 		}
-		
+
 		return wasChanged;
 	}
 

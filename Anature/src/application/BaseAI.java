@@ -9,12 +9,14 @@ import application.enums.AttackEffectiveness;
 import application.enums.LoggingTypes;
 import application.items.HealthPotion;
 import application.items.ItemPool;
+import application.moves.Move;
 
 public class BaseAI
 {
-	/*
-	 * PUBLIC METHODS
-	 */
+	
+	 /*
+	  *  PUBLIC METHODS
+	  */
 	public final boolean willUseHealthPotion(ArrayList<HealthPotion> healthPotions, Anature currentAnature, double healthThreshold)
 	{
 		if(healthPotions == null)
@@ -42,6 +44,7 @@ public class BaseAI
 
 		return trainerHasHealthPotion && currentAnatureAtThreshold;
 	}
+	
 
 	public HealthPotion healthPotionToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
 	{
@@ -88,6 +91,7 @@ public class BaseAI
 
 		return healthPotionToUse;
 	}
+	
 
 	public boolean willSwitchAnature(ArrayList<Anature> anatures, Anature enemyAnature, Anature currentAnature, AttackEffectiveness switchThreshold)
 	{
@@ -98,24 +102,46 @@ public class BaseAI
 		return hasOtherAnature && currentAnatureIsAtTypeDisavantage && hasAnatureWithTypeAdvantage;
 	}
 	
+	
 	// TODO Add a advantage threshold??
-	public AiChoice chooseMove(Anature source, Anature target)
+	public AiMoveChoice chooseMove(Anature source, Anature target)
 	{
-		ArrayList<AiChoice> choices = new ArrayList<AiChoice>();
+		ArrayList<AiMoveChoice> choices = new ArrayList<AiMoveChoice>();
 		
-		MoveSet moves = source.getMoves();
+		MoveSet moveSet = source.getMoveSet();
 		
-		if(moves.hasMove(1))
-			choices.add(AiChoice.Move1);
-		if(moves.hasMove(2))
-			choices.add(AiChoice.Move2);
-		if(moves.hasMove(3))
-			choices.add(AiChoice.Move3);
-		if(moves.hasMove(4))
-			choices.add(AiChoice.Move4);
+		if(moveSet.hasMove(1))
+		{
+			AiMoveChoice moveChoice1 = new AiMoveChoice(AiChoice.Move1, moveSet.getMove(1));
+			choices.add(moveChoice1);
+		}
 		
-		return choices.get(new Random().nextInt(choices.size()));
+		if(moveSet.hasMove(2))
+		{
+			AiMoveChoice moveChoice2 = new AiMoveChoice(AiChoice.Move2, moveSet.getMove(2));
+			choices.add(moveChoice2);
+		}
+		
+		if(moveSet.hasMove(3))
+		{
+			AiMoveChoice moveChoice3 = new AiMoveChoice(AiChoice.Move3, moveSet.getMove(3));
+			choices.add(moveChoice3);
+		}
+		
+		if(moveSet.hasMove(4))
+		{
+			AiMoveChoice moveChoice4 = new AiMoveChoice(AiChoice.Move4, moveSet.getMove(4));
+			choices.add(moveChoice4);
+		}
+		
+		// TODO Swap out random for something better
+		Random rnJesus = new Random();
+		int randomIndexSelection = rnJesus.nextInt(choices.size());
+		AiMoveChoice randomAiMoveChoice = choices.get(randomIndexSelection);
+		
+		return randomAiMoveChoice;
 	}
+	
 	
 	public Anature chooseNewAnature(ArrayList<Anature> anatures, Anature currentAnature, Anature enemyAnature, AttackEffectiveness switchThreshold)
 	{
@@ -134,7 +160,7 @@ public class BaseAI
 	}
 	
 	/*
-	 * PRIVATE METHODS
+	 *  PRIVATE METHODS
 	 */
 	private boolean willHealthPotionOverheal(double percentAfterHeal)
 	{
@@ -149,10 +175,12 @@ public class BaseAI
 		return isEffectivenessNotAboveNotEffective;
 	}
 	
+	
 	private boolean isAnatureAtTypeAdvantage(Anature currentAnature, Anature enemyAnature, AttackEffectiveness switchThreshold)
 	{
 		return !isAnatureAtTypeDisadvantage(currentAnature, enemyAnature, switchThreshold);
 	}
+	
 	
 	private boolean isAboveEffectivenessThreshold(AttackEffectiveness effectiveness, AttackEffectiveness switchThreshold)
 	{
@@ -176,6 +204,7 @@ public class BaseAI
 				return false;
 		}
 	}
+	
 
 	private boolean hasAnAnatureWithTypeAdvantage(ArrayList<Anature> anatures, Anature currentAnature, Anature enemyAnature, AttackEffectiveness switchThreshold)
 	{
