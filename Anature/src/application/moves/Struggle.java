@@ -4,23 +4,21 @@ import application.Anature;
 import application.enums.MoveIds;
 import application.enums.Type;
 
-public class DoublePunch extends Move
+public class Struggle extends Move // TODO Rename to flail
 {
-	private static int mDamageDone = 25;
-	private static int mTotalMp = 20;
 	private static double mAccuracyStat = 100;
 	private static boolean mDoesDamage = true;
 	private static boolean mIsPhysicalAttack = true;
 
-	public DoublePunch()
+	public Struggle()
 	{
-		super("Double Punch", mTotalMp, MoveIds.Double_Punch, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Fighting);
+		super("Struggle", 999, MoveIds.Struggle, mDoesDamage, mIsPhysicalAttack, mAccuracyStat, Type.Normal);
 	}
 
 	@Override
 	public void activateMove(Anature source, Anature target)
 	{
-		target.takeDamage(mDamageDone);
-
+		source.takeDamage(10);
+		target.takeDamage(20);
 	}
 }

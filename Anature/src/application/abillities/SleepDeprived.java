@@ -1,15 +1,29 @@
 package application.abillities;
 
+import application.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
+import application.enums.StatusEffects;
 
 public class SleepDeprived implements Ability
 {
-	public static void activateAbility()
+	public static String activateAbility(Anature userAnature)
 	{
-		// TODO once statuses are added implement this method
-		LoggerController.logEvent(LoggingTypes.Error, "Not Yet Implemented: SleepDeprived");
+		if(userAnature == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Determination was null.");
+			return "";
+		}
+		
+		String toReturn = "";
+		
+		if(userAnature.getStatus() == StatusEffects.Sleep)
+		{
+			toReturn = userAnature.getName() + " stayed awake do to its Sleep Deprived ability!";
+		}
+		
+		return toReturn;
 	}
 
 	@Override

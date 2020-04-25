@@ -1,17 +1,44 @@
 package application.abillities;
 
 import application.Anature;
+import application.controllers.LoggerController;
 import application.enums.AbilityIds;
+import application.enums.LoggingTypes;
 import application.moves.Move;
 
 public class Determination implements Ability
 {
-	public static void activateAbility(Anature targetAnature, Move move, double oldHp)
+	public static String activateAbility(Anature userAnature, Move move, double userOldHp)
 	{
-		if(move.doesDamage() && (move.getTotalMovePoints() >= targetAnature.getTotalHp()))
+		if(hasNull(userAnature, move, userOldHp))
 		{
-			targetAnature.setCurrHp(1);
+			return "";
 		}
+		
+		if(move.doesDamage() && (userOldHp == userAnature.getTotalHp()))
+		{
+			userAnature.setCurrHp(1);
+			return userAnature.getName() + " survived on 1 hp thanks to their Determination!"; 
+		}
+		
+		return "";
+	}
+	
+	private static boolean hasNull(Anature userAnature, Move move, double userOldHp)
+	{	
+		if(userAnature == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Determination was null.");
+			return true;
+		}
+		
+		else if(move == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "move parameter in Determination was null.");
+			return true;
+		}
+
+		return false;
 	}
 
 	public AbilityIds getAbilityId()
@@ -21,7 +48,7 @@ public class Determination implements Ability
 
 	public String getAbilityName()
 	{
-		return "Determined";
+		return "Determination";
 	}
 
 	public String getAbilityDescription()

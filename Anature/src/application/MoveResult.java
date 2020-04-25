@@ -1,33 +1,41 @@
 package application;
 
+import java.util.ArrayList;
+
+import application.abillities.AbilityResult;
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
+import application.enums.MoveIds;
+import application.moves.Move;
+import application.moves.MovePool;
+
 public class MoveResult extends Result
 {
-	private double mDamageDone;
-	private String mMpTxt;
-	private int mMoveIndex;//NOTE: a moveIndex of -1 means that the move was skipped
+	private Move mMove;
+	private int mMoveIndex; //NOTE: a moveIndex of -1 means that the move was skipped
 	private boolean mIsPlayer;
+	private AbilityResult mAbilityResult;
 	
-	public MoveResult(double damageDone, String dialogueTxt, int moveIndex, String mpTxt, boolean isPlayer)
+	public MoveResult(ArrayList<String> moveDialogue, AbilityResult abilityResult, int moveIndex, boolean isPlayer, Move move)
 	{
-		super(dialogueTxt);
-
-		if(mpTxt == null)
-			throw new IllegalArgumentException("mpTxt was null");
-
-		mDamageDone = damageDone;
-		mMpTxt = mpTxt;
-		mMoveIndex = moveIndex;
+		super(moveDialogue);
+		
+		if(abilityResult == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "abilityResult in MoveResult constructor was null.");
+			abilityResult = new AbilityResult(new ArrayList<String>(), false);
+		}
+		
+		else if(move == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "move in MoveResult constructor was null.");
+			move = MovePool.getMove(MoveIds.Tackle);
+		}
+		
+		mAbilityResult = abilityResult;
+		mMove = move;
 		mIsPlayer = isPlayer;
-	}
-
-	public double getDamageDone()
-	{
-		return mDamageDone;
-	}
-
-	public String getMpTxt()
-	{
-		return mMpTxt;
+		mMoveIndex = moveIndex;
 	}
 
 	public int getMoveIndex()
@@ -40,4 +48,13 @@ public class MoveResult extends Result
 		return mIsPlayer;
 	}
 	
+	public Move getMove()
+	{
+		return mMove;
+	}
+	
+	public AbilityResult getAbilityResult() 
+	{
+		return mAbilityResult;
+	}
 }
