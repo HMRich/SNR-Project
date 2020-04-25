@@ -119,7 +119,7 @@ public class BattleController
 	private ClickQueue mClickQueue;
 	private AnatureSlot mSlotOne, mSlotTwo, mSlotThree, mSlotFour, mSlotFive, mSlotSix;
 	private int mSwitchPageNum, mSwitchIndexSelected;
-	private boolean mToEnd, mEnemyFaintSequenceActive;
+	private boolean mToEnd, mPlayerFaintSequenceActive;
 
 	public void initialize()
 	{
@@ -179,7 +179,7 @@ public class BattleController
 		mSwitchPageNum = 1;
 		mSwitchIndexSelected = 0;
 		mToEnd = false;
-		mEnemyFaintSequenceActive = false;
+		mPlayerFaintSequenceActive = false;
 
 		mSwitchPageOneImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page1.png").toExternalForm());
 		mSwitchPageTwoImg = new Image(getClass().getResource("/resources/images/battle/switching/Switch_Selection_Panel_Page2.png").toExternalForm());
@@ -425,7 +425,7 @@ public class BattleController
 
 			else
 			{
-				mEnemyFaintSequenceActive = true;
+				mPlayerFaintSequenceActive = true;
 				mClickQueue.dequeue().run();
 			}
 		}
@@ -501,7 +501,7 @@ public class BattleController
 					{
 						mCanClick.set(false);
 
-						if(mPlayerHp.get() <= 0 && !mEnemyFaintSequenceActive)
+						if(mPlayerHp.get() <= 0 && !mPlayerFaintSequenceActive)
 						{
 							onPlayerAnatureDeath();
 						}
@@ -542,7 +542,7 @@ public class BattleController
 				{
 					return;
 				}
-				
+
 				activateSwitch(null);
 
 				try
@@ -838,12 +838,12 @@ public class BattleController
 
 		mAnatureFront.setImage(enemyCurr.getFrontSprite());
 
-		startInto(player, enemyTrainer, enemyCurr);
+		startIntro(player, enemyTrainer, enemyCurr);
 
 		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures(), player.getName(), enemyTrainer.getName());
 	}
 
-	private void startInto(Player player, Trainer enemyTrainer, Anature enemyCurr)
+	private void startIntro(Player player, Trainer enemyTrainer, Anature enemyCurr)
 	{
 		mClickQueue.enqueue(new Runnable()
 		{
@@ -939,6 +939,18 @@ public class BattleController
 		mAnatureBack.setImage(playerCurr.getBackSprite());
 
 		updateMoves(playerCurr);
+	}
+
+	private void updateEnemyAnature(Anature enemyCurr)
+	{
+		mEnemyName.set(enemyCurr.getName());
+
+		mEnemyHp.set(enemyCurr.getCurrHp());
+		mEnemyHpTotal.set(enemyCurr.getTotalHp());
+
+		mEnemyLvl.set(enemyCurr.getLevel());
+
+		mAnatureFront.setImage(enemyCurr.getFrontSprite());
 	}
 
 	private void updateMoves(Anature playerCurr)
@@ -1458,7 +1470,7 @@ public class BattleController
 				{
 					healthGain(mFightManager.itemUse(false, mFightManager.getEnemyIndex(), (HealthPotion) enemyTurn.getChoiceObject()), mEnemyHp);
 				}, "Enemy Item Use");
-				
+
 			case Switch_Anature:
 				mClickQueue.enqueue(() ->
 				{
@@ -1469,106 +1481,106 @@ public class BattleController
 
 	private void activateSwitch(Runnable nextTurn)
 	{
-			mClickQueue.enqueue(new Runnable()
+		mClickQueue.enqueue(new Runnable()
+		{
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
+				mPlayerFaintSequenceActive = false;
+
+				mFightManager.setPlayerSelectedIndex(mSwitchIndexSelected);
+				Anature oldAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
+				mPlayer.setSelectedIndex(mSwitchIndexSelected);
+				Anature newAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
+
+				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
+				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
 				{
-					mEnemyFaintSequenceActive = false;
-					
-					mFightManager.setPlayerSelectedIndex(mSwitchIndexSelected);
-					Anature oldAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
-					mPlayer.setSelectedIndex(mSwitchIndexSelected);
-					Anature newAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
-					
-					OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
-					fadeOld.setOnFinished(new EventHandler<ActionEvent>()
+					@Override
+					public void handle(ActionEvent event)
 					{
-						@Override
-						public void handle(ActionEvent event)
+						updatePlayerAnature(newAnature);
+
+						try
 						{
-							updatePlayerAnature(newAnature);
-							
-							try
-							{
-								Thread.sleep(500);
-							}
-							
-							catch(InterruptedException e)
-							{
-								LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
-							}
-							
-							OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
-							fadeInNew.setOnFinished(actionEvent ->
-							{
-								if(nextTurn != null)
-								{
-									activateAfterTurn(nextTurn);
-								}
-								
-								mCanClick.set(true);
-							});
-							fadeInNew.play();
+							Thread.sleep(500);
 						}
-					});
-					
-					fadeOld.play();
-					mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
-				}
-			}, "Activate Switch");
+
+						catch(InterruptedException e)
+						{
+							LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
+						}
+
+						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
+						fadeInNew.setOnFinished(actionEvent ->
+						{
+							if(nextTurn != null)
+							{
+								activateAfterTurn(nextTurn);
+							}
+
+							mCanClick.set(true);
+						});
+						fadeInNew.play();
+					}
+				});
+
+				fadeOld.play();
+				mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
+			}
+		}, "Activate Switch");
 	}
-	
+
 	private void activateEnemySwitch(AiChoiceObject<?> enemyTurn, Runnable nextTurn)
 	{
-			mClickQueue.enqueue(new Runnable()
+		mClickQueue.enqueue(new Runnable()
+		{
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
+				mPlayerFaintSequenceActive = false;
+
+				Anature oldAnature = mFightManager.getEnemyAnature();
+				Anature newAnature = (Anature) enemyTurn.getChoiceObject();
+				int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
+				mFightManager.setEnemySelectedIndex(newAnatureIndex);
+
+				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
+				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
 				{
-					mEnemyFaintSequenceActive = false;
-					
-					Anature oldAnature = mFightManager.getEnemyAnature();
-					Anature newAnature = (Anature) enemyTurn.getChoiceObject();
-					int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
-					mFightManager.setEnemySelectedIndex(newAnatureIndex);
-					
-					OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
-					fadeOld.setOnFinished(new EventHandler<ActionEvent>()
+					@Override
+					public void handle(ActionEvent event)
 					{
-						@Override
-						public void handle(ActionEvent event)
+						updateEnemyAnature(newAnature);
+
+						try
 						{
-							updatePlayerAnature(newAnature);
-							
-							try
-							{
-								Thread.sleep(500);
-							}
-							
-							catch(InterruptedException e)
-							{
-								LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
-							}
-							
-							OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
-							fadeInNew.setOnFinished(actionEvent ->
-							{
-								if(nextTurn != null)
-								{
-									activateAfterTurn(nextTurn);
-								}
-								
-								mCanClick.set(true);
-							});
-							fadeInNew.play();
+							Thread.sleep(500);
 						}
-					});
-					
-					fadeOld.play();
-					mDialogueTxt.set(mEnemyTrainer.getName() + " calls back" + oldAnature.getName() + ".");
-				}
-			}, "Enemy Activate Switch");
+
+						catch(InterruptedException e)
+						{
+							LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
+						}
+
+						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
+						fadeInNew.setOnFinished(actionEvent ->
+						{
+							if(nextTurn != null)
+							{
+								activateAfterTurn(nextTurn);
+							}
+
+							mCanClick.set(true);
+						});
+						fadeInNew.play();
+					}
+				});
+
+				fadeOld.play();
+				mDialogueTxt.set(mEnemyTrainer.getName() + " calls back" + oldAnature.getName() + ".");
+			}
+		}, "Enemy Activate Switch");
 	}
 
 	private void healthDrainMove(MoveResult result, DoubleProperty toChange)

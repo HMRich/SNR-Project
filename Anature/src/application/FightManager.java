@@ -33,21 +33,21 @@ public class FightManager
 		mEnemyIndex = 0;
 		mTurnCount = 0;
 	}
-	
+
 	public void applyDamage(boolean isPlayer, int index, double damage)
 	{
 		ArrayList<Anature> team = null;
-		
+
 		if(isPlayer)
 		{
 			team = mPlayerTeam;
 		}
-		
+
 		else
 		{
 			team = mEnemyTeam;
 		}
-		
+
 		Anature selected = team.get(index);
 		selected.takeDamage(damage);
 	}
@@ -71,19 +71,20 @@ public class FightManager
 		}
 
 		Move playerAnatureMove = moves.getMove(indexOfMove);
-		
-		
-		if(playerAnatureMove.getMoveId() == MoveIds.Skip_Turn) {
+
+		if(playerAnatureMove.getMoveId() == MoveIds.Skip_Turn)
+		{
 			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
-			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " could not attack " + mEnemyName + "'s " + enemyAnature.getName() + "because it has " + playerAnature.getStatus() + "!", -1,
-					"-1/" + playerAnatureMove.getTotalMovePoints(), false);
+			return new MoveResult(
+					oldHp - enemyAnature.getCurrHp(), mPlayerName + "'s " + playerAnature.getName() + " could not attack " + mEnemyName + "'s "
+							+ enemyAnature.getName() + "because it has " + playerAnature.getStatus() + "!",
+					-1, "-1/" + playerAnatureMove.getTotalMovePoints(), false);
 		}
-		
+
 		// This if statement checks if the move is going to miss
 		if((playerAnatureMove.getAccuracy() / playerAnature.getTempAccuracy()) > (Math.random() + .1))
 		{
-			
+
 			playerAnatureMove.activateMove(playerAnature, enemyAnature);
 			moves.useMovePoint(indexOfMove);
 
@@ -101,8 +102,6 @@ public class FightManager
 		}
 
 	}
-
-	
 
 	public MoveResult attackPlayer(int indexOfMove)
 	{
@@ -123,19 +122,19 @@ public class FightManager
 		}
 
 		Move enemyAnatureMove = moves.getMove(indexOfMove);
-		
-		
-		if(enemyAnatureMove.getMoveId() == MoveIds.Skip_Turn) {
+
+		if(enemyAnatureMove.getMoveId() == MoveIds.Skip_Turn)
+		{
 			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
-			return new MoveResult(oldHp - playerAnature.getCurrHp(),
-					mEnemyName + "'s " + enemyAnature.getName() + " could not attack " + mPlayerName + "'s " + playerAnature.getName() + "because it has " + enemyAnature.getStatus() + "!", -1,
-					"-1/" + enemyAnatureMove.getTotalMovePoints(), false);
+			return new MoveResult(
+					oldHp - playerAnature.getCurrHp(), mEnemyName + "'s " + enemyAnature.getName() + " could not attack " + mPlayerName + "'s "
+							+ playerAnature.getName() + "because it has " + enemyAnature.getStatus() + "!",
+					-1, "-1/" + enemyAnatureMove.getTotalMovePoints(), false);
 		}
-		
+
 		if((enemyAnatureMove.getAccuracy() / enemyAnature.getTempAccuracy()) > (Math.random() + .1))
 		{
-			
-			
+
 			enemyAnatureMove.activateMove(enemyAnature, playerAnature);
 			moves.useMovePoint(indexOfMove);
 
@@ -204,7 +203,8 @@ public class FightManager
 				Grumble.activateAbility(targetAnature, getTurnNumber());
 				break;
 			case Spiky:
-				if(!skipTurn) {
+				if(!skipTurn)
+				{
 					Spiky.activateAbility(attackingAnature, targetAnature, move);
 				}
 				break;
@@ -215,7 +215,7 @@ public class FightManager
 	{
 		return mPlayerTeam;
 	}
-	
+
 	public Anature getPlayerAnature()
 	{
 		return mPlayerTeam.get(mPlayerIndex);
@@ -225,7 +225,7 @@ public class FightManager
 	{
 		return mEnemyTeam;
 	}
-	
+
 	public Anature getEnemyAnature()
 	{
 		return mEnemyTeam.get(mEnemyIndex);

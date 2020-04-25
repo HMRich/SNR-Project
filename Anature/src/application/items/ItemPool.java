@@ -12,21 +12,28 @@ public class ItemPool
 
 	public static Item getItem(ItemIds itemId)
 	{
-		if(mItems == null)
-		{
-			generateItems();
-		}
-
+		checkPool();
+		
 		return mItems.get(itemId);
 	}
 
 	public static HealthPotion getHealthPotion(ItemIds itemId)
 	{
+		checkPool();
+		
 		if(isHealthPotion(itemId))
 		{
 			return (HealthPotion) mItems.get(itemId);
 		}
 		return null;
+	}
+	
+	private static void checkPool()
+	{
+		if(mItems.equals(null))
+		{
+			generateItems();
+		}
 	}
 
 	private static void generateItems()
