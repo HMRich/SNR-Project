@@ -24,8 +24,8 @@ public class ToughSkin implements Ability
 		
 		else if(moveThatAttacked != null && moveThatAttacked.isPhysicalAttack() && !attackMissed)
 		{
-			double damageDealt = userOldHp - userAnature.getCurrHp();
-			userAnature.setCurrHp(userOldHp - (int) (damageDealt * 0.8));
+			double damageDealt = userOldHp - userAnature.getCurrentHitPoints();
+			userAnature.updateCurrentHitPoints(userOldHp - (int) (damageDealt * 0.8));
 			
 			return userAnature.getName() + " took less damage because of their Tough Skin!";
 		}

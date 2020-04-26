@@ -2,7 +2,6 @@ package application.items;
 
 import application.anatures.Anature;
 import application.controllers.results.ItemResult;
-import application.enums.ItemIds;
 
 public class HealthPotion extends Item
 {
@@ -31,9 +30,9 @@ public class HealthPotion extends Item
 
 	public ItemResult useItem(Anature target)
 	{
-		double oldHp = target.getCurrHp();
+		double oldHp = target.getCurrentHitPoints();
 		String dialogue = target.healAnature(getHealAmount());
-		double newHp = target.getCurrHp();
+		double newHp = target.getCurrentHitPoints();
 
 		return new ItemResult(dialogue, newHp - oldHp);
 	}

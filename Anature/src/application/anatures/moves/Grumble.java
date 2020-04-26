@@ -19,6 +19,6 @@ public class Grumble extends Move
 	@Override
 	public void activateMove(Anature source, Anature target)
 	{
-		target.setTempAttack((int) - (target.getAttack() * 0.1)); // TODO Fully Implement
+		target.adjustTempAttack(-0.1); // TODO Fully Implement
 	}
 }

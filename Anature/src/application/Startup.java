@@ -240,11 +240,11 @@ public class Startup extends Application
 	public static void createDemo()
 	{
 		Anature first = AnatureBuilder.createAnature(Species.Null, 15);
-		first.setName("Main Null");
+		first.updateName("Main Null");
 		mPlayer.addAnatures(first);
 
 		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
-		second.setName("Other Null");
+		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
 
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));

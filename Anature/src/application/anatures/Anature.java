@@ -62,8 +62,7 @@ public class Anature
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim()
-				.isEmpty())
+		if(name.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
@@ -78,8 +77,7 @@ public class Anature
 			throw new IllegalArgumentException("Passed value \"ownerName\" was null.");
 		}
 
-		if(ownerName.trim()
-				.isEmpty())
+		if(ownerName.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"ownerName\" was an empty string.");
 		}
@@ -202,7 +200,16 @@ public class Anature
 		}
 
 		mTotalHitPoints = totalHitPoints;
-		mCurrentHitPoints = totalHitPoints;
+	}
+
+	void setCurrentHitPoints(int currentHitPoints)
+	{
+		if(currentHitPoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"totalHitPoints\" was 0 or below.");
+		}
+
+		mCurrentHitPoints = currentHitPoints;
 	}
 
 	void setAttack(int attack)
@@ -266,37 +273,79 @@ public class Anature
 	}
 
 	/*
-	 * PUBLIC SETS
+	 * PUBLIC TEMP METHODS
 	 */
 
-	public void setTempAttack(int tempAttack)
+	public void adjustTempAttack(double tempAttackAdjustment)
 	{
-		mTempAttack = tempAttack;
+		if(tempAttackAdjustment < -1 || tempAttackAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempAttackAdjustment\" was below -1 or above 1.");
+		}
+		
+		int adjustment = (int) (tempAttackAdjustment * mAttack);
+		
+		mTempAttack = mTempAttack + adjustment;
 	}
 
-	public void setTempDefense(int tempDefense)
+	public void adjustTempDefense(double tempDefenseAdjustment)
 	{
-		mTempDefense = tempDefense;
+		if(tempDefenseAdjustment < -1 || tempDefenseAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempDefenseAdjustment\" was below -1 or above 1.");
+		}
+		
+		int adjustment = (int) (tempDefenseAdjustment * mDefense);
+
+		mTempDefense = mTempDefense + adjustment;
 	}
 
-	public void setTempSpecialAttack(int tempSpecialAttack)
+	public void adjustTempSpecialAttack(double tempSpecialAttackAdjustment)
 	{
-		mTempSpecialAttack = tempSpecialAttack;
+		if(tempSpecialAttackAdjustment < -1 || tempSpecialAttackAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempSpecialAttackAdjustment\" was below -1 or above 1.");
+		}
+		
+		int adjustment = (int) (tempSpecialAttackAdjustment * mSpecialAttack);
+
+		mTempSpecialAttack = mTempSpecialAttack + adjustment;
 	}
 
-	public void setTempSpecialDefense(int tempSpecialDefense)
+	public void adjustTempSpecialDefense(double tempSpecialDefenseAdjustment)
 	{
-		mTempSpecialDefense = tempSpecialDefense;
+		if(tempSpecialDefenseAdjustment < -1 || tempSpecialDefenseAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempSpecialDefenseAdjustment\" was below -1 or above 1.");
+		}
+		
+		int adjustment = (int) (tempSpecialDefenseAdjustment * mSpecialDefense);
+
+		mTempSpecialDefense = mTempSpecialDefense + adjustment;
 	}
 
-	public void setTempSpeed(int tempSpeed)
+	public void adjustTempSpeed(double tempSpeedAdjustment)
 	{
-		mTempSpeed = tempSpeed;
+		if(tempSpeedAdjustment < -1 || tempSpeedAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempSpeedAdjustment\" was below -1 or above 1.");
+		}
+		
+		int adjustment = (int) (tempSpeedAdjustment * mSpeed);
+
+		mTempSpeed = mTempSpeed + adjustment;
 	}
 
-	public void setTempAccuracy(int accuracy)
+	public void adjustTempAccuracy(double accuracyAdjustment)
 	{
-		mTempAccuracy = accuracy;
+		if(accuracyAdjustment < -1 || accuracyAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"accuracyAdjustment\" was below -1 or above 1.");
+		}
+		
+		int adjustment = (int) (accuracyAdjustment * mAccuracy);
+
+		mTempAccuracy = mTempAccuracy + adjustment;
 	}
 
 	/*
@@ -380,67 +429,82 @@ public class Anature
 
 	public int getAttack()
 	{
-		return mAttack;
+		return mAttack + mTempAttack;
 	}
 
 	public int getDefense()
 	{
-		return mDefense;
+		return mDefense + mTempDefense;
 	}
 
 	public int getSpecialAttack()
 	{
-		return mSpecialAttack;
+		return mSpecialAttack + mTempSpecialAttack;
 	}
 
 	public int getSpecialDefense()
 	{
-		return mSpecialDefense;
+		return mSpecialDefense + mTempSpecialDefense;
 	}
 
 	public int getSpeed()
 	{
-		return mSpeed;
+		return mSpeed + mTempSpeed;
 	}
 
 	public int getAccuracy()
 	{
-		return mAccuracy;
+		return mAccuracy + mTempAccuracy;
 	}
 
-	public int getTempAttack()
-	{
-		return mTempAttack;
-	}
-
-	public int getTempDefense()
-	{
-		return mTempDefense;
-	}
-
-	public int getTempSpecialAttack()
-	{
-		return mTempSpecialAttack;
-	}
-
-	public int getTempSpecialDefense()
-	{
-		return mTempSpecialDefense;
-	}
-
-	public int getTempSpeed()
-	{
-		return mTempSpeed;
-	}
-
-	public int getTempAccuracy()
-	{
-		return mTempAccuracy;
-	}
+//	public int getTempAttack()
+//	{
+//		return mTempAttack;
+//	}
+//
+//	public int getTempDefense()
+//	{
+//		return mTempDefense;
+//	}
+//
+//	public int getTempSpecialAttack()
+//	{
+//		return mTempSpecialAttack;
+//	}
+//
+//	public int getTempSpecialDefense()
+//	{
+//		return mTempSpecialDefense;
+//	}
+//
+//	public int getTempSpeed()
+//	{
+//		return mTempSpeed;
+//	}
+//
+//	public int getTempAccuracy()
+//	{
+//		return mTempAccuracy;
+//	}
 
 	/*
 	 * PUBLIC METHODS
 	 */
+
+	public void updateName(String name)
+	{
+		setName(name);
+	}
+
+	public void updateStatus(StatusEffects status)
+	{
+		setStatus(status);
+	}
+
+	public void updateCurrentHitPoints(int hitPoints)
+	{
+		setCurrentHitPoints(hitPoints);
+	}
 
 	public ArrayList<Type> getTypes()
 	{
@@ -496,21 +560,51 @@ public class Anature
 
 	public Anature getClone()
 	{
-		return new Anature(mName, mOwnerName, mLevel, mCurrentExpereincePoints, mGender,
-				new MoveSet(mMoveSet.getMove(1), mMoveSet.getMove(2), mMoveSet.getMove(3), mMoveSet.getMove(4)), new Type[]
-				{ mPrimaryType, mSecondaryType }, mSpecies, mIsShiny, mIndexNumber, mAbility, mAttack, mSpecialAttack, mDefense, mSpecialDefense,
-				mTotalHitPoints, mSpeed, mAccuracy, mStatus);
+		return new AnatureBuilder().setName(mName)
+				.setOwnerName(mOwnerName)
+				.setIsShiny(mIsShiny)
+				.setSpecies(mSpecies)
+				.setGender(mGender)
+				.setPrimaryType(mPrimaryType)
+				.setSecondaryType(mSecondaryType)
+				.setMoveSet(mMoveSet)
+				.setAbility(mAbility)
+				.setStatus(mStatus)
+				.setIndexNumber(mIndexNumber)
+				.setLevel(mLevel)
+				.setCurrentExperiencePoints(mCurrentExpereincePoints)
+				.setTotalHitPoints(mTotalHitPoints)
+				.setCurrentHitPoints(mCurrentHitPoints)
+				.setAttack(mAttack)
+				.setDefense(mDefense)
+				.setSpecialAttack(mSpecialAttack)
+				.setDefense(mSpecialDefense)
+				.setSpeed(mSpeed)
+				.setAccuracy(mAccuracy)
+				.create();
 	}
 
 	public Image getFrontSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png")
-				.toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true,
+				false);
 	}
 
 	public Image getBackSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png")
-				.toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true,
+				false);
+	}
+
+	/*
+	 * PACKAGE METHODS
+	 */
+
+	boolean canCreate()
+	{
+		return !mName.isEmpty() && !mOwnerName.isEmpty() && mSpecies != null && mGender != null && mPrimaryType != null && mSecondaryType != null
+				&& mMoveSet != null && mAbility != null && mStatus != null && mLevel != -1 && mCurrentExpereincePoints != -1 && mTotalHitPoints != -1
+				&& mCurrentHitPoints != -1 && mIndexNumber != -1 && mAttack != -1 && mDefense != -1 && mSpecialAttack != -1 && mSpecialDefense != -1
+				&& mSpeed != -1 && mAccuracy != 1;
 	}
 }

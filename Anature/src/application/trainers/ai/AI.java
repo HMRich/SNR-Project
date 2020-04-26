@@ -120,7 +120,7 @@ public class AI
 		{
 			int itemHealAmount = ItemPool.getHealthPotion(healthPotion.getItemId())
 					.getHealAmount();
-			double healPercent = itemHealAmount / currentAnature.getTotalHp();
+			double healPercent = itemHealAmount / currentAnature.getTotalHitPoints();
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);

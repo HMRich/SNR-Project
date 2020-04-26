@@ -196,7 +196,7 @@ public class BattleController
 		mBurnStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Burn.png").toExternalForm());
 		mParalyzedStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Paralyzed.png").toExternalForm());
 		mSleepStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Sleep.png").toExternalForm());
-		
+
 		mMaleIcon = new Image(getClass().getResource("/resources/images/battle/Male_Symbol.png").toExternalForm());
 		mFemaleIcon = new Image(getClass().getResource("/resources/images/battle/Female_Symbol.png").toExternalForm());
 	}
@@ -403,7 +403,7 @@ public class BattleController
 		boolean isThereAliveAnatureInParty = false;
 		for(Anature anature : mPlayer.getAnatures())
 		{
-			if(anature.getCurrHp() > 0)
+			if(anature.getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -453,7 +453,7 @@ public class BattleController
 		boolean isThereAliveAnatureInParty = false;
 		for(Anature anature : mEnemyTrainer.getAnatureParty())
 		{
-			if(anature.getCurrHp() > 0)
+			if(anature.getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -542,7 +542,7 @@ public class BattleController
 			}
 			else
 			{
-				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getCurrHp() <= 0)
+				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getCurrentHitPoints() <= 0)
 				{
 					return;
 				}
@@ -826,11 +826,11 @@ public class BattleController
 
 		mEnemyName.set(enemyCurr.getName());
 
-		mEnemyHp.set(enemyCurr.getCurrHp());
-		mEnemyHpTotal.set(enemyCurr.getTotalHp());
+		mEnemyHp.set(enemyCurr.getCurrentHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getTotalHitPoints());
 
 		mEnemyLvl.set(enemyCurr.getLevel());
-		
+
 		mPlayer = player;
 		mEnemyTrainer = enemyTrainer;
 
@@ -863,13 +863,13 @@ public class BattleController
 					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
 					{
 						OpacityAnimation back = new OpacityAnimation(mAnatureBack, Duration.millis(200), true);
-						back.setOnFinished(event -> 
+						back.setOnFinished(event ->
 						{
 							boolean isPlayer = true;
-							
+
 							activateEntryAbility(isPlayer);
 							activateEntryAbility(!isPlayer);
-							
+
 							mClickQueue.enqueue(() -> resetGui(), "Reset Gui");
 							mCanClick.set(true);
 						});
@@ -943,10 +943,10 @@ public class BattleController
 	{
 		mPlayerName.set(playerCurr.getName());
 
-		mPlayerHp.set(playerCurr.getCurrHp());
-		mPlayerHpTotal.set(playerCurr.getTotalHp());
+		mPlayerHp.set(playerCurr.getCurrentHitPoints());
+		mPlayerHpTotal.set(playerCurr.getTotalHitPoints());
 
-		mPlayerXp.set(playerCurr.getCurrentXp());
+		mPlayerXp.set(playerCurr.getCurrentExpereincePoints());
 		mPlayerXpTotal.set(100); // TODO change to a standard
 
 		mPlayerLvl.set(playerCurr.getLevel());
@@ -960,8 +960,8 @@ public class BattleController
 	{
 		mEnemyName.set(enemyCurr.getName());
 
-		mEnemyHp.set(enemyCurr.getCurrHp());
-		mEnemyHpTotal.set(enemyCurr.getTotalHp());
+		mEnemyHp.set(enemyCurr.getCurrentHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getTotalHitPoints());
 
 		mEnemyLvl.set(enemyCurr.getLevel());
 
@@ -1109,13 +1109,13 @@ public class BattleController
 		ArrayList<Anature> party = mPlayer.getAnatures();
 		Anature selected = party.get(selectedIndex);
 
-		mSwitchSelectedCatalogNum.setText(String.format("%03d", selected.getIndexNum()));
+		mSwitchSelectedCatalogNum.setText(String.format("%03d", selected.getIndexNumber()));
 		mSwitchSelectedName.setText(selected.getName());
 		mSwitchSelectedOwner.setText(selected.getOwner());
-		mSwitchSelectedCurrXp.setText(selected.getCurrentXp() + "");
-		mSwitchSelectedNextXp.setText((100 - selected.getCurrentXp()) + "");
+		mSwitchSelectedCurrXp.setText(selected.getCurrentExpereincePoints() + "");
+		mSwitchSelectedNextXp.setText((100 - selected.getCurrentExpereincePoints()) + "");
 
-		mSwitchSelectedHp.setText(selected.getTotalHp() + "");
+		mSwitchSelectedHp.setText(selected.getTotalHitPoints() + "");
 		mSwitchSelectedAtk.setText(selected.getAttack() + "");
 		mSwitchSelectedSpAtk.setText(selected.getSpecialAttack() + "");
 		mSwitchSelectedDef.setText(selected.getDefense() + "");
@@ -1130,8 +1130,8 @@ public class BattleController
 	private void updateSwitchSlot(Anature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)
 	{
 		visibleProp.set(true);
-		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(), curr.getCurrHp() + "/" + curr.getTotalHp(),
-				mShowSwitch.get(), visibleProp.get(), curr.getCurrHp());
+		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(),
+				curr.getCurrentHitPoints() + "/" + curr.getTotalHitPoints(), mShowSwitch.get(), visibleProp.get(), curr.getCurrentHitPoints());
 	}
 
 	private void updateBagMenu()
@@ -1171,29 +1171,29 @@ public class BattleController
 
 		mItemList.setItems(items);
 	}
-	
+
 	private void updateGender(Anature anature, boolean isPlayer)
 	{
 		Image toUse = mMaleIcon;
-		
+
 		switch(anature.getGender())
 		{
 			case Female:
 				toUse = mFemaleIcon;
 				break;
-				
+
 			case Male:
 				break;
-				
+
 			default:
 				toUse = null;
 		}
-		
+
 		if(isPlayer)
 		{
 			mPlayerGender.setImage(toUse);
 		}
-		
+
 		else
 		{
 			mEnemyGender.setImage(toUse);
@@ -1272,7 +1272,7 @@ public class BattleController
 	{
 		Anature anatureForSwitching = mPlayer.getAnatures().get(mSwitchIndexSelected);
 
-		if(anatureForSwitching.getCurrHp() <= 0)
+		if(anatureForSwitching.getCurrentHitPoints() <= 0)
 		{
 			return;
 		}
@@ -1507,7 +1507,7 @@ public class BattleController
 				{
 					activateEnemySwitch(enemyTurn, nextTurn);
 				}, "Enemy Anature Switch");
-				
+
 			default:
 				return;
 		}
@@ -1549,12 +1549,12 @@ public class BattleController
 						fadeInNew.setOnFinished(actionEvent ->
 						{
 							AbilityResult entryResult = mFightManager.activateEntryAbility(true);
-							
+
 							for(String dialogue : entryResult.getDialogue())
 							{
 								enqueueDialogue(dialogue, "Player Entry Ability Dialogue");
 							}
-							
+
 							if(nextTurn != null)
 							{
 								activateAfterTurn(nextTurn);
@@ -1571,11 +1571,11 @@ public class BattleController
 			}
 		}, "Activate Switch");
 	}
-	
+
 	private void activateEntryAbility(boolean isPlayer)
 	{
 		AbilityResult result = mFightManager.activateEntryAbility(isPlayer);
-		
+
 		for(String dialogue : result.getDialogue())
 		{
 			enqueueDialogue(dialogue, "Entry ability of player: " + isPlayer);
@@ -1650,7 +1650,7 @@ public class BattleController
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "Thread was interrupted during sleep in useAttack.");
 		}
-		
+
 		if(!move.doesDamage())
 		{
 			mDialogueTxt.set(moveDialogue.get(0));
@@ -1684,7 +1684,7 @@ public class BattleController
 		{
 			targetAnature = mFightManager.getPlayerAnature();
 			userAnature = mFightManager.getEnemyAnature();
-			
+
 			userOldHp = mEnemyHp;
 			targetOldHp = mPlayerHp;
 		}
@@ -1693,14 +1693,14 @@ public class BattleController
 		{
 			targetAnature = mFightManager.getEnemyAnature();
 			userAnature = mFightManager.getPlayerAnature();
-			
+
 			userOldHp = mPlayerHp;
 			targetOldHp = mEnemyHp;
 		}
 
-		double damageDoneToTarget = targetOldHp.get() - targetAnature.getCurrHp();
-		double damageDoneToUser = userOldHp.get() - userAnature.getCurrHp();
-		
+		double damageDoneToTarget = targetOldHp.get() - targetAnature.getCurrentHitPoints();
+		double damageDoneToUser = userOldHp.get() - userAnature.getCurrentHitPoints();
+
 		if(result.isPlayer() && damageDoneToTarget > mEnemyHp.get())
 		{
 			damageDoneToTarget = mEnemyHp.get();
@@ -1723,7 +1723,7 @@ public class BattleController
 		if(damageDoneToTarget != 0)
 		{
 			ProgressBarDecrease decreaseTargetHp = new ProgressBarDecrease(targetOldHp, Duration.millis(3000), damageDoneToTarget);
-			decreaseTargetHp.setOnFinished(event -> 
+			decreaseTargetHp.setOnFinished(event ->
 			{
 				if(damageDoneToUser > 0)
 				{
@@ -1731,7 +1731,7 @@ public class BattleController
 					decreaseUserHp.setOnFinished(userEvent -> mCanClick.set(true));
 					decreaseUserHp.play();
 				}
-				
+
 				else
 				{
 					mCanClick.set(true);
@@ -1739,7 +1739,7 @@ public class BattleController
 			});
 			decreaseTargetHp.play();
 		}
-		
+
 		else
 		{
 			mCanClick.set(true);
@@ -1749,23 +1749,23 @@ public class BattleController
 	private void healthDrainStatus(String statusDialogue, double damageDone, boolean isPlayer, Runnable nextTurn)
 	{
 		mDialogueTxt.set(statusDialogue);
-		
+
 		DoubleProperty toDamage = null;
 		if(isPlayer)
 		{
 			toDamage = mPlayerHp;
 		}
-		
+
 		else
 		{
 			toDamage = mEnemyHp;
 		}
-		
+
 		if(toDamage.get() - damageDone < 0)
 		{
 			damageDone = toDamage.get();
 		}
-		
+
 		ProgressBarDecrease decrease = new ProgressBarDecrease(toDamage, Duration.millis(3000), damageDone);
 
 		if(nextTurn == null)
@@ -1836,7 +1836,7 @@ public class BattleController
 		mDialogueTxt.set("What will you do?");
 		mCanClick.set(false);
 	}
-	
+
 	private void enqueueDialogue(String dialogue, String id)
 	{
 		mClickQueue.enqueue(() ->
@@ -1945,8 +1945,8 @@ public class BattleController
 			case Burn:
 				mClickQueue.enqueue(() ->
 				{
-					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getTotalHp() / 16, isPlayer, nextTurn);
-					mFightManager.applyDamage(isPlayer, 0, anature.getTotalHp() / 16);
+					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getTotalHitPoints() / 16, isPlayer, nextTurn);
+					mFightManager.applyDamage(isPlayer, 0, anature.getTotalHitPoints() / 16);
 				}, "Burn After All Turns");
 
 				return true;
@@ -2034,11 +2034,13 @@ public class BattleController
 		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), toDivideBy);
 		ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
 
-		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
+		scene.widthProperty()
+				.addListener((observableValue, oldWidth, newWidth) -> fontProperty
+						.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 
-		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
+		scene.heightProperty()
+				.addListener((observableValue, oldHeight, newHeight) -> fontProperty
+						.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 
 		return fontProperty;
 	}

@@ -15,9 +15,9 @@ public class Determination implements Ability
 			return "";
 		}
 		
-		if(move.doesDamage() && (userOldHp == userAnature.getTotalHp()))
+		if(move.doesDamage() && (userOldHp == userAnature.getTotalHitPoints()))
 		{
-			userAnature.setCurrHp(1);
+			userAnature.updateCurrentHitPoints(1);
 			return userAnature.getName() + " survived on 1 hp thanks to their Determination!"; 
 		}
 		

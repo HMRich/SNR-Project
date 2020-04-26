@@ -77,8 +77,8 @@ public class FightManager
 			targetAnature = mPlayerTeam.get(mPlayerIndex);
 		}
 
-		int oldUserHp = userAnature.getCurrHp();
-		int oldTargetHp = targetAnature.getCurrHp();
+		int oldUserHp = userAnature.getCurrentHitPoints();
+		int oldTargetHp = targetAnature.getCurrentHitPoints();
 		ArrayList<String> dialogue = new ArrayList<String>();
 		MoveSet moveSet = userAnature.getMoveSet();
 		Move move = moveSet.getMove(indexOfMove);
@@ -133,7 +133,7 @@ public class FightManager
 	private boolean landedAttack(Anature userAnature, Move move)
 	{
 		Random rng = new Random();
-		int anatureAccuracy = userAnature.getAccuracy() + userAnature.getTempAccuracy();
+		int anatureAccuracy = userAnature.getAccuracy();
 		if(anatureAccuracy > 100)
 		{
 			anatureAccuracy = 100;

@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
 import application.TypeAdvantage;
 import application.anatures.Anature;
+import application.anatures.AnatureBuilder;
 import application.anatures.abillities.Ability;
 import application.anatures.abillities.Spiky;
 import application.anatures.moves.MoveSet;
@@ -37,26 +38,48 @@ class TypeAdvantageTests
 	{
 		String name = "<Test Creature>";
 		String ownerName = "<Test Owner>";
-		int level = 10;
-		int currentxp = 10;
-		Gender gender = Gender.Trans;
-		MoveSet moves = new MoveSet(null, null, null, null);
-		Type[] types = new Type[]
-		{ null, null };
-		Species species = Species.Null;
 		boolean isShiny = false;
-		int indexNum = 10;
+		Species species = Species.Null;
+		Gender gender = Gender.Trans;
+		Type primaryType = null;
+		Type secondaryType = null;
+		MoveSet moveSet = new MoveSet(null, null, null, null);
 		Ability ability = new Spiky();
+		int indexNumber = 10;
+		int level = 10;
+		int currentExperiencePoints = 10;
+		int totalHitPoints = 10;
+		int currentHitPoints = 10;
 		int attack = 10;
-		int specialAttack = 10;
 		int defense = 10;
+		int specialAttack = 10;
 		int specialDefense = 10;
-		int totalHp = 10;
 		int speed = 10;
 		int accuracy = 10;
-		StatusEffects statusEffects = StatusEffects.None;
-		baseAnature = new Anature(name, ownerName, level, currentxp, gender, moves, types, species, isShiny, indexNum, ability, attack, specialAttack, defense,
-				specialDefense, totalHp, speed, accuracy, statusEffects);
+		StatusEffects statusEffect = StatusEffects.None;
+		
+		baseAnature = new AnatureBuilder().setName(name)
+				.setOwnerName(ownerName)
+				.setIsShiny(isShiny)
+				.setSpecies(species)
+				.setGender(gender)
+				.setPrimaryType(primaryType)
+				.setSecondaryType(secondaryType)
+				.setMoveSet(moveSet)
+				.setAbility(ability)
+				.setStatus(statusEffect)
+				.setIndexNumber(0)
+				.setLevel(level)
+				.setCurrentExperiencePoints(0)
+				.setTotalHitPoints(totalHitPoints)
+				.setCurrentHitPoints(currentHitPoints)
+				.setAttack(attack)
+				.setDefense(defense)
+				.setSpecialAttack(specialAttack)
+				.setSpecialDefense(specialDefense)
+				.setSpeed(speed)
+				.setAccuracy(accuracy)
+				.create();
 	}
 	
 	@TestTemplate

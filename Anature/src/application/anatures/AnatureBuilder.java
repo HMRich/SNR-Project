@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import application.Builder;
 import application.DatabaseConnection;
 import application.Startup;
 import application.anatures.abillities.Ability;
@@ -23,53 +24,167 @@ import application.enums.Type;
 import application.pools.AbilityPool;
 import application.pools.MovePool;
 
-public class AnatureBuilder
+public class AnatureBuilder implements Builder<Anature>
 {
 	private Anature mAnature;
-	
+
 	public AnatureBuilder()
 	{
 		generateNewAnature();
 	}
-	
+
 	/*
 	 * PUBLIC SETS
 	 */
-	
+
 	public AnatureBuilder setName(String name)
 	{
 		mAnature.setName(name);
 		return this;
 	}
-	
+
 	public AnatureBuilder setOwnerName(String ownerName)
 	{
 		mAnature.setOwnerName(ownerName);
 		return this;
 	}
-	
+
 	public AnatureBuilder setIsShiny(boolean isShiny)
 	{
 		mAnature.setIsShiny(isShiny);
 		return this;
 	}
-	
+
 	public AnatureBuilder setSpecies(Species species)
 	{
 		mAnature.setSpecies(species);
 		return this;
 	}
-	
+
 	public AnatureBuilder setGender(Gender gender)
 	{
 		mAnature.setGender(gender);
 		return this;
 	}
+
+	public AnatureBuilder setPrimaryType(Type primaryType)
+	{
+		mAnature.setPrimaryType(primaryType);
+		return this;
+	}
+
+	public AnatureBuilder setSecondaryType(Type secondaryType)
+	{
+		mAnature.setSecondaryType(secondaryType);
+		return this;
+	}
+
+	public AnatureBuilder setMoveSet(MoveSet moveSet)
+	{
+		mAnature.setMoveSet(moveSet);
+		return this;
+	}
+
+	public AnatureBuilder setAbility(Ability ability)
+	{
+		mAnature.setAbility(ability);
+		return this;
+	}
+
+	public AnatureBuilder setStatus(StatusEffects statusEffect)
+	{
+		mAnature.setStatus(statusEffect);
+		return this;
+	}
+
+	public AnatureBuilder setIndexNumber(int indexNumber)
+	{
+		mAnature.setIndexNumber(indexNumber);
+		return this;
+	}
+
+	public AnatureBuilder setLevel(int level)
+	{
+		mAnature.setLevel(level);
+		return this;
+	}
+
+	public AnatureBuilder setCurrentExperiencePoints(int currentExperiencePoints)
+	{
+		mAnature.setCurrentExperiencePoints(currentExperiencePoints);
+		return this;
+	}
+
+	public AnatureBuilder setTotalHitPoints(int totalHitPoints)
+	{
+		mAnature.setTotalHitPoints(totalHitPoints);
+		return this;
+	}
 	
-	public AnatureBuilder
-	
+	public AnatureBuilder setCurrentHitPoints(int currentHitPoints)
+	{
+		mAnature.setCurrentHitPoints(currentHitPoints);
+		return this;
+	}
+
+	public AnatureBuilder setAttack(int attack)
+	{
+		mAnature.setAttack(attack);
+		return this;
+	}
+
+	public AnatureBuilder setDefense(int defense)
+	{
+		mAnature.setDefense(defense);
+		return this;
+	}
+
+	public AnatureBuilder setSpecialAttack(int specialAttack)
+	{
+		mAnature.setSpecialAttack(specialAttack);
+		return this;
+	}
+
+	public AnatureBuilder setSpecialDefense(int specialDefense)
+	{
+		mAnature.setSpecialDefense(specialDefense);
+		return this;
+	}
+
+	public AnatureBuilder setSpeed(int speed)
+	{
+		mAnature.setSpeed(speed);
+		return this;
+	}
+
+	public AnatureBuilder setAccuracy(int accuracy)
+	{
+		mAnature.setAccuracy(accuracy);
+		return this;
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
+	public Anature create()
+	{
+		if(!buildIsComplete())
+		{
+			throw new IllegalStateException("All the builder variables need to have a value before you create a Anature.");
+		}
+
+		Anature anatureToReturn = mAnature;
+
+		generateNewAnature();
+
+		return anatureToReturn;
+	}
+
 	public static Anature createAnature(Species species, int level)
 	{
+		String name = species.toString();
+		String ownerName = Startup.getPlayerName();
 		MoveSet moves = generateMoveSet(species, level);
 		Gender gender = null;
 		Type[] types = new Type[2];
@@ -147,13 +262,43 @@ public class AnatureBuilder
 			return null;
 		}
 
-		return new Anature(species.toString(), Startup.getPlayerName(), level, 0, gender, moves, types, species, isShiny, indexNum, ability, attack,
-				specialAttack, defense, specialDefense, hp, speed, accuracy, StatusEffects.None);
+		return new AnatureBuilder().setName(name)
+				.setOwnerName(ownerName)
+				.setIsShiny(isShiny)
+				.setSpecies(species)
+				.setGender(gender)
+				.setPrimaryType(types[0])
+				.setSecondaryType(types[1])
+				.setMoveSet(moves)
+				.setAbility(ability)
+				.setStatus(StatusEffects.None)
+				.setIndexNumber(indexNum)
+				.setLevel(level)
+				.setCurrentExperiencePoints(0)
+				.setTotalHitPoints(hp)
+				.setCurrentExperiencePoints(hp)
+				.setAttack(attack)
+				.setDefense(defense)
+				.setSpecialAttack(specialAttack)
+				.setSpecialDefense(specialDefense)
+				.setSpeed(speed)
+				.setAccuracy(accuracy)
+				.create();
 	}
-	
+
 	/*
 	 * PRIVATE METHODS
 	 */
+
+	private void generateNewAnature()
+	{
+		mAnature = new Anature();
+	}
+
+	private boolean buildIsComplete()
+	{
+		return mAnature.canCreate();
+	}
 
 	private static MoveSet generateMoveSet(Species species, int level)
 	{

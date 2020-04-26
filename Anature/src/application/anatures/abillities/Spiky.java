@@ -14,14 +14,14 @@ public class Spiky implements Ability
 
 		if(!hasNull(userAnature, targetAnature, moveThatAttacked) && moveThatAttacked.isPhysicalAttack() && !isUserAttacking && !attackMissed)
 		{
-			int newHp = targetAnature.getCurrHp() - (targetAnature.getTotalHp() / 8);
+			int newHp = targetAnature.getCurrentHitPoints() - (targetAnature.getTotalHitPoints() / 8);
 			
 			if(newHp < 0)
 			{
 				newHp = 0;
 			}
 			
-			targetAnature.setCurrHp(newHp);
+			targetAnature.updateCurrentHitPoints(newHp);
 			result = targetAnature.getName() + " got hurt from attacking " + userAnature.getName() + "'s spikes!";
 		}
 		
