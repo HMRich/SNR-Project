@@ -1,6 +1,6 @@
-package application.abillities;
+package application.anatures.abillities;
 
-import application.Anature;
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;

@@ -1,4 +1,4 @@
-package application.abillities;
+package application.anatures.abillities;
 
 import application.enums.AbilityIds;
 

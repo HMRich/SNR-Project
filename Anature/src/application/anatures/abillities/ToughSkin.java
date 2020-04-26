@@ -1,10 +1,10 @@
-package application.abillities;
+package application.anatures.abillities;
 
-import application.Anature;
+import application.anatures.Anature;
+import application.anatures.moves.Move;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
-import application.moves.Move;
 
 public class ToughSkin implements Ability
 {
