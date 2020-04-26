@@ -16,11 +16,11 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
-import application.Anature;
-import application.MoveSet;
 import application.TypeAdvantage;
-import application.abillities.Ability;
-import application.abillities.Spiky;
+import application.anatures.Anature;
+import application.anatures.abillities.Ability;
+import application.anatures.abillities.Spiky;
+import application.anatures.moves.MoveSet;
 import application.enums.AttackEffectiveness;
 import application.enums.Gender;
 import application.enums.Species;
@@ -28,12 +28,12 @@ import application.enums.StatusEffects;
 import application.enums.Type;
 
 @DisplayName("Type Advantage Tests")
-public class TypeAdvantageTests
+class TypeAdvantageTests
 {
-	private static Anature baseAnature;
+	private Anature baseAnature;
 
 	@BeforeAll
-	public static void generateBaseAnature()
+	void generateBaseAnature()
 	{
 		String name = "<Test Creature>";
 		String ownerName = "<Test Owner>";
@@ -58,25 +58,27 @@ public class TypeAdvantageTests
 		baseAnature = new Anature(name, ownerName, level, currentxp, gender, moves, types, species, isShiny, indexNum, ability, attack, specialAttack, defense,
 				specialDefense, totalHp, speed, accuracy, statusEffects);
 	}
-
+	
 	@TestTemplate
 	@ExtendWith(AdvantageValueTestTempalte.class)
-	public void testEquals(TypeEffectivenessTestCase testCase)
+	void testEquals(TypeEffectivenessTestCase testCase)
 	{
 		Assert.assertEquals(TypeAdvantage.anatureEffectiveness(testCase.attacker, testCase.defender), testCase.expectedEffectiveness);
 	}
 
-	private static TypeEffectivenessTestCase createTestCase(Type[] sourceTypes, Type[] targetTypes, AttackEffectiveness expectedResult)
-	{
-		Anature sourceAnature = baseAnature.getClone();
-		sourceAnature.setTyes(sourceTypes);
-		Anature targetAnature = baseAnature.getClone();
-		targetAnature.setTyes(targetTypes);
-		return new TypeEffectivenessTestCase(sourceAnature, targetAnature, expectedResult);
-	}
+	
 
-	public static class AdvantageValueTestTempalte implements TestTemplateInvocationContextProvider
+	public class AdvantageValueTestTempalte implements TestTemplateInvocationContextProvider
 	{
+		private TypeEffectivenessTestCase createTestCase(Type[] sourceTypes, Type[] targetTypes, AttackEffectiveness expectedResult)
+		{
+			Anature sourceAnature = baseAnature.getClone();
+			sourceAnature.setTyes(sourceTypes);
+			Anature targetAnature = baseAnature.getClone();
+			targetAnature.setTyes(targetTypes);
+			return new TypeEffectivenessTestCase(sourceAnature, targetAnature, expectedResult);
+		}
+		
 		@Override
 		public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext arg0)
 		{
@@ -779,7 +781,9 @@ public class TypeAdvantageTests
 						@Override
 						public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
 						{
-							return parameterContext.getParameter().getType().equals(TypeEffectivenessTestCase.class);
+							return parameterContext.getParameter()
+									.getType()
+									.equals(TypeEffectivenessTestCase.class);
 						}
 
 						@Override

@@ -2,15 +2,15 @@ package application.trainers;
 
 import java.util.ArrayList;
 
-import application.Anature;
-import application.ai.AI;
-import application.ai.choice_objects.AiChoiceObject;
-import application.ai.choice_objects.AiHealthPotionChoice;
-import application.ai.choice_objects.AiMoveChoice;
-import application.ai.choice_objects.AiNoChoice;
-import application.ai.choice_objects.AiSwitchChoice;
+import application.anatures.Anature;
 import application.enums.TrainerIds;
 import application.items.HealthPotion;
+import application.trainers.ai.AI;
+import application.trainers.ai.choice_objects.AiChoiceObject;
+import application.trainers.ai.choice_objects.AiHealthPotionChoice;
+import application.trainers.ai.choice_objects.AiMoveChoice;
+import application.trainers.ai.choice_objects.AiNoChoice;
+import application.trainers.ai.choice_objects.AiSwitchChoice;
 import javafx.scene.image.Image;
 
 public class Trainer
@@ -18,42 +18,49 @@ public class Trainer
 	private TrainerIds mId;
 	private String mName;
 	private ArrayList<Anature> mAnatures;
-	private ArrayList<HealthPotion> mPotions;
+	private ArrayList<HealthPotion> mHealthPotions;
 	private Anature mCurrentAnature;
-	private AI mAi;
-	
-	// TODO make default triner stats
+	private AI mAI;
+
 	Trainer()
 	{
-		
+		mId = TrainerIds.Null;
+		mName = "";
+		mAnatures = null;
+		mHealthPotions = null;
+		mCurrentAnature = null;
+		mAI = null;
 	}
 
 	/*
 	 * PACKAGE SETS
 	 */
 
-	Trainer setTrainerId(TrainerIds trainerId)
+	void setTrainerId(TrainerIds trainerId)
 	{
 		if(trainerId == null)
 		{
 			throw new IllegalArgumentException("Passed value \"trainerId\" was null.");
 		}
 		mId = trainerId;
-		return this;
 	}
 
-	Trainer setTrainerName(String name)
+	void setTrainerName(String name)
 	{
-		if(name == null || name.trim()
-				.isEmpty())
+		if(name == null)
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
+
+		if(name.trim()
+				.isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
+		}
 		mName = name;
-		return this;
 	}
 
-	Trainer setAnatureParty(ArrayList<Anature> anatures)
+	void setAnatureParty(ArrayList<Anature> anatures)
 	{
 		// TODO talk with team about if we should allow the trainer anatures variable to
 		// be empty
@@ -62,37 +69,33 @@ public class Trainer
 			throw new IllegalArgumentException("Passed value \"anatures\" was null.");
 		}
 		mAnatures = anatures;
-		return this;
 	}
 
-	Trainer setPotions(ArrayList<HealthPotion> potions)
+	void setHealthPotions(ArrayList<HealthPotion> healthPotions)
 	{
-		if(potions == null)
+		if(healthPotions == null)
 		{
 			throw new IllegalArgumentException("Passed value \"potions\" was null.");
 		}
-		mPotions = potions;
-		return this;
+		mHealthPotions = healthPotions;
 	}
 
-	Trainer setCurrentAnature(Anature anature)
+	void setCurrentAnature(Anature currentAnature)
 	{
-		if(anature == null)
+		if(currentAnature == null)
 		{
 			throw new IllegalArgumentException("Passed value \"anature\" was null.");
 		}
-		mCurrentAnature = anature;
-		return this;
+		mCurrentAnature = currentAnature;
 	}
 
-	Trainer setAi(AI ai)
+	void setAI(AI ai)
 	{
 		if(ai == null)
 		{
 			throw new IllegalArgumentException("Passed value \"ai\" was null.");
 		}
-		mAi = ai;
-		return this;
+		mAI = ai;
 	}
 
 	/*
@@ -116,7 +119,7 @@ public class Trainer
 
 	public ArrayList<HealthPotion> getHealthPotions()
 	{
-		return mPotions;
+		return mHealthPotions;
 	}
 
 	public Anature getCurrentAnature()
@@ -174,7 +177,7 @@ public class Trainer
 		boolean result = false;
 		for(Anature anature : mAnatures)
 		{
-			if(anature.getCurrHp() == 0)
+			if(anature.getCurrentHitPoints() == 0)
 			{
 				result = true;
 				break;
@@ -186,12 +189,12 @@ public class Trainer
 
 	public final AiChoiceObject<?> useTurn(Anature playerAnature)
 	{
-		boolean willUseHealthPotion = mAi.willUseHealthPotion(mPotions, mCurrentAnature);
+		boolean willUseHealthPotion = mAI.willUseHealthPotion(mHealthPotions, mCurrentAnature);
 
 		if(willUseHealthPotion)
 			return chooseHealthPotion();
 
-		boolean willSwitchAnature = mAi.willSwitchAnature(mAnatures, playerAnature, mCurrentAnature);
+		boolean willSwitchAnature = mAI.willSwitchAnature(mAnatures, playerAnature, mCurrentAnature);
 
 		if(willSwitchAnature)
 			return chooseAnature(playerAnature);
@@ -204,26 +207,35 @@ public class Trainer
 	}
 
 	/*
+	 * PACKAGE METHODS
+	 */
+
+	boolean canComplete()
+	{
+		return mId != TrainerIds.Null && !mName.isEmpty() && mAnatures != null && mHealthPotions != null && mCurrentAnature != null && mAI != null;
+	}
+
+	/*
 	 * PRIVATE METHODS
 	 */
 
 	private AiHealthPotionChoice chooseHealthPotion()
 	{
-		HealthPotion healthPotionToUse = mAi.healthPotionToUse(mPotions, mCurrentAnature);
+		HealthPotion healthPotionToUse = mAI.healthPotionToUse(mHealthPotions, mCurrentAnature);
 		AiHealthPotionChoice healthPotionChoice = new AiHealthPotionChoice(healthPotionToUse);
 		return healthPotionChoice;
 	}
 
 	private AiSwitchChoice chooseAnature(Anature playerAnature)
 	{
-		Anature anatureToSwitchTo = mAi.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
+		Anature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
 		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
 		return switchChoice;
 	}
 
 	private AiMoveChoice chooseMove(Anature playerAnature)
 	{
-		AiMoveChoice moveChoice = mAi.chooseMove(mCurrentAnature, playerAnature);
+		AiMoveChoice moveChoice = mAI.chooseMove(mCurrentAnature, playerAnature);
 		return moveChoice;
 	}
 }

@@ -3,21 +3,20 @@ package application.controllers;
 import java.util.ArrayList;
 import java.util.Random;
 
-import application.Anature;
-import application.Backpack;
 import application.FightManager;
-import application.ItemResult;
-import application.MoveResult;
-import application.MoveSet;
-import application.Player;
 import application.Startup;
-import application.ai.choice_objects.AiChoiceObject;
+import application.anatures.Anature;
+import application.anatures.moves.Move;
+import application.anatures.moves.MoveSet;
 import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
 import application.animations.ProgressBarDecrease;
 import application.animations.ProgressBarIncrease;
 import application.animations.XSlideAnimation;
+import application.controllers.results.AbilityResult;
+import application.controllers.results.ItemResult;
+import application.controllers.results.MoveResult;
 import application.enums.AiChoice;
 import application.enums.BattleChoice;
 import application.enums.Gender;
@@ -25,13 +24,12 @@ import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
 import application.items.HealthPotion;
-import application.abillities.AbilityResult;
-import application.animations.*;
-import application.enums.*;
 import application.items.Item;
-import application.items.ItemPool;
-import application.moves.Move;
+import application.player.Backpack;
+import application.player.Player;
+import application.pools.ItemPool;
 import application.trainers.Trainer;
+import application.trainers.ai.choice_objects.AiChoiceObject;
 import application.views.elements.AnatureSlot;
 import application.views.elements.HpBar;
 import application.views.elements.ResizableImage;
@@ -848,7 +846,7 @@ public class BattleController
 
 		startIntro(player, enemyTrainer, enemyCurr);
 
-		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures());
+		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatureParty());
 	}
 
 	private void startIntro(Player player, Trainer enemyTrainer, Anature enemyCurr)
@@ -1469,7 +1467,7 @@ public class BattleController
 			case Move1:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_1, 1);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_1, 1);
 					activateAfterTurn(nextTurn);
 				}, "Enemy Attack 1");
 				break;
@@ -1477,7 +1475,7 @@ public class BattleController
 			case Move2:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_2, 2);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_2, 2);
 					activateAfterTurn(nextTurn);
 				}, "Enemy Attack 2");
 				break;
@@ -1485,7 +1483,7 @@ public class BattleController
 			case Move3:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_3, 3);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_3, 3);
 					activateAfterTurn(nextTurn);
 				}, "Enemy Attack 3");
 				break;
@@ -1493,7 +1491,7 @@ public class BattleController
 			case Move4:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_4, 4);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_4, 4);
 					activateAfterTurn(nextTurn);
 				}, "Enemy Attack 4");
 				break;
@@ -2008,7 +2006,7 @@ public class BattleController
 	private void updateMpCounts()
 	{
 		Anature playerAnature = mFightManager.getPlayerAnature();
-		MoveSet moveSet = playerAnature.getMoves();
+		MoveSet moveSet = playerAnature.getMoveSet();
 
 		if(moveSet.hasMove(1))
 		{

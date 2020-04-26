@@ -2,6 +2,8 @@ package application;
 
 import java.io.IOException;
 
+import application.anatures.Anature;
+import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.overworld_cells.GrassTownController;
@@ -12,9 +14,10 @@ import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.WarpPoints;
-import application.items.ItemPool;
 import application.models.PathOneModel;
 import application.models.StarterTownModel;
+import application.player.Player;
+import application.pools.ItemPool;
 import application.trainers.Trainer;
 import application.views.overworld_cells.GrassTownCell;
 import application.views.overworld_cells.PathOneCell;

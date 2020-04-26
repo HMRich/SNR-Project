@@ -1,0 +1,516 @@
+package application.anatures;
+
+import java.util.ArrayList;
+
+import application.anatures.abillities.Ability;
+import application.anatures.moves.MoveSet;
+import application.enums.Gender;
+import application.enums.Species;
+import application.enums.Type;
+import application.enums.StatusEffects;
+import javafx.scene.image.Image;
+
+public class Anature
+{
+	private String mName, mOwnerName;
+	private boolean mIsShiny;
+	private Species mSpecies;
+	private Gender mGender;
+	private Type mPrimaryType, mSecondaryType;
+	private MoveSet mMoveSet;
+	private Ability mAbility;
+	private StatusEffects mStatus;
+	private int mIndexNumber;
+	private int mLevel, mCurrentExpereincePoints;
+	private int mTotalHitPoints, mCurrentHitPoints;
+	private int mAttack, mDefense, mSpecialAttack, mSpecialDefense, mSpeed, mAccuracy;
+	private int mTempAttack, mTempDefense, mTempSpecialAttack, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
+
+	Anature()
+	{
+		mName = "";
+		mOwnerName = "";
+		mSpecies = null;
+		mGender = null;
+		mPrimaryType = null;
+		mSecondaryType = null;
+		mMoveSet = null;
+		mAbility = null;
+		mStatus = null;
+		mLevel = -1;
+		mCurrentExpereincePoints = -1;
+		mTotalHitPoints = -1;
+		mCurrentHitPoints = -1;
+		mIndexNumber = -1;
+		mAttack = -1;
+		mDefense = -1;
+		mSpecialAttack = -1;
+		mSpecialDefense = -1;
+		mSpeed = -1;
+		mAccuracy = -1;
+		resetTempStats();
+	}
+
+	/*
+	 * PACKAGE SETS
+	 */
+
+	void setName(String name)
+	{
+		if(name == null)
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was null.");
+		}
+
+		if(name.trim()
+				.isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
+		}
+
+		mName = name;
+	}
+
+	void setOwnerName(String ownerName)
+	{
+		if(ownerName == null)
+		{
+			throw new IllegalArgumentException("Passed value \"ownerName\" was null.");
+		}
+
+		if(ownerName.trim()
+				.isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"ownerName\" was an empty string.");
+		}
+
+		mOwnerName = ownerName;
+	}
+
+	void setIsShiny(boolean isShiny)
+	{
+		mIsShiny = isShiny;
+	}
+
+	void setSpecies(Species species)
+	{
+		if(species == null)
+		{
+			throw new IllegalArgumentException("Passed value \"species\" was null.");
+		}
+
+		mSpecies = species;
+	}
+
+	void setGender(Gender gender)
+	{
+		if(gender == null)
+		{
+			throw new IllegalArgumentException("Passed value \"gender\" was null.");
+		}
+
+		mGender = gender;
+	}
+
+	void setPrimaryType(Type primaryType)
+	{
+		if(primaryType == null)
+		{
+			throw new IllegalArgumentException("Passed value \"primaryType\" was null.");
+		}
+
+		mPrimaryType = primaryType;
+	}
+
+	void setSecondaryType(Type secondaryType)
+	{
+		if(secondaryType == null)
+		{
+			throw new IllegalArgumentException("Passed value \"secondaryType\" was null.");
+		}
+
+		mSecondaryType = secondaryType;
+	}
+
+	void setMoveSet(MoveSet moveSet)
+	{
+		if(moveSet == null)
+		{
+			throw new IllegalArgumentException("Passed value \"moveSet\" was null.");
+		}
+
+		mMoveSet = moveSet;
+	}
+
+	void setAbility(Ability ability)
+	{
+		if(ability == null)
+		{
+			throw new IllegalArgumentException("Passed value \"ability\" was null.");
+		}
+
+		mAbility = ability;
+	}
+
+	void setStatus(StatusEffects statusEffect)
+	{
+		if(statusEffect == null)
+		{
+			throw new IllegalArgumentException("Passed value \"statusEffect\" was null.");
+		}
+
+		mStatus = statusEffect;
+	}
+
+	void setIndexNumber(int indexNumber)
+	{
+		if(indexNumber < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"indexNumber\" was below 0.");
+		}
+
+		mIndexNumber = indexNumber;
+	}
+
+	void setLevel(int level)
+	{
+		// TODO Should we have a upper level limit?
+		if(level < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"level\" was below 0.");
+		}
+
+		mLevel = level;
+	}
+
+	void setCurrentExperiencePoints(int currentExperiencePoints)
+	{
+		if(currentExperiencePoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"currentExperience\" was below 0.");
+		}
+
+		mCurrentExpereincePoints = currentExperiencePoints;
+	}
+
+	void setTotalHitPoints(int totalHitPoints)
+	{
+		// TODO Should we add a minimum cap? So lowest possible HP is 100?
+		if(totalHitPoints <= 0)
+		{
+			throw new IllegalArgumentException("Passed value \"totalHitPoints\" was 0 or below.");
+		}
+
+		mTotalHitPoints = totalHitPoints;
+		mCurrentHitPoints = totalHitPoints;
+	}
+
+	void setAttack(int attack)
+	{
+		if(attack < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"attack\" was below 0.");
+		}
+
+		mAttack = attack;
+	}
+
+	void setDefense(int defense)
+	{
+		if(defense < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"defense\" was below 0.");
+		}
+
+		mDefense = defense;
+	}
+
+	void setSpecialAttack(int specialAttack)
+	{
+		if(specialAttack < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"specialAttack\" was below 0.");
+		}
+
+		mSpecialAttack = specialAttack;
+	}
+
+	void setSpecialDefense(int specialDefense)
+	{
+		if(specialDefense < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"specialDefense\" was below 0.");
+		}
+
+		mSpecialDefense = specialDefense;
+	}
+
+	void setSpeed(int speed)
+	{
+		if(speed < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"speed\" was below 0.");
+		}
+
+		mSpeed = speed;
+	}
+
+	void setAccuracy(int accuracy)
+	{
+		if(accuracy < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"accuracy\" was below 0.");
+		}
+
+		mAccuracy = accuracy;
+	}
+
+	/*
+	 * PUBLIC SETS
+	 */
+
+	public void setTempAttack(int tempAttack)
+	{
+		mTempAttack = tempAttack;
+	}
+
+	public void setTempDefense(int tempDefense)
+	{
+		mTempDefense = tempDefense;
+	}
+
+	public void setTempSpecialAttack(int tempSpecialAttack)
+	{
+		mTempSpecialAttack = tempSpecialAttack;
+	}
+
+	public void setTempSpecialDefense(int tempSpecialDefense)
+	{
+		mTempSpecialDefense = tempSpecialDefense;
+	}
+
+	public void setTempSpeed(int tempSpeed)
+	{
+		mTempSpeed = tempSpeed;
+	}
+
+	public void setTempAccuracy(int accuracy)
+	{
+		mTempAccuracy = accuracy;
+	}
+
+	/*
+	 * PUBLIC GETS
+	 */
+
+	public String getName()
+	{
+		return mName;
+	}
+
+	public String getOwner()
+	{
+		return mOwnerName;
+	}
+
+	public boolean isShiny()
+	{
+		return mIsShiny;
+	}
+
+	public Species getSpecies()
+	{
+		return mSpecies;
+	}
+
+	public Gender getGender()
+	{
+		return mGender;
+	}
+
+	public Type getPrimaryType()
+	{
+		return mPrimaryType;
+	}
+
+	public Type getSecondaryType()
+	{
+		return mSecondaryType;
+	}
+
+	public MoveSet getMoveSet()
+	{
+		return mMoveSet;
+	}
+
+	public Ability getAbility()
+	{
+		return mAbility;
+	}
+
+	public StatusEffects getStatus()
+	{
+		return mStatus;
+	}
+
+	public int getIndexNumber()
+	{
+		return mIndexNumber;
+	}
+
+	public int getLevel()
+	{
+		return mLevel;
+	}
+
+	public int getCurrentExpereincePoints()
+	{
+		return mCurrentExpereincePoints;
+	}
+
+	public int getTotalHitPoints()
+	{
+		return mTotalHitPoints;
+	}
+
+	public int getCurrentHitPoints()
+	{
+		return mCurrentHitPoints;
+	}
+
+	public int getAttack()
+	{
+		return mAttack;
+	}
+
+	public int getDefense()
+	{
+		return mDefense;
+	}
+
+	public int getSpecialAttack()
+	{
+		return mSpecialAttack;
+	}
+
+	public int getSpecialDefense()
+	{
+		return mSpecialDefense;
+	}
+
+	public int getSpeed()
+	{
+		return mSpeed;
+	}
+
+	public int getAccuracy()
+	{
+		return mAccuracy;
+	}
+
+	public int getTempAttack()
+	{
+		return mTempAttack;
+	}
+
+	public int getTempDefense()
+	{
+		return mTempDefense;
+	}
+
+	public int getTempSpecialAttack()
+	{
+		return mTempSpecialAttack;
+	}
+
+	public int getTempSpecialDefense()
+	{
+		return mTempSpecialDefense;
+	}
+
+	public int getTempSpeed()
+	{
+		return mTempSpeed;
+	}
+
+	public int getTempAccuracy()
+	{
+		return mTempAccuracy;
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
+	public ArrayList<Type> getTypes()
+	{
+		ArrayList<Type> types = new ArrayList<Type>();
+		if(mPrimaryType != null)
+		{
+			types.add(mPrimaryType);
+		}
+		if(mSecondaryType != null)
+		{
+			types.add(mSecondaryType);
+		}
+		return types;
+	}
+
+	public void resetTempStats()
+	{
+		mTempAttack = 0;
+		mTempSpecialAttack = 0;
+		mTempDefense = 0;
+		mTempSpecialDefense = 0;
+		mTempSpeed = 0;
+		mTempAccuracy = 0;
+	}
+
+	public void takeDamage(double damage)
+	{
+		mCurrentHitPoints -= damage;
+
+		if(mCurrentHitPoints < 0)
+			mCurrentHitPoints = 0;
+	}
+
+	public String healAnature(int healAmount)
+	{
+		String result = " was healed " + healAmount + " hp.";
+
+		mCurrentHitPoints += healAmount;
+
+		if(mCurrentHitPoints > mTotalHitPoints)
+		{
+			mCurrentHitPoints = mTotalHitPoints;
+			result = " was healed completely!";
+		}
+
+		return mName + result;
+	}
+
+	public double getHpPercent()
+	{
+		return mCurrentHitPoints / mTotalHitPoints;
+	}
+
+	public Anature getClone()
+	{
+		return new Anature(mName, mOwnerName, mLevel, mCurrentExpereincePoints, mGender,
+				new MoveSet(mMoveSet.getMove(1), mMoveSet.getMove(2), mMoveSet.getMove(3), mMoveSet.getMove(4)), new Type[]
+				{ mPrimaryType, mSecondaryType }, mSpecies, mIsShiny, mIndexNumber, mAbility, mAttack, mSpecialAttack, mDefense, mSpecialDefense,
+				mTotalHitPoints, mSpeed, mAccuracy, mStatus);
+	}
+
+	public Image getFrontSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+
+	public Image getBackSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+}

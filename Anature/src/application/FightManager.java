@@ -3,12 +3,17 @@ package application;
 import java.util.ArrayList;
 import java.util.Random;
 
-import application.abillities.AbilityResult;
+import application.anatures.Anature;
+import application.anatures.moves.Move;
+import application.anatures.moves.MoveSet;
+import application.controllers.results.AbilityActivation;
+import application.controllers.results.AbilityResult;
+import application.controllers.results.ItemResult;
+import application.controllers.results.MoveResult;
 import application.enums.AbilityIds;
 import application.enums.MoveIds;
 import application.items.Item;
-import application.moves.Move;
-import application.moves.MovePool;
+import application.pools.MovePool;
 
 public class FightManager
 {
@@ -75,7 +80,7 @@ public class FightManager
 		int oldUserHp = userAnature.getCurrHp();
 		int oldTargetHp = targetAnature.getCurrHp();
 		ArrayList<String> dialogue = new ArrayList<String>();
-		MoveSet moveSet = userAnature.getMoves();
+		MoveSet moveSet = userAnature.getMoveSet();
 		Move move = moveSet.getMove(indexOfMove);
 		
 		if(indexOfMove <= 0)
@@ -86,7 +91,7 @@ public class FightManager
 		AbilityIds userAbilityId = userAnature.getAbility().getAbilityId();
 		AbilityIds targetAbilityId = targetAnature.getAbility().getAbilityId();
 
-		moveSet.useMp(indexOfMove);
+		moveSet.useMovePoint(indexOfMove);
 		
 		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, move);
 		boolean landedTheAttack = landedAttack(userAnature, move);

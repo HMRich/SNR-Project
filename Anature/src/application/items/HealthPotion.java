@@ -1,19 +1,34 @@
 package application.items;
 
-import application.Anature;
-import application.ItemResult;
+import application.anatures.Anature;
+import application.controllers.results.ItemResult;
 import application.enums.ItemIds;
 
-public abstract class HealthPotion extends Item
+public class HealthPotion extends Item
 {
 	private int mHealAmount;
-	
-	public HealthPotion(ItemIds itemId, String itemName, int healAmount)
+
+	HealthPotion()
 	{
-		super(itemId, itemName);
-		mHealAmount = healAmount;
+		mHealAmount = -1;
 	}
-	
+
+	/*
+	 * PACKAGE SETS
+	 */
+
+	void setHealAmount(int healAmount)
+	{
+		if(healAmount < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"healAmount\" was below 0.");
+		}
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
 	public ItemResult useItem(Anature target)
 	{
 		double oldHp = target.getCurrHp();
@@ -26,6 +41,15 @@ public abstract class HealthPotion extends Item
 	public int getHealAmount()
 	{
 		return mHealAmount;
+	}
+
+	/*
+	 * PACKAGE METHODS
+	 */
+
+	boolean canCreate()
+	{
+		return super.canCreate() && mHealAmount != -1;
 	}
 
 }

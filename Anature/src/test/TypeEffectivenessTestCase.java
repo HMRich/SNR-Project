@@ -1,6 +1,6 @@
 package test;
 
-import application.Anature;
+import application.anatures.Anature;
 import application.enums.AttackEffectiveness;
 
 class TypeEffectivenessTestCase {

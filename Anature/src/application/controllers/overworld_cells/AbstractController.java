@@ -3,7 +3,6 @@ package application.controllers.overworld_cells;
 import java.util.Random;
 
 import application.LoggerStartUp;
-import application.Player;
 import application.Startup;
 import application.controllers.ClickQueue;
 import application.controllers.LoggerController;
@@ -11,6 +10,7 @@ import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.TrainerIds;
 import application.enums.WarpPoints;
+import application.player.Player;
 import application.trainers.Trainer;
 import application.trainers.TrainerBuilder;
 import application.views.elements.PlayerSprite;

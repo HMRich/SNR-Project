@@ -2,11 +2,12 @@ package application;
 
 import java.util.ArrayList;
 
+import application.anatures.Anature;
+import application.anatures.moves.Move;
 import application.controllers.LoggerController;
 import application.enums.AttackEffectiveness;
 import application.enums.LoggingTypes;
 import application.enums.Type;
-import application.moves.Move;
 
 public class TypeAdvantage
 {

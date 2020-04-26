@@ -1,9 +1,9 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
-import application.Player;
 import application.enums.Direction;
 import application.enums.WarpPoints;
+import application.player.Player;
 import application.views.overworld_cells.GrassTownCell;
 import javafx.scene.input.KeyEvent;
 
