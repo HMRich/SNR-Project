@@ -473,40 +473,17 @@ public class BattleController
 
 	private void setUpClickTracker(Scene scene)
 	{
-		scene.setOnMouseClicked(new EventHandler<Event>()
+		scene.setOnMouseClicked(event -> dequeueClickTracker(event));
+		scene.setOnKeyReleased(keyEvent ->
 		{
-			@Override
-			public void handle(Event event)
+			switch(keyEvent.getCode())
 			{
-				event.consume();
+				case E:
+					dequeueClickTracker(keyEvent);
+					break;
 
-				if(mCanClick.get())
-				{
-					Runnable toRun = mClickQueue.dequeue();
-
-					if(mToEnd)
-					{
-						toRun.run();
-					}
-
-					else if(toRun != null)
-					{
-						mCanClick.set(false);
-
-						if(mPlayerHp.get() <= 0 && !mPlayerFaintSequenceActive)
-						{
-							onPlayerAnatureDeath();
-						}
-
-						else if(mEnemyHp.get() == 0)
-						{
-							onEnemyAnatureDeath();
-						}
-
-						else
-							toRun.run();
-					}
-				}
+				default:
+					break;
 			}
 		});
 	}
@@ -1938,6 +1915,39 @@ public class BattleController
 		if(moveSet.hasMove(4))
 		{
 			mAttackMpOneTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
+		}
+	}
+	
+	private void dequeueClickTracker(Event event)
+	{
+		event.consume();
+
+		if(mCanClick.get())
+		{
+			Runnable toRun = mClickQueue.dequeue();
+
+			if(mToEnd)
+			{
+				toRun.run();
+			}
+
+			else if(toRun != null)
+			{
+				mCanClick.set(false);
+
+				if(mPlayerHp.get() <= 0 && !mPlayerFaintSequenceActive)
+				{
+					onPlayerAnatureDeath();
+				}
+
+				else if(mEnemyHp.get() == 0)
+				{
+					onEnemyAnatureDeath();
+				}
+
+				else
+					toRun.run();
+			}
 		}
 	}
 

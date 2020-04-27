@@ -29,6 +29,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -328,6 +329,17 @@ public abstract class AbstractCell
 		}
 
 		mScene.setOnKeyReleased(event);
+	}
+	
+	public void setSceneOnMouseClicked(EventHandler<MouseEvent> event)
+	{
+		if(event == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Tried making Scene on Mouse Clicked null.");
+			return;
+		}
+
+		mScene.setOnMouseClicked(event);
 	}
 
 	public ArrayList<Rectangle> getCollisions()
