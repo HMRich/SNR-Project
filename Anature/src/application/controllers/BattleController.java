@@ -625,12 +625,12 @@ public class BattleController
 	{
 		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 
-		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, true);
-		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, false);
-		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, false);
-		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, false);
-		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, false);
-		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, false);
+		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, true, StatusEffects.None);
+		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, false, StatusEffects.None);
+		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, false, StatusEffects.None);
+		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, false, StatusEffects.None);
+		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, false, StatusEffects.None);
+		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, false, StatusEffects.None);
 
 		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0);
 		createBindsAnatureslot(mSlotTwo, scene, 85, 3.157, 3.7, 15.1, 1);
@@ -1108,7 +1108,7 @@ public class BattleController
 	{
 		visibleProp.set(true);
 		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(), curr.getCurrHp() + "/" + curr.getTotalHp(),
-				mShowSwitch.get(), visibleProp.get(), curr.getCurrHp());
+				mShowSwitch.get(), visibleProp.get(), curr.getCurrHp(), curr.getStatus());
 	}
 
 	private void updateBagMenu()
