@@ -1,21 +1,21 @@
 package application.anatures.abillities;
 
 import application.anatures.Anature;
-import application.anatures.moves.Move;
+import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 
 public class Determination implements Ability
 {
-	public static String activateAbility(Anature userAnature, Move move, double userOldHp)
+	public static String activateAbility(Anature userAnature, MoveCore moveCore, double userOldHp)
 	{
-		if(hasNull(userAnature, move, userOldHp))
+		if(hasNull(userAnature, moveCore, userOldHp))
 		{
 			return "";
 		}
 		
-		if(move.doesDamage() && (userOldHp == userAnature.getTotalHitPoints()))
+		if(moveCore.doesDamage() && (userOldHp == userAnature.getTotalHitPoints()))
 		{
 			userAnature.updateCurrentHitPoints(1);
 			return userAnature.getName() + " survived on 1 hp thanks to their Determination!"; 
@@ -24,7 +24,7 @@ public class Determination implements Ability
 		return "";
 	}
 	
-	private static boolean hasNull(Anature userAnature, Move move, double userOldHp)
+	private static boolean hasNull(Anature userAnature, MoveCore moveCore, double userOldHp)
 	{	
 		if(userAnature == null)
 		{
@@ -32,7 +32,7 @@ public class Determination implements Ability
 			return true;
 		}
 		
-		else if(move == null)
+		else if(moveCore == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "move parameter in Determination was null.");
 			return true;

@@ -2,5 +2,5 @@ package application.enums;
 
 public enum Gender
 {
-	Male, Female, Trans
+	NotSet, Male, Female, Trans
 }

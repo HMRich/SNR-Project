@@ -1,0 +1,155 @@
+package application.anatures.moves;
+
+import application.anatures.moves.moves.Move;
+import application.enums.MoveIds;
+import application.enums.Type;
+
+public abstract class MoveCore implements Move
+{
+	private String mName;
+	private MoveIds mMoveId;
+	private Type mType;
+	private boolean mDoesDamage;
+	private boolean mIsPhysicalAttack;
+	private int mTotalMovePoints;
+	private double mAccuracy;
+
+	protected MoveCore()
+	{
+		mName = "";
+		mMoveId = MoveIds.NulllMove;
+		mType = Type.NotSet;
+		mDoesDamage = false;
+		mIsPhysicalAttack = false;
+		mTotalMovePoints = -1;
+		mAccuracy = -1;
+	}
+
+	/*
+	 * PACKAGE SETS
+	 */
+
+	void setName(String name)
+	{
+		if(name == null)
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was null.");
+		}
+
+		if(name.trim().isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
+		}
+
+		mName = name;
+	}
+
+	void setMoveId(MoveIds moveId)
+	{
+		if(moveId == null)
+		{
+			throw new IllegalArgumentException("Passed value \"moveId\" was null.");
+		}
+
+		if(moveId.equals(MoveIds.NulllMove))
+		{
+			throw new IllegalArgumentException("Passed value \"moveId\" was equal to " + moveId.toString() + ".");
+		}
+
+		mMoveId = moveId;
+	}
+
+	void setType(Type type)
+	{
+		if(type == null)
+		{
+			throw new IllegalArgumentException("Passed value \"type\" was null.");
+		}
+
+		if(type.equals(Type.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"type\" was equal to " + type.toString() + ".");
+		}
+
+		mType = type;
+	}
+
+	void setDoesDamage(boolean doesDamage)
+	{
+		mDoesDamage = doesDamage;
+	}
+
+	void setIsPhysicalAttack(boolean isPhysicalAttack)
+	{
+		mIsPhysicalAttack = isPhysicalAttack;
+	}
+
+	void setTotalMovePoints(int totalMovePoints)
+	{
+		if(totalMovePoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"totalMovePoints\" was less than 0.");
+		}
+
+		mTotalMovePoints = totalMovePoints;
+	}
+
+	void setAccuracy(double accuracy)
+	{
+		if(accuracy < 0 || accuracy > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"\" was less than zero or above 1.");
+		}
+
+		mAccuracy = accuracy;
+	}
+
+	/*
+	 * PROTECTED GETS
+	 */
+
+	public String getName()
+	{
+		return mName;
+	}
+
+	public MoveIds getMoveId()
+	{
+		return mMoveId;
+	}
+
+	public Type getType()
+	{
+		return mType;
+	}
+
+	public boolean doesDamage()
+	{
+		return mDoesDamage;
+	}
+
+	public boolean isPhysicalAttack()
+	{
+		return mIsPhysicalAttack;
+	}
+
+	public int getTotalMovePoints()
+	{
+		return mTotalMovePoints;
+	}
+
+	public double getAccuracy()
+	{
+		return mAccuracy;
+	}
+
+	/*
+	 * PACKAGE METHODS
+	 */
+
+	boolean canCreate()
+	{
+		return !mName.isEmpty() && mMoveId.equals(MoveIds.NulllMove) && mType.equals(Type.NotSet) && mTotalMovePoints != -1 && mAccuracy != -1;
+	}
+
+}

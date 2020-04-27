@@ -12,8 +12,8 @@ import application.Builder;
 import application.DatabaseConnection;
 import application.Startup;
 import application.anatures.abillities.Ability;
-import application.anatures.moves.Move;
-import application.anatures.moves.MoveSet;
+import application.anatures.abillities.MoveSet;
+import application.anatures.moves.MoveCore;
 import application.enums.AbilityIds;
 import application.enums.DatabaseType;
 import application.enums.Gender;
@@ -120,7 +120,7 @@ public class AnatureBuilder implements Builder<Anature>
 		mAnature.setTotalHitPoints(totalHitPoints);
 		return this;
 	}
-	
+
 	public AnatureBuilder setCurrentHitPoints(int currentHitPoints)
 	{
 		mAnature.setCurrentHitPoints(currentHitPoints);
@@ -181,8 +181,31 @@ public class AnatureBuilder implements Builder<Anature>
 		return anatureToReturn;
 	}
 
+	/*
+	 * PRIVATE METHODS
+	 */
+
+	private void generateNewAnature()
+	{
+		mAnature = new Anature();
+	}
+
+	private boolean buildIsComplete()
+	{
+		return mAnature.canCreate();
+	}
+
+	/*
+	 * STATIC PUBLIC METHODS
+	 */
+
 	public static Anature createAnature(Species species, int level)
 	{
+		String anatureName = species.toString().replaceAll("_", "");
+		String ownerName = Startup.getPlayerName();
+		boolean isShiny = false;
+		Gender gender = Gender.NotSet;
+		
 		String name = species.toString();
 		String ownerName = Startup.getPlayerName();
 		MoveSet moves = generateMoveSet(species, level);
@@ -287,18 +310,8 @@ public class AnatureBuilder implements Builder<Anature>
 	}
 
 	/*
-	 * PRIVATE METHODS
+	 * STATIC PRIVATE METHODS
 	 */
-
-	private void generateNewAnature()
-	{
-		mAnature = new Anature();
-	}
-
-	private boolean buildIsComplete()
-	{
-		return mAnature.canCreate();
-	}
 
 	private static MoveSet generateMoveSet(Species species, int level)
 	{
@@ -336,10 +349,10 @@ public class AnatureBuilder implements Builder<Anature>
 			return null;
 		}
 
-		Move move1 = null;
-		Move move2 = null;
-		Move move3 = null;
-		Move move4 = null;
+		MoveCore move1 = null;
+		MoveCore move2 = null;
+		MoveCore move3 = null;
+		MoveCore move4 = null;
 
 		if(availableMoves.size() <= 4)
 		{
@@ -386,4 +399,5 @@ public class AnatureBuilder implements Builder<Anature>
 
 		return toGenerate;
 	}
+
 }

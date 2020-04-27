@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import application.anatures.abillities.Ability;
 import application.anatures.abillities.Determination;
+import application.anatures.abillities.NullAbility;
 import application.anatures.abillities.Spiky;
 import application.anatures.abillities.Tyrannize;
 import application.enums.AbilityIds;
@@ -28,5 +29,6 @@ public class AbilityPool
 		mAbilities.put(AbilityIds.Tyrannize , new Tyrannize());
 		mAbilities.put(AbilityIds.Spiky, new Spiky());
 		mAbilities.put(AbilityIds.Determination, new Determination());
+		mAbilities.put(AbilityIds.NullAbility, new NullAbility());
 	}
 }

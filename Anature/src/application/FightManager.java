@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import application.anatures.Anature;
-import application.anatures.moves.Move;
-import application.anatures.moves.MoveSet;
+import application.anatures.abillities.MoveSet;
+import application.anatures.moves.MoveCore;
 import application.controllers.results.AbilityActivation;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
@@ -81,11 +81,11 @@ public class FightManager
 		int oldTargetHp = targetAnature.getCurrentHitPoints();
 		ArrayList<String> dialogue = new ArrayList<String>();
 		MoveSet moveSet = userAnature.getMoveSet();
-		Move move = moveSet.getMove(indexOfMove);
+		MoveCore moveCore = moveSet.getMove(indexOfMove);
 		
 		if(indexOfMove <= 0)
 		{
-			move = MovePool.getMove(MoveIds.Struggle);
+			moveCore = MovePool.getMove(MoveIds.Flail);
 		}
 		
 		AbilityIds userAbilityId = userAnature.getAbility().getAbilityId();
@@ -93,26 +93,26 @@ public class FightManager
 
 		moveSet.useMovePoint(indexOfMove);
 		
-		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, move);
-		boolean landedTheAttack = landedAttack(userAnature, move);
+		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, moveCore);
+		boolean landedTheAttack = landedAttack(userAnature, moveCore);
 		
 		if(landedTheAttack)
 		{	
-			dialogue.add(userAnature.getName() + " used " + move.getName() + " on " + targetAnature.getName());
+			dialogue.add(userAnature.getName() + " used " + moveCore.getName() + " on " + targetAnature.getName());
 			
 			if(!canAttackAbilityResult.isActiviated())
 			{
-				move.activateMove(userAnature, targetAnature);
+				moveCore.activateMove(userAnature, targetAnature);
 			}
 		}
 		
 		else
 		{
-			dialogue.add(userAnature.getName() + " used " + move.getName() + " but missed!");
+			dialogue.add(userAnature.getName() + " used " + moveCore.getName() + " but missed!");
 		}
 		
-		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityId, targetAnature, userAnature, move, oldTargetHp, false, !landedTheAttack);
-		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbilityId, userAnature, targetAnature, move, oldUserHp, true, !landedTheAttack);
+		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityId, targetAnature, userAnature, moveCore, oldTargetHp, false, !landedTheAttack);
+		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbilityId, userAnature, targetAnature, moveCore, oldUserHp, true, !landedTheAttack);
 		
 		ArrayList<String> afterTurnDialogue = new ArrayList<String>();
 		afterTurnDialogue.addAll(canAttackAbilityResult.getDialogue());
@@ -127,10 +127,10 @@ public class FightManager
 		
 		AbilityResult afterTurn = new AbilityResult(afterTurnDialogue, abilitiesWereActivated);
 		
-		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, move);				
+		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, moveCore);				
 	}
 	
-	private boolean landedAttack(Anature userAnature, Move move)
+	private boolean landedAttack(Anature userAnature, MoveCore moveCore)
 	{
 		Random rng = new Random();
 		int anatureAccuracy = userAnature.getAccuracy();
@@ -139,7 +139,7 @@ public class FightManager
 			anatureAccuracy = 100;
 		}
 		
-		double totalAccuracy = (move.getAccuracy() * 0.01) * (anatureAccuracy * 0.01);		
+		double totalAccuracy = (moveCore.getAccuracy() * 0.01) * (anatureAccuracy * 0.01);		
 		return rng.nextInt(101) < totalAccuracy * 100;
 	}
 

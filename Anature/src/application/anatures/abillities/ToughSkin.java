@@ -1,14 +1,14 @@
 package application.anatures.abillities;
 
 import application.anatures.Anature;
-import application.anatures.moves.Move;
+import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 
 public class ToughSkin implements Ability
 {
-	public static String activateAbility(Anature userAnature, Move moveThatAttacked, int userOldHp, boolean attackMissed)
+	public static String activateAbility(Anature userAnature, MoveCore moveThatAttacked, int userOldHp, boolean attackMissed)
 	{
 		if(userAnature == null)
 		{

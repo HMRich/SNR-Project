@@ -1,14 +1,14 @@
 package application.anatures.abillities;
 
 import application.anatures.Anature;
-import application.anatures.moves.Move;
+import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 
 public class Spiky implements Ability
 {
-	public static String activateAbility(Anature userAnature, Anature targetAnature, Move moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
+	public static String activateAbility(Anature userAnature, Anature targetAnature, MoveCore moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
 	{
 		String result = "";
 
@@ -28,7 +28,7 @@ public class Spiky implements Ability
 		return result;
 	}
 	
-	private static boolean hasNull(Anature userAnature, Anature targetAnature, Move moveThatAttacked)
+	private static boolean hasNull(Anature userAnature, Anature targetAnature, MoveCore moveThatAttacked)
 	{
 		if(userAnature == null)
 		{

@@ -1,7 +1,8 @@
-package application.anatures.moves;
+package application.anatures.abillities;
 
 import java.util.ArrayList;
 
+import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.LoggingTypes;
 import application.enums.MoveIds;
@@ -10,10 +11,10 @@ import application.pools.MovePool;
 public class MoveSet
 {
 	private int mMove1MovePoints, mMove2MovePoints, mMove3MovePoints, mMove4MovePoints;
-	private Move mMove1, mMove2, mMove3, mMove4;
-	private Move mSkipTurn = MovePool.getMove(MoveIds.Skip_Turn);
+	private MoveCore mMove1, mMove2, mMove3, mMove4;
+	private MoveCore mSkipTurn = MovePool.getMove(MoveIds.Skip_Turn);
 
-	public MoveSet(Move move1, Move move2, Move move3, Move move4)
+	public MoveSet(MoveCore move1, MoveCore move2, MoveCore move3, MoveCore move4)
 	{
 		setMove(1, move1);
 		setMove(2, move2);
@@ -21,7 +22,7 @@ public class MoveSet
 		setMove(4, move4);
 	}
 
-	public Move getMove(int moveNumber)
+	public MoveCore getMove(int moveNumber)
 	{
 		switch(moveNumber)
 		{
@@ -45,43 +46,43 @@ public class MoveSet
 		}
 	}
 
-	public ArrayList<Move> getMoves()
+	public ArrayList<MoveCore> getMoves()
 	{
-		ArrayList<Move> moves = new ArrayList<Move>();
+		ArrayList<MoveCore> moveCores = new ArrayList<MoveCore>();
 
 		if(hasMove(1))
-			moves.add(mMove1);
+			moveCores.add(mMove1);
 
 		if(hasMove(2))
-			moves.add(mMove2);
+			moveCores.add(mMove2);
 
 		if(hasMove(3))
-			moves.add(mMove3);
+			moveCores.add(mMove3);
 
 		if(hasMove(4))
-			moves.add(mMove4);
+			moveCores.add(mMove4);
 
-		return moves;
+		return moveCores;
 	}
 
-	public boolean setMove(int moveNumber, Move move)
+	public boolean setMove(int moveNumber, MoveCore moveCore)
 	{
 		switch(moveNumber)
 		{
 			case 1:
-				mMove1 = move;
+				mMove1 = moveCore;
 				return setMovePoints(moveNumber);
 
 			case 2:
-				mMove2 = move;
+				mMove2 = moveCore;
 				return setMovePoints(moveNumber);
 
 			case 3:
-				mMove3 = move;
+				mMove3 = moveCore;
 				return setMovePoints(moveNumber);
 
 			case 4:
-				mMove4 = move;
+				mMove4 = moveCore;
 				return setMovePoints(moveNumber);
 
 			case -1:

@@ -1,21 +1,21 @@
 package application.trainers.ai.choice_objects;
 
-import application.anatures.moves.Move;
-import application.anatures.moves.Struggle;
+import application.anatures.moves.MoveCore;
+import application.anatures.moves.moves.Flail;
 import application.enums.AiChoice;
 
-public class AiNoChoice extends AiFinalChoice implements AiChoiceObject<Move>
+public class AiNoChoice extends AiFinalChoice implements AiChoiceObject<MoveCore>
 {
-	private Move mMove;
+	private MoveCore mMove;
 	
 	public AiNoChoice()
 	{
 		super(AiChoice.No_Choice);
-		mMove = new Struggle();
+		mMove = new Flail();
 	}
 
 	@Override
-	public Move getChoiceObject()
+	public MoveCore getChoiceObject()
 	{
 		return mMove;
 	}

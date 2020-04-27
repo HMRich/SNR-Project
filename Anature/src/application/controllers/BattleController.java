@@ -6,8 +6,8 @@ import java.util.Random;
 import application.FightManager;
 import application.Startup;
 import application.anatures.Anature;
-import application.anatures.moves.Move;
-import application.anatures.moves.MoveSet;
+import application.anatures.abillities.MoveSet;
+import application.anatures.moves.MoveCore;
 import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
@@ -971,10 +971,10 @@ public class BattleController
 	private void updateMoves(Anature playerCurr)
 	{
 		MoveSet moves = playerCurr.getMoveSet(); // TODO Make move btn color change based on move type
-		Move move1 = moves.getMove(1);
-		Move move2 = moves.getMove(2);
-		Move move3 = moves.getMove(3);
-		Move move4 = moves.getMove(4);
+		MoveCore move1 = moves.getMove(1);
+		MoveCore move2 = moves.getMove(2);
+		MoveCore move3 = moves.getMove(3);
+		MoveCore move4 = moves.getMove(4);
 
 		updateMove(move1, moves.getMovePoints(1), mShowMoveOne, mAttackNameOneTxt, mAttackMpOneTxt);
 		updateMove(move2, moves.getMovePoints(2), mShowMoveTwo, mAttackNameTwoTxt, mAttackMpTwoTxt);
@@ -982,7 +982,7 @@ public class BattleController
 		updateMove(move4, moves.getMovePoints(4), mShowMoveFour, mAttackNameFourTxt, mAttackMpFourTxt);
 	}
 
-	private void updateMove(Move moveToCheck, int currMp, BooleanProperty showMove, StringProperty nameTxt, StringProperty mpTxt)
+	private void updateMove(MoveCore moveToCheck, int currMp, BooleanProperty showMove, StringProperty nameTxt, StringProperty mpTxt)
 	{
 		if(moveToCheck != null)
 		{
@@ -1639,7 +1639,7 @@ public class BattleController
 		MoveResult moveResult = mFightManager.attack(isPlayer, moveNum);
 		AbilityResult abilityResult = moveResult.getAbilityResult();
 		ArrayList<String> moveDialogue = moveResult.getDialogue();
-		Move move = moveResult.getMove();
+		MoveCore moveCore = moveResult.getMove();
 
 		try
 		{
@@ -1651,7 +1651,7 @@ public class BattleController
 			LoggerController.logEvent(LoggingTypes.Error, "Thread was interrupted during sleep in useAttack.");
 		}
 
-		if(!move.doesDamage())
+		if(!moveCore.doesDamage())
 		{
 			mDialogueTxt.set(moveDialogue.get(0));
 
@@ -1669,7 +1669,7 @@ public class BattleController
 			enqueueDialogue(dialogue, "Ability Dialogue");
 		}
 
-		if(move.doesDamage())
+		if(moveCore.doesDamage())
 		{
 			healthDrainMove(moveResult, !isPlayer);
 		}

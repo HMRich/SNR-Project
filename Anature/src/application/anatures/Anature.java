@@ -3,10 +3,12 @@ package application.anatures;
 import java.util.ArrayList;
 
 import application.anatures.abillities.Ability;
-import application.anatures.moves.MoveSet;
+import application.anatures.abillities.MoveSet;
+import application.enums.AbilityIds;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.Type;
+import application.pools.AbilityPool;
 import application.enums.StatusEffects;
 import javafx.scene.image.Image;
 
@@ -30,13 +32,13 @@ public class Anature
 	{
 		mName = "";
 		mOwnerName = "";
-		mSpecies = null;
-		mGender = null;
-		mPrimaryType = null;
-		mSecondaryType = null;
+		mSpecies = Species.NotSet;
+		mGender = Gender.NotSet;
+		mPrimaryType = Type.NotSet;
+		mSecondaryType = Type.NotSet;
 		mMoveSet = null;
-		mAbility = null;
-		mStatus = null;
+		mAbility = AbilityPool.getAbility(AbilityIds.NullAbility);
+		mStatus = StatusEffects.NotSet;
 		mLevel = -1;
 		mCurrentExpereincePoints = -1;
 		mTotalHitPoints = -1;
@@ -115,6 +117,11 @@ public class Anature
 		if(primaryType == null)
 		{
 			throw new IllegalArgumentException("Passed value \"primaryType\" was null.");
+		}
+
+		if(primaryType.equals(Type.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"primaryType\" was equal to " + primaryType.toString() + ".");
 		}
 
 		mPrimaryType = primaryType;
@@ -273,82 +280,6 @@ public class Anature
 	}
 
 	/*
-	 * PUBLIC TEMP METHODS
-	 */
-
-	public void adjustTempAttack(double tempAttackAdjustment)
-	{
-		if(tempAttackAdjustment < -1 || tempAttackAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"tempAttackAdjustment\" was below -1 or above 1.");
-		}
-		
-		int adjustment = (int) (tempAttackAdjustment * mAttack);
-		
-		mTempAttack = mTempAttack + adjustment;
-	}
-
-	public void adjustTempDefense(double tempDefenseAdjustment)
-	{
-		if(tempDefenseAdjustment < -1 || tempDefenseAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"tempDefenseAdjustment\" was below -1 or above 1.");
-		}
-		
-		int adjustment = (int) (tempDefenseAdjustment * mDefense);
-
-		mTempDefense = mTempDefense + adjustment;
-	}
-
-	public void adjustTempSpecialAttack(double tempSpecialAttackAdjustment)
-	{
-		if(tempSpecialAttackAdjustment < -1 || tempSpecialAttackAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"tempSpecialAttackAdjustment\" was below -1 or above 1.");
-		}
-		
-		int adjustment = (int) (tempSpecialAttackAdjustment * mSpecialAttack);
-
-		mTempSpecialAttack = mTempSpecialAttack + adjustment;
-	}
-
-	public void adjustTempSpecialDefense(double tempSpecialDefenseAdjustment)
-	{
-		if(tempSpecialDefenseAdjustment < -1 || tempSpecialDefenseAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"tempSpecialDefenseAdjustment\" was below -1 or above 1.");
-		}
-		
-		int adjustment = (int) (tempSpecialDefenseAdjustment * mSpecialDefense);
-
-		mTempSpecialDefense = mTempSpecialDefense + adjustment;
-	}
-
-	public void adjustTempSpeed(double tempSpeedAdjustment)
-	{
-		if(tempSpeedAdjustment < -1 || tempSpeedAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"tempSpeedAdjustment\" was below -1 or above 1.");
-		}
-		
-		int adjustment = (int) (tempSpeedAdjustment * mSpeed);
-
-		mTempSpeed = mTempSpeed + adjustment;
-	}
-
-	public void adjustTempAccuracy(double accuracyAdjustment)
-	{
-		if(accuracyAdjustment < -1 || accuracyAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"accuracyAdjustment\" was below -1 or above 1.");
-		}
-		
-		int adjustment = (int) (accuracyAdjustment * mAccuracy);
-
-		mTempAccuracy = mTempAccuracy + adjustment;
-	}
-
-	/*
 	 * PUBLIC GETS
 	 */
 
@@ -457,39 +388,81 @@ public class Anature
 		return mAccuracy + mTempAccuracy;
 	}
 
-//	public int getTempAttack()
-//	{
-//		return mTempAttack;
-//	}
-//
-//	public int getTempDefense()
-//	{
-//		return mTempDefense;
-//	}
-//
-//	public int getTempSpecialAttack()
-//	{
-//		return mTempSpecialAttack;
-//	}
-//
-//	public int getTempSpecialDefense()
-//	{
-//		return mTempSpecialDefense;
-//	}
-//
-//	public int getTempSpeed()
-//	{
-//		return mTempSpeed;
-//	}
-//
-//	public int getTempAccuracy()
-//	{
-//		return mTempAccuracy;
-//	}
-
 	/*
 	 * PUBLIC METHODS
 	 */
+
+	public void adjustTempAttack(double tempAttackAdjustment)
+	{
+		if(tempAttackAdjustment < -1 || tempAttackAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempAttackAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (tempAttackAdjustment * mAttack);
+
+		mTempAttack = mTempAttack + adjustment;
+	}
+
+	public void adjustTempDefense(double tempDefenseAdjustment)
+	{
+		if(tempDefenseAdjustment < -1 || tempDefenseAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempDefenseAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (tempDefenseAdjustment * mDefense);
+
+		mTempDefense = mTempDefense + adjustment;
+	}
+
+	public void adjustTempSpecialAttack(double tempSpecialAttackAdjustment)
+	{
+		if(tempSpecialAttackAdjustment < -1 || tempSpecialAttackAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempSpecialAttackAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (tempSpecialAttackAdjustment * mSpecialAttack);
+
+		mTempSpecialAttack = mTempSpecialAttack + adjustment;
+	}
+
+	public void adjustTempSpecialDefense(double tempSpecialDefenseAdjustment)
+	{
+		if(tempSpecialDefenseAdjustment < -1 || tempSpecialDefenseAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempSpecialDefenseAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (tempSpecialDefenseAdjustment * mSpecialDefense);
+
+		mTempSpecialDefense = mTempSpecialDefense + adjustment;
+	}
+
+	public void adjustTempSpeed(double tempSpeedAdjustment)
+	{
+		if(tempSpeedAdjustment < -1 || tempSpeedAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempSpeedAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (tempSpeedAdjustment * mSpeed);
+
+		mTempSpeed = mTempSpeed + adjustment;
+	}
+
+	public void adjustTempAccuracy(double accuracyAdjustment)
+	{
+		if(accuracyAdjustment < -1 || accuracyAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"accuracyAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (accuracyAdjustment * mAccuracy);
+
+		mTempAccuracy = mTempAccuracy + adjustment;
+	}
 
 	public void updateName(String name)
 	{

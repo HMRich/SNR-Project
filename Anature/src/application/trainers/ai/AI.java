@@ -5,8 +5,8 @@ import java.util.Random;
 
 import application.TypeAdvantage;
 import application.anatures.Anature;
-import application.anatures.moves.Move;
-import application.anatures.moves.MoveSet;
+import application.anatures.abillities.MoveSet;
+import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.AttackEffectiveness;
@@ -236,9 +236,9 @@ public class AI
 		return isAtOrAboveThreshold(anatureEffectiveness, mSwitchThreshold);
 	}
 
-	private boolean moveIsAtThreshold(Move move, Anature target)
+	private boolean moveIsAtThreshold(MoveCore moveCore, Anature target)
 	{
-		AttackEffectiveness moveEffectiveness = TypeAdvantage.moveEffectiveness(move, target);
+		AttackEffectiveness moveEffectiveness = TypeAdvantage.moveEffectiveness(moveCore, target);
 		return isAtOrAboveThreshold(moveEffectiveness, mMoveThreshold);
 	}
 
