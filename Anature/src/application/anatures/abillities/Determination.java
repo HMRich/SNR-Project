@@ -1,38 +1,39 @@
 package application.anatures.abillities;
 
 import application.anatures.Anature;
-import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
+import application.interfaces.IAbility;
+import application.interfaces.IMove;
 
-public class Determination implements Ability
+public class Determination implements IAbility
 {
-	public static String activateAbility(Anature userAnature, MoveCore moveCore, double userOldHp)
+	public static String activateAbility(Anature userAnature, IMove move, double userOldHp)
 	{
-		if(hasNull(userAnature, moveCore, userOldHp))
+		if(hasNull(userAnature, move, userOldHp))
 		{
 			return "";
 		}
-		
-		if(moveCore.doesDamage() && (userOldHp == userAnature.getTotalHitPoints()))
+
+		if(move.doesDamage() && (userOldHp == userAnature.getTotalHitPoints()))
 		{
 			userAnature.updateCurrentHitPoints(1);
-			return userAnature.getName() + " survived on 1 hp thanks to their Determination!"; 
+			return userAnature.getName() + " survived on 1 hp thanks to their Determination!";
 		}
-		
+
 		return "";
 	}
-	
-	private static boolean hasNull(Anature userAnature, MoveCore moveCore, double userOldHp)
-	{	
+
+	private static boolean hasNull(Anature userAnature, IMove move, double userOldHp)
+	{
 		if(userAnature == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Determination was null.");
 			return true;
 		}
-		
-		else if(moveCore == null)
+
+		else if(move == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "move parameter in Determination was null.");
 			return true;

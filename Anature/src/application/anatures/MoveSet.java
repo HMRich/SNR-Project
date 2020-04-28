@@ -1,20 +1,20 @@
-package application.anatures.abillities;
+package application.anatures;
 
 import java.util.ArrayList;
 
-import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.LoggingTypes;
 import application.enums.MoveIds;
+import application.interfaces.IMove;
 import application.pools.MovePool;
 
 public class MoveSet
 {
 	private int mMove1MovePoints, mMove2MovePoints, mMove3MovePoints, mMove4MovePoints;
-	private MoveCore mMove1, mMove2, mMove3, mMove4;
-	private MoveCore mSkipTurn = MovePool.getMove(MoveIds.Skip_Turn);
+	private IMove mMove1, mMove2, mMove3, mMove4;
+	private IMove mSkipTurn = MovePool.getMove(MoveIds.Skip_Turn);
 
-	public MoveSet(MoveCore move1, MoveCore move2, MoveCore move3, MoveCore move4)
+	public MoveSet(IMove move1, IMove move2, IMove move3, IMove move4)
 	{
 		setMove(1, move1);
 		setMove(2, move2);
@@ -22,50 +22,7 @@ public class MoveSet
 		setMove(4, move4);
 	}
 
-	public MoveCore getMove(int moveNumber)
-	{
-		switch(moveNumber)
-		{
-			case 1:
-				return mMove1;
-
-			case 2:
-				return mMove2;
-
-			case 3:
-				return mMove3;
-
-			case 4:
-				return mMove4;
-
-			case -1:
-				return mSkipTurn;
-
-			default:
-				throw new IllegalStateException("moveNumber was not in a vaild state.");
-		}
-	}
-
-	public ArrayList<MoveCore> getMoves()
-	{
-		ArrayList<MoveCore> moveCores = new ArrayList<MoveCore>();
-
-		if(hasMove(1))
-			moveCores.add(mMove1);
-
-		if(hasMove(2))
-			moveCores.add(mMove2);
-
-		if(hasMove(3))
-			moveCores.add(mMove3);
-
-		if(hasMove(4))
-			moveCores.add(mMove4);
-
-		return moveCores;
-	}
-
-	public boolean setMove(int moveNumber, MoveCore moveCore)
+	public boolean setMove(int moveNumber, IMove moveCore)
 	{
 		switch(moveNumber)
 		{
@@ -93,6 +50,49 @@ public class MoveSet
 						"IllegalStateException in MoveSet.java, Method: setMove(int moveNumber, Move move). Passed moveNumber was not 1-4.");
 				return false;
 		}
+	}
+
+	public IMove getMove(int moveNumber)
+	{
+		switch(moveNumber)
+		{
+			case 1:
+				return mMove1;
+
+			case 2:
+				return mMove2;
+
+			case 3:
+				return mMove3;
+
+			case 4:
+				return mMove4;
+
+			case -1:
+				return mSkipTurn;
+
+			default:
+				throw new IllegalStateException("moveNumber was not in a vaild state.");
+		}
+	}
+
+	public ArrayList<IMove> getMoves()
+	{
+		ArrayList<IMove> iMoves = new ArrayList<IMove>();
+
+		if(hasMove(1))
+			iMoves.add(mMove1);
+
+		if(hasMove(2))
+			iMoves.add(mMove2);
+
+		if(hasMove(3))
+			iMoves.add(mMove3);
+
+		if(hasMove(4))
+			iMoves.add(mMove4);
+
+		return iMoves;
 	}
 
 	public boolean hasMove(int moveNumber)

@@ -61,12 +61,4 @@ public abstract class Item
 
 	public abstract ItemResult useItem(Anature target);
 
-	/*
-	 * PACKAGE METHODS
-	 */
-
-	boolean canCreate()
-	{
-		return !mItemId.equals(ItemIds.Null) && !mItemName.isEmpty();
-	}
 }

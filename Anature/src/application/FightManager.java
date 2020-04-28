@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import application.anatures.Anature;
-import application.anatures.abillities.MoveSet;
-import application.anatures.moves.MoveCore;
+import application.anatures.MoveSet;
 import application.controllers.results.AbilityActivation;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
 import application.enums.AbilityIds;
 import application.enums.MoveIds;
+import application.interfaces.IMove;
 import application.items.Item;
 import application.pools.MovePool;
 
@@ -50,21 +50,21 @@ public class FightManager
 		Anature selected = team.get(index);
 		selected.takeDamage(damage);
 	}
-	
+
 	public void useStruggle(boolean isPlayerAttacking)
 	{
 		attack(isPlayerAttacking, -1);
 	}
-	
+
 	public MoveResult attack(boolean isPlayerAttacking, int indexOfMove)
 	{
 		Anature userAnature = null;
 		Anature targetAnature = null;
-		
+
 		if(isPlayerAttacking)
 		{
 			checkNulls(mPlayerTeam, indexOfMove);
-			
+
 			userAnature = mPlayerTeam.get(mPlayerIndex);
 			targetAnature = mEnemyTeam.get(mEnemyIndex);
 		}
@@ -72,7 +72,7 @@ public class FightManager
 		else
 		{
 			checkNulls(mEnemyTeam, indexOfMove);
-			
+
 			userAnature = mEnemyTeam.get(mEnemyIndex);
 			targetAnature = mPlayerTeam.get(mPlayerIndex);
 		}
@@ -81,65 +81,69 @@ public class FightManager
 		int oldTargetHp = targetAnature.getCurrentHitPoints();
 		ArrayList<String> dialogue = new ArrayList<String>();
 		MoveSet moveSet = userAnature.getMoveSet();
-		MoveCore moveCore = moveSet.getMove(indexOfMove);
-		
+		IMove moveBase = moveSet.getMove(indexOfMove);
+
 		if(indexOfMove <= 0)
 		{
-			moveCore = MovePool.getMove(MoveIds.Flail);
+			moveBase = MovePool.getMove(MoveIds.Flail);
 		}
-		
-		AbilityIds userAbilityId = userAnature.getAbility().getAbilityId();
-		AbilityIds targetAbilityId = targetAnature.getAbility().getAbilityId();
+
+		AbilityIds userAbilityId = userAnature.getAbility()
+				.getAbilityId();
+		AbilityIds targetAbilityId = targetAnature.getAbility()
+				.getAbilityId();
 
 		moveSet.useMovePoint(indexOfMove);
-		
-		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, moveCore);
-		boolean landedTheAttack = landedAttack(userAnature, moveCore);
-		
+
+		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, moveBase);
+		boolean landedTheAttack = landedAttack(userAnature, moveBase);
+
 		if(landedTheAttack)
-		{	
-			dialogue.add(userAnature.getName() + " used " + moveCore.getName() + " on " + targetAnature.getName());
-			
+		{
+			dialogue.add(userAnature.getName() + " used " + moveBase.getName() + " on " + targetAnature.getName());
+
 			if(!canAttackAbilityResult.isActiviated())
 			{
-				moveCore.activateMove(userAnature, targetAnature);
+				moveBase.activateMove(userAnature, targetAnature);
 			}
 		}
-		
+
 		else
 		{
-			dialogue.add(userAnature.getName() + " used " + moveCore.getName() + " but missed!");
+			dialogue.add(userAnature.getName() + " used " + moveBase.getName() + " but missed!");
 		}
-		
-		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityId, targetAnature, userAnature, moveCore, oldTargetHp, false, !landedTheAttack);
-		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbilityId, userAnature, targetAnature, moveCore, oldUserHp, true, !landedTheAttack);
-		
+
+		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityId, targetAnature, userAnature, moveBase, oldTargetHp,
+				false, !landedTheAttack);
+		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbilityId, userAnature, targetAnature, moveBase, oldUserHp, true,
+				!landedTheAttack);
+
 		ArrayList<String> afterTurnDialogue = new ArrayList<String>();
 		afterTurnDialogue.addAll(canAttackAbilityResult.getDialogue());
 		afterTurnDialogue.addAll(targetAfterTurnAbilityResult.getDialogue());
 		afterTurnDialogue.addAll(userAfterTurnAbilityResult.getDialogue());
-		
+
 		boolean abilitiesWereActivated = false;
 		if(canAttackAbilityResult.isActiviated() || targetAfterTurnAbilityResult.isActiviated() || userAfterTurnAbilityResult.isActiviated())
 		{
 			abilitiesWereActivated = true;
 		}
-		
+
 		AbilityResult afterTurn = new AbilityResult(afterTurnDialogue, abilitiesWereActivated);
-		
-		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, moveCore);				
+
+		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, moveBase);
 	}
-	
-	private boolean landedAttack(Anature userAnature, MoveCore moveCore)
+
+	private boolean landedAttack(Anature userAnature, IMove iMove)
 	{
 		Random rng = new Random();
-		int anatureAccuracy = userAnature.getAccuracy();
-		if(anatureAccuracy > 100)
+		double anatureAccuracy = userAnature.getAccuracy();
+		if(anatureAccuracy >= 1.0)
 		{
-			anatureAccuracy = 100;
+			anatureAccuracy = 1.0;
 		}
-		
-		double totalAccuracy = (moveCore.getAccuracy() * 0.01) * (anatureAccuracy * 0.01);		
+
+		double totalAccuracy = iMove.getAccuracy() * anatureAccuracy;
 		return rng.nextInt(101) < totalAccuracy * 100;
 	}
 
@@ -160,18 +164,20 @@ public class FightManager
 			return item.useItem(target);
 		}
 	}
-	
+
 	public AbilityResult activateEntryAbility(boolean isPlayer)
 	{
 		Anature player = getPlayerAnature();
 		Anature enemy = getEnemyAnature();
-		
+
 		if(isPlayer)
 		{
-			return AbilityActivation.useEntryAbility(player.getAbility().getAbilityId(), player, enemy);
+			return AbilityActivation.useEntryAbility(player.getAbility()
+					.getAbilityId(), player, enemy);
 		}
 
-		return AbilityActivation.useEntryAbility(enemy.getAbility().getAbilityId(), enemy, player);
+		return AbilityActivation.useEntryAbility(enemy.getAbility()
+				.getAbilityId(), enemy, player);
 	}
 
 	public ArrayList<Anature> getPlayerTeam()
@@ -198,7 +204,7 @@ public class FightManager
 	{
 		return mTurnCount;
 	}
-	
+
 	public void increaseTurnNumber()
 	{
 		mTurnCount++;
@@ -216,12 +222,15 @@ public class FightManager
 			throw new NullPointerException("Enemy Anature was null, String or Result Object?");
 		}
 
-		if(team.get(0).getMoveSet() == null)
+		if(team.get(0)
+				.getMoveSet() == null)
 		{
 			throw new NullPointerException("Anature's MoveSet was null, String or Result Object?");
 		}
 
-		if(team.get(0).getMoveSet().getMove(indexOfMove) == null)
+		if(team.get(0)
+				.getMoveSet()
+				.getMove(indexOfMove) == null)
 		{
 			throw new NullPointerException("Anature's Move was null, String or Result Object?");
 		}

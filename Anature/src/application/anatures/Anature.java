@@ -2,12 +2,12 @@ package application.anatures;
 
 import java.util.ArrayList;
 
-import application.anatures.abillities.Ability;
-import application.anatures.abillities.MoveSet;
+import application.anatures.abillities.NullAbility;
 import application.enums.AbilityIds;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.Type;
+import application.interfaces.IAbility;
 import application.pools.AbilityPool;
 import application.enums.StatusEffects;
 import javafx.scene.image.Image;
@@ -20,10 +20,10 @@ public class Anature
 	private Gender mGender;
 	private Type mPrimaryType, mSecondaryType;
 	private MoveSet mMoveSet;
-	private Ability mAbility;
+	private IAbility mAbility;
 	private StatusEffects mStatus;
 	private int mIndexNumber;
-	private int mLevel, mCurrentExpereincePoints;
+	private int mLevel, mCurrentExperiencePoints;
 	private int mTotalHitPoints, mCurrentHitPoints;
 	private int mAttack, mDefense, mSpecialAttack, mSpecialDefense, mSpeed, mAccuracy;
 	private int mTempAttack, mTempDefense, mTempSpecialAttack, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
@@ -32,15 +32,16 @@ public class Anature
 	{
 		mName = "";
 		mOwnerName = "";
+		mIsShiny = false;
 		mSpecies = Species.NotSet;
 		mGender = Gender.NotSet;
 		mPrimaryType = Type.NotSet;
 		mSecondaryType = Type.NotSet;
-		mMoveSet = null;
-		mAbility = AbilityPool.getAbility(AbilityIds.NullAbility);
+		mMoveSet = NullMoveSet.getNullMoveSet();
+		mAbility = NullAbility.getNullAbility();
 		mStatus = StatusEffects.NotSet;
 		mLevel = -1;
-		mCurrentExpereincePoints = -1;
+		mCurrentExperiencePoints = -1;
 		mTotalHitPoints = -1;
 		mCurrentHitPoints = -1;
 		mIndexNumber = -1;
@@ -64,7 +65,8 @@ public class Anature
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim().isEmpty())
+		if(name.trim()
+				.isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
@@ -79,7 +81,8 @@ public class Anature
 			throw new IllegalArgumentException("Passed value \"ownerName\" was null.");
 		}
 
-		if(ownerName.trim().isEmpty())
+		if(ownerName.trim()
+				.isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"ownerName\" was an empty string.");
 		}
@@ -99,6 +102,11 @@ public class Anature
 			throw new IllegalArgumentException("Passed value \"species\" was null.");
 		}
 
+		if(species.equals(Species.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"species\" was equal to " + species.toString() + ".");
+		}
+
 		mSpecies = species;
 	}
 
@@ -107,6 +115,11 @@ public class Anature
 		if(gender == null)
 		{
 			throw new IllegalArgumentException("Passed value \"gender\" was null.");
+		}
+
+		if(gender.equals(Gender.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"gender\" was equal to " + gender.toString() + ".");
 		}
 
 		mGender = gender;
@@ -144,17 +157,26 @@ public class Anature
 			throw new IllegalArgumentException("Passed value \"moveSet\" was null.");
 		}
 
+		// TODO Should we check for the NullMoveSet object here? And how would we do
+		// that
+
 		mMoveSet = moveSet;
 	}
 
-	void setAbility(Ability ability)
+	void setAbility(IAbility iAbility)
 	{
-		if(ability == null)
+		if(iAbility == null)
 		{
 			throw new IllegalArgumentException("Passed value \"ability\" was null.");
 		}
 
-		mAbility = ability;
+		// TODO Should we add the ability to adding the NullAbility to the Anature
+		if(iAbility.equals(AbilityPool.getAbility(AbilityIds.NullAbility)))
+		{
+			throw new IllegalArgumentException("Passed value \"ability\" was equal to the NullAbility ability.");
+		}
+
+		mAbility = iAbility;
 	}
 
 	void setStatus(StatusEffects statusEffect)
@@ -162,6 +184,11 @@ public class Anature
 		if(statusEffect == null)
 		{
 			throw new IllegalArgumentException("Passed value \"statusEffect\" was null.");
+		}
+
+		if(statusEffect.equals(StatusEffects.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"statusEffect\" was equal to " + statusEffect.toString() + ".");
 		}
 
 		mStatus = statusEffect;
@@ -195,7 +222,7 @@ public class Anature
 			throw new IllegalArgumentException("Passed value \"currentExperience\" was below 0.");
 		}
 
-		mCurrentExpereincePoints = currentExperiencePoints;
+		mCurrentExperiencePoints = currentExperiencePoints;
 	}
 
 	void setTotalHitPoints(int totalHitPoints)
@@ -323,7 +350,7 @@ public class Anature
 		return mMoveSet;
 	}
 
-	public Ability getAbility()
+	public IAbility getAbility()
 	{
 		return mAbility;
 	}
@@ -345,7 +372,7 @@ public class Anature
 
 	public int getCurrentExpereincePoints()
 	{
-		return mCurrentExpereincePoints;
+		return mCurrentExperiencePoints;
 	}
 
 	public int getTotalHitPoints()
@@ -513,17 +540,15 @@ public class Anature
 
 	public String healAnature(int healAmount)
 	{
-		String result = " was healed " + healAmount + " hp.";
-
-		mCurrentHitPoints += healAmount;
-
-		if(mCurrentHitPoints > mTotalHitPoints)
+		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
+		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getTotalHitPoints())
 		{
-			mCurrentHitPoints = mTotalHitPoints;
-			result = " was healed completely!";
+			setCurrentHitPoints(getTotalHitPoints());
+			return " was healed completely!";
 		}
 
-		return mName + result;
+		setCurrentHitPoints(getCurrentHitPoints() + healAmount);
+		return " was healed " + healAmount + " hp.";
 	}
 
 	public double getHpPercent()
@@ -545,7 +570,7 @@ public class Anature
 				.setStatus(mStatus)
 				.setIndexNumber(mIndexNumber)
 				.setLevel(mLevel)
-				.setCurrentExperiencePoints(mCurrentExpereincePoints)
+				.setCurrentExperiencePoints(mCurrentExperiencePoints)
 				.setTotalHitPoints(mTotalHitPoints)
 				.setCurrentHitPoints(mCurrentHitPoints)
 				.setAttack(mAttack)
@@ -559,14 +584,14 @@ public class Anature
 
 	public Image getFrontSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true,
-				false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
 	}
 
 	public Image getBackSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true,
-				false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
 	}
 
 	/*
@@ -575,9 +600,103 @@ public class Anature
 
 	boolean canCreate()
 	{
-		return !mName.isEmpty() && !mOwnerName.isEmpty() && mSpecies != null && mGender != null && mPrimaryType != null && mSecondaryType != null
-				&& mMoveSet != null && mAbility != null && mStatus != null && mLevel != -1 && mCurrentExpereincePoints != -1 && mTotalHitPoints != -1
-				&& mCurrentHitPoints != -1 && mIndexNumber != -1 && mAttack != -1 && mDefense != -1 && mSpecialAttack != -1 && mSpecialDefense != -1
-				&& mSpeed != -1 && mAccuracy != 1;
+		if(mName.isEmpty())
+		{
+			throw new IllegalStateException("The \"name\" variable was never set during construction.");
+		}
+
+		// TODO Is this a problem for wild anatures?
+		if(mOwnerName.isEmpty())
+		{
+			throw new IllegalStateException("The \"ownerName\" variable was never set during construction.");
+		}
+
+		if(mSpecies.equals(Species.NotSet))
+		{
+			throw new IllegalStateException("The \"species\" variable was never set during construction.");
+		}
+
+		if(mGender.equals(Gender.NotSet))
+		{
+			throw new IllegalStateException("The \"gender\" variable was never set during construction.");
+		}
+
+		if(mPrimaryType.equals(Type.NotSet))
+		{
+			throw new IllegalStateException("The \"primaryType\" variable was never set during construction.");
+		}
+
+		if(mMoveSet.equals(NullMoveSet.getNullMoveSet()))
+		{
+			throw new IllegalStateException("The \"moveSet\" variable was never set during construction.");
+		}
+
+		if(mAbility.equals(NullAbility.getNullAbility()))
+		{
+			throw new IllegalStateException("The \"ability\" variable was never set during construction.");
+		}
+
+		if(mStatus.equals(StatusEffects.NotSet))
+		{
+			throw new IllegalStateException("The \"status\" variable was never set during construction.");
+		}
+
+		if(mLevel == -1)
+		{
+			throw new IllegalStateException("The \"\" variable was never set during construction.");
+		}
+
+		if(mCurrentExperiencePoints == -1)
+		{
+			throw new IllegalStateException("The \"currentExperience\" variable was never set during construction.");
+		}
+
+		if(mTotalHitPoints == -1)
+		{
+			throw new IllegalStateException("The \"totalHitPoints\" variable was never set during construction.");
+		}
+
+		if(mCurrentHitPoints == -1)
+		{
+			throw new IllegalStateException("The \"currentHitPoints\" variable was never set during construction.");
+		}
+
+		if(mIndexNumber == -1)
+		{
+			throw new IllegalStateException("The \"indexNumber\" variable was never set during construction.");
+		}
+
+		if(mAttack == -1)
+		{
+			throw new IllegalStateException("The \"attack\" variable was never set during construction.");
+		}
+
+		if(mDefense == -1)
+		{
+			throw new IllegalStateException("The \"defense\" variable was never set during construction.");
+		}
+
+		if(mSpecialAttack == -1)
+		{
+			throw new IllegalStateException("The \"specialAttack\" variable was never set during construction.");
+		}
+
+		if(mSpecialDefense == -1)
+		{
+			throw new IllegalStateException("The \"specialDefense\" variable was never set during construction.");
+		}
+
+		if(mSpeed == -1)
+		{
+			throw new IllegalStateException("The \"speed\" variable was never set during construction.");
+		}
+
+		if(mAccuracy == -1)
+		{
+			throw new IllegalStateException("The \"accuracy\" variable was never set during construction.");
+		}
+
+		return true;
 	}
+
 }

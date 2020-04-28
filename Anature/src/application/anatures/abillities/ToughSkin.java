@@ -1,35 +1,36 @@
 package application.anatures.abillities;
 
 import application.anatures.Anature;
-import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
+import application.interfaces.IAbility;
+import application.interfaces.IMove;
 
-public class ToughSkin implements Ability
+public class ToughSkin implements IAbility
 {
-	public static String activateAbility(Anature userAnature, MoveCore moveThatAttacked, int userOldHp, boolean attackMissed)
+	public static String activateAbility(Anature userAnature, IMove moveThatAttacked, int userOldHp, boolean attackMissed)
 	{
 		if(userAnature == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Tough Skin was null.");
 			return "";
 		}
-		
+
 		else if(moveThatAttacked == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "moveThatAttacked parameter in Tough Skin was null.");
 			return "";
 		}
-		
+
 		else if(moveThatAttacked != null && moveThatAttacked.isPhysicalAttack() && !attackMissed)
 		{
 			double damageDealt = userOldHp - userAnature.getCurrentHitPoints();
 			userAnature.updateCurrentHitPoints(userOldHp - (int) (damageDealt * 0.8));
-			
+
 			return userAnature.getName() + " took less damage because of their Tough Skin!";
 		}
-		
+
 		return "";
 	}
 

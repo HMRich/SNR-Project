@@ -3,11 +3,11 @@ package application;
 import java.util.ArrayList;
 
 import application.anatures.Anature;
-import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AttackEffectiveness;
 import application.enums.LoggingTypes;
 import application.enums.Type;
+import application.interfaces.IMove;
 
 public class TypeAdvantage
 {
@@ -39,7 +39,7 @@ public class TypeAdvantage
 		return attackEffectiveness;
 	}
 
-	public static AttackEffectiveness moveEffectiveness(MoveCore attackerMove, Anature defender)
+	public static AttackEffectiveness moveEffectiveness(IMove attackerMove, Anature defender)
 	{
 		AttackEffectiveness attackEffectiveness = AttackEffectiveness.NotSet;
 

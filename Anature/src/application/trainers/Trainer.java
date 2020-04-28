@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import application.anatures.Anature;
 import application.enums.TrainerIds;
+import application.interfaces.AiChoiceObject;
 import application.items.HealthPotion;
 import application.trainers.ai.AI;
-import application.trainers.ai.choice_objects.AiChoiceObject;
 import application.trainers.ai.choice_objects.AiHealthPotionChoice;
 import application.trainers.ai.choice_objects.AiMoveChoice;
 import application.trainers.ai.choice_objects.AiNoChoice;

@@ -1,10 +1,10 @@
 package application.anatures.moves.moves;
 
 import application.anatures.Anature;
-import application.anatures.moves.MoveCore;
+import application.anatures.moves.MoveBase;
 import application.enums.StatusEffects;
 
-public class Flamethrower extends MoveCore
+public class Flamethrower extends MoveBase
 {
 	private static int mDamageDone = 50;
 

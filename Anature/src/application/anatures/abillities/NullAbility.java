@@ -1,9 +1,17 @@
 package application.anatures.abillities;
 
 import application.enums.AbilityIds;
+import application.interfaces.IAbility;
 
-public class NullAbility implements Ability
+public class NullAbility implements IAbility
 {
+	private static IAbility mNullAbility = new NullAbility();
+	
+	public static IAbility getNullAbility()
+	{
+		return mNullAbility;
+	}
+	
 	@Override
 	public AbilityIds getAbilityId()
 	{

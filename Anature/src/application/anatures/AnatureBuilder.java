@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import application.Builder;
 import application.DatabaseConnection;
 import application.Startup;
-import application.anatures.abillities.Ability;
-import application.anatures.abillities.MoveSet;
-import application.anatures.moves.MoveCore;
+import application.anatures.abillities.NullAbility;
+import application.interfaces.IMove;
 import application.enums.AbilityIds;
 import application.enums.DatabaseType;
 import application.enums.Gender;
@@ -21,10 +19,12 @@ import application.enums.MoveIds;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
+import application.interfaces.IAbility;
+import application.interfaces.IBuilder;
 import application.pools.AbilityPool;
 import application.pools.MovePool;
 
-public class AnatureBuilder implements Builder<Anature>
+public class AnatureBuilder implements IBuilder<Anature>
 {
 	private Anature mAnature;
 
@@ -85,9 +85,9 @@ public class AnatureBuilder implements Builder<Anature>
 		return this;
 	}
 
-	public AnatureBuilder setAbility(Ability ability)
+	public AnatureBuilder setAbility(IAbility iAbility)
 	{
-		mAnature.setAbility(ability);
+		mAnature.setAbility(iAbility);
 		return this;
 	}
 
@@ -169,16 +169,16 @@ public class AnatureBuilder implements Builder<Anature>
 
 	public Anature create()
 	{
-		if(!buildIsComplete())
+		if(buildIsComplete())
 		{
-			throw new IllegalStateException("All the builder variables need to have a value before you create a Anature.");
+			Anature anatureToReturn = mAnature;
+
+			generateNewAnature();
+
+			return anatureToReturn;
 		}
 
-		Anature anatureToReturn = mAnature;
-
-		generateNewAnature();
-
-		return anatureToReturn;
+		throw new IllegalStateException("All the builder variables need to have a value before you create a Anature.");
 	}
 
 	/*
@@ -201,36 +201,40 @@ public class AnatureBuilder implements Builder<Anature>
 
 	public static Anature createAnature(Species species, int level)
 	{
-		String anatureName = species.toString().replaceAll("_", "");
+		String name = species.toString()
+				.replaceAll("_", " ");
 		String ownerName = Startup.getPlayerName();
-		boolean isShiny = false;
-		Gender gender = Gender.NotSet;
-		
-		String name = species.toString();
-		String ownerName = Startup.getPlayerName();
-		MoveSet moves = generateMoveSet(species, level);
-		Gender gender = null;
-		Type[] types = new Type[2];
-		boolean isShiny = false;
-		Ability ability = null;
-		int attack = 0, specialAttack = 0, defense = 0, specialDefense = 0, hp = 0, speed = 0, indexNum = 0, accuracy = 0;
+		boolean isShiny = generateIsShiny();
 
-		Random r = new Random();
+		Gender gender = generateGender();
+		Type[] types =
+		{ Type.NotSet, Type.NotSet };
+		MoveSet moveSet = generateMoveSet(species, level);
+		IAbility iAbility = NullAbility.getNullAbility();
+		StatusEffects status = StatusEffects.None;
 
-		if(r.nextInt(2) == 0)
-		{
-			gender = Gender.Male;
-		}
+		// TODO Figure out how to implement the Experience system
+		int currentExperiencePoints = 0;
+		int totalHitPoints = 0;
 
-		else
-		{
-			gender = Gender.Female;
-		}
+		int indexNumber = 0;
+		int attack = 0;
+		int defense = 0;
+		int specialAttack = 0;
+		int specialDefense = 0;
+		int speed = 0;
+		int accuracy = 0;
 
-		if(r.nextInt(4200) == 420)
-		{
-			isShiny = true;
-		}
+		String possibleAbilitiesString = "";
+		String typesString = "";
+		String totalHitPointsString = "";
+		String indexNumberString = "";
+		String attackString = "";
+		String defenseString = "";
+		String specialAttackString = "";
+		String specialDefenseString = "";
+		String speedString = "";
+		String accuracyString = "";
 
 		try
 		{
@@ -243,36 +247,16 @@ public class AnatureBuilder implements Builder<Anature>
 			ResultSet results = pst.executeQuery();
 			if(results.next())
 			{
-				String hpStr = results.getString("BaseHp");
-				String atkStr = results.getString("BaseAttack");
-				String spAtkStr = results.getString("BaseSpecialAttack");
-				String defStr = results.getString("BaseDefense");
-				String spDefStr = results.getString("BaseSpecialDefense");
-				String abilitiesStr = results.getString("PossibleAbilities");
-				String speedStr = results.getString("BaseSpeed");
-				String typesStr = results.getString("Types");
-				String indexNumStr = results.getString("IndexNum");
-				String accuracyStr = results.getString("Accuracy");
-
-				hp = Integer.parseInt(hpStr);
-				attack = Integer.parseInt(atkStr);
-				specialAttack = Integer.parseInt(spAtkStr);
-				defense = Integer.parseInt(defStr);
-				specialDefense = Integer.parseInt(spDefStr);
-				speed = Integer.parseInt(speedStr);
-				indexNum = Integer.parseInt(indexNumStr);
-				accuracy = Integer.parseInt(accuracyStr);
-
-				ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(abilitiesStr.split(",")));
-				AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
-				ability = AbilityPool.getAbility(chosenAbility);
-
-				String[] typesStrAra = typesStr.split(",");
-				for(int i = 0; i < typesStrAra.length && i < 2; i++)
-				{
-					types[i] = Type.valueOf(typesStrAra[i]);
-				}
-
+				possibleAbilitiesString = results.getString("PossibleAbilities");
+				typesString = results.getString("Types");
+				totalHitPointsString = results.getString("BaseHp");
+				indexNumberString = results.getString("IndexNum");
+				attackString = results.getString("BaseAttack");
+				defenseString = results.getString("BaseDefense");
+				specialAttackString = results.getString("BaseSpecialAttack");
+				specialDefenseString = results.getString("BaseSpecialDefense");
+				speedString = results.getString("BaseSpeed");
+				accuracyString = results.getString("Accuracy");
 			}
 
 			results.close();
@@ -285,6 +269,19 @@ public class AnatureBuilder implements Builder<Anature>
 			return null;
 		}
 
+		iAbility = generateAbility(possibleAbilitiesString);
+
+		totalHitPoints = Integer.parseInt(totalHitPointsString);
+		indexNumber = Integer.parseInt(indexNumberString);
+		attack = Integer.parseInt(attackString);
+		defense = Integer.parseInt(defenseString);
+		specialAttack = Integer.parseInt(specialAttackString);
+		specialDefense = Integer.parseInt(specialDefenseString);
+		speed = Integer.parseInt(speedString);
+		accuracy = Integer.parseInt(accuracyString);
+
+		types = generateTypes(typesString, types);
+
 		return new AnatureBuilder().setName(name)
 				.setOwnerName(ownerName)
 				.setIsShiny(isShiny)
@@ -292,14 +289,14 @@ public class AnatureBuilder implements Builder<Anature>
 				.setGender(gender)
 				.setPrimaryType(types[0])
 				.setSecondaryType(types[1])
-				.setMoveSet(moves)
-				.setAbility(ability)
-				.setStatus(StatusEffects.None)
-				.setIndexNumber(indexNum)
+				.setMoveSet(moveSet)
+				.setAbility(iAbility)
+				.setStatus(status)
+				.setIndexNumber(indexNumber)
 				.setLevel(level)
-				.setCurrentExperiencePoints(0)
-				.setTotalHitPoints(hp)
-				.setCurrentExperiencePoints(hp)
+				.setCurrentExperiencePoints(currentExperiencePoints)
+				.setTotalHitPoints(totalHitPoints)
+				.setCurrentHitPoints(totalHitPoints)
 				.setAttack(attack)
 				.setDefense(defense)
 				.setSpecialAttack(specialAttack)
@@ -349,10 +346,10 @@ public class AnatureBuilder implements Builder<Anature>
 			return null;
 		}
 
-		MoveCore move1 = null;
-		MoveCore move2 = null;
-		MoveCore move3 = null;
-		MoveCore move4 = null;
+		IMove move1 = null;
+		IMove move2 = null;
+		IMove move3 = null;
+		IMove move4 = null;
 
 		if(availableMoves.size() <= 4)
 		{
@@ -398,6 +395,52 @@ public class AnatureBuilder implements Builder<Anature>
 		}
 
 		return toGenerate;
+	}
+
+	private static Gender generateGender()
+	{
+		Random r = new Random();
+		Gender[] genderArray = Gender.values();
+		ArrayList<Gender> genderList = new ArrayList<Gender>();
+
+		for(Gender gender : genderArray)
+		{
+			if(!gender.equals(Gender.NotSet))
+			{
+				genderList.add(gender);
+			}
+		}
+
+		return genderList.get(r.nextInt(genderList.size()));
+	}
+
+	private static IAbility generateAbility(String possilbeAbilities)
+	{
+		Random r = new Random();
+
+		ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(possilbeAbilities.split(",")));
+		AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
+
+		return AbilityPool.getAbility(chosenAbility);
+	}
+
+	private static Type[] generateTypes(String typesString, Type[] types)
+	{
+		String[] typesStringArray = typesString.split(",");
+
+		for(int i = 0; i < typesStringArray.length && i < 2; i++)
+		{
+			types[i] = Type.valueOf(typesStringArray[i]);
+		}
+
+		return types;
+	}
+
+	private static boolean generateIsShiny()
+	{
+		Random r = new Random();
+
+		return r.nextInt(4200) == 420;
 	}
 
 }

@@ -1,13 +1,14 @@
 package application.trainers.ai.choice_objects;
 
-import application.anatures.moves.MoveCore;
 import application.anatures.moves.moves.Flail;
 import application.enums.AiChoice;
+import application.interfaces.AiChoiceObject;
+import application.interfaces.IMove;
 
-public class AiNoChoice extends AiFinalChoice implements AiChoiceObject<MoveCore>
+public class AiNoChoice extends AiFinalChoice implements AiChoiceObject<IMove>
 {
-	private MoveCore mMove;
-	
+	private IMove mMove;
+
 	public AiNoChoice()
 	{
 		super(AiChoice.No_Choice);
@@ -15,7 +16,7 @@ public class AiNoChoice extends AiFinalChoice implements AiChoiceObject<MoveCore
 	}
 
 	@Override
-	public MoveCore getChoiceObject()
+	public IMove getChoiceObject()
 	{
 		return mMove;
 	}
@@ -25,5 +26,5 @@ public class AiNoChoice extends AiFinalChoice implements AiChoiceObject<MoveCore
 	{
 		return getChoice();
 	}
-	
+
 }

@@ -4,6 +4,7 @@ import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;
+import application.interfaces.AiChoiceObject;
 
 public class AiSwitchChoice extends AiFinalChoice implements AiChoiceObject<Anature>
 {

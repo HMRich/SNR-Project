@@ -1,9 +1,9 @@
 package application.items;
 
-import application.Builder;
 import application.enums.ItemIds;
+import application.interfaces.IBuilder;
 
-public class HealthPotionBuilder implements Builder<HealthPotion>
+public class HealthPotionBuilder implements IBuilder<HealthPotion>
 {
 	private HealthPotion mHealthPotion;
 
@@ -33,23 +33,23 @@ public class HealthPotionBuilder implements Builder<HealthPotion>
 		mHealthPotion.setHealAmount(healAmount);
 		return this;
 	}
-	
+
 	/*
 	 * PUBLIC METHODS
 	 */
-	
+
 	public HealthPotion create()
 	{
-		if(!buildIsComplete())
+		if(buildIsComplete())
 		{
-			throw new IllegalStateException("All the builder variables need to have a value before you create a HealthPotion.");
+			HealthPotion healthPotionToReturn = mHealthPotion;
+
+			generateNewHealthPotion();
+
+			return healthPotionToReturn;
 		}
-		
-		HealthPotion healthPotionToReturn = mHealthPotion;
-		
-		generateNewHealthPotion();
-		
-		return healthPotionToReturn;
+
+		throw new IllegalStateException("All the builder variables need to have a value before you create a HealthPotion.");
 	}
 
 	/*

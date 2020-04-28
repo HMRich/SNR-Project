@@ -5,8 +5,9 @@ import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
+import application.interfaces.IAbility;
 
-public class SleepDeprived implements Ability
+public class SleepDeprived implements IAbility
 {
 	public static String activateAbility(Anature userAnature)
 	{

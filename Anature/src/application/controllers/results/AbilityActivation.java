@@ -9,9 +9,9 @@ import application.anatures.abillities.SleepDeprived;
 import application.anatures.abillities.Spiky;
 import application.anatures.abillities.ToughSkin;
 import application.anatures.abillities.Tyrannize;
-import application.anatures.moves.MoveCore;
 import application.enums.AbilityIds;
 import application.enums.Type;
+import application.interfaces.IMove;
 
 public class AbilityActivation
 {
@@ -32,7 +32,7 @@ public class AbilityActivation
 		return result;
 	}
 
-	public static AbilityResult useAbilityCanAttack(AbilityIds abilityIds, Anature userAnature, Anature targetAnature, MoveCore moveCore)
+	public static AbilityResult useAbilityCanAttack(AbilityIds abilityIds, Anature userAnature, Anature targetAnature, IMove move)
 	{
 		ArrayList<String> dialogue = new ArrayList<String>();
 		AbilityResult result = new AbilityResult(dialogue, false);
@@ -40,7 +40,7 @@ public class AbilityActivation
 		switch(abilityIds)
 		{
 			case Dry_Skin: // Dry Skin
-				if(moveCore.getType() == Type.Water)
+				if(move.getType() == Type.Water)
 				{
 					dialogue.add(DrySkin.activateAbility(userAnature));
 					result.setActivated(true);
@@ -54,8 +54,8 @@ public class AbilityActivation
 		return result;
 	}
 
-	public static AbilityResult useAbilityAfterAttack(AbilityIds abilityId, Anature userAnature, Anature targetAnature, MoveCore moveThatAttacked, 
-			int userOldHp, boolean isUserAttacking, boolean attackMissed)
+	public static AbilityResult useAbilityAfterAttack(AbilityIds abilityId, Anature userAnature, Anature targetAnature, IMove moveThatAttacked, int userOldHp,
+			boolean isUserAttacking, boolean attackMissed)
 	{
 		ArrayList<String> dialogue = new ArrayList<String>();
 		AbilityResult result = new AbilityResult(dialogue, false);

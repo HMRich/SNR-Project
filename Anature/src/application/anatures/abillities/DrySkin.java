@@ -2,14 +2,15 @@ package application.anatures.abillities;
 
 import application.anatures.Anature;
 import application.enums.AbilityIds;
+import application.interfaces.IAbility;
 
-public class DrySkin implements Ability
+public class DrySkin implements IAbility
 {
 	public static String activateAbility(Anature userAnature)
 	{
 		return userAnature.getName() + " nullified the move with its Dry Skin ability!";
 	}
-	
+
 	@Override
 	public AbilityIds getAbilityId()
 	{

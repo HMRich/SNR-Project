@@ -6,8 +6,7 @@ import java.util.Random;
 import application.FightManager;
 import application.Startup;
 import application.anatures.Anature;
-import application.anatures.abillities.MoveSet;
-import application.anatures.moves.MoveCore;
+import application.anatures.MoveSet;
 import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
@@ -23,13 +22,14 @@ import application.enums.Gender;
 import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
+import application.interfaces.AiChoiceObject;
+import application.interfaces.IMove;
 import application.items.HealthPotion;
 import application.items.Item;
 import application.player.Backpack;
 import application.player.Player;
 import application.pools.ItemPool;
 import application.trainers.Trainer;
-import application.trainers.ai.choice_objects.AiChoiceObject;
 import application.views.elements.AnatureSlot;
 import application.views.elements.HpBar;
 import application.views.elements.ResizableImage;
@@ -971,10 +971,10 @@ public class BattleController
 	private void updateMoves(Anature playerCurr)
 	{
 		MoveSet moves = playerCurr.getMoveSet(); // TODO Make move btn color change based on move type
-		MoveCore move1 = moves.getMove(1);
-		MoveCore move2 = moves.getMove(2);
-		MoveCore move3 = moves.getMove(3);
-		MoveCore move4 = moves.getMove(4);
+		IMove move1 = moves.getMove(1);
+		IMove move2 = moves.getMove(2);
+		IMove move3 = moves.getMove(3);
+		IMove move4 = moves.getMove(4);
 
 		updateMove(move1, moves.getMovePoints(1), mShowMoveOne, mAttackNameOneTxt, mAttackMpOneTxt);
 		updateMove(move2, moves.getMovePoints(2), mShowMoveTwo, mAttackNameTwoTxt, mAttackMpTwoTxt);
@@ -982,7 +982,7 @@ public class BattleController
 		updateMove(move4, moves.getMovePoints(4), mShowMoveFour, mAttackNameFourTxt, mAttackMpFourTxt);
 	}
 
-	private void updateMove(MoveCore moveToCheck, int currMp, BooleanProperty showMove, StringProperty nameTxt, StringProperty mpTxt)
+	private void updateMove(IMove moveToCheck, int currMp, BooleanProperty showMove, StringProperty nameTxt, StringProperty mpTxt)
 	{
 		if(moveToCheck != null)
 		{
@@ -1639,7 +1639,7 @@ public class BattleController
 		MoveResult moveResult = mFightManager.attack(isPlayer, moveNum);
 		AbilityResult abilityResult = moveResult.getAbilityResult();
 		ArrayList<String> moveDialogue = moveResult.getDialogue();
-		MoveCore moveCore = moveResult.getMove();
+		IMove iMove = moveResult.getMove();
 
 		try
 		{
@@ -1651,7 +1651,7 @@ public class BattleController
 			LoggerController.logEvent(LoggingTypes.Error, "Thread was interrupted during sleep in useAttack.");
 		}
 
-		if(!moveCore.doesDamage())
+		if(!iMove.doesDamage())
 		{
 			mDialogueTxt.set(moveDialogue.get(0));
 
@@ -1669,7 +1669,7 @@ public class BattleController
 			enqueueDialogue(dialogue, "Ability Dialogue");
 		}
 
-		if(moveCore.doesDamage())
+		if(iMove.doesDamage())
 		{
 			healthDrainMove(moveResult, !isPlayer);
 		}

@@ -1,4 +1,4 @@
-package application.trainers.ai.choice_objects;
+package application.interfaces;
 
 import application.enums.AiChoice;
 

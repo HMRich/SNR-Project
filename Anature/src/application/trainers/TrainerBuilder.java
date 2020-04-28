@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import application.Builder;
 import application.DatabaseConnection;
 import application.TypeAdvantage;
 import application.anatures.Anature;
@@ -20,12 +19,13 @@ import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
+import application.interfaces.IBuilder;
 import application.items.HealthPotion;
 import application.pools.ItemPool;
 import application.trainers.ai.AI;
 import application.trainers.ai.AIBuilder;
 
-public class TrainerBuilder implements Builder<Trainer>
+public class TrainerBuilder implements IBuilder<Trainer>
 {
 	private Trainer mTrainer;
 
@@ -98,12 +98,14 @@ public class TrainerBuilder implements Builder<Trainer>
 
 	public static Trainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
 	{
+		// TODO Fully implement the column moveThreshold in the database
+		
 		String trainerName = "<Null>";
 		String partyList = "<Null>";
 		String itemsList = "<Null>";
 		String aiHealthThreshold = "<Null>";
 		String aiSwitchThreshold = "<Null>";
-		String aiMoveThreshold = "<Null>";
+		String aiMoveThreshold = "1";
 
 		try
 		{
@@ -121,7 +123,7 @@ public class TrainerBuilder implements Builder<Trainer>
 				itemsList = results.getString("ItemList");
 				aiHealthThreshold = results.getString("HealthThreshold");
 				aiSwitchThreshold = results.getString("SwitchThreshold");
-				aiMoveThreshold = results.getString("MoveThreshold");
+				//aiMoveThreshold = results.getString("MoveThreshold");
 			}
 
 			results.close();

@@ -1,47 +1,48 @@
 package application.anatures.abillities;
 
 import application.anatures.Anature;
-import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
+import application.interfaces.IAbility;
+import application.interfaces.IMove;
 
-public class Spiky implements Ability
+public class Spiky implements IAbility
 {
-	public static String activateAbility(Anature userAnature, Anature targetAnature, MoveCore moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
+	public static String activateAbility(Anature userAnature, Anature targetAnature, IMove moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
 	{
 		String result = "";
 
 		if(!hasNull(userAnature, targetAnature, moveThatAttacked) && moveThatAttacked.isPhysicalAttack() && !isUserAttacking && !attackMissed)
 		{
 			int newHp = targetAnature.getCurrentHitPoints() - (targetAnature.getTotalHitPoints() / 8);
-			
+
 			if(newHp < 0)
 			{
 				newHp = 0;
 			}
-			
+
 			targetAnature.updateCurrentHitPoints(newHp);
 			result = targetAnature.getName() + " got hurt from attacking " + userAnature.getName() + "'s spikes!";
 		}
-		
+
 		return result;
 	}
-	
-	private static boolean hasNull(Anature userAnature, Anature targetAnature, MoveCore moveThatAttacked)
+
+	private static boolean hasNull(Anature userAnature, Anature targetAnature, IMove moveThatAttacked)
 	{
 		if(userAnature == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Determination was null.");
 			return true;
 		}
-		
+
 		else if(targetAnature == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "targetAnature parameter in Determination was null.");
 			return true;
 		}
-		
+
 		else if(moveThatAttacked == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "moveThatAttacked parameter in Determination was null.");

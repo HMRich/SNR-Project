@@ -1,9 +1,9 @@
 package application.trainers.ai;
 
-import application.Builder;
 import application.enums.AttackEffectiveness;
+import application.interfaces.IBuilder;
 
-public class AIBuilder implements Builder<AI>
+public class AIBuilder implements IBuilder<AI>
 {
 	private AI mAI;
 

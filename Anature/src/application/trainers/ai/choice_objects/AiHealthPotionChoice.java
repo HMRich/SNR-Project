@@ -3,6 +3,7 @@ package application.trainers.ai.choice_objects;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;
+import application.interfaces.AiChoiceObject;
 import application.items.HealthPotion;
 
 public class AiHealthPotionChoice extends AiFinalChoice implements AiChoiceObject<HealthPotion>

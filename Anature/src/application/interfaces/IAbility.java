@@ -1,8 +1,8 @@
-package application.anatures.abillities;
+package application.interfaces;
 
 import application.enums.AbilityIds;
 
-public interface Ability
+public interface IAbility
 {
 	public AbilityIds getAbilityId();
 	public String getAbilityName();

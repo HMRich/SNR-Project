@@ -5,12 +5,12 @@ import java.util.Random;
 
 import application.TypeAdvantage;
 import application.anatures.Anature;
-import application.anatures.abillities.MoveSet;
-import application.anatures.moves.MoveCore;
+import application.anatures.MoveSet;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.AttackEffectiveness;
 import application.enums.LoggingTypes;
+import application.interfaces.IMove;
 import application.items.HealthPotion;
 import application.pools.ItemPool;
 import application.trainers.ai.choice_objects.AiMoveChoice;
@@ -215,12 +215,12 @@ public class AI
 	/*
 	 * PACKAGE METHODS
 	 */
-	
+
 	boolean canCreate()
 	{
 		return mHealthThreshold != -1 && !mSwitchThreshold.equals(AttackEffectiveness.NotSet) && !mMoveThreshold.equals(AttackEffectiveness.NotSet);
 	}
-	
+
 	/*
 	 * PRIVATE METHODS
 	 */
@@ -236,9 +236,9 @@ public class AI
 		return isAtOrAboveThreshold(anatureEffectiveness, mSwitchThreshold);
 	}
 
-	private boolean moveIsAtThreshold(MoveCore moveCore, Anature target)
+	private boolean moveIsAtThreshold(IMove move, Anature target)
 	{
-		AttackEffectiveness moveEffectiveness = TypeAdvantage.moveEffectiveness(moveCore, target);
+		AttackEffectiveness moveEffectiveness = TypeAdvantage.moveEffectiveness(move, target);
 		return isAtOrAboveThreshold(moveEffectiveness, mMoveThreshold);
 	}
 

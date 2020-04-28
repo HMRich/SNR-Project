@@ -1,26 +1,26 @@
 package application.trainers.ai.choice_objects;
 
-import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;
-import application.trainers.ai.choice_objects.AiFinalChoice;
+import application.interfaces.AiChoiceObject;
+import application.interfaces.IMove;
 
-public class AiMoveChoice extends AiFinalChoice implements AiChoiceObject<MoveCore>
+public class AiMoveChoice extends AiFinalChoice implements AiChoiceObject<IMove>
 {
-	private MoveCore mMove;
+	private IMove mMove;
 
-	public AiMoveChoice(AiChoice choice, MoveCore moveCore)
+	public AiMoveChoice(AiChoice choice, IMove move)
 	{
 		super(choice);
-		setMove(moveCore);
+		setMove(move);
 	}
 
-	private void setMove(MoveCore moveCore)
+	private void setMove(IMove move)
 	{
-		if(moveCore != null)
+		if(move != null)
 		{
-			mMove = moveCore;
+			mMove = move;
 		}
 
 		else
@@ -29,13 +29,13 @@ public class AiMoveChoice extends AiFinalChoice implements AiChoiceObject<MoveCo
 		}
 	}
 
-	private MoveCore getMove()
+	private IMove getMove()
 	{
 		return mMove;
 	}
 
 	@Override
-	public MoveCore getChoiceObject()
+	public IMove getChoiceObject()
 	{
 		return getMove();
 	}

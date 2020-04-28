@@ -2,6 +2,7 @@ package application.items;
 
 import application.anatures.Anature;
 import application.controllers.results.ItemResult;
+import application.enums.ItemIds;
 
 public class HealthPotion extends Item
 {
@@ -22,6 +23,7 @@ public class HealthPotion extends Item
 		{
 			throw new IllegalArgumentException("Passed value \"healAmount\" was below 0.");
 		}
+		mHealAmount = healAmount;
 	}
 
 	/*
@@ -48,7 +50,22 @@ public class HealthPotion extends Item
 
 	boolean canCreate()
 	{
-		return super.canCreate() && mHealAmount != -1;
+		if(getItemId().equals(ItemIds.Null))
+		{
+			throw new IllegalStateException("The \"itemId\" variable was never set during construction.");
+		}
+
+		if(getItemName().isEmpty())
+		{
+			throw new IllegalStateException("The \"itemName\" variable was never set during construction.");
+		}
+
+		if(getHealAmount() == -1)
+		{
+			throw new IllegalStateException("The \"healAmount\" variable was never set during construction.");
+		}
+
+		return true;
 	}
 
 }

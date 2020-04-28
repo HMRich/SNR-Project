@@ -2,20 +2,20 @@ package application.controllers.results;
 
 import java.util.ArrayList;
 
-import application.anatures.moves.MoveCore;
 import application.controllers.LoggerController;
 import application.enums.LoggingTypes;
 import application.enums.MoveIds;
+import application.interfaces.IMove;
 import application.pools.MovePool;
 
 public class MoveResult extends Result
 {
-	private MoveCore mMove;
+	private IMove mMove;
 	private int mMoveIndex; //NOTE: a moveIndex of -1 means that the move was skipped
 	private boolean mIsPlayer;
 	private AbilityResult mAbilityResult;
 	
-	public MoveResult(ArrayList<String> moveDialogue, AbilityResult abilityResult, int moveIndex, boolean isPlayer, MoveCore moveCore)
+	public MoveResult(ArrayList<String> moveDialogue, AbilityResult abilityResult, int moveIndex, boolean isPlayer, IMove move)
 	{
 		super(moveDialogue);
 		
@@ -25,14 +25,14 @@ public class MoveResult extends Result
 			abilityResult = new AbilityResult(new ArrayList<String>(), false);
 		}
 		
-		else if(moveCore == null)
+		else if(move == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "move in MoveResult constructor was null.");
-			moveCore = MovePool.getMove(MoveIds.Tackle);
+			move = MovePool.getMove(MoveIds.Tackle);
 		}
 		
 		mAbilityResult = abilityResult;
-		mMove = moveCore;
+		mMove = move;
 		mIsPlayer = isPlayer;
 		mMoveIndex = moveIndex;
 	}
@@ -47,7 +47,7 @@ public class MoveResult extends Result
 		return mIsPlayer;
 	}
 	
-	public MoveCore getMove()
+	public IMove getMove()
 	{
 		return mMove;
 	}
