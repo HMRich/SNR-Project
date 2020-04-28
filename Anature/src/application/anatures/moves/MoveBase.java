@@ -1,10 +1,11 @@
 package application.anatures.moves;
 
-import application.anatures.moves.moves.Move;
+import application.anatures.Anature;
 import application.enums.MoveIds;
 import application.enums.Type;
+import application.interfaces.IMove;
 
-public abstract class MoveCore implements Move
+public class MoveBase implements IMove
 {
 	private String mName;
 	private MoveIds mMoveId;
@@ -14,10 +15,10 @@ public abstract class MoveCore implements Move
 	private int mTotalMovePoints;
 	private double mAccuracy;
 
-	protected MoveCore()
+	protected MoveBase()
 	{
 		mName = "";
-		mMoveId = MoveIds.NulllMove;
+		mMoveId = MoveIds.NullMove;
 		mType = Type.NotSet;
 		mDoesDamage = false;
 		mIsPhysicalAttack = false;
@@ -36,7 +37,8 @@ public abstract class MoveCore implements Move
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim().isEmpty())
+		if(name.trim()
+				.isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
@@ -51,7 +53,7 @@ public abstract class MoveCore implements Move
 			throw new IllegalArgumentException("Passed value \"moveId\" was null.");
 		}
 
-		if(moveId.equals(MoveIds.NulllMove))
+		if(moveId.equals(MoveIds.NullMove))
 		{
 			throw new IllegalArgumentException("Passed value \"moveId\" was equal to " + moveId.toString() + ".");
 		}
@@ -149,7 +151,40 @@ public abstract class MoveCore implements Move
 
 	boolean canCreate()
 	{
-		return !mName.isEmpty() && mMoveId.equals(MoveIds.NulllMove) && mType.equals(Type.NotSet) && mTotalMovePoints != -1 && mAccuracy != -1;
+		if(mName.isEmpty())
+		{
+			throw new IllegalStateException("The \"name\" variable was never set during construction.");
+		}
+
+		if(mMoveId.equals(MoveIds.NullMove))
+		{
+			throw new IllegalStateException("The \"moveId\" variable was never set during construction.");
+		}
+
+		if(mType.equals(Type.NotSet))
+		{
+			throw new IllegalStateException("The \"type\" variable was never set during construction.");
+		}
+
+		if(mTotalMovePoints == -1)
+		{
+			throw new IllegalStateException("The \"totalMovePoints\" variable was never set during construction.");
+		}
+
+		if(mAccuracy == -1)
+		{
+			throw new IllegalStateException("The \"accuracy\" variable was never set during construction.");
+		}
+		return true;
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
+	public void activateMove(Anature source, Anature target)
+	{
+		throw new IllegalStateException("This method should not be called.");
 	}
 
 }

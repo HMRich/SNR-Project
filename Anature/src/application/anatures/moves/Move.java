@@ -1,15 +1,22 @@
 package application.anatures.moves;
 
-import application.Builder;
+import application.anatures.moves.moves.DoublePunch;
+import application.anatures.moves.moves.Flail;
+import application.anatures.moves.moves.Flamethrower;
+import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.NullMove;
+import application.anatures.moves.moves.PocketSand;
+import application.anatures.moves.moves.SkipTurn;
+import application.anatures.moves.moves.Tackle;
 import application.enums.MoveIds;
 import application.enums.Type;
+import application.interfaces.IBuilder;
 
-public class CreateMove<M extends MoveCore> implements Builder<MoveCore>
+public class Move<M extends MoveBase> implements IBuilder<M>
 {
 	private M mMove;
 
-	public CreateMove()
+	public Move()
 	{
 		generateNewMove();
 	}
@@ -18,43 +25,43 @@ public class CreateMove<M extends MoveCore> implements Builder<MoveCore>
 	 * PUBLIC SETS
 	 */
 
-	public CreateMove<M> withName(String name)
+	public Move<M> withName(String name)
 	{
 		mMove.setName(name);
 		return this;
 	}
 
-	public CreateMove<M> withMoveId(MoveIds moveId)
+	public Move<M> withMoveId(MoveIds moveId)
 	{
 		mMove.setMoveId(moveId);
 		return this;
 	}
 
-	public CreateMove<M> withType(Type type)
+	public Move<M> withType(Type type)
 	{
 		mMove.setType(type);
 		return this;
 	}
 
-	public CreateMove<M> doesDamage(boolean doesDamage)
+	public Move<M> doesDamage(boolean doesDamage)
 	{
 		mMove.setDoesDamage(doesDamage);
 		return this;
 	}
 
-	public CreateMove<M> isPhysicalAttack(boolean isPhysicalAttack)
+	public Move<M> isPhysicalAttack(boolean isPhysicalAttack)
 	{
 		mMove.setIsPhysicalAttack(isPhysicalAttack);
 		return this;
 	}
 
-	public CreateMove<M> withTotalMovePoints(int totalMovePoints)
+	public Move<M> withTotalMovePoints(int totalMovePoints)
 	{
 		mMove.setTotalMovePoints(totalMovePoints);
 		return this;
 	}
 
-	public CreateMove<M> withAccuracy(double accuracy)
+	public Move<M> withAccuracy(double accuracy)
 	{
 		mMove.setAccuracy(accuracy);
 		return this;
@@ -66,16 +73,16 @@ public class CreateMove<M extends MoveCore> implements Builder<MoveCore>
 
 	public M create()
 	{
-		if(!buildIsComplete())
+		if(buildIsComplete())
 		{
-			throw new IllegalStateException("All the builder variables need to have a value before you create a Move.");
+			M moveToReturn = mMove;
+
+			generateNewMove();
+
+			return moveToReturn;
 		}
 
-		M moveToReturn = mMove;
-
-		generateNewMove();
-
-		return moveToReturn;
+		throw new IllegalStateException("All the builder variables need to have a value before you create a Move.");
 	}
 
 	/*
@@ -85,7 +92,47 @@ public class CreateMove<M extends MoveCore> implements Builder<MoveCore>
 	@SuppressWarnings("unchecked")
 	private void generateNewMove()
 	{
-		mMove = (M) new NullMove();
+		if(mMove instanceof Grumble)
+		{
+			mMove = (M) new Grumble();
+		}
+
+		else if(mMove instanceof DoublePunch)
+		{
+			mMove = (M) new DoublePunch();
+		}
+
+		else if(mMove instanceof Flamethrower)
+		{
+			mMove = (M) new Flamethrower();
+		}
+
+		else if(mMove instanceof PocketSand)
+		{
+			mMove = (M) new PocketSand();
+		}
+
+		else if(mMove instanceof SkipTurn)
+		{
+			mMove = (M) new SkipTurn();
+		}
+
+		else if(mMove instanceof Flail)
+		{
+			mMove = (M) new Flail();
+		}
+
+		else if(mMove instanceof Tackle)
+		{
+			mMove = (M) new Tackle();
+		}
+		
+		else if(mMove instanceof NullMove)
+		{
+			mMove = (M) new NullMove();
+		}
+		
+		throw new IllegalStateException("The type \"M\" was not found. Please add it to the list.");
 	}
 
 	private boolean buildIsComplete()
