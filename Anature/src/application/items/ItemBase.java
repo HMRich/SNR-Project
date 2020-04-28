@@ -1,15 +1,14 @@
 package application.items;
 
-import application.anatures.Anature;
-import application.controllers.results.ItemResult;
 import application.enums.ItemIds;
+import application.interfaces.IItem;
 
-public abstract class Item
+public abstract class ItemBase implements IItem
 {
 	private ItemIds mItemId;
 	private String mItemName;
 
-	Item()
+	ItemBase()
 	{
 		mItemId = ItemIds.Null;
 		mItemName = "";
@@ -36,8 +35,7 @@ public abstract class Item
 			throw new IllegalArgumentException("Passed value \"itemName\" was null.");
 		}
 
-		if(itemName.trim()
-				.isEmpty())
+		if(itemName.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"itemName\" was anempty string.");
 		}
@@ -58,7 +56,4 @@ public abstract class Item
 	{
 		return mItemName;
 	}
-
-	public abstract ItemResult useItem(Anature target);
-
 }

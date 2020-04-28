@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import application.controllers.LoggerController;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
-import application.items.Item;
+import application.interfaces.IHealthPotion;
 
 public class Backpack
 {
-	private ArrayList<Item> mPotionBag;
+	private ArrayList<IHealthPotion> mPotionBag;
 
 	public Backpack()
 	{
-		mPotionBag = new ArrayList<Item>();
+		mPotionBag = new ArrayList<IHealthPotion>();
 	}
 
-	public void addItem(Item toAdd)
+	public void addItem(IHealthPotion toAdd)
 	{
 		if(toAdd == null)
 		{
@@ -31,9 +31,9 @@ public class Backpack
 	{
 		for(int i = 0; i < mPotionBag.size(); i++)
 		{
-			Item item = mPotionBag.get(i);
+			IHealthPotion iItem = mPotionBag.get(i);
 
-			if(item.getItemId() == idToRemove)
+			if(iItem.getItemId() == idToRemove)
 			{
 				mPotionBag.remove(i);
 				return true;
@@ -68,13 +68,13 @@ public class Backpack
 		return calculateCount(mPotionBag, ItemIds.Master_Potion);
 	}
 
-	private int calculateCount(ArrayList<Item> bag, ItemIds toCount)
+	private int calculateCount(ArrayList<IHealthPotion> bag, ItemIds toCount)
 	{
 		int count = 0;
 
-		for(Item item : bag)
+		for(IHealthPotion iItem : bag)
 		{
-			if(item.getItemId() == toCount)
+			if(iItem.getItemId() == toCount)
 				count++;
 		}
 

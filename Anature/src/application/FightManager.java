@@ -11,8 +11,8 @@ import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
 import application.enums.AbilityIds;
 import application.enums.MoveIds;
+import application.interfaces.IItem;
 import application.interfaces.IMove;
-import application.items.Item;
 import application.pools.MovePool;
 
 public class FightManager
@@ -88,10 +88,8 @@ public class FightManager
 			moveBase = MovePool.getMove(MoveIds.Flail);
 		}
 
-		AbilityIds userAbilityId = userAnature.getAbility()
-				.getAbilityId();
-		AbilityIds targetAbilityId = targetAnature.getAbility()
-				.getAbilityId();
+		AbilityIds userAbilityId = userAnature.getAbility().getAbilityId();
+		AbilityIds targetAbilityId = targetAnature.getAbility().getAbilityId();
 
 		moveSet.useMovePoint(indexOfMove);
 
@@ -147,7 +145,7 @@ public class FightManager
 		return rng.nextInt(101) < totalAccuracy * 100;
 	}
 
-	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, Item item)
+	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, IItem iItem)
 	{
 		mTurnCount++;
 		Anature target;
@@ -155,13 +153,13 @@ public class FightManager
 		if(isPlayer)
 		{
 			target = mPlayerTeam.get(indexOfTeam);
-			return item.useItem(target);
+			return iItem.useItem(target);
 		}
 
 		else
 		{
 			target = mEnemyTeam.get(indexOfTeam);
-			return item.useItem(target);
+			return iItem.useItem(target);
 		}
 	}
 
@@ -172,12 +170,10 @@ public class FightManager
 
 		if(isPlayer)
 		{
-			return AbilityActivation.useEntryAbility(player.getAbility()
-					.getAbilityId(), player, enemy);
+			return AbilityActivation.useEntryAbility(player.getAbility().getAbilityId(), player, enemy);
 		}
 
-		return AbilityActivation.useEntryAbility(enemy.getAbility()
-				.getAbilityId(), enemy, player);
+		return AbilityActivation.useEntryAbility(enemy.getAbility().getAbilityId(), enemy, player);
 	}
 
 	public ArrayList<Anature> getPlayerTeam()
@@ -222,15 +218,12 @@ public class FightManager
 			throw new NullPointerException("Enemy Anature was null, String or Result Object?");
 		}
 
-		if(team.get(0)
-				.getMoveSet() == null)
+		if(team.get(0).getMoveSet() == null)
 		{
 			throw new NullPointerException("Anature's MoveSet was null, String or Result Object?");
 		}
 
-		if(team.get(0)
-				.getMoveSet()
-				.getMove(indexOfMove) == null)
+		if(team.get(0).getMoveSet().getMove(indexOfMove) == null)
 		{
 			throw new NullPointerException("Anature's Move was null, String or Result Object?");
 		}

@@ -251,7 +251,7 @@ public class Startup extends Application
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
-		
+
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 
 		changeScene(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1);

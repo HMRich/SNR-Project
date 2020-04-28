@@ -20,7 +20,7 @@ import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
 import application.interfaces.IBuilder;
-import application.items.HealthPotion;
+import application.interfaces.IHealthPotion;
 import application.pools.ItemPool;
 import application.trainers.ai.AI;
 import application.trainers.ai.AIBuilder;
@@ -56,9 +56,9 @@ public class TrainerBuilder implements IBuilder<Trainer>
 		return this;
 	}
 
-	public TrainerBuilder setHealthPotions(ArrayList<HealthPotion> healthPotions)
+	public TrainerBuilder setHealthPotions(ArrayList<IHealthPotion> healthPotionBases)
 	{
-		mTrainer.setHealthPotions(healthPotions);
+		mTrainer.setHealthPotions(healthPotionBases);
 		return this;
 	}
 
@@ -99,7 +99,7 @@ public class TrainerBuilder implements IBuilder<Trainer>
 	public static Trainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
 	{
 		// TODO Fully implement the column moveThreshold in the database
-		
+
 		String trainerName = "<Null>";
 		String partyList = "<Null>";
 		String itemsList = "<Null>";
@@ -123,7 +123,7 @@ public class TrainerBuilder implements IBuilder<Trainer>
 				itemsList = results.getString("ItemList");
 				aiHealthThreshold = results.getString("HealthThreshold");
 				aiSwitchThreshold = results.getString("SwitchThreshold");
-				//aiMoveThreshold = results.getString("MoveThreshold");
+				// aiMoveThreshold = results.getString("MoveThreshold");
 			}
 
 			results.close();
@@ -137,7 +137,7 @@ public class TrainerBuilder implements IBuilder<Trainer>
 		}
 
 		ArrayList<Anature> party = parsePartyList(partyList, anatureCount, minLevel, maxLevel);
-		ArrayList<HealthPotion> potions = parsePotionList(itemsList);
+		ArrayList<IHealthPotion> potions = parsePotionList(itemsList);
 		AI ai = parseAi(aiHealthThreshold, aiSwitchThreshold, aiMoveThreshold);
 
 		return new TrainerBuilder().setTrainerId(id)
@@ -167,9 +167,9 @@ public class TrainerBuilder implements IBuilder<Trainer>
 	 * STATIC PRIVATE METHODS
 	 */
 
-	private static ArrayList<HealthPotion> parsePotionList(String itemsString)
+	private static ArrayList<IHealthPotion> parsePotionList(String itemsString)
 	{
-		ArrayList<HealthPotion> items = new ArrayList<HealthPotion>();
+		ArrayList<IHealthPotion> items = new ArrayList<IHealthPotion>();
 
 		if(itemsString.length() != 0)
 		{
@@ -179,7 +179,7 @@ public class TrainerBuilder implements IBuilder<Trainer>
 			{
 				try
 				{
-					HealthPotion toAdd = ItemPool.getHealthPotion(ItemIds.valueOf(itemId)); // TODO redo ItemPool.java file to decouple
+					IHealthPotion toAdd = ItemPool.getHealthPotion(ItemIds.valueOf(itemId)); // TODO redo ItemPool.java file to decouple
 
 					if(toAdd == null)
 					{
@@ -224,10 +224,7 @@ public class TrainerBuilder implements IBuilder<Trainer>
 		AttackEffectiveness switchThreshold = TypeAdvantage.parseInt(Integer.parseInt(aiSwitchThreshold));
 		AttackEffectiveness moveThreshold = TypeAdvantage.parseInt(Integer.parseInt(aiMoveThreshold));
 
-		return new AIBuilder().setHealthThreshold(healthThreshold)
-				.setSwitchThreshold(switchThreshold)
-				.setMoveThreshold(moveThreshold)
-				.create();
+		return new AIBuilder().setHealthThreshold(healthThreshold).setSwitchThreshold(switchThreshold).setMoveThreshold(moveThreshold).create();
 	}
 
 }

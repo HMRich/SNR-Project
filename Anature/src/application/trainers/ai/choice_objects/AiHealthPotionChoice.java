@@ -4,19 +4,19 @@ import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;
 import application.interfaces.AiChoiceObject;
-import application.items.HealthPotion;
+import application.interfaces.IHealthPotion;
 
-public class AiHealthPotionChoice extends AiFinalChoice implements AiChoiceObject<HealthPotion>
+public class AiHealthPotionChoice extends AiFinalChoice implements AiChoiceObject<IHealthPotion>
 {
-	private HealthPotion mPotion;
+	private IHealthPotion mPotion;
 
-	public AiHealthPotionChoice(HealthPotion potion)
+	public AiHealthPotionChoice(IHealthPotion potion)
 	{
 		super(AiChoice.Item_Consumed);
 		setHealthPotion(potion);
 	}
 
-	private void setHealthPotion(HealthPotion potion)
+	private void setHealthPotion(IHealthPotion potion)
 	{
 		if(potion != null)
 		{
@@ -30,13 +30,13 @@ public class AiHealthPotionChoice extends AiFinalChoice implements AiChoiceObjec
 		}
 	}
 
-	private HealthPotion getHealthPotion()
+	private IHealthPotion getHealthPotion()
 	{
 		return mPotion;
 	}
 
 	@Override
-	public HealthPotion getChoiceObject()
+	public IHealthPotion getChoiceObject()
 	{
 		return getHealthPotion();
 	}

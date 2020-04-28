@@ -1,71 +1,68 @@
 package application.items;
 
-import application.anatures.Anature;
-import application.controllers.results.ItemResult;
 import application.enums.ItemIds;
+import application.interfaces.IBuilder;
 
-public class HealthPotion extends Item
+public class HealthPotion implements IBuilder<HealthPotionBase>
 {
-	private int mHealAmount;
+	private HealthPotionBase mHealthPotion;
 
-	HealthPotion()
+	public HealthPotion()
 	{
-		mHealAmount = -1;
+		generateNewHealthPotion();
 	}
 
 	/*
-	 * PACKAGE SETS
+	 * PUBLIC SETS
 	 */
 
-	void setHealAmount(int healAmount)
+	public HealthPotion withItemId(ItemIds itemId)
 	{
-		if(healAmount < 0)
-		{
-			throw new IllegalArgumentException("Passed value \"healAmount\" was below 0.");
-		}
-		mHealAmount = healAmount;
+		mHealthPotion.setItemId(itemId);
+		return this;
+	}
+
+	public HealthPotion withItemName(String itemName)
+	{
+		mHealthPotion.setItemName(itemName);
+		return this;
+	}
+
+	public HealthPotion withHealAmount(int healAmount)
+	{
+		mHealthPotion.setHealAmount(healAmount);
+		return this;
 	}
 
 	/*
 	 * PUBLIC METHODS
 	 */
 
-	public ItemResult useItem(Anature target)
+	public HealthPotionBase create()
 	{
-		double oldHp = target.getCurrentHitPoints();
-		String dialogue = target.healAnature(getHealAmount());
-		double newHp = target.getCurrentHitPoints();
+		if(buildIsComplete())
+		{
+			HealthPotionBase healthPotionToReturn = mHealthPotion;
 
-		return new ItemResult(dialogue, newHp - oldHp);
-	}
+			generateNewHealthPotion();
 
-	public int getHealAmount()
-	{
-		return mHealAmount;
+			return healthPotionToReturn;
+		}
+
+		throw new IllegalStateException("All the builder variables need to have a value before you create a HealthPotion.");
 	}
 
 	/*
-	 * PACKAGE METHODS
+	 * PRIVATE METHODS
 	 */
 
-	boolean canCreate()
+	private void generateNewHealthPotion()
 	{
-		if(getItemId().equals(ItemIds.Null))
-		{
-			throw new IllegalStateException("The \"itemId\" variable was never set during construction.");
-		}
-
-		if(getItemName().isEmpty())
-		{
-			throw new IllegalStateException("The \"itemName\" variable was never set during construction.");
-		}
-
-		if(getHealAmount() == -1)
-		{
-			throw new IllegalStateException("The \"healAmount\" variable was never set during construction.");
-		}
-
-		return true;
+		mHealthPotion = new HealthPotionBase();
 	}
 
+	private boolean buildIsComplete()
+	{
+		return mHealthPotion.canCreate();
+	}
 }

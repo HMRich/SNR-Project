@@ -10,8 +10,8 @@ import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.AttackEffectiveness;
 import application.enums.LoggingTypes;
+import application.interfaces.IHealthPotion;
 import application.interfaces.IMove;
-import application.items.HealthPotion;
 import application.pools.ItemPool;
 import application.trainers.ai.choice_objects.AiMoveChoice;
 
@@ -75,9 +75,9 @@ public class AI
 	 * PUBLIC METHODS
 	 */
 
-	public boolean willUseHealthPotion(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
+	public boolean willUseHealthPotion(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
 	{
-		if(healthPotions == null)
+		if(healthPotionBases == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error,
 					"IllegalArgumentException in BaseAI.java, Method: willUseHealthPotion(ArrayList<HealthPotion> healthPotions, Anature currentAnature), \"healthPotions\" value was null.");
@@ -92,14 +92,14 @@ public class AI
 		double anatureHpPercent = currentAnature.getHpPercent();
 
 		boolean currentAnatureAtThreshold = anatureHpPercent <= mHealthThreshold;
-		boolean trainerHasHealthPotion = !healthPotions.isEmpty();
+		boolean trainerHasHealthPotion = !healthPotionBases.isEmpty();
 
 		return trainerHasHealthPotion && currentAnatureAtThreshold;
 	}
 
-	public HealthPotion healthPotionToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature)
+	public IHealthPotion healthPotionToUse(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
 	{
-		if(healthPotions == null)
+		if(healthPotionBases == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error,
 					"IllegalArgumentException in BaseAI.java, Method: healthPotionToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature), \"healthPotions\" value was null.");
@@ -113,13 +113,12 @@ public class AI
 
 		double currentAnatureHpPercent = currentAnature.getHpPercent();
 
-		HealthPotion healthPotionToUse = null;
+		IHealthPotion healthPotionToUse = null;
 		double anaturePercentAfterItemUse = 0;
 
-		for(HealthPotion healthPotion : healthPotions)
+		for(IHealthPotion healthPotionBase : healthPotionBases)
 		{
-			int itemHealAmount = ItemPool.getHealthPotion(healthPotion.getItemId())
-					.getHealAmount();
+			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId()).getHealAmount();
 			double healPercent = itemHealAmount / currentAnature.getTotalHitPoints();
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
@@ -131,7 +130,7 @@ public class AI
 			if(anaturePercentAfterItemUse == 0 || anatureHpPercentIfItemUsed > anaturePercentAfterItemUse && !willOverheal)
 			{
 				anaturePercentAfterItemUse = anatureHpPercentIfItemUsed;
-				healthPotionToUse = healthPotion;
+				healthPotionToUse = healthPotionBase;
 			}
 		}
 

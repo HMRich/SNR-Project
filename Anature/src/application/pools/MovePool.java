@@ -32,8 +32,7 @@ public class MovePool
 		mMoves = new HashMap<MoveIds, IMove>();
 
 		mMoves.put(MoveIds.Grumble,
-				new Move<Grumble>().withName("Grumble")
-						.withMoveId(MoveIds.Grumble)
+				new Move<Grumble>(MoveIds.Grumble).withName("Grumble")
 						.withType(Type.Normal)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
@@ -42,8 +41,7 @@ public class MovePool
 						.create());
 
 		mMoves.put(MoveIds.Double_Punch,
-				new Move<DoublePunch>().withName("Double Punch")
-						.withMoveId(MoveIds.Double_Punch)
+				new Move<DoublePunch>(MoveIds.Double_Punch).withName("Double Punch")
 						.withType(Type.Fighting)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -52,8 +50,7 @@ public class MovePool
 						.create());
 
 		mMoves.put(MoveIds.Flamethrower,
-				new Move<Flamethrower>().withName("Flamethrower")
-						.withMoveId(MoveIds.Flamethrower)
+				new Move<Flamethrower>(MoveIds.Flamethrower).withName("Flamethrower")
 						.withType(Type.Fire)
 						.doesDamage(true)
 						.isPhysicalAttack(false)
@@ -62,8 +59,7 @@ public class MovePool
 						.create());
 
 		mMoves.put(MoveIds.Pocket_Sand,
-				new Move<PocketSand>().withName("Pocket Sand")
-						.withMoveId(MoveIds.Pocket_Sand)
+				new Move<PocketSand>(MoveIds.Pocket_Sand).withName("Pocket Sand")
 						.withType(Type.Ground)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
@@ -72,8 +68,7 @@ public class MovePool
 						.create());
 
 		mMoves.put(MoveIds.Skip_Turn,
-				new Move<SkipTurn>().withName("Skip Turn")
-						.withMoveId(MoveIds.Skip_Turn)
+				new Move<SkipTurn>(MoveIds.Skip_Turn).withName("Skip Turn")
 						.withType(Type.Normal)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
@@ -81,11 +76,10 @@ public class MovePool
 						.withAccuracy(1)
 						.create());
 
-		// TODO Struggle will eventually run out of Move Points... almost impossible but
+		// TODO Flail will eventually run out of Move Points... almost impossible but
 		// there might be a work around
 		mMoves.put(MoveIds.Flail,
-				new Move<Flail>().withName("Flail")
-						.withMoveId(MoveIds.Flail)
+				new Move<Flail>(MoveIds.Flail).withName("Flail")
 						.withType(Type.Normal)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -94,8 +88,7 @@ public class MovePool
 						.create());
 
 		mMoves.put(MoveIds.Tackle,
-				new Move<Tackle>().withName("Tackle")
-						.withMoveId(MoveIds.Tackle)
+				new Move<Tackle>(MoveIds.Tackle).withName("Tackle")
 						.withType(Type.Normal)
 						.doesDamage(true)
 						.isPhysicalAttack(true)

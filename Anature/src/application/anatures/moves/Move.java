@@ -15,10 +15,31 @@ import application.interfaces.IBuilder;
 public class Move<M extends MoveBase> implements IBuilder<M>
 {
 	private M mMove;
+	private MoveIds mMoveId;
 
-	public Move()
+	public Move(MoveIds moveId)
 	{
+		setMoveType(moveId);
 		generateNewMove();
+	}
+
+	/*
+	 * PRIVATE SETS
+	 */
+
+	private void setMoveType(MoveIds moveId)
+	{
+		if(moveId == null)
+		{
+			throw new IllegalArgumentException("Passed value \"moveId\" was null.");
+		}
+
+		if(moveId.equals(MoveIds.NullMove))
+		{
+			throw new IllegalArgumentException("Passed value \"moveId\" was equal to " + moveId.toString() + ".");
+		}
+
+		mMoveId = moveId;
 	}
 
 	/*
@@ -28,12 +49,6 @@ public class Move<M extends MoveBase> implements IBuilder<M>
 	public Move<M> withName(String name)
 	{
 		mMove.setName(name);
-		return this;
-	}
-
-	public Move<M> withMoveId(MoveIds moveId)
-	{
-		mMove.setMoveId(moveId);
 		return this;
 	}
 
@@ -92,47 +107,45 @@ public class Move<M extends MoveBase> implements IBuilder<M>
 	@SuppressWarnings("unchecked")
 	private void generateNewMove()
 	{
-		if(mMove instanceof Grumble)
+		switch(mMoveId)
 		{
-			mMove = (M) new Grumble();
+			case Grumble:
+				mMove = (M) new Grumble();
+				break;
+
+			case Double_Punch:
+				mMove = (M) new DoublePunch();
+				break;
+
+			case Flamethrower:
+				mMove = (M) new Flamethrower();
+				break;
+
+			case Pocket_Sand:
+				mMove = (M) new PocketSand();
+				break;
+
+			case Skip_Turn:
+				mMove = (M) new SkipTurn();
+				break;
+
+			case Flail:
+				mMove = (M) new Flail();
+				break;
+
+			case Tackle:
+				mMove = (M) new Tackle();
+				break;
+
+			case NullMove:
+				mMove = (M) new NullMove();
+				break;
+
+			default:
+				throw new IllegalStateException("The variable \"moveId\" was not found. Please add it to the list.");
 		}
 
-		else if(mMove instanceof DoublePunch)
-		{
-			mMove = (M) new DoublePunch();
-		}
-
-		else if(mMove instanceof Flamethrower)
-		{
-			mMove = (M) new Flamethrower();
-		}
-
-		else if(mMove instanceof PocketSand)
-		{
-			mMove = (M) new PocketSand();
-		}
-
-		else if(mMove instanceof SkipTurn)
-		{
-			mMove = (M) new SkipTurn();
-		}
-
-		else if(mMove instanceof Flail)
-		{
-			mMove = (M) new Flail();
-		}
-
-		else if(mMove instanceof Tackle)
-		{
-			mMove = (M) new Tackle();
-		}
-		
-		else if(mMove instanceof NullMove)
-		{
-			mMove = (M) new NullMove();
-		}
-		
-		throw new IllegalStateException("The type \"M\" was not found. Please add it to the list.");
+		mMove.setMoveId(mMoveId);
 	}
 
 	private boolean buildIsComplete()

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import application.anatures.Anature;
 import application.enums.TrainerIds;
 import application.interfaces.AiChoiceObject;
-import application.items.HealthPotion;
+import application.interfaces.IHealthPotion;
 import application.trainers.ai.AI;
 import application.trainers.ai.choice_objects.AiHealthPotionChoice;
 import application.trainers.ai.choice_objects.AiMoveChoice;
@@ -18,7 +18,7 @@ public class Trainer
 	private TrainerIds mId;
 	private String mName;
 	private ArrayList<Anature> mAnatures;
-	private ArrayList<HealthPotion> mHealthPotions;
+	private ArrayList<IHealthPotion> mHealthPotions;
 	private Anature mCurrentAnature;
 	private AI mAI;
 
@@ -52,8 +52,7 @@ public class Trainer
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim()
-				.isEmpty())
+		if(name.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
@@ -71,13 +70,13 @@ public class Trainer
 		mAnatures = anatures;
 	}
 
-	void setHealthPotions(ArrayList<HealthPotion> healthPotions)
+	void setHealthPotions(ArrayList<IHealthPotion> healthPotionBases)
 	{
-		if(healthPotions == null)
+		if(healthPotionBases == null)
 		{
 			throw new IllegalArgumentException("Passed value \"potions\" was null.");
 		}
-		mHealthPotions = healthPotions;
+		mHealthPotions = healthPotionBases;
 	}
 
 	void setCurrentAnature(Anature currentAnature)
@@ -117,7 +116,7 @@ public class Trainer
 		return mAnatures;
 	}
 
-	public ArrayList<HealthPotion> getHealthPotions()
+	public ArrayList<IHealthPotion> getHealthPotions()
 	{
 		return mHealthPotions;
 	}
@@ -136,9 +135,8 @@ public class Trainer
 		if(mId == TrainerIds.Wild)
 			return null;
 
-		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString()
-				.toLowerCase() + "/" + mId.toString() + ".png")
-				.toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + "/" + mId.toString() + ".png").toExternalForm(),
+				1000.0, 1000.0, true, false);
 	}
 
 	// TODO We need to get rid of this method
@@ -221,7 +219,7 @@ public class Trainer
 
 	private AiHealthPotionChoice chooseHealthPotion()
 	{
-		HealthPotion healthPotionToUse = mAI.healthPotionToUse(mHealthPotions, mCurrentAnature);
+		IHealthPotion healthPotionToUse = mAI.healthPotionToUse(mHealthPotions, mCurrentAnature);
 		AiHealthPotionChoice healthPotionChoice = new AiHealthPotionChoice(healthPotionToUse);
 		return healthPotionChoice;
 	}

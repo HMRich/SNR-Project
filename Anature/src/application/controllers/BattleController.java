@@ -23,9 +23,9 @@ import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
 import application.interfaces.AiChoiceObject;
+import application.interfaces.IItem;
 import application.interfaces.IMove;
-import application.items.HealthPotion;
-import application.items.Item;
+import application.items.HealthPotionBase;
 import application.player.Backpack;
 import application.player.Player;
 import application.pools.ItemPool;
@@ -1437,7 +1437,7 @@ public class BattleController
 			case Item:
 				mClickQueue.enqueue(() ->
 				{
-					Item selectedItem = ItemPool.getItem(mItemList.getSelectionModel().getSelectedItem());
+					IItem selectedItem = ItemPool.getItem(mItemList.getSelectionModel().getSelectedItem());
 
 					ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem); // TODO Change it so u can use items on other
 																												// anatures
@@ -1499,7 +1499,7 @@ public class BattleController
 			case Item_Consumed:
 				mClickQueue.enqueue(() ->
 				{
-					healthGain(mFightManager.itemUse(false, mFightManager.getEnemyIndex(), (HealthPotion) enemyTurn.getChoiceObject()), mEnemyHp);
+					healthGain(mFightManager.itemUse(false, mFightManager.getEnemyIndex(), (HealthPotionBase) enemyTurn.getChoiceObject()), mEnemyHp);
 				}, "Enemy Item Use");
 
 			case Switch_Anature:

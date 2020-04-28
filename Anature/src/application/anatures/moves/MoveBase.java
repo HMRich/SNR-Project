@@ -37,8 +37,7 @@ public class MoveBase implements IMove
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim()
-				.isEmpty())
+		if(name.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
