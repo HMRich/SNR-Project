@@ -154,7 +154,7 @@ public class TypeAdvantage
 
 	public static boolean isAboveNoEffect(AttackEffectiveness effectiveness)
 	{
-		return effectiveness != AttackEffectiveness.NoEffect;
+		return !isNoEffect(effectiveness);
 	}
 
 	public static boolean isAboveNotEffective(AttackEffectiveness effectiveness)

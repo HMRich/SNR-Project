@@ -91,14 +91,25 @@ public class ItemPool
 	{
 		mItems = new HashMap<ItemIds, IItem>();
 
-		mItems.put(ItemIds.Potion, new HealthPotion().withHealAmount(20).withItemId(ItemIds.Potion).withItemName("Potion").create());
+		mItems.put(ItemIds.Potion, new HealthPotion().withHealAmount(20)
+				.withItemId(ItemIds.Potion)
+				.withItemName("Potion")
+				.create());
 
-		mItems.put(ItemIds.Great_Potion, new HealthPotion().withHealAmount(50).withItemId(ItemIds.Great_Potion).withItemName("Great Potion").create());
+		mItems.put(ItemIds.Great_Potion, new HealthPotion().withHealAmount(50)
+				.withItemId(ItemIds.Great_Potion)
+				.withItemName("Great Potion")
+				.create());
 
-		mItems.put(ItemIds.Ultra_Potion, new HealthPotion().withHealAmount(200).withItemId(ItemIds.Ultra_Potion).withItemName("Ultra Potion").create());
+		mItems.put(ItemIds.Ultra_Potion, new HealthPotion().withHealAmount(200)
+				.withItemId(ItemIds.Ultra_Potion)
+				.withItemName("Ultra Potion")
+				.create());
 
-		mItems.put(ItemIds.Master_Potion,
-				new HealthPotion().withHealAmount(Integer.MAX_VALUE).withItemId(ItemIds.Master_Potion).withItemName("Master Potion").create());
+		mItems.put(ItemIds.Master_Potion, new HealthPotion().withHealAmount(Integer.MAX_VALUE)
+				.withItemId(ItemIds.Master_Potion)
+				.withItemName("Master Potion")
+				.create());
 	}
 
 	private static boolean isHealthPotion(ItemIds itemId)
