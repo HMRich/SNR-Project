@@ -1,13 +1,14 @@
 package application.trainers.ai;
 
 import application.enums.AttackEffectiveness;
+import application.interfaces.IAI;
 import application.interfaces.IBuilder;
 
-public class AIBuilder implements IBuilder<AI>
+public class AI implements IBuilder<IAI>
 {
-	private AI mAI;
+	private AIBase mAI;
 
-	public AIBuilder()
+	public AI()
 	{
 		generateNewAI();
 	}
@@ -16,19 +17,19 @@ public class AIBuilder implements IBuilder<AI>
 	 * PUBLIC SETS
 	 */
 
-	public AIBuilder setHealthThreshold(double healthThreshold)
+	public AI withHealthThreshold(double healthThreshold)
 	{
 		mAI.setHealthThreshold(healthThreshold);
 		return this;
 	}
 
-	public AIBuilder setSwitchThreshold(AttackEffectiveness switchThreshold)
+	public AI withSwitchThreshold(AttackEffectiveness switchThreshold)
 	{
 		mAI.setSwitchThreshold(switchThreshold);
 		return this;
 	}
 
-	public AIBuilder setMoveThreshold(AttackEffectiveness moveThreshold)
+	public AI withMoveThreshold(AttackEffectiveness moveThreshold)
 	{
 		mAI.setMoveThreshold(moveThreshold);
 		return this;
@@ -38,14 +39,14 @@ public class AIBuilder implements IBuilder<AI>
 	 * PUBLIC METHODS
 	 */
 
-	public AI create()
+	public IAI create()
 	{
 		if(!buildIsComplete())
 		{
 			throw new IllegalStateException("All the builder variables need to have a value before you create a AI.");
 		}
 
-		AI aiToReturn = mAI;
+		IAI aiToReturn = mAI;
 
 		generateNewAI();
 
@@ -58,7 +59,7 @@ public class AIBuilder implements IBuilder<AI>
 
 	private void generateNewAI()
 	{
-		mAI = new AI();
+		mAI = new AIBase();
 	}
 
 	private boolean buildIsComplete()

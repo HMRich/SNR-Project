@@ -4,24 +4,25 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import application.TypeAdvantage;
-import application.anatures.Anature;
-import application.anatures.MoveSet;
+import application.anatures.movesets.MoveSet;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.AttackEffectiveness;
 import application.enums.LoggingTypes;
+import application.interfaces.IAI;
+import application.interfaces.IAnature;
 import application.interfaces.IHealthPotion;
 import application.interfaces.IMove;
 import application.pools.ItemPool;
 import application.trainers.ai.choice_objects.AiMoveChoice;
 
-public class AI
+class AIBase implements IAI
 {
 	private double mHealthThreshold;
 	private AttackEffectiveness mSwitchThreshold;
 	private AttackEffectiveness mMoveThreshold;
 
-	AI()
+	AIBase()
 	{
 		mHealthThreshold = -1;
 		mSwitchThreshold = AttackEffectiveness.NoEffect;
@@ -36,7 +37,7 @@ public class AI
 	{
 		if(healthThreshold < 0 || healthThreshold > 1)
 		{
-			throw new IllegalArgumentException("Passed value \"healthThreshold\" needs to be a value 0, 1, or in between 0 - 1.");
+			throw new IllegalArgumentException("Passed value \"healthThreshold\" needs to be a value between 0 and 1.");
 		}
 		mHealthThreshold = healthThreshold;
 	}
@@ -75,7 +76,7 @@ public class AI
 	 * PUBLIC METHODS
 	 */
 
-	public boolean willUseHealthPotion(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
+	public boolean willUseHealthPotion(ArrayList<IHealthPotion> healthPotionBases, IAnature currentAnature)
 	{
 		if(healthPotionBases == null)
 		{
@@ -89,7 +90,7 @@ public class AI
 					"IllegalArgumentException in BaseAI.java, Method: willUseHealthPotion(ArrayList<HealthPotion> healthPotions, Anature currentAnature), \"currentAnature\" value was null.");
 		}
 
-		double anatureHpPercent = currentAnature.getHpPercent();
+		double anatureHpPercent = currentAnature.getHitPointsPercent();
 
 		boolean currentAnatureAtThreshold = anatureHpPercent <= mHealthThreshold;
 		boolean trainerHasHealthPotion = !healthPotionBases.isEmpty();
@@ -97,7 +98,7 @@ public class AI
 		return trainerHasHealthPotion && currentAnatureAtThreshold;
 	}
 
-	public IHealthPotion healthPotionToUse(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
+	public IHealthPotion healthPotionToUse(ArrayList<IHealthPotion> healthPotionBases, IAnature currentAnature)
 	{
 		if(healthPotionBases == null)
 		{
@@ -111,14 +112,15 @@ public class AI
 					"IllegalArgumentException in BaseAI.java, Method: healthPotionToUse(ArrayList<HealthPotion> healthPotions, Anature currentAnature), \"currentAnature\" value was null.");
 		}
 
-		double currentAnatureHpPercent = currentAnature.getHpPercent();
+		double currentAnatureHpPercent = currentAnature.getHitPointsPercent();
 
 		IHealthPotion healthPotionToUse = null;
 		double anaturePercentAfterItemUse = 0;
 
 		for(IHealthPotion healthPotionBase : healthPotionBases)
 		{
-			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId()).getHealAmount();
+			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId())
+					.getHealAmount();
 			double healPercent = itemHealAmount / currentAnature.getTotalHitPoints();
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
@@ -143,9 +145,9 @@ public class AI
 		return healthPotionToUse;
 	}
 
-	public boolean willSwitchAnature(ArrayList<Anature> anatures, Anature enemyAnature, Anature currentAnature)
+	public boolean willSwitchAnature(ArrayList<IAnature> anatureBases, IAnature enemyAnature, IAnature currentAnature)
 	{
-		if(anatures == null)
+		if(anatureBases == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error,
 					"IllegalArgumentException in BaseAI.java, Method: willSwitchAnature(ArrayList<Anature> anatures, Anature enemyAnature, Anature currentAnature), \"anatures\" value was null.");
@@ -163,14 +165,14 @@ public class AI
 					"IllegalArgumentException in BaseAI.java, Method: willSwitchAnature(ArrayList<Anature> anatures, Anature enemyAnature, Anature currentAnature), \"currentAnature\" value was null.");
 		}
 
-		boolean hasAnotherAnature = anatures.size() > 1;
+		boolean hasAnotherAnature = anatureBases.size() > 1;
 		boolean currentAnatureNotAtThreshold = !isAnatureAtThreshold(currentAnature, enemyAnature);
-		boolean hasAnatureAtThreshold = hasAnAnatureAtThreshold(anatures, currentAnature, enemyAnature);
+		boolean hasAnatureAtThreshold = hasAnAnatureAtThreshold(anatureBases, currentAnature, enemyAnature);
 
 		return hasAnotherAnature && currentAnatureNotAtThreshold && hasAnatureAtThreshold;
 	}
 
-	public AiMoveChoice chooseMove(Anature source, Anature target)
+	public AiMoveChoice chooseMove(IAnature source, IAnature target)
 	{
 		if(source == null)
 		{
@@ -196,15 +198,15 @@ public class AI
 		return randomAiMoveChoice;
 	}
 
-	public Anature chooseNewAnature(ArrayList<Anature> anatures, Anature currentAnature, Anature enemyAnature)
+	public IAnature chooseNewAnature(ArrayList<IAnature> anatureBases, IAnature currentAnature, IAnature enemyAnature)
 	{
-		Anature anatureToReturn = currentAnature;
+		IAnature anatureToReturn = currentAnature;
 
-		for(Anature anature : anatures)
+		for(IAnature anatureBase : anatureBases)
 		{
-			if(isAnatureAtThreshold(anature, enemyAnature))
+			if(isAnatureAtThreshold(anatureBase, enemyAnature))
 			{
-				anatureToReturn = anature;
+				anatureToReturn = anatureBase;
 			}
 		}
 
@@ -229,13 +231,13 @@ public class AI
 		return hpPercentAfterHeal > 1;
 	}
 
-	private boolean isAnatureAtThreshold(Anature currentAnature, Anature enemyAnature)
+	private boolean isAnatureAtThreshold(IAnature currentAnature, IAnature enemyAnature)
 	{
 		AttackEffectiveness anatureEffectiveness = TypeAdvantage.anatureEffectiveness(currentAnature, enemyAnature);
 		return isAtOrAboveThreshold(anatureEffectiveness, mSwitchThreshold);
 	}
 
-	private boolean moveIsAtThreshold(IMove move, Anature target)
+	private boolean moveIsAtThreshold(IMove move, IAnature target)
 	{
 		AttackEffectiveness moveEffectiveness = TypeAdvantage.moveEffectiveness(move, target);
 		return isAtOrAboveThreshold(moveEffectiveness, mMoveThreshold);
@@ -262,11 +264,11 @@ public class AI
 		}
 	}
 
-	private boolean hasAnAnatureAtThreshold(ArrayList<Anature> anatureParty, Anature currentAnature, Anature enemyAnature)
+	private boolean hasAnAnatureAtThreshold(ArrayList<IAnature> anatureParty, IAnature currentAnature, IAnature enemyAnature)
 	{
-		for(Anature anature : anatureParty)
+		for(IAnature anatureBase : anatureParty)
 		{
-			if(isAnatureAtThreshold(anature, enemyAnature))
+			if(isAnatureAtThreshold(anatureBase, enemyAnature))
 			{
 				return true;
 			}
@@ -274,7 +276,7 @@ public class AI
 		return false;
 	}
 
-	private ArrayList<AiMoveChoice> moveChoiceList(Anature source, Anature target)
+	private ArrayList<AiMoveChoice> moveChoiceList(IAnature source, IAnature target)
 	{
 		ArrayList<AiMoveChoice> choices = new ArrayList<AiMoveChoice>();
 		AttackEffectiveness moveThreshold = mMoveThreshold;
@@ -290,7 +292,7 @@ public class AI
 		return choices;
 	}
 
-	private ArrayList<AiMoveChoice> moveChoiceListAtThreshold(Anature source, Anature target, AttackEffectiveness threshold)
+	private ArrayList<AiMoveChoice> moveChoiceListAtThreshold(IAnature source, IAnature target, AttackEffectiveness threshold)
 	{
 		ArrayList<AiMoveChoice> choices = new ArrayList<AiMoveChoice>();
 
