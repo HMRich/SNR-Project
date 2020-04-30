@@ -1,12 +1,11 @@
 package application.interfaces;
 
-import application.anatures.Anature;
 import application.enums.MoveIds;
 import application.enums.Type;
 
 public interface IMove
 {
-	public void activateMove(Anature source, Anature target);
+	public void activateMove(IAnature source, IAnature target);
 	public String getName();
 	public MoveIds getMoveId();
 	public Type getType();

@@ -1,19 +1,19 @@
 package application.models;
 
 import application.enums.TrainerIds;
+import application.interfaces.ITrainer;
 import application.trainers.Trainer;
-import application.trainers.TrainerBuilder;
 
 public class StarterTownModel
 {
-	private Trainer mKelly;
-	
+	private ITrainer mKelly;
+
 	public StarterTownModel()
 	{
-		mKelly = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
+		mKelly = Trainer.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 	}
-	
-	public Trainer getKelly()
+
+	public ITrainer getKelly()
 	{
 		return mKelly;
 	}

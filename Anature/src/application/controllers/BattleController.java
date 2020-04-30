@@ -5,8 +5,7 @@ import java.util.Random;
 
 import application.FightManager;
 import application.Startup;
-import application.anatures.Anature;
-import application.anatures.MoveSet;
+import application.anatures.movesets.MoveSet;
 import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
@@ -23,13 +22,14 @@ import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
 import application.interfaces.AiChoiceObject;
+import application.interfaces.IAnature;
 import application.interfaces.IItem;
 import application.interfaces.IMove;
+import application.interfaces.ITrainer;
 import application.items.HealthPotionBase;
 import application.player.Backpack;
 import application.player.Player;
 import application.pools.ItemPool;
-import application.trainers.Trainer;
 import application.views.elements.AnatureSlot;
 import application.views.elements.HpBar;
 import application.views.elements.ResizableImage;
@@ -115,7 +115,7 @@ public class BattleController
 			mAttackMpFourTxt;
 
 	private FightManager mFightManager;
-	private Trainer mEnemyTrainer;
+	private ITrainer mEnemyTrainer;
 	private Player mPlayer;
 	private ClickQueue mClickQueue;
 	private AnatureSlot mSlotOne, mSlotTwo, mSlotThree, mSlotFour, mSlotFive, mSlotSix;
@@ -401,9 +401,9 @@ public class BattleController
 	private void onPlayerAnatureDeath()
 	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature : mPlayer.getAnatures())
+		for(IAnature anatureBase : mPlayer.getAnatures())
 		{
-			if(anature.getCurrentHitPoints() > 0)
+			if(anatureBase.getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -451,9 +451,9 @@ public class BattleController
 	private void onEnemyAnatureDeath()
 	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature : mEnemyTrainer.getAnatureParty())
+		for(IAnature anatureBase : mEnemyTrainer.getAnatureParty())
 		{
-			if(anature.getCurrentHitPoints() > 0)
+			if(anatureBase.getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -819,10 +819,10 @@ public class BattleController
 		return value;
 	}
 
-	public void updateElements(Player player, Trainer enemyTrainer)
+	public void updateElements(Player player, ITrainer enemyTrainer)
 	{
-		Anature enemyCurr = enemyTrainer.getAnatureParty().get(0);
-		Anature playerCurr = player.getAnatures().get(0);
+		IAnature enemyCurr = enemyTrainer.getAnatureParty().get(0);
+		IAnature playerCurr = player.getAnatures().get(0);
 
 		mEnemyName.set(enemyCurr.getName());
 
@@ -849,7 +849,7 @@ public class BattleController
 		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatureParty());
 	}
 
-	private void startIntro(Player player, Trainer enemyTrainer, Anature enemyCurr)
+	private void startIntro(Player player, ITrainer enemyTrainer, IAnature enemyCurr)
 	{
 		mClickQueue.enqueue(new Runnable()
 		{
@@ -939,14 +939,14 @@ public class BattleController
 		}
 	}
 
-	private void updatePlayerAnature(Anature playerCurr)
+	private void updatePlayerAnature(IAnature playerCurr)
 	{
 		mPlayerName.set(playerCurr.getName());
 
 		mPlayerHp.set(playerCurr.getCurrentHitPoints());
 		mPlayerHpTotal.set(playerCurr.getTotalHitPoints());
 
-		mPlayerXp.set(playerCurr.getCurrentExpereincePoints());
+		mPlayerXp.set(playerCurr.getCurrentExperiencePoints());
 		mPlayerXpTotal.set(100); // TODO change to a standard
 
 		mPlayerLvl.set(playerCurr.getLevel());
@@ -956,7 +956,7 @@ public class BattleController
 		updateMoves(playerCurr);
 	}
 
-	private void updateEnemyAnature(Anature enemyCurr)
+	private void updateEnemyAnature(IAnature enemyCurr)
 	{
 		mEnemyName.set(enemyCurr.getName());
 
@@ -968,7 +968,7 @@ public class BattleController
 		mAnatureFront.setImage(enemyCurr.getFrontSprite());
 	}
 
-	private void updateMoves(Anature playerCurr)
+	private void updateMoves(IAnature playerCurr)
 	{
 		MoveSet moves = playerCurr.getMoveSet(); // TODO Make move btn color change based on move type
 		IMove move1 = moves.getMove(1);
@@ -997,7 +997,7 @@ public class BattleController
 		}
 	}
 
-	private void updateSwitch(ArrayList<Anature> party, int selectedIndex)
+	private void updateSwitch(ArrayList<IAnature> party, int selectedIndex)
 	{
 		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 		boolean isSelected = false;
@@ -1106,14 +1106,14 @@ public class BattleController
 
 		mSwitchIndexSelected = selectedIndex;
 
-		ArrayList<Anature> party = mPlayer.getAnatures();
-		Anature selected = party.get(selectedIndex);
+		ArrayList<IAnature> party = mPlayer.getAnatures();
+		IAnature selected = party.get(selectedIndex);
 
 		mSwitchSelectedCatalogNum.setText(String.format("%03d", selected.getIndexNumber()));
 		mSwitchSelectedName.setText(selected.getName());
 		mSwitchSelectedOwner.setText(selected.getOwner());
-		mSwitchSelectedCurrXp.setText(selected.getCurrentExpereincePoints() + "");
-		mSwitchSelectedNextXp.setText((100 - selected.getCurrentExpereincePoints()) + "");
+		mSwitchSelectedCurrXp.setText(selected.getCurrentExperiencePoints() + "");
+		mSwitchSelectedNextXp.setText((100 - selected.getCurrentExperiencePoints()) + "");
 
 		mSwitchSelectedHp.setText(selected.getTotalHitPoints() + "");
 		mSwitchSelectedAtk.setText(selected.getAttack() + "");
@@ -1127,7 +1127,7 @@ public class BattleController
 		// TODO Add different type imgs
 	}
 
-	private void updateSwitchSlot(Anature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)
+	private void updateSwitchSlot(IAnature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)
 	{
 		visibleProp.set(true);
 		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(),
@@ -1172,11 +1172,11 @@ public class BattleController
 		mItemList.setItems(items);
 	}
 
-	private void updateGender(Anature anature, boolean isPlayer)
+	private void updateGender(IAnature anatureBase, boolean isPlayer)
 	{
 		Image toUse = mMaleIcon;
 
-		switch(anature.getGender())
+		switch(anatureBase.getGender())
 		{
 			case Female:
 				toUse = mFemaleIcon;
@@ -1270,7 +1270,7 @@ public class BattleController
 
 	private void activateTurn(BattleChoice choice)
 	{
-		Anature anatureForSwitching = mPlayer.getAnatures().get(mSwitchIndexSelected);
+		IAnature anatureForSwitching = mPlayer.getAnatures().get(mSwitchIndexSelected);
 
 		if(anatureForSwitching.getCurrentHitPoints() <= 0)
 		{
@@ -1278,8 +1278,8 @@ public class BattleController
 		}
 
 		mShowBtns.set(false);
-		Anature enemyCurr = mFightManager.getEnemyAnature();
-		Anature playerCurr = mFightManager.getPlayerAnature();
+		IAnature enemyCurr = mFightManager.getEnemyAnature();
+		IAnature playerCurr = mFightManager.getPlayerAnature();
 
 		AiChoiceObject<?> enemyTurn = mEnemyTrainer.useTurn(playerCurr);
 
@@ -1351,7 +1351,7 @@ public class BattleController
 		mClickQueue.dequeue().run();
 	}
 
-	private void activatePlayerTurn(Anature playerCurr, Anature enemyCurr, BattleChoice choice, Runnable nextTurn)
+	private void activatePlayerTurn(IAnature playerCurr, IAnature enemyCurr, BattleChoice choice, Runnable nextTurn)
 	{
 		if(beforeTurnStatusCheck(true, playerCurr) || choice == BattleChoice.Item || choice == BattleChoice.Switch)
 		{
@@ -1364,7 +1364,7 @@ public class BattleController
 		}
 	}
 
-	private void activateEnemyTurn(Anature playerCurr, Anature enemyCurr, AiChoiceObject<?> enemyTurn, Runnable nextTurn)
+	private void activateEnemyTurn(IAnature playerCurr, IAnature enemyCurr, AiChoiceObject<?> enemyTurn, Runnable nextTurn)
 	{
 		AiChoice aiChoice = enemyTurn.getAiChoice();
 		if(beforeTurnStatusCheck(false, enemyCurr) || aiChoice == AiChoice.Item_Consumed || aiChoice == AiChoice.Switch_Anature)
@@ -1398,7 +1398,7 @@ public class BattleController
 
 	private void playerTurn(BattleChoice choice, Runnable nextTurn)
 	{
-		Anature playerAnature = mFightManager.getPlayerAnature();
+		IAnature playerAnature = mFightManager.getPlayerAnature();
 
 		switch(choice)
 		{
@@ -1523,9 +1523,9 @@ public class BattleController
 				mPlayerFaintSequenceActive = false;
 
 				mFightManager.setPlayerSelectedIndex(mSwitchIndexSelected);
-				Anature oldAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
+				IAnature oldAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
 				mPlayer.setSelectedIndex(mSwitchIndexSelected);
-				Anature newAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
+				IAnature newAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
 
 				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
 				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
@@ -1591,8 +1591,8 @@ public class BattleController
 			{
 				mPlayerFaintSequenceActive = false;
 
-				Anature oldAnature = mFightManager.getEnemyAnature();
-				Anature newAnature = (Anature) enemyTurn.getChoiceObject();
+				IAnature oldAnature = mFightManager.getEnemyAnature();
+				IAnature newAnature = (IAnature) enemyTurn.getChoiceObject();
 				int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
 				mFightManager.setEnemySelectedIndex(newAnatureIndex);
 
@@ -1634,7 +1634,7 @@ public class BattleController
 		}, "Enemy Activate Switch");
 	}
 
-	private void useAttack(Anature anature, boolean isPlayer, BattleChoice choice, int moveNum)
+	private void useAttack(IAnature anatureBase, boolean isPlayer, BattleChoice choice, int moveNum)
 	{
 		MoveResult moveResult = mFightManager.attack(isPlayer, moveNum);
 		AbilityResult abilityResult = moveResult.getAbilityResult();
@@ -1677,7 +1677,7 @@ public class BattleController
 
 	private void healthDrainMove(MoveResult result, boolean playerWasTarget)
 	{
-		Anature userAnature = null, targetAnature = null;
+		IAnature userAnature = null, targetAnature = null;
 		DoubleProperty userOldHp, targetOldHp;
 
 		if(!result.isPlayer())
@@ -1846,9 +1846,9 @@ public class BattleController
 		}, id);
 	}
 
-	private boolean beforeTurnStatusCheck(boolean isPlayer, Anature anature)
+	private boolean beforeTurnStatusCheck(boolean isPlayer, IAnature anatureBase)
 	{
-		StatusEffects anatureStatus = anature.getStatus();
+		StatusEffects anatureStatus = anatureBase.getStatus();
 		boolean canAttack = true;
 
 		switch(anatureStatus)
@@ -1857,13 +1857,13 @@ public class BattleController
 				break;
 
 			case Paralysis:
-				enqueueDialogue(anature.getName() + " is paralysed! It may not be able to move!", "Paralysis Before Turn");
+				enqueueDialogue(anatureBase.getName() + " is paralysed! It may not be able to move!", "Paralysis Before Turn");
 
 				canAttack = Math.random() <= 0.25;
 
 				if(!canAttack)
 				{
-					enqueueDialogue(anature.getName() + " could not attack because of the paralysis!", "Paralysis Before Turn - Can't Attack");
+					enqueueDialogue(anatureBase.getName() + " could not attack because of the paralysis!", "Paralysis Before Turn - Can't Attack");
 				}
 				break;
 
@@ -1872,12 +1872,12 @@ public class BattleController
 
 				if(wakeUp)
 				{
-					enqueueDialogue(anature.getName() + " woke up!", "Sleep Before Turn - Woke Up");
+					enqueueDialogue(anatureBase.getName() + " woke up!", "Sleep Before Turn - Woke Up");
 				}
 
 				else
 				{
-					enqueueDialogue(anature.getName() + " is fast asleep!", "Sleep Before Turn");
+					enqueueDialogue(anatureBase.getName() + " is fast asleep!", "Sleep Before Turn");
 					canAttack = false;
 				}
 				break;
@@ -1889,19 +1889,19 @@ public class BattleController
 		return canAttack;
 	}
 
-	private void afterTurnStatusCheck(boolean isPlayer, Anature anature)
+	private void afterTurnStatusCheck(boolean isPlayer, IAnature anatureBase)
 	{
-		StatusEffects anatureStatus = anature.getStatus();
+		StatusEffects anatureStatus = anatureBase.getStatus();
 		boolean wasChanged = false;
 
 		if(isPlayer)
 		{
-			wasChanged = updateStatusIcon(mStatusIconPlayer, anature);
+			wasChanged = updateStatusIcon(mStatusIconPlayer, anatureBase);
 		}
 
 		else
 		{
-			wasChanged = updateStatusIcon(mStatusIconEnemy, anature);
+			wasChanged = updateStatusIcon(mStatusIconEnemy, anatureBase);
 		}
 
 		if(wasChanged)
@@ -1909,15 +1909,15 @@ public class BattleController
 			switch(anatureStatus)
 			{
 				case Burn:
-					enqueueDialogue(anature.getName() + " is burned!", "Burn After Turn");
+					enqueueDialogue(anatureBase.getName() + " is burned!", "Burn After Turn");
 					break;
 
 				case Paralysis:
-					enqueueDialogue(anature.getName() + " is now paralyzed!", "Paralysis After Turn");
+					enqueueDialogue(anatureBase.getName() + " is now paralyzed!", "Paralysis After Turn");
 					break;
 
 				case Sleep:
-					enqueueDialogue(anature.getName() + " fell asleep!", "Sleep After Turn");
+					enqueueDialogue(anatureBase.getName() + " fell asleep!", "Sleep After Turn");
 					break;
 
 				default:
@@ -1926,18 +1926,18 @@ public class BattleController
 		}
 	}
 
-	private boolean afterAllTurnsStatusCheck(boolean isPlayer, Anature anature, Runnable nextTurn)
+	private boolean afterAllTurnsStatusCheck(boolean isPlayer, IAnature anatureBase, Runnable nextTurn)
 	{
-		StatusEffects anatureStatus = anature.getStatus();
+		StatusEffects anatureStatus = anatureBase.getStatus();
 
 		if(isPlayer)
 		{
-			updateStatusIcon(mStatusIconPlayer, anature);
+			updateStatusIcon(mStatusIconPlayer, anatureBase);
 		}
 
 		else
 		{
-			updateStatusIcon(mStatusIconEnemy, anature);
+			updateStatusIcon(mStatusIconEnemy, anatureBase);
 		}
 
 		switch(anatureStatus)
@@ -1945,8 +1945,8 @@ public class BattleController
 			case Burn:
 				mClickQueue.enqueue(() ->
 				{
-					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getTotalHitPoints() / 16, isPlayer, nextTurn);
-					mFightManager.applyDamage(isPlayer, 0, anature.getTotalHitPoints() / 16);
+					healthDrainStatus(anatureBase.getName() + " is hurt because it is burned!", anatureBase.getTotalHitPoints() / 16, isPlayer, nextTurn);
+					mFightManager.applyDamage(isPlayer, 0, anatureBase.getTotalHitPoints() / 16);
 				}, "Burn After All Turns");
 
 				return true;
@@ -1964,7 +1964,7 @@ public class BattleController
 		return false;
 	}
 
-	private boolean updateStatusIcon(ImageView icon, Anature toCheck)
+	private boolean updateStatusIcon(ImageView icon, IAnature toCheck)
 	{
 		StatusEffects anatureStatus = toCheck.getStatus();
 		boolean wasChanged = false;
@@ -2005,7 +2005,7 @@ public class BattleController
 
 	private void updateMpCounts()
 	{
-		Anature playerAnature = mFightManager.getPlayerAnature();
+		IAnature playerAnature = mFightManager.getPlayerAnature();
 		MoveSet moveSet = playerAnature.getMoveSet();
 
 		if(moveSet.hasMove(1))

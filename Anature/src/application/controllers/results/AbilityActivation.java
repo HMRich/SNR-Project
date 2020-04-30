@@ -2,7 +2,6 @@ package application.controllers.results;
 
 import java.util.ArrayList;
 
-import application.anatures.Anature;
 import application.anatures.abillities.Determination;
 import application.anatures.abillities.DrySkin;
 import application.anatures.abillities.SleepDeprived;
@@ -11,11 +10,12 @@ import application.anatures.abillities.ToughSkin;
 import application.anatures.abillities.Tyrannize;
 import application.enums.AbilityIds;
 import application.enums.Type;
+import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
 public class AbilityActivation
 {
-	public static AbilityResult useEntryAbility(AbilityIds abilityId, Anature userAnature, Anature targetAnature)
+	public static AbilityResult useEntryAbility(AbilityIds abilityId, IAnature userAnature, IAnature targetAnature)
 	{
 		AbilityResult result = new AbilityResult(new ArrayList<String>(), false);
 
@@ -32,7 +32,7 @@ public class AbilityActivation
 		return result;
 	}
 
-	public static AbilityResult useAbilityCanAttack(AbilityIds abilityIds, Anature userAnature, Anature targetAnature, IMove move)
+	public static AbilityResult useAbilityCanAttack(AbilityIds abilityIds, IAnature userAnature, IAnature targetAnature, IMove move)
 	{
 		ArrayList<String> dialogue = new ArrayList<String>();
 		AbilityResult result = new AbilityResult(dialogue, false);
@@ -54,7 +54,7 @@ public class AbilityActivation
 		return result;
 	}
 
-	public static AbilityResult useAbilityAfterAttack(AbilityIds abilityId, Anature userAnature, Anature targetAnature, IMove moveThatAttacked, int userOldHp,
+	public static AbilityResult useAbilityAfterAttack(AbilityIds abilityId, IAnature userAnature, IAnature targetAnature, IMove moveThatAttacked, int userOldHp,
 			boolean isUserAttacking, boolean attackMissed)
 	{
 		ArrayList<String> dialogue = new ArrayList<String>();

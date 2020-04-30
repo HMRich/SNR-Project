@@ -1,14 +1,14 @@
 package application.anatures.moves.moves;
 
-import application.anatures.Anature;
 import application.anatures.moves.MoveBase;
+import application.interfaces.IAnature;
 
 public class Grumble extends MoveBase
 {
 	@Override
-	public void activateMove(Anature source, Anature target)
+	public void activateMove(IAnature source, IAnature target)
 	{
-		target.adjustTempAttack(-0.1);
+		target.adjustAttack(-0.1);
 	}
 
 }

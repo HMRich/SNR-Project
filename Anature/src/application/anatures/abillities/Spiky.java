@@ -1,15 +1,15 @@
 package application.anatures.abillities;
 
-import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.interfaces.IAbility;
+import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
 public class Spiky implements IAbility
 {
-	public static String activateAbility(Anature userAnature, Anature targetAnature, IMove moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
+	public static String activateAbility(IAnature userAnature, IAnature targetAnature, IMove moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
 	{
 		String result = "";
 
@@ -29,7 +29,7 @@ public class Spiky implements IAbility
 		return result;
 	}
 
-	private static boolean hasNull(Anature userAnature, Anature targetAnature, IMove moveThatAttacked)
+	private static boolean hasNull(IAnature userAnature, IAnature targetAnature, IMove moveThatAttacked)
 	{
 		if(userAnature == null)
 		{

@@ -2,8 +2,8 @@ package application.player;
 
 import java.util.ArrayList;
 
-import application.anatures.Anature;
-import application.enums.*;
+import application.enums.Gender;
+import application.interfaces.IAnature;
 import javafx.scene.image.Image;
 
 public class Player
@@ -14,7 +14,7 @@ public class Player
 	private boolean[] mBadges;
 	private Backpack mBackpack;
 	private Image mSprite;
-	private ArrayList<Anature> mPartyAnature;
+	private ArrayList<IAnature> mPartyAnature;
 	private int mSelectedIndex;
 
 	public Player(Image sprite)
@@ -25,7 +25,7 @@ public class Player
 		mBadges = new boolean[10];
 		mBackpack = new Backpack();
 		mSprite = sprite;
-		mPartyAnature = new ArrayList<Anature>();
+		mPartyAnature = new ArrayList<IAnature>();
 		mSelectedIndex = 0;
 	}
 
@@ -91,17 +91,17 @@ public class Player
 		return mSprite;
 	}
 
-	public ArrayList<Anature> getAnatures()
+	public ArrayList<IAnature> getAnatures()
 	{
 		return mPartyAnature;
 	}
 
-	public void setAnature(int position, Anature anature)
+	public void setAnature(int position, IAnature anatureBase)
 	{
-		mPartyAnature.set(position, anature);
+		mPartyAnature.set(position, anatureBase);
 	}
 
-	public void addAnatures(Anature toAdd)
+	public void addAnatures(IAnature toAdd)
 	{
 		if(toAdd == null)
 			throw new IllegalArgumentException("toAdd was Null.");
@@ -124,20 +124,20 @@ public class Player
 
 		mSelectedIndex = selectedIndex;
 	}
-	
+
 	public boolean canBattle()
 	{
 		boolean canBattle = false;
-		
-		for(Anature anature : mPartyAnature)
+
+		for(IAnature anatureBase : mPartyAnature)
 		{
-			if(anature.getCurrentHitPoints() > 0)
+			if(anatureBase.getCurrentHitPoints() > 0)
 			{
 				canBattle = true;
 				break;
 			}
 		}
-		
+
 		return canBattle;
 	}
 }

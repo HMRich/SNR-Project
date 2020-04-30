@@ -1,8 +1,8 @@
 package application.items;
 
-import application.anatures.Anature;
 import application.controllers.results.ItemResult;
 import application.enums.ItemIds;
+import application.interfaces.IAnature;
 import application.interfaces.IHealthPotion;
 
 public class HealthPotionBase extends ItemBase implements IHealthPotion
@@ -31,7 +31,7 @@ public class HealthPotionBase extends ItemBase implements IHealthPotion
 	 * PUBLIC METHODS
 	 */
 
-	public ItemResult useItem(Anature target)
+	public ItemResult useItem(IAnature target)
 	{
 		double oldHp = target.getCurrentHitPoints();
 		String dialogue = target.healAnature(getHealAmount());

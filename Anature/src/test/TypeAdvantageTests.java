@@ -18,105 +18,52 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
 import application.TypeAdvantage;
 import application.anatures.Anature;
-import application.anatures.AnatureBuilder;
-import application.anatures.MoveSet;
-import application.anatures.abillities.Spiky;
+import application.anatures.abillities.NullAbility;
+import application.anatures.movesets.NullMoveSet;
 import application.enums.AttackEffectiveness;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
-import application.interfaces.IAbility;
+import application.interfaces.IAnature;
 
 @DisplayName("Type Advantage Tests")
 class TypeAdvantageTests
 {
-	private Anature baseAnature;
-	
-	private Anature setAnatureTypes(Type[] types)
+	private IAnature baseAnature;
+
+	private IAnature setAnatureTypes(Type[] types)
 	{
-		Type primaryType = types[0];
-		Type secondaryType = Type.NotSet;
-		
-		if(types.length == 2)
-		{
-			secondaryType = types[1];
-		}
-		
-		for(int index = 0; index < types.length; index++)
-		{
-			
-		}
-		return new AnatureBuilder().setName(baseAnature.getName())
-				.setOwnerName(baseAnature.getOwner())
-				.setIsShiny(baseAnature.isShiny())
-				.setSpecies(baseAnature.getSpecies())
-				.setGender(baseAnature.getGender())
-				.setPrimaryType(primaryType)
-				.setSecondaryType(secondaryType)
-				.setMoveSet(baseAnature.getMoveSet())
-				.setAbility(baseAnature.getAbility())
-				.setStatus(baseAnature.getStatus())
-				.setIndexNumber(baseAnature.getIndexNumber())
-				.setLevel(baseAnature.getLevel())
-				.setCurrentExperiencePoints(baseAnature.getCurrentExpereincePoints())
-				.setTotalHitPoints(baseAnature.getTotalHitPoints())
-				.setCurrentHitPoints(baseAnature.getCurrentHitPoints())
-				.setAttack(baseAnature.getAttack())
-				.setDefense(baseAnature.getDefense())
-				.setSpecialAttack(baseAnature.getSpecialAttack())
-				.setSpecialDefense(baseAnature.getSpecialDefense())
-				.setSpeed(baseAnature.getSpeed())
-				.setAccuracy(baseAnature.getAccuracy())
+		return baseAnature.getClone()
+				.withPrimaryType(types[0])
+				.withSecondaryType(types[1])
 				.create();
 	}
 
 	@BeforeAll
 	void generateBaseAnature()
 	{
-		String name = "<Test Creature>";
-		String ownerName = "<Test Owner>";
-		boolean isShiny = false;
-		Species species = Species.Null;
-		Gender gender = Gender.Trans;
-		Type primaryType = null;
-		Type secondaryType = null;
-		MoveSet moveSet = new MoveSet(null, null, null, null);
-		IAbility iAbility = new Spiky();
-		int indexNumber = 10;
-		int level = 10;
-		int currentExperiencePoints = 10;
-		int totalHitPoints = 10;
-		int currentHitPoints = 10;
-		int attack = 10;
-		int defense = 10;
-		int specialAttack = 10;
-		int specialDefense = 10;
-		int speed = 10;
-		int accuracy = 10;
-		StatusEffects statusEffect = StatusEffects.None;
-
-		baseAnature = new AnatureBuilder().setName(name)
-				.setOwnerName(ownerName)
-				.setIsShiny(isShiny)
-				.setSpecies(species)
-				.setGender(gender)
-				.setPrimaryType(primaryType)
-				.setSecondaryType(secondaryType)
-				.setMoveSet(moveSet)
-				.setAbility(iAbility)
-				.setStatus(statusEffect)
-				.setIndexNumber(indexNumber)
-				.setLevel(level)
-				.setCurrentExperiencePoints(currentExperiencePoints)
-				.setTotalHitPoints(totalHitPoints)
-				.setCurrentHitPoints(currentHitPoints)
-				.setAttack(attack)
-				.setDefense(defense)
-				.setSpecialAttack(specialAttack)
-				.setSpecialDefense(specialDefense)
-				.setSpeed(speed)
-				.setAccuracy(accuracy)
+		baseAnature = new Anature().withName("<Test Creature>")
+				.withOwnerName("<Test Owner>")
+				.isShiny(false)
+				.withSpecies(Species.Null)
+				.withGender(Gender.Trans)
+				.withPrimaryType(Type.Normal)
+				.withSecondaryType(Type.NotSet)
+				.withMoveSet(NullMoveSet.getNullMoveSet())
+				.withAbility(NullAbility.getNullAbility())
+				.withStatus(StatusEffects.None)
+				.withIndexNumber(Integer.MAX_VALUE)
+				.withLevel(0)
+				.withCurrentExperiencePoints(0)
+				.withTotalHitPoints(100)
+				.withCurrentHitPoints(100)
+				.withAttack(10)
+				.withDefense(10)
+				.withSpecialAttack(10)
+				.withSpecialDefense(10)
+				.withSpeed(10)
+				.withAccuracy(10)
 				.create();
 	}
 
@@ -131,8 +78,8 @@ class TypeAdvantageTests
 	{
 		private TypeEffectivenessTestCase createTestCase(Type[] sourceTypes, Type[] targetTypes, AttackEffectiveness expectedResult)
 		{
-			Anature sourceAnature = setAnatureTypes(sourceTypes);
-			Anature targetAnature = setAnatureTypes(targetTypes);
+			IAnature sourceAnature = setAnatureTypes(sourceTypes);
+			IAnature targetAnature = setAnatureTypes(targetTypes);
 			return new TypeEffectivenessTestCase(sourceAnature, targetAnature, expectedResult);
 		}
 

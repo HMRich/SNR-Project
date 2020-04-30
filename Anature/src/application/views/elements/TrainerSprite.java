@@ -6,7 +6,7 @@ import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.TrainerIds;
-import application.trainers.Trainer;
+import application.interfaces.ITrainer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Bounds;
@@ -34,7 +34,7 @@ public class TrainerSprite
 	
 	private String[] mDialogue;
 	private boolean mHasBattle;
-	private Trainer mTrainer;
+	private ITrainer mTrainer;
 	private String mName;	
 	
 	public TrainerSprite(double x, double y, TrainerIds id, Direction facing, DoubleProperty zoom, BooleanProperty showProperty, 
@@ -175,20 +175,20 @@ public class TrainerSprite
 		return mName;
 	}
 	
-	public Trainer getTrainerModel()
+	public ITrainer getTrainerModel()
 	{
 		return mTrainer;
 	}
 	
-	public void setTrainerModel(Trainer trainer)
+	public void setTrainerModel(ITrainer trainerBase)
 	{
-		if(trainer == null)
+		if(trainerBase == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "Tried giving trainer sprite a null model.");
 			return;
 		}
 		
-		mTrainer = trainer;
+		mTrainer = trainerBase;
 	}
 	
 	public String[] getDialogue()

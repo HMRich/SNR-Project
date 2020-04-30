@@ -1,31 +1,38 @@
 package test;
 
-import application.anatures.Anature;
 import application.enums.AttackEffectiveness;
+import application.interfaces.IAnature;
 
-class TypeEffectivenessTestCase {
-	Anature attacker;
-	Anature defender;
+class TypeEffectivenessTestCase
+{
+	IAnature attacker;
+	IAnature defender;
 	AttackEffectiveness expectedEffectiveness;
 
-	public TypeEffectivenessTestCase(Anature attacker, Anature defender, AttackEffectiveness expectedEffectiveness) {
+	public TypeEffectivenessTestCase(IAnature attacker, IAnature defender, AttackEffectiveness expectedEffectiveness)
+	{
 		this.attacker = attacker;
 		this.defender = defender;
 		this.expectedEffectiveness = expectedEffectiveness;
 	}
 
-	String testCaseToString() {
-		return "EffectivenessValue_" + testCaseTypesToString(attacker) + "To" + testCaseTypesToString(defender) + "_Returns"
-				+ expectedEffectiveness.toString();
+	String testCaseToString()
+	{
+		return "EffectivenessValue_" + testCaseTypesToString(attacker) + "To" + testCaseTypesToString(defender) + "_Returns" + expectedEffectiveness.toString();
 	}
 
-	private String testCaseTypesToString(Anature anature) {
+	private String testCaseTypesToString(IAnature anatureBase)
+	{
 		String types = "";
-		if (anature.getPrimaryType() != null) {
-			types = types.concat(anature.getPrimaryType().toString());
+		if(anatureBase.getPrimaryType() != null)
+		{
+			types = types.concat(anatureBase.getPrimaryType()
+					.toString());
 		}
-		if (anature.getSecondaryType() != null) {
-			types = types.concat(anature.getSecondaryType().toString());
+		if(anatureBase.getSecondaryType() != null)
+		{
+			types = types.concat(anatureBase.getSecondaryType()
+					.toString());
 		}
 		return types;
 	}

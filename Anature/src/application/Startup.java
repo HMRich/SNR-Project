@@ -3,7 +3,6 @@ package application;
 import java.io.IOException;
 
 import application.anatures.Anature;
-import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.overworld_cells.GrassTownController;
@@ -14,11 +13,12 @@ import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.WarpPoints;
+import application.interfaces.IAnature;
+import application.interfaces.ITrainer;
 import application.models.PathOneModel;
 import application.models.StarterTownModel;
 import application.player.Player;
 import application.pools.ItemPool;
-import application.trainers.Trainer;
 import application.views.overworld_cells.GrassTownCell;
 import application.views.overworld_cells.PathOneCell;
 import application.views.overworld_cells.StarterTownCell;
@@ -206,7 +206,7 @@ public class Startup extends Application
 		mStage.setHeight(height);
 	}
 
-	public static void startBattle(Trainer toBattle)
+	public static void startBattle(ITrainer toBattle)
 	{
 		try
 		{
@@ -239,11 +239,11 @@ public class Startup extends Application
 
 	public static void createDemo()
 	{
-		Anature first = AnatureBuilder.createAnature(Species.Null, 15);
+		IAnature first = Anature.createAnature(Species.Null, 15);
 		first.updateName("Main Null");
 		mPlayer.addAnatures(first);
 
-		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
+		IAnature second = Anature.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
 

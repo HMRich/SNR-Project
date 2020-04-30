@@ -1,4 +1,4 @@
- package application.anatures;
+ package application.anatures.movesets;
 
 import application.anatures.moves.moves.NullMove;
 

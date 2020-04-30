@@ -1,8 +1,8 @@
 package application.anatures.moves;
 
-import application.anatures.Anature;
 import application.enums.MoveIds;
 import application.enums.Type;
+import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
 public class MoveBase implements IMove
@@ -37,7 +37,8 @@ public class MoveBase implements IMove
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim().isEmpty())
+		if(name.trim()
+				.isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
@@ -106,7 +107,7 @@ public class MoveBase implements IMove
 	}
 
 	/*
-	 * PROTECTED GETS
+	 * PUBLIC GETS
 	 */
 
 	public String getName()
@@ -181,7 +182,7 @@ public class MoveBase implements IMove
 	 * PUBLIC METHODS
 	 */
 
-	public void activateMove(Anature source, Anature target)
+	public void activateMove(IAnature source, IAnature target)
 	{
 		throw new IllegalStateException("This method should not be called.");
 	}

@@ -1,12 +1,12 @@
 package application.anatures.moves.moves;
 
-import application.anatures.Anature;
 import application.anatures.moves.MoveBase;
+import application.interfaces.IAnature;
 
 public class SkipTurn extends MoveBase
 {
 	@Override
-	public void activateMove(Anature source, Anature target)
+	public void activateMove(IAnature source, IAnature target)
 	{
 		System.out.println("Turn skipped");
 	}
