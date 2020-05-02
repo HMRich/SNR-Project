@@ -21,6 +21,7 @@ import application.views.elements.AnatureSlot;
 import application.views.elements.HpBar;
 import application.views.elements.ResizableImage;
 import application.views.elements.XpBar;
+import javafx.animation.Animation;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -75,8 +76,9 @@ public class BattleController
 	@FXML private Text mSwitchSelectedHp, mSwitchSelectedAtk, mSwitchSelectedSpAtk, mSwitchSelectedDef, mSwitchSelectedSpDef, mSwitchSelectedSpeed,
 			mSwitchSelectedAbilityName, mSwitchSelectedAbilityDesc;
 	@FXML private ImageView mStatusIconPlayer, mStatusIconEnemy;
+	@FXML private ImageView mFightAnimationPlayer, mFightAnimationEnemy;
 	private Image mSwitchPageOneImg, mSwitchPageTwoImg, mItemTabSelected, mItemTabDeselected, mItemPotion, mItemGreatPotion, mItemUltraPotion,
-			mItemMasterPotion, mBurnStatusIcon, mParalyzedStatusIcon, mSleepStatusIcon;
+			mItemMasterPotion, mBurnStatusIcon, mParalyzedStatusIcon, mSleepStatusIcon, mFistTopRightIcon, mFistBottomLeftIcon, mFistCenterIcon, mSpecialAttackLowerCenterIcon, mSpecialAttackLowerTopRightIcon, mSpecialAttackLowerBottomLeftIcon, mSpecialAttackRaiseBottomLeftIcon, mSpecialAttackRaiseCenterIcon, mSpecialAttackRaiseTopRightIcon, mSpecialAttackBottomLeftIcon, mSpecialAttackCenterIcon, mSpecialAttackTopRightIcon;
 
 	@FXML private ImageView mItemSelectionBg, mItemDialogue, mSelectedItem, mItemBackBtn, mItemUseBtn, mItemPotionsTab, mItemAnaCubeTab, mStatusTab;
 	@FXML private ListView<String> mItemList;
@@ -183,6 +185,20 @@ public class BattleController
 		mBurnStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Burn.png").toExternalForm());
 		mParalyzedStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Paralyzed.png").toExternalForm());
 		mSleepStatusIcon = new Image(getClass().getResource("/resources/images/statuses/Sleep.png").toExternalForm());
+	
+		mSpecialAttackLowerCenterIcon = new Image(getClass().getResource("/resources/images/battle/MinusCenter.png").toExternalForm());
+		mSpecialAttackLowerTopRightIcon = new Image(getClass().getResource("/resources/images/battle/MinusTopRight.png").toExternalForm());
+		mSpecialAttackLowerBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/MinusBottomLeft.png").toExternalForm());
+		mSpecialAttackRaiseCenterIcon = new Image(getClass().getResource("/resources/images/battle/PlusCenter.png").toExternalForm());
+		mSpecialAttackRaiseBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/PlusBottomLeft.png").toExternalForm());
+		mSpecialAttackRaiseTopRightIcon = new Image(getClass().getResource("/resources/images/battle/PlusTopRight.png").toExternalForm());
+		mFistCenterIcon = new Image(getClass().getResource("/resources/images/battle/FistCenter.png").toExternalForm());
+		mFistBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/FistBottomLeft.png").toExternalForm());
+		mFistTopRightIcon = new Image(getClass().getResource("/resources/images/battle/FistTopRight.png").toExternalForm());
+		mSpecialAttackCenterIcon = new Image(getClass().getResource("/resources/images/battle/SpecialAttackCenter.png").toExternalForm());
+		mSpecialAttackBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/SpecialAttackBottomLeft.png").toExternalForm());
+		mSpecialAttackTopRightIcon = new Image(getClass().getResource("/resources/images/battle/SpecialAttackTopRight.png").toExternalForm());
+		
 	}
 
 	public void setUpBindingsAndElements(Scene scene)
@@ -244,8 +260,8 @@ public class BattleController
 	private void setUpAnatureAnimations(Scene scene)
 	{
 		//TODO:Create two new image views for animations in scene builder
-		createBindsImageView(mAnatureFront, scene, 1.75, 7.5, 5.5, 3.5);
-		createBindsImageView(mAnatureBack, scene, 5, 2.9, 4, 2.5);
+		createBindsImageView(mFightAnimationEnemy, scene, 1.75, 7.5, 5.5, 3.5);
+		createBindsImageView(mFightAnimationPlayer, scene, 5, 2.9, 4, 2.5);
 	}
 
 	private void setUpAnatureNames(Scene scene)
@@ -1354,32 +1370,206 @@ public class BattleController
 			case Attack_1:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(1);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationEnemy, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackEnemy(1), mEnemyHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
+					
+					
 				}, "Player Attack 1");
 				break;
 
 			case Attack_2:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(2);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationEnemy, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackEnemy(2), mEnemyHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
 				}, "Player Attack 2");
 				break;
 
 			case Attack_3:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(3);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationEnemy, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackEnemy(3), mEnemyHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
 				}, "Player Attack 3");
 				break;
 
 			case Attack_4:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackEnemy(4), mEnemyHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(4);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationEnemy, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackEnemy(4), mEnemyHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
 				}, "Player Attack 4");
 				break;
 
@@ -1418,32 +1608,205 @@ public class BattleController
 			case Move1:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(1);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationPlayer, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackPlayer(1), mPlayerHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
+					
 				}, "Enemy Attack 1");
 				break;
 
 			case Move2:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackPlayer(2), mPlayerHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(2);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationPlayer, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackPlayer(2), mPlayerHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
 				}, "Enemy Attack 2");
 				break;
 
 			case Move3:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackPlayer(3), mPlayerHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(3);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationPlayer, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackPlayer(3), mPlayerHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
 				}, "Enemy Attack 3");
 				break;
 
 			case Move4:
 				mClickQueue.enqueue(() -> 
 				{
-					healthDrainMove(mFightManager.attackPlayer(4), mPlayerHp);
-					activateAfterTurn(nextTurn);
+					BattleAnimationType animationType = mFightManager.getPlayerAnature().getMoveAnimationType(4);
+					Image icon1, icon2, icon3;
+					switch(animationType) {
+						case Physical:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+							
+						case Special:
+							icon1 = mSpecialAttackBottomLeftIcon;
+							icon2 = mSpecialAttackCenterIcon;
+							icon3 = mSpecialAttackTopRightIcon;
+							break;
+							
+						case Raise_Stat:
+							icon1 = mSpecialAttackRaiseBottomLeftIcon;
+							icon2 = mSpecialAttackRaiseCenterIcon;
+							icon3 = mSpecialAttackRaiseTopRightIcon;
+							break;
+						
+						case Lower_Stat:
+							icon1 = mSpecialAttackLowerBottomLeftIcon;
+							icon2 = mSpecialAttackLowerCenterIcon;
+							icon3 = mSpecialAttackLowerTopRightIcon;
+							
+						default:
+							icon1 = mFistBottomLeftIcon;
+							icon2 = mFistCenterIcon;
+							icon3 = mFistTopRightIcon;
+							break;
+					}
+					
+					ThreeFrameAnimation animation = new ThreeFrameAnimation(mFightAnimationPlayer, Duration.seconds(1.5), icon1, icon2, icon3);
+					animation.setOnFinished(new EventHandler<ActionEvent>()
+					{
+						@Override
+						public void handle(ActionEvent event)
+						{
+							healthDrainMove(mFightManager.attackPlayer(4), mPlayerHp);
+							activateAfterTurn(nextTurn);
+						}
+					});
+					
+					animation.play();
 				}, "Enemy Attack 4");
 				break;
 
