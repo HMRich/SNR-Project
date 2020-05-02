@@ -1,5 +1,7 @@
 package application.animations;
 
+import java.io.Console;
+
 import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.scene.image.Image;
@@ -15,7 +17,7 @@ public class ThreeFrameAnimation extends Transition
 	{
 		mImageView = imageView;
 		setCycleDuration(duration);
-		setCycleCount(Animation.INDEFINITE);
+		setCycleCount(1);
 		
 		mFrame1 = frame1;
 		mFrame2 = frame2;
@@ -26,9 +28,33 @@ public class ThreeFrameAnimation extends Transition
 	protected void interpolate(double frac) //0.0 to 1.0
 	{
 		
-		//Set image based on the Frac
-		mImageView.setImage(mFrame1);
-		
+		if(frac >= 0 && frac <= 0.166) 
+		{
+			mImageView.setOpacity(100);
+			mImageView.setImage(mFrame1);
+		} 
+		else if(frac > 0.166 && frac <= 0.33)
+		{
+			mImageView.setOpacity(0);
+		} 
+		else if(frac > 0.33 && frac <= 0.50)
+		{
+			mImageView.setOpacity(100);
+			mImageView.setImage(mFrame2);
+		}
+		else if(frac > 0.50 && frac <= 0.66) 
+		{
+			mImageView.setOpacity(0);
+		}
+		else if(frac > 0.66 && frac <= 0.833) 
+		{
+			mImageView.setOpacity(100);
+			mImageView.setImage(mFrame3);
+		}
+		else if(frac > 0.833 && frac <= 1.00) 
+		{
+			mImageView.setOpacity(0);
+		}
 		
 	}
 }
