@@ -1,9 +1,11 @@
 package application;
 
 import application.abillities.Ability;
+import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.Type;
+import application.moves.Move;
 import application.enums.StatusEffects;
 import javafx.scene.image.Image;
 
@@ -23,7 +25,8 @@ public class Anature
 	private int mTempAttack, mTempSpecialAttack, mTempDefense, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
 
 	public Anature(String name, String owner, int level, int currentXp, Gender gender, MoveSet moves, Type[] types, Species species, boolean isShiny,
-			int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense, int totalHp, int speed, int accuracy, StatusEffects status)
+			int indexNum, Ability ability, int attack, int specialAttack, int defense, int specialDefense, int totalHp, int speed, int accuracy,
+			StatusEffects status)
 	{
 		if(name == null || owner == null || moves == null || ability == null || types == null)
 			throw new IllegalArgumentException("Null parameter.");
@@ -49,7 +52,7 @@ public class Anature
 		}
 
 		mSpecies = species;
-		mStatus = status; 
+		mStatus = status;
 		mIsShiny = isShiny;
 		mIndexNum = indexNum;
 		mAbility = ability;
@@ -311,7 +314,7 @@ public class Anature
 	{
 		this.mAccuracy = mAccuracy;
 	}
-	
+
 	public StatusEffects getStatus()
 	{
 		return mStatus;
@@ -354,14 +357,29 @@ public class Anature
 
 		return mName + result;
 	}
-	
+
 	public Image getFrontSprite()
 	{
 		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true, false);
 	}
-	
+
 	public Image getBackSprite()
 	{
 		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+
+	public BattleAnimationType getMoveAnimationType(int moveIndex)
+	{
+		Move move = getMoves().getMove(moveIndex);
+		if(move.isPhysicalAttack())
+		{
+			return BattleAnimationType.Physical;
+		}
+		
+		else
+		{
+			return BattleAnimationType.Special;
+		}
+
 	}
 }
