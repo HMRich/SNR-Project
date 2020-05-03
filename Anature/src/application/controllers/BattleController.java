@@ -34,6 +34,7 @@ import application.views.elements.AnatureSlot;
 import application.views.elements.HpBar;
 import application.views.elements.ResizableImage;
 import application.views.elements.XpBar;
+import javafx.animation.Animation;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -308,6 +309,13 @@ public class BattleController
 		createBindsImageView(mAnatureFront, scene, 1.75, 7.5, 5.5, 3.5);
 		createBindsImageView(mAnatureBack, scene, 5, 2.9, 4, 2.5);
 		mAnatureBack.setOpacity(0);
+	}
+	
+	private void setUpAnatureAnimations(Scene scene)
+	{
+		//TODO:Create two new image views for animations in scene builder
+		createBindsImageView(mFightAnimationEnemy, scene, 1.75, 7.5, 5.5, 3.5);
+		createBindsImageView(mFightAnimationPlayer, scene, 5, 2.9, 4, 2.5);
 	}
 
 	private void setUpAnatureAnimations(Scene scene)
