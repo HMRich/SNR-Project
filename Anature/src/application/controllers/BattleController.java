@@ -237,21 +237,21 @@ public class BattleController
 
 	private void initializeBattleAnimationImgs()
 	{
-		mSpecialAttackLowerCenterIcon = new Image(getClass().getResource("/resources/images/battle/MinusCenter.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mSpecialAttackLowerTopRightIcon = new Image(getClass().getResource("/resources/images/battle/MinusTopRight.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mSpecialAttackLowerBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/MinusBottomLeft.png").toExternalForm(), 1000.0, 1000.0, false, false);
+		mSpecialAttackLowerCenterIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/MinusCenter.png").toExternalForm());
+		mSpecialAttackLowerTopRightIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/MinusTopRight.png").toExternalForm());
+		mSpecialAttackLowerBottomLeftIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/MinusBottomLeft.png").toExternalForm());
 
-		mSpecialAttackRaiseCenterIcon = new Image(getClass().getResource("/resources/images/battle/PlusCenter.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mSpecialAttackRaiseBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/PlusBottomLeft.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mSpecialAttackRaiseTopRightIcon = new Image(getClass().getResource("/resources/images/battle/PlusTopRight.png").toExternalForm(), 1000.0, 1000.0, false, false);
+		mSpecialAttackRaiseCenterIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/PlusCenter.png").toExternalForm());
+		mSpecialAttackRaiseBottomLeftIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/PlusBottomLeft.png").toExternalForm());
+		mSpecialAttackRaiseTopRightIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/PlusTopRight.png").toExternalForm());
 
-		mFistCenterIcon = new Image(getClass().getResource("/resources/images/battle/FistCenter.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mFistBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/FistBottomLeft.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mFistTopRightIcon = new Image(getClass().getResource("/resources/images/battle/FistTopRight.png").toExternalForm(), 1000.0, 1000.0, false, false);
+		mFistCenterIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/FistCenter.png").toExternalForm());
+		mFistBottomLeftIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/FistBottomLeft.png").toExternalForm());
+		mFistTopRightIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/FistTopRight.png").toExternalForm());
 
-		mSpecialAttackCenterIcon = new Image(getClass().getResource("/resources/images/battle/SpecialAttackCenter.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mSpecialAttackBottomLeftIcon = new Image(getClass().getResource("/resources/images/battle/SpecialAttackBottomLeft.png").toExternalForm(), 1000.0, 1000.0, false, false);
-		mSpecialAttackTopRightIcon = new Image(getClass().getResource("/resources/images/battle/SpecialAttackTopRight.png").toExternalForm(), 1000.0, 1000.0, false, false);
+		mSpecialAttackCenterIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/SpecialAttackCenter.png").toExternalForm());
+		mSpecialAttackBottomLeftIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/SpecialAttackBottomLeft.png").toExternalForm());
+		mSpecialAttackTopRightIcon = getHighQualityImg(getClass().getResource("/resources/images/battle/SpecialAttackTopRight.png").toExternalForm());
 	}
 
 	public void setUpBindingsAndElements(Scene scene)
@@ -632,6 +632,16 @@ public class BattleController
 						mCanClick.set(false);
 					}
 				}, "Reset GUI");
+
+				try
+				{
+					Thread.sleep(10); // Without a short pause here, the game will sometimes not perform the switch
+				}
+
+				catch(InterruptedException e)
+				{
+					LoggerController.logEvent(LoggingTypes.Error, "The pause after the reset ui enqueue in the switch button event was interrupted.");
+				}
 
 				onBackBtn();
 				mShowBtns.set(false);
@@ -1456,11 +1466,8 @@ public class BattleController
 			case Attack_1:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(playerAnature, true, BattleChoice.Attack_1, 1);
-						activateAfterTurn(nextTurn);
-					}, true, 1);
+					useAttack(playerAnature, true, BattleChoice.Attack_1, 1);
+					activateAfterTurn(nextTurn);
 
 				}, "Player Attack 1");
 				break;
@@ -1468,11 +1475,8 @@ public class BattleController
 			case Attack_2:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(playerAnature, true, BattleChoice.Attack_2, 2);
-						activateAfterTurn(nextTurn);
-					}, true, 2);
+					useAttack(playerAnature, true, BattleChoice.Attack_2, 2);
+					activateAfterTurn(nextTurn);
 
 				}, "Player Attack 2");
 				break;
@@ -1480,11 +1484,8 @@ public class BattleController
 			case Attack_3:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(playerAnature, true, BattleChoice.Attack_3, 3);
-						activateAfterTurn(nextTurn);
-					}, true, 3);
+					useAttack(playerAnature, true, BattleChoice.Attack_3, 3);
+					activateAfterTurn(nextTurn);
 
 				}, "Player Attack 3");
 				break;
@@ -1492,11 +1493,8 @@ public class BattleController
 			case Attack_4:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(playerAnature, true, BattleChoice.Attack_4, 4);
-						activateAfterTurn(nextTurn);
-					}, true, 4);
+					useAttack(playerAnature, true, BattleChoice.Attack_4, 4);
+					activateAfterTurn(nextTurn);
 
 				}, "Player Attack 4");
 				break;
@@ -1534,11 +1532,8 @@ public class BattleController
 			case Move1:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(enemyAnature, false, BattleChoice.Attack_1, 1);
-						activateAfterTurn(nextTurn);
-					}, false, 1);
+					useAttack(enemyAnature, false, BattleChoice.Attack_1, 1);
+					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 1");
 				break;
@@ -1546,11 +1541,8 @@ public class BattleController
 			case Move2:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(enemyAnature, false, BattleChoice.Attack_2, 2);
-						activateAfterTurn(nextTurn);
-					}, false, 2);
+					useAttack(enemyAnature, false, BattleChoice.Attack_2, 2);
+					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 2");
 				break;
@@ -1558,11 +1550,8 @@ public class BattleController
 			case Move3:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(enemyAnature, false, BattleChoice.Attack_3, 3);
-						activateAfterTurn(nextTurn);
-					}, false, 3);
+					useAttack(enemyAnature, false, BattleChoice.Attack_3, 3);
+					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 3");
 				break;
@@ -1570,11 +1559,8 @@ public class BattleController
 			case Move4:
 				mClickQueue.enqueue(() ->
 				{
-					playBattleAnimation(event ->
-					{
-						useAttack(enemyAnature, false, BattleChoice.Attack_4, 4);
-						activateAfterTurn(nextTurn);
-					}, false, 4);
+					useAttack(enemyAnature, false, BattleChoice.Attack_4, 4);
+					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 4");
 				break;
@@ -1719,27 +1705,34 @@ public class BattleController
 			LoggerController.logEvent(LoggingTypes.Error, "Thread was interrupted during sleep in useAttack.");
 		}
 
-		if(!move.doesDamage())
-		{
-			mDialogueTxt.set(moveDialogue.get(0));
+		mDialogueTxt.set(moveDialogue.get(0));
 
-			for(int i = 1; i < moveDialogue.size(); i++)
+		EventHandler<ActionEvent> visualizeAttack = actionEvent ->
+		{
+			if(!move.doesDamage())
 			{
-				String dialogue = moveDialogue.get(i);
-				enqueueDialogue(dialogue, "Move Dialogue");
+				mCanClick.set(true);
 			}
 
-			mCanClick.set(true);
+			for(String abilityDialogue : abilityResult.getDialogue())
+			{
+				enqueueDialogue(abilityDialogue, "Ability Dialogue");
+			}
+
+			if(move.doesDamage())
+			{
+				healthDrainMove(moveResult, !isPlayer);
+			}
+		};
+
+		if(!moveDialogue.get(0).contains("missed"))
+		{
+			playBattleAnimation(visualizeAttack, isPlayer, moveNum);
 		}
 
-		for(String dialogue : abilityResult.getDialogue())
+		else
 		{
-			enqueueDialogue(dialogue, "Ability Dialogue");
-		}
-
-		if(move.doesDamage())
-		{
-			healthDrainMove(moveResult, !isPlayer);
+			visualizeAttack.handle(null);
 		}
 	}
 
@@ -1777,15 +1770,6 @@ public class BattleController
 		else if(!result.isPlayer() && damageDoneToTarget > mPlayerHp.get())
 		{
 			damageDoneToTarget = mPlayerHp.get();
-		}
-
-		ArrayList<String> dialogue = result.getDialogue();
-		mDialogueTxt.set(dialogue.get(0));
-
-		for(int i = 1; i < dialogue.size(); i++)
-		{
-			String toAdd = dialogue.get(i);
-			enqueueDialogue(toAdd, "Move Dialogue in health drain");
 		}
 
 		if(damageDoneToTarget != 0)
@@ -2109,6 +2093,11 @@ public class BattleController
 				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 
 		return fontProperty;
+	}
+
+	private Image getHighQualityImg(String url)
+	{
+		return new Image(url, 1000.0, 1000.0, false, false);
 	}
 
 	private void createBindsImageView(ImageView img, Scene scene, double widthToDivide, double heightToDivide)

@@ -77,6 +77,16 @@
                </image>
             </ImageView>
             <TextArea fx:id="mDialogueTxtArea" editable="false" layoutX="64.0" layoutY="494.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+            <ImageView fx:id="mFightAnimationPlayer" fitHeight="88.0" fitWidth="91.0" layoutX="15.0" layoutY="354.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/FistBottomLeft.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mFightAnimationEnemy" fitHeight="88.0" fitWidth="91.0" layoutX="101.0" layoutY="360.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/FistBottomLeft.png" />
+               </image>
+            </ImageView>
             <Button fx:id="mTestBtn" layoutX="38.0" layoutY="309.0" mnemonicParsing="false" text="Test Button" />
             <ImageView fx:id="mItemSelectionBg" fitHeight="237.0" fitWidth="399.0" pickOnBounds="true">
                <image>
@@ -259,16 +269,6 @@
             <ImageView fx:id="mStatusIconPlayer" fitHeight="26.0" fitWidth="81.0" layoutX="870.0" layoutY="18.0" pickOnBounds="true">
             </ImageView>
             <ImageView fx:id="mStatusIconEnemy" fitHeight="26.0" fitWidth="81.0" layoutX="870.0" layoutY="18.0" pickOnBounds="true">
-            </ImageView>
-            <ImageView fx:id="mFightAnimationPlayer" fitHeight="88.0" fitWidth="91.0" layoutX="15.0" layoutY="354.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../resources/images/battle/FistBottomLeft.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="mFightAnimationEnemy" fitHeight="88.0" fitWidth="91.0" layoutX="101.0" layoutY="360.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../resources/images/battle/FistBottomLeft.png" />
-               </image>
             </ImageView>
          </children>
       </Pane>
