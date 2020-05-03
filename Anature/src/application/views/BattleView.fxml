@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.BattleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.BattleController">
    <center>
       <Pane fx:id="mPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -259,6 +259,16 @@
             <ImageView fx:id="mStatusIconPlayer" fitHeight="26.0" fitWidth="81.0" layoutX="870.0" layoutY="18.0" pickOnBounds="true">
             </ImageView>
             <ImageView fx:id="mStatusIconEnemy" fitHeight="26.0" fitWidth="81.0" layoutX="870.0" layoutY="18.0" pickOnBounds="true">
+            </ImageView>
+            <ImageView fx:id="mFightAnimationPlayer" fitHeight="88.0" fitWidth="91.0" layoutX="15.0" layoutY="354.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/FistBottomLeft.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="mFightAnimationEnemy" fitHeight="88.0" fitWidth="91.0" layoutX="101.0" layoutY="360.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/battle/FistBottomLeft.png" />
+               </image>
             </ImageView>
          </children>
       </Pane>
