@@ -357,6 +357,12 @@ public class Anature
 
 		return mName + result;
 	}
+	
+	public void restore()
+	{
+		healAnature(9999);
+		mMoves.refreshAllMovePoints();
+	}
 
 	public Image getFrontSprite()
 	{

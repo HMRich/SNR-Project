@@ -54,12 +54,13 @@ public abstract class AbstractCell
 	protected ArrayList<TrainerSprite> mTrainerSprites;
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
+	protected SceneType mId;
 
 	private StringProperty mDialogueTxtProperty;
 	private BooleanProperty mShowDialogueProperty;
 	private Image mStandDownImg;
 
-	public AbstractCell(LoggerStartUp logger, double width, double height)
+	public AbstractCell(LoggerStartUp logger, double width, double height, SceneType id)
 	{
 		mZoom = new SimpleDoubleProperty(2.6);
 		mShowDialogueProperty = new SimpleBooleanProperty(false);
@@ -70,6 +71,7 @@ public abstract class AbstractCell
 		mWarpPoints = new ArrayList<WarpPointBox>();
 		mTrainerSprites = new ArrayList<TrainerSprite>();
 		mCanMove = true;
+		mId = id;
 
 		mHeight = height;
 		mWidth = width;
@@ -82,7 +84,16 @@ public abstract class AbstractCell
 		mBackground = createBackground();
 		Pane foreground = createForeground();
 
-		mMap = new StackPane(mBackground, foreground);
+		if(foreground == null)
+		{
+			mMap = new StackPane(mBackground);
+		}
+		
+		else
+		{
+			mMap = new StackPane(mBackground, foreground);
+		}
+		
 		mMap.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
 		mPlayer.addToContainer(mBackground);
@@ -219,18 +230,17 @@ public abstract class AbstractCell
 
 	protected void addCollisionRectangle(double x, double y, double width, double height)
 	{
-		mCollisions.add(createRectangle(x, y, width, height));
+		mCollisions.add(createRectangle(x, y, width, height, Color.LIGHTGREY));
 	}
 	
 	protected void addCollisionRectangleUsingCoords(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
 	{
-		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY));
+		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY, Color.LIGHTGREY));
 	}
 
 	protected void addGrassPatchRectangle(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
 	{
-		Rectangle rect = createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY);
-		rect.setFill(Color.DARKGREEN);
+		Rectangle rect = createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY, Color.DARKGREEN);
 		mGrassPatches.add(rect);
 	}
 
@@ -241,10 +251,11 @@ public abstract class AbstractCell
 		mWarpPoints.add(warp);
 	}
 	
-	private Rectangle createRectangle(double x, double y, double width, double height)
+	private Rectangle createRectangle(double x, double y, double width, double height, Color color)
 	{
 		Rectangle rect = new Rectangle(x, y, width, height);
 		rect.visibleProperty().bind(mShowCollision);
+		rect.setFill(color);
 		
 		return rect;
 	}

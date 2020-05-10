@@ -10,7 +10,7 @@ public class GrassTownCell extends AbstractCell
 {
 	public GrassTownCell(LoggerStartUp logger)
 	{
-		super(logger, 468, 427);
+		super(logger, 468, 427, SceneType.Grass_Town);
 	}
 
 	@Override
@@ -68,6 +68,7 @@ public class GrassTownCell extends AbstractCell
 	protected void createWarpPoints()
 	{
 		addWarpPoint(SceneType.Path_1, WarpPoints.Path_1_Grass_Town_Exit, 1021, 0, 301, 60);
+		addWarpPoint(SceneType.Rest_Station_Grass_Town, WarpPoints.Rest_Station_Grass_Town, 278, 391.7, 355 - 278, 410 - 391);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package application.controllers.overworld_cells;
 import application.LoggerStartUp;
 import application.Player;
 import application.enums.Direction;
+import application.enums.SceneType;
 import application.enums.WarpPoints;
 import application.views.overworld_cells.GrassTownCell;
 import javafx.scene.input.KeyEvent;
@@ -39,6 +40,12 @@ public class GrassTownController extends AbstractController
 			case Grass_Town_Path_1:
 				mPlayerView.setX(1135);
 				mPlayerView.setY(45);
+				mView.setPlayerFacing(Direction.Down);
+				break;
+				
+			case Rest_Station_Grass_Town:
+				mPlayerView.setX(278);
+				mPlayerView.setY(400);
 				mView.setPlayerFacing(Direction.Down);
 				break;
 
