@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 
 public class RestStationCell extends AbstractCell
 {
-	private Rectangle mHealBox;
+	private Rectangle mHealBox, mClerkBox;
 	
 	public RestStationCell(LoggerStartUp logger, SceneType restStationId)
 	{
@@ -23,10 +23,15 @@ public class RestStationCell extends AbstractCell
 	@Override
 	protected void createTrainers()
 	{
-		String[] dialogue = new String[] {"Hi there, I'm the local nurse!", "I'll heal your Anatures!"};
+		String[] nurseDialogue = new String[] {"Hi there, I'm the local nurse!", "I'll heal your Anatures!"};
 		
-		TrainerSprite mNurse = new TrainerSprite(118, 283, TrainerIds.Nurse, Direction.Down, mZoom, mShowCollision, new double[0][], 0, dialogue, false, "Nurse");
-		addTrainer(mNurse);
+		TrainerSprite nurse = new TrainerSprite(118, 283, TrainerIds.Nurse, Direction.Down, mZoom, mShowCollision, new double[0][], 0, nurseDialogue, false, "Nurse");
+		addTrainer(nurse);
+		
+		String[] clerkDialogue = new String[] {"Hi there, I'm the local store clerk!", "Are you interested in some of my wares?"};
+		
+		TrainerSprite clerk = new TrainerSprite(678, 283, TrainerIds.Clerk, Direction.Down, mZoom, mShowCollision, new double[0][], 0, clerkDialogue, false, "Clerk");
+		addTrainer(clerk);
 	}
 
 	@Override
@@ -36,7 +41,11 @@ public class RestStationCell extends AbstractCell
 		mHealBox.visibleProperty().bind(mShowCollision);
 		mHealBox.setFill(Color.RED);
 		
-		mBackground.getChildren().add(mHealBox);
+		mClerkBox = new Rectangle(681, 393, 176 - 121, 412 - 393);
+		mClerkBox.visibleProperty().bind(mShowCollision);
+		mClerkBox.setFill(Color.RED);
+		
+		mBackground.getChildren().addAll(mHealBox, mClerkBox);
 	}
 
 	@Override
@@ -69,6 +78,7 @@ public class RestStationCell extends AbstractCell
 		addCollisionRectangle(301, 242, 551 - 301, 276 - 242); // Up Border
 
 		addCollisionRectangle(390, 248, 457 - 390, 309 - 248); // AC Box
+		
 		addCollisionRectangleUsingCoords(12, 358, 303, 400); // Red Counter Bot
 		addCollisionRectangleUsingCoords(273, 248, 303, 376); // Red Counter Right
 		addCollisionRectangleUsingCoords(549, 345, 846, 400); // Green Counter Bot
@@ -109,5 +119,10 @@ public class RestStationCell extends AbstractCell
 	public boolean interactHealStation()
 	{
 		return mPlayer.getBoxBounds().intersects(mHealBox.getBoundsInLocal());
+	}
+	
+	public boolean interactClerkStation()
+	{
+		return mPlayer.getBoxBounds().intersects(mClerkBox.getBoundsInLocal());
 	}
 }

@@ -51,6 +51,26 @@ public class RestStationController extends AbstractController
 					mView.mCanMove = true;
 				}, "End Nurse Dialogue");
 			}
+			
+			else if(((RestStationCell) mView).interactClerkStation())
+			{				
+				mView.mCanMove = false;
+				
+				mClickQueue.enqueue(() -> mView.showDialogue("Hi there, I'm the local store clerk!"), "Clerk Intro");
+				mClickQueue.enqueue(() -> 
+				{
+					mView.showDialogue("Are you interested in some of my wares?");
+					
+					// TODO Buying menu
+					
+				}, "Clerk Buying Menu");
+				
+				mClickQueue.enqueue(() ->
+				{
+					mView.hideDialogue();
+					mView.mCanMove = true;
+				}, "End Clerk Dialogue");
+			}
 		}
 	}
 
