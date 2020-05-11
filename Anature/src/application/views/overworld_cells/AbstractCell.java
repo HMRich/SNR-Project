@@ -3,7 +3,6 @@ package application.views.overworld_cells;
 import java.util.ArrayList;
 
 import application.LoggerStartUp;
-import application.Player;
 import application.animations.BlinkingAnimation;
 import application.controllers.LoggerController;
 import application.controllers.ShoppingMenuController;
@@ -11,6 +10,7 @@ import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.WarpPoints;
+import application.player.Player;
 import application.views.elements.ImageLayer;
 import application.views.elements.PlayerSprite;
 import application.views.elements.ShoppingMenu;

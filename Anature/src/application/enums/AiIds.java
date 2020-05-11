@@ -2,5 +2,5 @@ package application.enums;
 
 public enum AiIds
 {
-	Base
+	Balanced, Smart, Dumb
 }

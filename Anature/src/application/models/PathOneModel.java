@@ -1,19 +1,19 @@
 package application.models;
 
 import application.enums.TrainerIds;
-import application.trainers.Trainer;
+import application.interfaces.ITrainer;
 import application.trainers.TrainerBuilder;
 
 public class PathOneModel
 {
-private Trainer mKelly;
-	
+	private ITrainer mKelly;
+
 	public PathOneModel()
 	{
 		mKelly = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 	}
-	
-	public Trainer getKelly()
+
+	public ITrainer getKelly()
 	{
 		return mKelly;
 	}

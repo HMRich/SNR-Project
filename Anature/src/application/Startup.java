@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 
+import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.overworld_cells.GrassTownController;
@@ -13,10 +14,12 @@ import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.WarpPoints;
-import application.items.ItemPool;
+import application.interfaces.IAnature;
+import application.interfaces.ITrainer;
 import application.models.PathOneModel;
 import application.models.StarterTownModel;
-import application.trainers.Trainer;
+import application.player.Player;
+import application.pools.ItemPool;
 import application.views.overworld_cells.GrassTownCell;
 import application.views.overworld_cells.PathOneCell;
 import application.views.overworld_cells.RestStationCell;
@@ -232,7 +235,7 @@ public class Startup extends Application
 		mStage.setHeight(height);
 	}
 
-	public static void startBattle(Trainer toBattle)
+	public static void startBattle(ITrainer toBattle)
 	{
 		try
 		{
@@ -265,18 +268,18 @@ public class Startup extends Application
 
 	public static void createDemo()
 	{
-		Anature first = AnatureBuilder.createAnature(Species.Null, 15);
-		first.setName("Main Null");
+		IAnature first = AnatureBuilder.createAnature(Species.Null, 15);
+		first.updateName("Main Null");
 		mPlayer.addAnatures(first);
 
-		Anature second = AnatureBuilder.createAnature(Species.Null, 12);
-		second.setName("Other Null");
+		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
+		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
 
-		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Great_Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Ultra_Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getItems(ItemIds.Master_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
 
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 

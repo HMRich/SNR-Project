@@ -2,5 +2,5 @@ package application.enums;
 
 public enum TrainerIds
 {
-	Wild, Kelly, Nurse, Clerk
+	Null, Wild, Kelly, Nurse, Clerk
 }

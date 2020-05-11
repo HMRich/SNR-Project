@@ -1,12 +1,12 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
-import application.Player;
 import application.controllers.LoggerController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.WarpPoints;
 import application.models.StarterTownModel;
+import application.player.Player;
 import application.views.elements.TrainerSprite;
 import application.views.overworld_cells.StarterTownCell;
 import javafx.scene.input.KeyEvent;

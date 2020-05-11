@@ -1,10 +1,10 @@
 package application.controllers.overworld_cells;
 
-import application.Anature;
 import application.LoggerStartUp;
-import application.Player;
 import application.enums.Direction;
 import application.enums.WarpPoints;
+import application.interfaces.IAnature;
+import application.player.Player;
 import application.views.overworld_cells.RestStationCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -39,7 +39,7 @@ public class RestStationController extends AbstractController
 				{
 					mView.showDialogue("I'll heal your Anatures!");
 					
-					for(Anature anature : mPlayerModel.getAnatures())
+					for(IAnature anature : mPlayerModel.getAnatures())
 					{
 						anature.restore();
 					}

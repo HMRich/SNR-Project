@@ -3,7 +3,6 @@ package application.controllers.overworld_cells;
 import java.util.Random;
 
 import application.LoggerStartUp;
-import application.Player;
 import application.Startup;
 import application.controllers.ClickQueue;
 import application.controllers.LoggerController;
@@ -11,7 +10,8 @@ import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.TrainerIds;
 import application.enums.WarpPoints;
-import application.trainers.Trainer;
+import application.interfaces.ITrainer;
+import application.player.Player;
 import application.trainers.TrainerBuilder;
 import application.views.elements.PlayerSprite;
 import application.views.elements.TrainerSprite;
@@ -274,7 +274,7 @@ public abstract class AbstractController
 							if(r.nextInt(100) > 85) // TODO modify encounter rate calculations
 							{
 								LoggerController.logEvent(LoggingTypes.Misc, "Player has encountered a wild Anature.");
-								Trainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
+								ITrainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
 								
 								mView.mCanMove = false;
 								mView.mUp = false;

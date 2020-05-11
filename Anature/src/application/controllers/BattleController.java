@@ -3,15 +3,9 @@ package application.controllers;
 import java.util.ArrayList;
 import java.util.Random;
 
-import application.Anature;
-import application.Backpack;
 import application.FightManager;
-import application.ItemResult;
-import application.MoveResult;
-import application.MoveSet;
-import application.Player;
 import application.Startup;
-import application.abillities.AbilityResult;
+import application.anatures.movesets.MoveSet;
 import application.animations.BlinkingAnimation;
 import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
@@ -19,6 +13,9 @@ import application.animations.ProgressBarDecrease;
 import application.animations.ProgressBarIncrease;
 import application.animations.ThreeFrameAnimation;
 import application.animations.XSlideAnimation;
+import application.controllers.results.AbilityResult;
+import application.controllers.results.ItemResult;
+import application.controllers.results.MoveResult;
 import application.enums.AiChoice;
 import application.enums.BattleAnimationType;
 import application.enums.BattleChoice;
@@ -26,10 +23,15 @@ import application.enums.Gender;
 import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
-import application.items.Item;
-import application.items.ItemPool;
-import application.moves.Move;
-import application.trainers.Trainer;
+import application.interfaces.AiChoiceObject;
+import application.interfaces.IAnature;
+import application.interfaces.IItem;
+import application.interfaces.IMove;
+import application.interfaces.ITrainer;
+import application.items.HealthPotionBase;
+import application.player.Backpack;
+import application.player.Player;
+import application.pools.ItemPool;
 import application.views.elements.AnatureSlot;
 import application.views.elements.HpBar;
 import application.views.elements.ResizableImage;
@@ -123,7 +125,7 @@ public class BattleController
 	private StringProperty mAttackNameThreeTxt, mAttackMpThreeTxt, mAttackNameFourTxt, mAttackMpFourTxt;
 
 	private FightManager mFightManager;
-	private Trainer mEnemyTrainer;
+	private ITrainer mEnemyTrainer;
 	private Player mPlayer;
 	private ClickQueue mClickQueue;
 	private AnatureSlot mSlotOne, mSlotTwo, mSlotThree, mSlotFour, mSlotFive, mSlotSix;
@@ -464,9 +466,9 @@ public class BattleController
 	private void onPlayerAnatureDeath()
 	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature : mPlayer.getAnatures())
+		for(IAnature anature : mPlayer.getAnatures())
 		{
-			if(anature.getCurrHp() > 0)
+			if(anature.getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -514,9 +516,9 @@ public class BattleController
 	private void onEnemyAnatureDeath()
 	{
 		boolean isThereAliveAnatureInParty = false;
-		for(Anature anature : mEnemyTrainer.getAnatures())
+		for(IAnature anature : mEnemyTrainer.getAnatureParty())
 		{
-			if(anature.getCurrHp() > 0)
+			if(anature.getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -582,7 +584,7 @@ public class BattleController
 			}
 			else
 			{
-				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getCurrHp() <= 0)
+				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getCurrentHitPoints() <= 0)
 				{
 					return;
 				}
@@ -869,15 +871,15 @@ public class BattleController
 		return value;
 	}
 
-	public void updateElements(Player player, Trainer enemyTrainer)
+	public void updateElements(Player player, ITrainer enemyTrainer)
 	{
-		Anature enemyCurr = enemyTrainer.getAnatures().get(0);
-		Anature playerCurr = player.getAnatures().get(0);
+		IAnature enemyCurr = enemyTrainer.getAnatureParty().get(0);
+		IAnature playerCurr = player.getAnatures().get(0);
 
 		mEnemyName.set(enemyCurr.getName());
 
-		mEnemyHp.set(enemyCurr.getCurrHp());
-		mEnemyHpTotal.set(enemyCurr.getTotalHp());
+		mEnemyHp.set(enemyCurr.getCurrentHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getTotalHitPoints());
 
 		mEnemyLvl.set(enemyCurr.getLevel());
 
@@ -896,10 +898,10 @@ public class BattleController
 
 		startIntro(player, enemyTrainer, enemyCurr);
 
-		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatures());
+		mFightManager = new FightManager(player.getAnatures(), enemyTrainer.getAnatureParty());
 	}
 
-	private void startIntro(Player player, Trainer enemyTrainer, Anature enemyCurr)
+	private void startIntro(Player player, ITrainer enemyTrainer, IAnature enemyCurr)
 	{
 		mClickQueue.enqueue(new Runnable()
 		{
@@ -989,14 +991,14 @@ public class BattleController
 		}
 	}
 
-	private void updatePlayerAnature(Anature playerCurr)
+	private void updatePlayerAnature(IAnature playerCurr)
 	{
 		mPlayerName.set(playerCurr.getName());
 
-		mPlayerHp.set(playerCurr.getCurrHp());
-		mPlayerHpTotal.set(playerCurr.getTotalHp());
+		mPlayerHp.set(playerCurr.getCurrentHitPoints());
+		mPlayerHpTotal.set(playerCurr.getTotalHitPoints());
 
-		mPlayerXp.set(playerCurr.getCurrentXp());
+		mPlayerXp.set(playerCurr.getCurrentExperiencePoints());
 		mPlayerXpTotal.set(100); // TODO change to a standard
 
 		mPlayerLvl.set(playerCurr.getLevel());
@@ -1007,13 +1009,25 @@ public class BattleController
 		updateMoves(playerCurr);
 	}
 
-	private void updateMoves(Anature playerCurr)
+	private void updateEnemyAnature(IAnature enemyCurr)
 	{
-		MoveSet moves = playerCurr.getMoves(); // TODO Make move btn color change based on move type
-		Move move1 = moves.getMove(1);
-		Move move2 = moves.getMove(2);
-		Move move3 = moves.getMove(3);
-		Move move4 = moves.getMove(4);
+		mEnemyName.set(enemyCurr.getName());
+
+		mEnemyHp.set(enemyCurr.getCurrentHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getTotalHitPoints());
+
+		mEnemyLvl.set(enemyCurr.getLevel());
+
+		mAnatureFront.setImage(enemyCurr.getFrontSprite());
+	}
+
+	private void updateMoves(IAnature playerCurr)
+	{
+		MoveSet moves = playerCurr.getMoveSet(); // TODO Make move btn color change based on move type
+		IMove move1 = moves.getMove(1);
+		IMove move2 = moves.getMove(2);
+		IMove move3 = moves.getMove(3);
+		IMove move4 = moves.getMove(4);
 
 		updateMove(move1, moves.getMovePoints(1), mShowMoveOne, mAttackNameOneTxt, mAttackMpOneTxt);
 		updateMove(move2, moves.getMovePoints(2), mShowMoveTwo, mAttackNameTwoTxt, mAttackMpTwoTxt);
@@ -1021,7 +1035,7 @@ public class BattleController
 		updateMove(move4, moves.getMovePoints(4), mShowMoveFour, mAttackNameFourTxt, mAttackMpFourTxt);
 	}
 
-	private void updateMove(Move moveToCheck, int currMp, BooleanProperty showMove, StringProperty nameTxt, StringProperty mpTxt)
+	private void updateMove(IMove moveToCheck, int currMp, BooleanProperty showMove, StringProperty nameTxt, StringProperty mpTxt)
 	{
 		if(moveToCheck != null)
 		{
@@ -1036,7 +1050,7 @@ public class BattleController
 		}
 	}
 
-	private void updateSwitch(ArrayList<Anature> party, int selectedIndex)
+	private void updateSwitch(ArrayList<IAnature> party, int selectedIndex)
 	{
 		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 		boolean isSelected = false;
@@ -1145,16 +1159,16 @@ public class BattleController
 
 		mSwitchIndexSelected = selectedIndex;
 
-		ArrayList<Anature> party = mPlayer.getAnatures();
-		Anature selected = party.get(selectedIndex);
+		ArrayList<IAnature> party = mPlayer.getAnatures();
+		IAnature selected = party.get(selectedIndex);
 
-		mSwitchSelectedCatalogNum.setText(String.format("%03d", selected.getIndexNum()));
+		mSwitchSelectedCatalogNum.setText(String.format("%03d", selected.getIndexNumber()));
 		mSwitchSelectedName.setText(selected.getName());
 		mSwitchSelectedOwner.setText(selected.getOwner());
-		mSwitchSelectedCurrXp.setText(selected.getCurrentXp() + "");
-		mSwitchSelectedNextXp.setText((100 - selected.getCurrentXp()) + "");
+		mSwitchSelectedCurrXp.setText(selected.getCurrentExperiencePoints() + "");
+		mSwitchSelectedNextXp.setText((100 - selected.getCurrentExperiencePoints()) + "");
 
-		mSwitchSelectedHp.setText(selected.getTotalHp() + "");
+		mSwitchSelectedHp.setText(selected.getTotalHitPoints() + "");
 		mSwitchSelectedAtk.setText(selected.getAttack() + "");
 		mSwitchSelectedSpAtk.setText(selected.getSpecialAttack() + "");
 		mSwitchSelectedDef.setText(selected.getDefense() + "");
@@ -1166,11 +1180,11 @@ public class BattleController
 		// TODO Add different type imgs
 	}
 
-	private void updateSwitchSlot(Anature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)
+	private void updateSwitchSlot(IAnature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)
 	{
 		visibleProp.set(true);
-		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(), curr.getCurrHp() + "/" + curr.getTotalHp(),
-				mShowSwitch.get(), visibleProp.get(), curr.getCurrHp(), curr.getStatus());
+		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(),
+				curr.getCurrentHitPoints() + "/" + curr.getTotalHitPoints(), mShowSwitch.get(), visibleProp.get(), curr.getCurrentHitPoints(), curr.getStatus());
 	}
 
 	private void updateBagMenu()
@@ -1211,7 +1225,7 @@ public class BattleController
 		mItemList.setItems(items);
 	}
 
-	private void updateGender(Anature anature, boolean isPlayer)
+	private void updateGender(IAnature anature, boolean isPlayer)
 	{
 		Image toUse = mMaleIcon;
 
@@ -1309,18 +1323,18 @@ public class BattleController
 
 	private void activateTurn(BattleChoice choice)
 	{
-		Anature anatureForSwitching = mPlayer.getAnatures().get(mSwitchIndexSelected);
+		IAnature anatureForSwitching = mPlayer.getAnatures().get(mSwitchIndexSelected);
 
-		if(anatureForSwitching.getCurrHp() <= 0)
+		if(anatureForSwitching.getCurrentHitPoints() <= 0)
 		{
 			return;
 		}
 
 		mShowBtns.set(false);
-		Anature enemyCurr = mFightManager.getEnemyAnature();
-		Anature playerCurr = mFightManager.getPlayerAnature();
+		IAnature enemyCurr = mFightManager.getEnemyAnature();
+		IAnature playerCurr = mFightManager.getPlayerAnature();
 
-		AiChoice enemyTurn = mEnemyTrainer.useTurn(playerCurr);
+		AiChoiceObject<?> enemyTurn = mEnemyTrainer.useTurn(playerCurr);
 
 		int whoGoesFirst = playerCurr.getSpeed() - enemyCurr.getSpeed();
 
@@ -1390,7 +1404,7 @@ public class BattleController
 		mClickQueue.dequeue().run();
 	}
 
-	private void activatePlayerTurn(Anature playerCurr, Anature enemyCurr, BattleChoice choice, Runnable nextTurn)
+	private void activatePlayerTurn(IAnature playerCurr, IAnature enemyCurr, BattleChoice choice, Runnable nextTurn)
 	{
 		if(beforeTurnStatusCheck(true, playerCurr) || choice == BattleChoice.Item || choice == BattleChoice.Switch)
 		{
@@ -1403,9 +1417,10 @@ public class BattleController
 		}
 	}
 
-	private void activateEnemyTurn(Anature playerCurr, Anature enemyCurr, AiChoice enemyTurn, Runnable nextTurn)
+	private void activateEnemyTurn(IAnature playerCurr, IAnature enemyCurr, AiChoiceObject<?> enemyTurn, Runnable nextTurn)
 	{
-		if(beforeTurnStatusCheck(false, enemyCurr) || enemyTurn == AiChoice.Item_Consumed || enemyTurn == AiChoice.Switch_Anature)
+		AiChoice aiChoice = enemyTurn.getAiChoice();
+		if(beforeTurnStatusCheck(false, enemyCurr) || aiChoice == AiChoice.Item_Consumed || aiChoice == AiChoice.Switch_Anature)
 		{
 			enemyTurn(enemyTurn, nextTurn);
 		}
@@ -1436,7 +1451,7 @@ public class BattleController
 
 	private void playerTurn(BattleChoice choice, Runnable nextTurn)
 	{
-		Anature playerAnature = mFightManager.getPlayerAnature();
+		IAnature playerAnature = mFightManager.getPlayerAnature();
 
 		switch(choice)
 		{
@@ -1479,7 +1494,7 @@ public class BattleController
 			case Item: // TODO Change it so u can use items on other anatures
 				mClickQueue.enqueue(() ->
 				{
-					Item selectedItem = ItemPool.getItems(mItemList.getSelectionModel().getSelectedItem());
+					IItem selectedItem = ItemPool.getItem(mItemList.getSelectionModel().getSelectedItem());
 
 					ItemResult result = mFightManager.itemUse(true, mPlayer.getSelectedIndex(), selectedItem);
 					healthGain(result, mPlayerHp);
@@ -1500,16 +1515,15 @@ public class BattleController
 		}
 	}
 
-	private void enemyTurn(AiChoice enemyTurn, Runnable nextTurn)
+	private void enemyTurn(AiChoiceObject<?> enemyTurn, Runnable nextTurn)
 	{
-		Anature enemyAnature = mFightManager.getEnemyAnature();
-
-		switch(enemyTurn)
+		AiChoice aiChoice = enemyTurn.getAiChoice();
+		switch(aiChoice)
 		{
 			case Move1:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_1, 1);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_1, 1);
 					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 1");
@@ -1518,7 +1532,7 @@ public class BattleController
 			case Move2:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_2, 2);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_2, 2);
 					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 2");
@@ -1527,7 +1541,7 @@ public class BattleController
 			case Move3:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_3, 3);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_3, 3);
 					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 3");
@@ -1536,10 +1550,26 @@ public class BattleController
 			case Move4:
 				mClickQueue.enqueue(() ->
 				{
-					useAttack(enemyAnature, false, BattleChoice.Attack_4, 4);
+					useAttack(mFightManager.getEnemyAnature(), false, BattleChoice.Attack_4, 4);
 					activateAfterTurn(nextTurn);
 
 				}, "Enemy Attack 4");
+				break;
+
+			case Item_Consumed:
+				mClickQueue.enqueue(() ->
+				{
+					healthGain(mFightManager.itemUse(false, mFightManager.getEnemyIndex(), (HealthPotionBase) enemyTurn.getChoiceObject()), mEnemyHp);
+					activateAfterTurn(nextTurn);
+				}, "Enemy Item Use");
+				break;
+
+			case Switch_Anature:
+				mClickQueue.enqueue(() ->
+				{
+					activateEnemySwitch(enemyTurn, nextTurn);
+					activateAfterTurn(nextTurn);
+				}, "Enemy Anature Switch");
 				break;
 
 			default:
@@ -1557,9 +1587,9 @@ public class BattleController
 				mPlayerFaintSequenceActive = false;
 
 				mFightManager.setPlayerSelectedIndex(mSwitchIndexSelected);
-				Anature oldAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
+				IAnature oldAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
 				mPlayer.setSelectedIndex(mSwitchIndexSelected);
-				Anature newAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
+				IAnature newAnature = mPlayer.getAnatures().get(mPlayer.getSelectedIndex());
 
 				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
 				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
@@ -1604,6 +1634,58 @@ public class BattleController
 				mDialogueTxt.set("Come on back " + oldAnature.getName() + ".");
 			}
 		}, "Activate Switch");
+	}
+	
+	private void activateEnemySwitch(AiChoiceObject<?> enemyTurn, Runnable nextTurn)
+	{
+		mClickQueue.enqueue(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				mPlayerFaintSequenceActive = false;
+
+				IAnature oldAnature = mFightManager.getEnemyAnature();
+				IAnature newAnature = (IAnature) enemyTurn.getChoiceObject();
+				int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
+				mFightManager.setEnemySelectedIndex(newAnatureIndex);
+
+				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
+				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
+				{
+					@Override
+					public void handle(ActionEvent event)
+					{
+						updateEnemyAnature(newAnature);
+
+						try
+						{
+							Thread.sleep(500);
+						}
+
+						catch(InterruptedException e)
+						{
+							LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
+						}
+
+						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
+						fadeInNew.setOnFinished(actionEvent ->
+						{
+							if(nextTurn != null)
+							{
+								activateAfterTurn(nextTurn);
+							}
+
+							mCanClick.set(true);
+						});
+						fadeInNew.play();
+					}
+				});
+
+				fadeOld.play();
+				mDialogueTxt.set(mEnemyTrainer.getName() + " calls back" + oldAnature.getName() + ".");
+			}
+		}, "Enemy Activate Switch");
 	}
 
 	private void activateEntryAbility(boolean isPlayer)
@@ -1665,12 +1747,12 @@ public class BattleController
 		animation.play();
 	}
 
-	private void useAttack(Anature anature, boolean isPlayer, BattleChoice choice, int moveNum)
+	private void useAttack(IAnature anature, boolean isPlayer, BattleChoice choice, int moveNum)
 	{
 		MoveResult moveResult = mFightManager.attack(isPlayer, moveNum);
 		AbilityResult abilityResult = moveResult.getAbilityResult();
 		ArrayList<String> moveDialogue = moveResult.getDialogue();
-		Move move = moveResult.getMove();
+		IMove move = moveResult.getMove();
 
 		try
 		{
@@ -1715,7 +1797,7 @@ public class BattleController
 
 	private void healthDrainMove(MoveResult result, boolean playerWasTarget)
 	{
-		Anature userAnature = null, targetAnature = null;
+		IAnature userAnature = null, targetAnature = null;
 		DoubleProperty userOldHp, targetOldHp;
 
 		if(!result.isPlayer())
@@ -1736,8 +1818,8 @@ public class BattleController
 			targetOldHp = mEnemyHp;
 		}
 
-		double damageDoneToTarget = targetOldHp.get() - targetAnature.getCurrHp();
-		double damageDoneToUser = userOldHp.get() - userAnature.getCurrHp();
+		double damageDoneToTarget = targetOldHp.get() - targetAnature.getCurrentHitPoints();
+		double damageDoneToUser = userOldHp.get() - userAnature.getCurrentHitPoints();
 
 		if(result.isPlayer() && damageDoneToTarget > mEnemyHp.get())
 		{
@@ -1875,7 +1957,7 @@ public class BattleController
 		}, id);
 	}
 
-	private boolean beforeTurnStatusCheck(boolean isPlayer, Anature anature)
+	private boolean beforeTurnStatusCheck(boolean isPlayer, IAnature anature)
 	{
 		StatusEffects anatureStatus = anature.getStatus();
 		boolean canAttack = true;
@@ -1918,7 +2000,7 @@ public class BattleController
 		return canAttack;
 	}
 
-	private void afterTurnStatusCheck(boolean isPlayer, Anature anature)
+	private void afterTurnStatusCheck(boolean isPlayer, IAnature anature)
 	{
 		StatusEffects anatureStatus = anature.getStatus();
 		boolean wasChanged = false;
@@ -1955,7 +2037,7 @@ public class BattleController
 		}
 	}
 
-	private boolean afterAllTurnsStatusCheck(boolean isPlayer, Anature anature, Runnable nextTurn)
+	private boolean afterAllTurnsStatusCheck(boolean isPlayer, IAnature anature, Runnable nextTurn)
 	{
 		StatusEffects anatureStatus = anature.getStatus();
 
@@ -1974,8 +2056,8 @@ public class BattleController
 			case Burn:
 				mClickQueue.enqueue(() ->
 				{
-					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getTotalHp() / 16, isPlayer, nextTurn);
-					mFightManager.applyDamage(isPlayer, 0, anature.getTotalHp() / 16);
+					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getTotalHitPoints() / 16, isPlayer, nextTurn);
+					mFightManager.applyDamage(isPlayer, 0, anature.getTotalHitPoints() / 16);
 				}, "Burn After All Turns");
 
 				return true;
@@ -1993,7 +2075,7 @@ public class BattleController
 		return false;
 	}
 
-	private boolean updateStatusIcon(ImageView icon, Anature toCheck)
+	private boolean updateStatusIcon(ImageView icon, IAnature toCheck)
 	{
 		StatusEffects anatureStatus = toCheck.getStatus();
 		boolean wasChanged = false;
@@ -2034,8 +2116,8 @@ public class BattleController
 
 	private void updateMpCounts()
 	{
-		Anature playerAnature = mFightManager.getPlayerAnature();
-		MoveSet moveSet = playerAnature.getMoves();
+		IAnature playerAnature = mFightManager.getPlayerAnature();
+		MoveSet moveSet = playerAnature.getMoveSet();
 
 		if(moveSet.hasMove(1))
 		{
@@ -2096,11 +2178,13 @@ public class BattleController
 		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), toDivideBy);
 		ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
 
-		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
+		scene.widthProperty()
+				.addListener((observableValue, oldWidth, newWidth) -> fontProperty
+						.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 
-		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
+		scene.heightProperty()
+				.addListener((observableValue, oldHeight, newHeight) -> fontProperty
+						.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
 
 		return fontProperty;
 	}

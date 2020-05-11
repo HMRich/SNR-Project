@@ -2,5 +2,5 @@ package application.enums;
 
 public enum Species
 {
-	Null
+	NotSet, Null
 }
