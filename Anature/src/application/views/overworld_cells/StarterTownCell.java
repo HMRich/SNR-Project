@@ -13,7 +13,7 @@ public class StarterTownCell extends AbstractCell
 {
 	public StarterTownCell(LoggerStartUp logger)
 	{
-		super(logger, 468, 427);
+		super(logger, 468, 427, SceneType.Starter_Town);
 	}
 
 	@Override

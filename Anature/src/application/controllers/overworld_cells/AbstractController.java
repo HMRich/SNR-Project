@@ -65,6 +65,7 @@ public abstract class AbstractController
 		
 		mView.setSceneOnKeyboardPressed(e -> processKey(e, true));
 		mView.setSceneOnKeyboardReleased(e -> processKey(e, false));
+		mView.setSceneOnMouseClicked(e -> trainerEvents());
 		
 		activateTimer();
 	}
@@ -379,55 +380,72 @@ public abstract class AbstractController
 	
 	private void trainerEvents()
 	{
+		boolean interactingWithTrainer = false;
+		
 		for(TrainerSprite trainer : mView.getTrainerSprites())
 		{
 			if(trainer.interact(mPlayerView, mView.getPlayerFacing()) && mClickQueue.isEmpty())
 			{
-				mView.mCanMove = false;
-
-				String[] dialogue = trainer.getDialogue();
+				interactingWithTrainer = true;
 				
-				mView.showDialogue(dialogue[0]);
-				
-				for(int i = 1; i < dialogue.length; i++)
+				if(mClickQueue.isEmpty())
 				{
-					String toDisplay = dialogue[i];
-					mClickQueue.enqueue(() -> mView.showDialogue(toDisplay), "Show Dialogue");
-				}
-
-				if(mPlayerModel.canBattle() && trainer.getTrainerModel() != null && trainer.getTrainerModel().canBattle())
-				{
-					mClickQueue.enqueue(() ->
+					mView.mCanMove = false;
+					LoggerController.logEvent(LoggingTypes.Misc, "Player interacting with trainer: " + trainer.getName());
+					String[] dialogue = trainer.getDialogue();
+					
+					mView.showDialogue(dialogue[0]);
+					
+					for(int i = 1; i < dialogue.length; i++)
 					{
-						mView.mRight = false;
-						mView.mLeft = false;
-						mView.mDown = false;
-						mView.mUp = false;
-						mView.mCanMove = true;
-						mView.hideDialogue();
-						
-						Startup.startBattle(trainer.getTrainerModel());
-					}, "Start Battle");
+						String toDisplay = dialogue[i];
+						mClickQueue.enqueue(() -> mView.showDialogue(toDisplay), "Show Dialogue");
+					}
+
+					if(mPlayerModel.canBattle() && trainer.getTrainerModel() != null && trainer.getTrainerModel().canBattle())
+					{
+						mClickQueue.enqueue(() ->
+						{
+							mView.mRight = false;
+							mView.mLeft = false;
+							mView.mDown = false;
+							mView.mUp = false;
+							mView.mCanMove = true;
+							mView.hideDialogue();
+							
+							Startup.startBattle(trainer.getTrainerModel());
+						}, "Start Battle");
+					}
+					
+					else
+					{
+						mClickQueue.enqueue(() ->
+						{
+							mView.hideDialogue();
+							mView.mCanMove = true;
+						}, "End Dialogue");
+					}
 				}
 				
 				else
 				{
-					mClickQueue.enqueue(() ->
+					Runnable toRun = mClickQueue.dequeue();
+					
+					if(toRun != null)
 					{
-						mView.hideDialogue();
-						mView.mCanMove = true;
-					}, "End Dialogue");
+						toRun.run();
+					}
 				}
 			}
+		}
+		
+		if(!interactingWithTrainer)
+		{
+			Runnable toRun = mClickQueue.dequeue();
 			
-			else
+			if(toRun != null)
 			{
-				Runnable toRun = mClickQueue.dequeue();
-				
-				if(toRun != null)
-				{
-					toRun.run();
-				}
+				toRun.run();
 			}
 		}
 	}

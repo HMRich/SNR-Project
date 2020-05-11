@@ -1,6 +1,7 @@
 package application.views.elements;
 
 import application.enums.Gender;
+import application.enums.StatusEffects;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,7 +23,7 @@ import javafx.scene.text.Text;
 
 public class AnatureSlot extends Pane
 {
-	private ImageView mBg, mAnatureImg, mHpBg, mGender;
+	private ImageView mBg, mAnatureImg, mHpBg, mGender, mStatus;
 	private Text mNameTxt, mLvlTxt, mHpTxt;
 	private BooleanProperty mIsShown, mIsTabVisible, mIsSelected, mIsCurrent;
 	private StringProperty mNameProperty, mLvlProperty, mHpProperty;
@@ -30,7 +31,7 @@ public class AnatureSlot extends Pane
 	private AnatureSlotHpBar mHpBar;
 
 	public AnatureSlot(Scene scene, boolean isSelected, Image anatureImg, Gender gender, String nameTxt, String lvlTxt, String hpTxt, BooleanProperty isShown,
-			BooleanProperty isTabVisible, double hpNum, boolean isCurrent)
+			BooleanProperty isTabVisible, double hpNum, boolean isCurrent, StatusEffects status)
 	{
 		nullChecks(scene, anatureImg, nameTxt, lvlTxt, hpTxt);
 		mIsShown = isShown;
@@ -77,8 +78,27 @@ public class AnatureSlot extends Pane
 		mHpBar.bindX(3.9);
 		mHpBar.bindY(1.55);
 		mHpBar.visibleProperty().bind(isShown.and(isTabVisible));
+		
+		mStatus = new ImageView();
+		switch(status)
+		{
+			case Burn:
+				mStatus.setImage(new Image(getClass().getResource("/resources/images/status/Burn.png").toExternalForm()));
+				break;
+				
+			case Paralysis:
+				mStatus.setImage(new Image(getClass().getResource("/resources/images/status/Paralyzed.png").toExternalForm()));
+				break;
+				
+			case Sleep:
+				mStatus.setImage(new Image(getClass().getResource("/resources/images/status/Sleep.png").toExternalForm()));
+				break;
+				
+			default:
+				break;
+		}
 
-		getChildren().addAll(mBg, mAnatureImg, mHpBg, mHpBar, mGender, mNameTxt, mLvlTxt, mHpTxt);
+		getChildren().addAll(mBg, mAnatureImg, mHpBg, mHpBar, mGender, mNameTxt, mLvlTxt, mHpTxt, mStatus);
 		createBindings(scene);
 
 		setOnMouseEntered(new EventHandler<Event>()
@@ -116,7 +136,7 @@ public class AnatureSlot extends Pane
 	}
 
 	public void updateSlot(boolean isCurrent, Image anatureImg, Gender gender, String nameTxt, String lvlTxt, String hpTxt, boolean isShown,
-			boolean isTabVisible, double hp)
+			boolean isTabVisible, double hp, StatusEffects status)
 	{
 		if(isCurrent)
 			mBg.setImage(mSelected);
@@ -138,6 +158,24 @@ public class AnatureSlot extends Pane
 
 			default:
 				mGender.setImage(null);
+		}
+		
+		switch(status)
+		{
+			case Burn:
+				mStatus.setImage(new Image(getClass().getResource("/resources/images/statuses/Burn.png").toExternalForm()));
+				break;
+				
+			case Paralysis:
+				mStatus.setImage(new Image(getClass().getResource("/resources/images/statuses/Paralyzed.png").toExternalForm()));
+				break;
+				
+			case Sleep:
+				mStatus.setImage(new Image(getClass().getResource("/resources/images/statuses/Sleep.png").toExternalForm()));
+				break;
+				
+			default:
+				break;
 		}
 
 		mNameProperty.set(nameTxt);
@@ -238,6 +276,12 @@ public class AnatureSlot extends Pane
 		mHpTxt.layoutXProperty().bind(scene.widthProperty().divide(5.31));
 		mHpTxt.layoutYProperty().bind(scene.heightProperty().divide(16.5));
 		mHpTxt.visibleProperty().bind(mIsShown.and(mIsTabVisible));
+		
+		mStatus.layoutXProperty().bind(scene.widthProperty().divide(4.05));
+		mStatus.layoutYProperty().bind(scene.heightProperty().divide(135));
+		mStatus.fitWidthProperty().bind(scene.widthProperty().divide(51.89));
+		mStatus.fitHeightProperty().bind(scene.heightProperty().divide(67.5));
+		mStatus.visibleProperty().bind(mIsShown.and(mIsTabVisible));
 	}
 
 	public void setOnMouseClick(EventHandler<MouseEvent> event)

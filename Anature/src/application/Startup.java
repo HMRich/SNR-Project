@@ -7,6 +7,7 @@ import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.overworld_cells.GrassTownController;
 import application.controllers.overworld_cells.PathOneController;
+import application.controllers.overworld_cells.RestStationController;
 import application.controllers.overworld_cells.StarterTownController;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
@@ -21,6 +22,7 @@ import application.player.Player;
 import application.pools.ItemPool;
 import application.views.overworld_cells.GrassTownCell;
 import application.views.overworld_cells.PathOneCell;
+import application.views.overworld_cells.RestStationCell;
 import application.views.overworld_cells.StarterTownCell;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -50,6 +52,10 @@ public class Startup extends Application
 //	private static GrassTownModel mGrassTownModel;
 	private static GrassTownCell mGrassTownView;
 	private static GrassTownController mGrassTownController;
+
+//	private static RestStationModel mRestStationGrassModel;
+	private static RestStationCell mRestStationGrassView;
+	private static RestStationController mRestStationGrassController;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -186,6 +192,29 @@ public class Startup extends Application
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Grass Town");
 					mStage.setScene(grassTownScene);
+					break;
+
+				case Rest_Station_Grass_Town:
+//					if(mRestStationGrassModel == null)
+//					{
+//						mRestStationGrassModel = new RestStationModel();
+//					}
+
+					if(mRestStationGrassView == null)
+					{
+						mRestStationGrassView = new RestStationCell(mLogger, SceneType.Rest_Station_Grass_Town);
+					}
+
+					if(mRestStationGrassController == null)
+					{
+						mRestStationGrassController = new RestStationController(mLogger, mRestStationGrassView, mPlayer);
+					}
+
+					Scene restStationScene = mRestStationGrassView.getScene();
+					mRestStationGrassController.movePlayer(warpPoint);
+
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Rest Station in Grass Town");
+					mStage.setScene(restStationScene);
 					break;
 
 				default:

@@ -550,40 +550,17 @@ public class BattleController
 
 	private void setUpClickTracker(Scene scene)
 	{
-		scene.setOnMouseClicked(new EventHandler<Event>()
+		scene.setOnMouseClicked(event -> dequeueClickTracker(event));
+		scene.setOnKeyReleased(keyEvent ->
 		{
-			@Override
-			public void handle(Event event)
+			switch(keyEvent.getCode())
 			{
-				event.consume();
+				case E:
+					dequeueClickTracker(keyEvent);
+					break;
 
-				if(mCanClick.get())
-				{
-					Runnable toRun = mClickQueue.dequeue();
-
-					if(mToEnd)
-					{
-						toRun.run();
-					}
-
-					else if(toRun != null)
-					{
-						mCanClick.set(false);
-
-						if(mPlayerHp.get() <= 0 && !mPlayerFaintSequenceActive)
-						{
-							onPlayerAnatureDeath();
-						}
-
-						else if(mEnemyHp.get() == 0)
-						{
-							onEnemyAnatureDeath();
-						}
-
-						else
-							toRun.run();
-					}
-				}
+				default:
+					break;
 			}
 		});
 	}
@@ -712,12 +689,12 @@ public class BattleController
 	{
 		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 
-		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, true);
-		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, false);
-		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, false);
-		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, false);
-		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, false);
-		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, false);
+		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, true, StatusEffects.None);
+		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, false, StatusEffects.None);
+		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, false, StatusEffects.None);
+		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, false, StatusEffects.None);
+		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, false, StatusEffects.None);
+		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, false, StatusEffects.None);
 
 		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0);
 		createBindsAnatureslot(mSlotTwo, scene, 85, 3.157, 3.7, 15.1, 1);
@@ -2160,6 +2137,39 @@ public class BattleController
 		if(moveSet.hasMove(4))
 		{
 			mAttackMpOneTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
+		}
+	}
+	
+	private void dequeueClickTracker(Event event)
+	{
+		event.consume();
+
+		if(mCanClick.get())
+		{
+			Runnable toRun = mClickQueue.dequeue();
+
+			if(mToEnd)
+			{
+				toRun.run();
+			}
+
+			else if(toRun != null)
+			{
+				mCanClick.set(false);
+
+				if(mPlayerHp.get() <= 0 && !mPlayerFaintSequenceActive)
+				{
+					onPlayerAnatureDeath();
+				}
+
+				else if(mEnemyHp.get() == 0)
+				{
+					onEnemyAnatureDeath();
+				}
+
+				else
+					toRun.run();
+			}
 		}
 	}
 
