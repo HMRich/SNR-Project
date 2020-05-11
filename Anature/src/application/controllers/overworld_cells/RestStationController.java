@@ -14,6 +14,7 @@ public class RestStationController extends AbstractController
 	public RestStationController(LoggerStartUp logger, RestStationCell view, Player playerModel)
 	{
 		super(logger, view, playerModel);
+		mView.assignPlayerForShop(mPlayerModel, () -> mClickQueue.dequeue().run());
 	}
 
 	@Override
@@ -57,18 +58,19 @@ public class RestStationController extends AbstractController
 				mView.mCanMove = false;
 				
 				mClickQueue.enqueue(() -> mView.showDialogue("Hi there, I'm the local store clerk!"), "Clerk Intro");
+				mClickQueue.enqueue(() -> mView.showDialogue("Are you interested in some of my wares?"), "Clerk Buying Text");
 				mClickQueue.enqueue(() -> 
 				{
-					mView.showDialogue("Are you interested in some of my wares?");
-					
-					// TODO Buying menu
-					
-				}, "Clerk Buying Menu");
-				
-				mClickQueue.enqueue(() ->
-				{
+					mView.showshopMenu();
 					mView.hideDialogue();
+					
+				}, "Show Buying Menu");
+				
+				mClickQueue.enqueue(() -> 
+				{
+					mView.hideShopMenu();
 					mView.mCanMove = true;
+					
 				}, "End Clerk Dialogue");
 			}
 		}

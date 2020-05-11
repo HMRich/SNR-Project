@@ -118,11 +118,11 @@ public class RestStationCell extends AbstractCell
 	
 	public boolean interactHealStation()
 	{
-		return mPlayer.getBoxBounds().intersects(mHealBox.getBoundsInLocal());
+		return mPlayerSprite.getBoxBounds().intersects(mHealBox.getBoundsInLocal());
 	}
 	
 	public boolean interactClerkStation()
 	{
-		return mPlayer.getBoxBounds().intersects(mClerkBox.getBoundsInLocal());
+		return mPlayerSprite.getBoxBounds().intersects(mClerkBox.getBoundsInLocal());
 	}
 }
