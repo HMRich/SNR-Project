@@ -13,7 +13,7 @@ public class PathOneCell extends AbstractCell
 {
 	public PathOneCell(LoggerStartUp logger)
 	{
-		super(logger, 468, 427);
+		super(logger, 468, 427, SceneType.Path_1);
 	}
 
 	@Override

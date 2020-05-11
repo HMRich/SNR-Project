@@ -3,14 +3,17 @@ package application.views.overworld_cells;
 import java.util.ArrayList;
 
 import application.LoggerStartUp;
+import application.Player;
 import application.animations.BlinkingAnimation;
 import application.controllers.LoggerController;
+import application.controllers.ShoppingMenuController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.WarpPoints;
 import application.views.elements.ImageLayer;
 import application.views.elements.PlayerSprite;
+import application.views.elements.ShoppingMenu;
 import application.views.elements.TrainerSprite;
 import application.views.elements.WarpPointBox;
 import javafx.beans.binding.Bindings;
@@ -47,7 +50,7 @@ public abstract class AbstractCell
 	protected final DoubleProperty mZoom;
 	public boolean mUp, mDown, mLeft, mRight, mCanMove;
 	private Scene mScene;
-	protected PlayerSprite mPlayer;
+	protected PlayerSprite mPlayerSprite;
 	private Direction mPcFacing;
 	protected ImageLayer mBackground;
 	protected ArrayList<Rectangle> mCollisions, mGrassPatches;
@@ -55,15 +58,20 @@ public abstract class AbstractCell
 	protected ArrayList<TrainerSprite> mTrainerSprites;
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
+	protected SceneType mId;
+	
+	private ShoppingMenuController mShoppingController;
 
 	private StringProperty mDialogueTxtProperty;
-	private BooleanProperty mShowDialogueProperty;
+	private BooleanProperty mShowDialogueProperty, mShowShoppingProperty;
 	private Image mStandDownImg;
 
-	public AbstractCell(LoggerStartUp logger, double width, double height)
+	public AbstractCell(LoggerStartUp logger, double width, double height, SceneType id)
 	{
 		mZoom = new SimpleDoubleProperty(2.6);
 		mShowDialogueProperty = new SimpleBooleanProperty(false);
+		mShowShoppingProperty = new SimpleBooleanProperty(false);
+		
 		mDialogueTxtProperty = new SimpleStringProperty("Sample Text");
 		mShowCollision = LoggerController.getCollisionBoxProperty();
 		mCollisions = new ArrayList<Rectangle>();
@@ -71,6 +79,7 @@ public abstract class AbstractCell
 		mWarpPoints = new ArrayList<WarpPointBox>();
 		mTrainerSprites = new ArrayList<TrainerSprite>();
 		mCanMove = true;
+		mId = id;
 
 		mHeight = height;
 		mWidth = width;
@@ -78,15 +87,24 @@ public abstract class AbstractCell
 		mStandDownImg = new Image(getClass().getResource("/resources/images/player/down_stand.png").toExternalForm(), 100.0, 100.0, true, false);
 
 		mPcFacing = Direction.Waiting;
-		mPlayer = new PlayerSprite(mStandDownImg, 485, 599, mZoom, mShowCollision);
+		mPlayerSprite = new PlayerSprite(mStandDownImg, 485, 599, mZoom, mShowCollision);
 
 		mBackground = createBackground();
 		Pane foreground = createForeground();
 
-		mMap = new StackPane(mBackground, foreground);
+		if(foreground == null)
+		{
+			mMap = new StackPane(mBackground);
+		}
+		
+		else
+		{
+			mMap = new StackPane(mBackground, foreground);
+		}
+		
 		mMap.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-		mPlayer.addToContainer(mBackground);
+		mPlayerSprite.addToContainer(mBackground);
 		addToBackground();
 		addToForeground();
 		createCollisons();
@@ -111,16 +129,17 @@ public abstract class AbstractCell
 		clip.widthProperty().bind(mScene.widthProperty());
 		clip.heightProperty().bind(mScene.heightProperty());
 
-		clip.xProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayer.getX() - mScene.getWidth() / 2, 0, mMap.getWidth() - mScene.getWidth()),
-				mPlayer.xProp(), mScene.widthProperty()));
-		clip.yProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayer.getY() - mScene.getHeight() / 2, 0, mMap.getHeight() - mScene.getHeight()),
-				mPlayer.yProp(), mScene.heightProperty()));
+		clip.xProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayerSprite.getX() - mScene.getWidth() / 2, 0, mMap.getWidth() - mScene.getWidth()),
+				mPlayerSprite.xProp(), mScene.widthProperty()));
+		clip.yProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayerSprite.getY() - mScene.getHeight() / 2, 0, mMap.getHeight() - mScene.getHeight()),
+				mPlayerSprite.yProp(), mScene.heightProperty()));
 
 		mMap.setClip(clip);
 		mMap.translateXProperty().bind(clip.xProperty().multiply(-1));
 		mMap.translateYProperty().bind(clip.yProperty().multiply(-1));
 		
 		setUpDialogueBox(cell);
+		setUpShoppingMenu(cell);
 	}
 	
 	protected abstract void createTrainers();
@@ -189,6 +208,28 @@ public abstract class AbstractCell
 		Pane overlay = new Pane(dialogueBox, dialogueTxt, dialogueClickIndicator);
 		cell.getChildren().add(overlay);
 	}
+	
+	private void setUpShoppingMenu(BorderPane cell)
+	{
+		// Font Prop
+		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), 75);
+		ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
+
+		mScene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
+				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
+
+		mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
+				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));		
+		
+		// Shopping Menu
+		ShoppingMenu shoppingMenu = new ShoppingMenu();
+		mShoppingController = new ShoppingMenuController(shoppingMenu);
+		
+		mShoppingController.updateBinds(mScene.heightProperty().divide(5), 
+				mScene.widthProperty().divide(3.28), mScene.heightProperty().divide(1.67), fontProperty, mShowShoppingProperty);
+		
+		cell.getChildren().add(shoppingMenu);
+	}
 
 	public double clampRange(double value, double min, double max)
 	{
@@ -220,18 +261,17 @@ public abstract class AbstractCell
 
 	protected void addCollisionRectangle(double x, double y, double width, double height)
 	{
-		mCollisions.add(createRectangle(x, y, width, height));
+		mCollisions.add(createRectangle(x, y, width, height, Color.LIGHTGREY));
 	}
 	
 	protected void addCollisionRectangleUsingCoords(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
 	{
-		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY));
+		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY, Color.LIGHTGREY));
 	}
 
 	protected void addGrassPatchRectangle(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
 	{
-		Rectangle rect = createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY);
-		rect.setFill(Color.DARKGREEN);
+		Rectangle rect = createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY, Color.DARKGREEN);
 		mGrassPatches.add(rect);
 	}
 
@@ -242,10 +282,11 @@ public abstract class AbstractCell
 		mWarpPoints.add(warp);
 	}
 	
-	private Rectangle createRectangle(double x, double y, double width, double height)
+	private Rectangle createRectangle(double x, double y, double width, double height, Color color)
 	{
 		Rectangle rect = new Rectangle(x, y, width, height);
 		rect.visibleProperty().bind(mShowCollision);
+		rect.setFill(color);
 		
 		return rect;
 	}
@@ -268,14 +309,14 @@ public abstract class AbstractCell
 		mUp = false;
 		mDown = false;
 		mCanMove = true;
-		mPlayer.hideEmote();
+		mPlayerSprite.hideEmote();
 		
 		return mScene;
 	}
 
 	public PlayerSprite getPlayer()
 	{
-		return mPlayer;
+		return mPlayerSprite;
 	}
 
 	public ImageLayer getBackground()
@@ -377,5 +418,29 @@ public abstract class AbstractCell
 	public void hideDialogue()
 	{
 		mShowDialogueProperty.set(false);
+	}
+	
+	public void showshopMenu()
+	{
+		mShoppingController.updateItems();
+		mShowShoppingProperty.set(true);
+	}
+	
+	public void hideShopMenu()
+	{
+		mShowShoppingProperty.set(false);
+	}
+	
+	public void assignPlayerForShop(Player player, Runnable dequeue)
+	{
+		if(player == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Tried assigning a null player to cell.");
+		}
+		
+		else
+		{
+			mShoppingController.assignPlayer(player, dequeue);
+		}
 	}
 }

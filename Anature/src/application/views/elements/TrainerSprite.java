@@ -1,5 +1,6 @@
 package application.views.elements;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import application.controllers.LoggerController;
@@ -119,25 +120,35 @@ public class TrainerSprite
 	
 	private void createSprites()
 	{
-		mWalkUpImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/up_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
-		mWalkDownImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/down_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
-		mWalkRightImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/right_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
-		mWalkLeftImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/left_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
+		File currDir = new File(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase()).toExternalForm());
+		String corePath = currDir.getPath().replace("file:\\", "");
+		mWalkUpImg = createImage(corePath + "/up_walk.gif");
+		mWalkDownImg = createImage(corePath + "/down_walk.gif");
+		mWalkRightImg = createImage(corePath + "/right_walk.gif");
+		mWalkLeftImg = createImage(corePath + "/left_walk.gif");
 
-		mStandUpImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/up_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		mStandDownImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/down_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		mStandRightImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/right_stand.png").toExternalForm(), 100.0, 100.0, true, false);
-		mStandLeftImg = new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + 
-				"/left_stand.png").toExternalForm(), 100.0, 100.0, true, false);
+		mStandUpImg = createImage(corePath + "/up_stand.png");
+		mStandDownImg = createImage(corePath + "/down_stand.png");
+		mStandRightImg = createImage(corePath + "/right_stand.png");
+		mStandLeftImg = createImage(corePath + "/left_stand.png");
 		
 		mSprite = new ImageView(mStandDownImg);
+	}
+	
+	private Image createImage(String path)
+	{
+		File toCheck = new File(path);
+		Image toReturn = null;
+		
+		if(!toCheck.exists())
+		{
+			path = getClass().getResource("/resources/images/trainers/kelly/down_walk.gif").toExternalForm().replace("file:/", "");
+			toCheck = new File(path);
+		}
+		
+		toReturn = new Image(toCheck.toURI().toString(), 100.0, 100.0, true, false);
+		
+		return toReturn;
 	}
 	
 	public void addToContainer(Pane pane)
