@@ -65,6 +65,7 @@ public abstract class AbstractController
 		
 		mView.setSceneOnKeyboardPressed(e -> processKey(e, true));
 		mView.setSceneOnKeyboardReleased(e -> processKey(e, false));
+		mView.setSceneOnMouseClicked(e -> trainerEvents());
 		
 		activateTimer();
 	}
