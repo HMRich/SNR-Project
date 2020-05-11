@@ -58,6 +58,7 @@ public interface IAnature
 	public void resetTempStats();
 	public void takeDamage(int damage);
 	public String healAnature(int healAmount);
+	public void restore();
 	public double getHitPointsPercent();
 	public AnatureBuilder getClone();
 	public Image getFrontSprite();

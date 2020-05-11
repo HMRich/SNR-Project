@@ -1,10 +1,10 @@
 package application.controllers;
 
-import application.Player;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
-import application.items.Item;
-import application.items.ItemPool;
+import application.interfaces.IHealthPotion;
+import application.player.Player;
+import application.pools.ItemPool;
 import application.views.elements.ShoppingMenu;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.BooleanProperty;
@@ -110,7 +110,7 @@ public class ShoppingMenuController
 	{
 		String selectedItem = mView.getSelectedItemName();
 		ItemIds potionId = null;
-		Item potionToAdd = null;
+		IHealthPotion potionToAdd = null;
 		
 		if(selectedItem == null)
 			return;
@@ -135,7 +135,7 @@ public class ShoppingMenuController
 			potionId = ItemIds.Master_Potion;
 		}
 		
-		potionToAdd = ItemPool.getItems(potionId);
+		potionToAdd = ItemPool.getHealthPotion(potionId);
 		
 		for(int i = 0; i < mView.getAmount(); i++)
 		{

@@ -575,6 +575,12 @@ class Anature implements IAnature
 		setCurrentHitPoints(hitPointsAfterHeal);
 		return getName() + " was healed " + healAmount + " hp.";
 	}
+	
+	public void restore()
+	{
+		healAnature(Integer.MAX_VALUE);
+		mMoveSet.refreshAllMovePoints();
+	}
 
 	public double getHitPointsPercent()
 	{

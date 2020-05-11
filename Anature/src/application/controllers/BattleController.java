@@ -1184,7 +1184,7 @@ public class BattleController
 	{
 		visibleProp.set(true);
 		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(),
-				curr.getCurrentHitPoints() + "/" + curr.getTotalHitPoints(), mShowSwitch.get(), visibleProp.get(), curr.getCurrentHitPoints());
+				curr.getCurrentHitPoints() + "/" + curr.getTotalHitPoints(), mShowSwitch.get(), visibleProp.get(), curr.getCurrentHitPoints(), curr.getStatus());
 	}
 
 	private void updateBagMenu()
