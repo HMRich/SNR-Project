@@ -1,442 +1,729 @@
 package application.anatures;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
-import application.DatabaseConnection;
-import application.Startup;
+import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.MoveSet;
+import application.anatures.movesets.NullMoveSet;
 import application.enums.AbilityIds;
-import application.enums.DatabaseType;
 import application.enums.Gender;
-import application.enums.MoveIds;
 import application.enums.Natures;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
-import application.interfaces.IBuilder;
-import application.interfaces.IMove;
+import application.interfaces.IAnature;
 import application.pools.AbilityPool;
-import application.pools.MovePool;
+import javafx.scene.image.Image;
 
-public class Anature implements IBuilder<AnatureBase>
+class Anature implements IAnature
 {
-	private AnatureBase mAnature;
+	private String mName, mOwnerName;
+	private boolean mIsShiny;
+	private Species mSpecies;
+	private Gender mGender;
+	private Type mPrimaryType, mSecondaryType;
+	private Natures mNature;
+	private MoveSet mMoveSet;
+	private IAbility mAbility;
+	private StatusEffects mStatus;
+	private int mIndexNumber;
+	 private int mLevel, mCurrentExperiencePoints;
+	private int mTotalHitPoints, mCurrentHitPoints;
+	private int mAttack, mDefense, mSpecialAttack, mSpecialDefense, mSpeed, mAccuracy;
+	private int mTempAttack, mTempDefense, mTempSpecialAttack, mTempSpecialDefense, mTempSpeed, mTempAccuracy;
 
-	public Anature()
+	Anature()
 	{
-		generateNewAnature();
+		mName = "";
+		mOwnerName = "";
+		mIsShiny = false;
+		mSpecies = Species.NotSet;
+		mGender = Gender.NotSet;
+		mPrimaryType = Type.NotSet;
+		mSecondaryType = Type.NotSet;
+		mNature = Natures.NotSet;
+		mMoveSet = NullMoveSet.getNullMoveSet();
+		mAbility = NullAbility.getNullAbility();
+		mStatus = StatusEffects.NotSet;
+		mLevel = -1;
+		mCurrentExperiencePoints = -1;
+		mTotalHitPoints = -1;
+		mCurrentHitPoints = -1;
+		mIndexNumber = -1;
+		mAttack = -1;
+		mDefense = -1;
+		mSpecialAttack = -1;
+		mSpecialDefense = -1;
+		mSpeed = -1;
+		mAccuracy = -1;
+		resetTempStats();
 	}
 
 	/*
-	 * PUBLIC SETS
+	 * PACKAGE SETS
 	 */
 
-	public Anature withName(String name)
+	void setName(String name)
 	{
-		mAnature.setName(name);
-		return this;
+		if(name == null)
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was null.");
+		}
+
+		if(name.trim()
+				.isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
+		}
+
+		mName = name;
 	}
 
-	public Anature withOwnerName(String ownerName)
+	void setOwnerName(String ownerName)
 	{
-		mAnature.setOwnerName(ownerName);
-		return this;
+		if(ownerName == null)
+		{
+			throw new IllegalArgumentException("Passed value \"ownerName\" was null.");
+		}
+
+		if(ownerName.trim()
+				.isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"ownerName\" was an empty string.");
+		}
+
+		mOwnerName = ownerName;
 	}
 
-	public Anature isShiny(boolean isShiny)
+	void setIsShiny(boolean isShiny)
 	{
-		mAnature.setIsShiny(isShiny);
-		return this;
+		mIsShiny = isShiny;
 	}
 
-	public Anature withSpecies(Species species)
+	void setSpecies(Species species)
 	{
-		mAnature.setSpecies(species);
-		return this;
+		if(species == null)
+		{
+			throw new IllegalArgumentException("Passed value \"species\" was null.");
+		}
+
+		if(species.equals(Species.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"species\" was equal to " + species.toString() + ".");
+		}
+
+		mSpecies = species;
 	}
 
-	public Anature withGender(Gender gender)
+	void setGender(Gender gender)
 	{
-		mAnature.setGender(gender);
-		return this;
+		if(gender == null)
+		{
+			throw new IllegalArgumentException("Passed value \"gender\" was null.");
+		}
+
+		if(gender.equals(Gender.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"gender\" was equal to " + gender.toString() + ".");
+		}
+
+		mGender = gender;
 	}
 
-	public Anature withPrimaryType(Type primaryType)
+	void setPrimaryType(Type primaryType)
 	{
-		mAnature.setPrimaryType(primaryType);
-		return this;
+		if(primaryType == null)
+		{
+			throw new IllegalArgumentException("Passed value \"primaryType\" was null.");
+		}
+
+		if(primaryType.equals(Type.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"primaryType\" was equal to " + primaryType.toString() + ".");
+		}
+
+		mPrimaryType = primaryType;
 	}
 
-	public Anature withSecondaryType(Type secondaryType)
+	void setSecondaryType(Type secondaryType)
 	{
-		mAnature.setSecondaryType(secondaryType);
-		return this;
+		if(secondaryType == null)
+		{
+			throw new IllegalArgumentException("Passed value \"secondaryType\" was null.");
+		}
+
+		mSecondaryType = secondaryType;
 	}
 
-	public Anature withNature(Natures nature)
+	void setNature(Natures nature)
 	{
-		mAnature.setNature(nature);
-		return this;
+		if(nature == null)
+		{
+			throw new IllegalArgumentException("Passed value \"nature\" was null.");
+		}
+
+		mNature = nature;
 	}
 
-	public Anature withMoveSet(MoveSet moveSet)
+	void setMoveSet(MoveSet moveSet)
 	{
-		mAnature.setMoveSet(moveSet);
-		return this;
+		if(moveSet == null)
+		{
+			throw new IllegalArgumentException("Passed value \"moveSet\" was null.");
+		}
+
+		// TODO Should we check for the NullMoveSet object here? And how would we do
+		// that
+
+		mMoveSet = moveSet;
 	}
 
-	public Anature withAbility(IAbility iAbility)
+	void setAbility(IAbility iAbility)
 	{
-		mAnature.setAbility(iAbility);
-		return this;
+		if(iAbility == null)
+		{
+			throw new IllegalArgumentException("Passed value \"ability\" was null.");
+		}
+
+		// TODO Should we add the ability to adding the NullAbility to the Anature
+		if(iAbility.equals(AbilityPool.getAbility(AbilityIds.NullAbility)))
+		{
+			throw new IllegalArgumentException("Passed value \"ability\" was equal to the NullAbility ability.");
+		}
+
+		mAbility = iAbility;
 	}
 
-	public Anature withStatus(StatusEffects statusEffect)
+	void setStatus(StatusEffects statusEffect)
 	{
-		mAnature.setStatus(statusEffect);
-		return this;
+		if(statusEffect == null)
+		{
+			throw new IllegalArgumentException("Passed value \"statusEffect\" was null.");
+		}
+
+		if(statusEffect.equals(StatusEffects.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"statusEffect\" was equal to " + statusEffect.toString() + ".");
+		}
+
+		mStatus = statusEffect;
 	}
 
-	public Anature withIndexNumber(int indexNumber)
+	void setIndexNumber(int indexNumber)
 	{
-		mAnature.setIndexNumber(indexNumber);
-		return this;
+		if(indexNumber < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"indexNumber\" was below 0.");
+		}
+
+		mIndexNumber = indexNumber;
 	}
 
-	public Anature withLevel(int level)
+	void setLevel(int level)
 	{
-		mAnature.setLevel(level);
-		return this;
+		// TODO Should we have a upper level limit?
+		if(level < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"level\" was below 0.");
+		}
+
+		mLevel = level;
 	}
 
-	public Anature withCurrentExperiencePoints(int currentExperiencePoints)
+	void setCurrentExperiencePoints(int currentExperiencePoints)
 	{
-		mAnature.setCurrentExperiencePoints(currentExperiencePoints);
-		return this;
+		if(currentExperiencePoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"currentExperience\" was below 0.");
+		}
+
+		mCurrentExperiencePoints = currentExperiencePoints;
 	}
 
-	public Anature withTotalHitPoints(int totalHitPoints)
+	void setTotalHitPoints(int totalHitPoints)
 	{
-		mAnature.setTotalHitPoints(totalHitPoints);
-		return this;
+		// TODO Should we add a minimum cap? So lowest possible HP is 100?
+		if(totalHitPoints <= 0)
+		{
+			throw new IllegalArgumentException("Passed value \"totalHitPoints\" was 0 or below.");
+		}
+
+		mTotalHitPoints = totalHitPoints;
 	}
 
-	public Anature withCurrentHitPoints(int currentHitPoints)
+	void setCurrentHitPoints(int currentHitPoints)
 	{
-		mAnature.setCurrentHitPoints(currentHitPoints);
-		return this;
+		if(currentHitPoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"totalHitPoints\" was 0 or below.");
+		}
+
+		mCurrentHitPoints = currentHitPoints;
 	}
 
-	public Anature withAttack(int attack)
+	void setAttack(int attack)
 	{
-		mAnature.setAttack(attack);
-		return this;
+		if(attack < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"attack\" was below 0.");
+		}
+
+		mAttack = attack;
 	}
 
-	public Anature withDefense(int defense)
+	void setDefense(int defense)
 	{
-		mAnature.setDefense(defense);
-		return this;
+		if(defense < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"defense\" was below 0.");
+		}
+
+		mDefense = defense;
 	}
 
-	public Anature withSpecialAttack(int specialAttack)
+	void setSpecialAttack(int specialAttack)
 	{
-		mAnature.setSpecialAttack(specialAttack);
-		return this;
+		if(specialAttack < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"specialAttack\" was below 0.");
+		}
+
+		mSpecialAttack = specialAttack;
 	}
 
-	public Anature withSpecialDefense(int specialDefense)
+	void setSpecialDefense(int specialDefense)
 	{
-		mAnature.setSpecialDefense(specialDefense);
-		return this;
+		if(specialDefense < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"specialDefense\" was below 0.");
+		}
+
+		mSpecialDefense = specialDefense;
 	}
 
-	public Anature withSpeed(int speed)
+	void setSpeed(int speed)
 	{
-		mAnature.setSpeed(speed);
-		return this;
+		if(speed < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"speed\" was below 0.");
+		}
+
+		mSpeed = speed;
 	}
 
-	public Anature withAccuracy(int accuracy)
+	void setAccuracy(int accuracy)
 	{
-		mAnature.setAccuracy(accuracy);
-		return this;
+		if(accuracy < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"accuracy\" was below 0.");
+		}
+
+		mAccuracy = accuracy;
+	}
+
+	/*
+	 * PUBLIC GETS
+	 */
+
+	public String getName()
+	{
+		return mName;
+	}
+
+	public String getOwner()
+	{
+		return mOwnerName;
+	}
+
+	public boolean isShiny()
+	{
+		return mIsShiny;
+	}
+
+	public Species getSpecies()
+	{
+		return mSpecies;
+	}
+
+	public Gender getGender()
+	{
+		return mGender;
+	}
+
+	public Type getPrimaryType()
+	{
+		return mPrimaryType;
+	}
+
+	public Type getSecondaryType()
+	{
+		return mSecondaryType;
+	}
+
+	public Natures getNature()
+	{
+		return mNature;
+	}
+
+	public MoveSet getMoveSet()
+	{
+		return mMoveSet;
+	}
+
+	public IAbility getAbility()
+	{
+		return mAbility;
+	}
+
+	public StatusEffects getStatus()
+	{
+		return mStatus;
+	}
+
+	public int getIndexNumber()
+	{
+		return mIndexNumber;
+	}
+
+	public int getLevel()
+	{
+		return mLevel;
+	}
+
+	public int getCurrentExperiencePoints()
+	{
+		return mCurrentExperiencePoints;
+	}
+
+	public int getTotalHitPoints()
+	{
+		return mTotalHitPoints;
+	}
+
+	public int getCurrentHitPoints()
+	{
+		return mCurrentHitPoints;
+	}
+
+	public int getAttack()
+	{
+		return mAttack + mTempAttack;
+	}
+
+	public int getDefense()
+	{
+		return mDefense + mTempDefense;
+	}
+
+	public int getSpecialAttack()
+	{
+		return mSpecialAttack + mTempSpecialAttack;
+	}
+
+	public int getSpecialDefense()
+	{
+		return mSpecialDefense + mTempSpecialDefense;
+	}
+
+	public int getSpeed()
+	{
+		return mSpeed + mTempSpeed;
+	}
+
+	public int getAccuracy()
+	{
+		return mAccuracy + mTempAccuracy;
 	}
 
 	/*
 	 * PUBLIC METHODS
 	 */
 
-	public AnatureBase create()
+	public void adjustAttack(double attackAdjustment)
 	{
-		if(buildIsComplete())
+		if(attackAdjustment < -1 || attackAdjustment > 1)
 		{
-			AnatureBase anatureToReturn = mAnature;
-
-			generateNewAnature();
-
-			return anatureToReturn;
+			throw new IllegalArgumentException("Passed value \"tempAttackAdjustment\" was below -1 or above 1.");
 		}
 
-		throw new IllegalStateException("All the builder variables need to have a value before you create a Anature.");
+		int adjustment = (int) (attackAdjustment * mAttack);
+
+		mTempAttack = mTempAttack + adjustment;
 	}
 
-	/*
-	 * PRIVATE METHODS
-	 */
-
-	private void generateNewAnature()
+	public void adjustDefense(double defenseAdjustment)
 	{
-		mAnature = new AnatureBase();
+		if(defenseAdjustment < -1 || defenseAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempDefenseAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (defenseAdjustment * mDefense);
+
+		mTempDefense = mTempDefense + adjustment;
 	}
 
-	private boolean buildIsComplete()
+	public void adjustSpecialAttack(double specialAttackAdjustment)
 	{
-		return mAnature.canCreate();
+		if(specialAttackAdjustment < -1 || specialAttackAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"tempSpecialAttackAdjustment\" was below -1 or above 1.");
+		}
+
+		int adjustment = (int) (specialAttackAdjustment * mSpecialAttack);
+
+		mTempSpecialAttack = mTempSpecialAttack + adjustment;
 	}
 
-	/*
-	 * STATIC PUBLIC METHODS
-	 */
-
-	private static Random randomObject = new Random();
-
-	public static AnatureBase createAnature(Species species, int level)
+	public void adjustSpecialDefense(double specialDefenseAdjustment)
 	{
-		String name = species.toString()
-				.replaceAll("_", " ");
-		String ownerName = Startup.getPlayerName();
-		Type[] types = new Type[]
-		{ Type.NotSet, Type.NotSet };
-
-		String possibleAbilitiesString = "";
-		String typesString = "";
-		String totalHitPointsString = "";
-		String indexNumberString = "";
-		String attackString = "";
-		String defenseString = "";
-		String specialAttackString = "";
-		String specialDefenseString = "";
-		String speedString = "";
-		String accuracyString = "";
-
-		try
+		if(specialDefenseAdjustment < -1 || specialDefenseAdjustment > 1)
 		{
-			Connection connect = DatabaseConnection.dbConnector(DatabaseType.AnatureDatabase);
-
-			String query = "Select * from Anature Where SpeciesName=?";
-			PreparedStatement pst = connect.prepareStatement(query);
-			pst.setString(1, species.toString());
-
-			ResultSet results = pst.executeQuery();
-			if(results.next())
-			{
-				possibleAbilitiesString = results.getString("PossibleAbilities");
-				typesString = results.getString("Types");
-				totalHitPointsString = results.getString("BaseHp");
-				indexNumberString = results.getString("IndexNum");
-				attackString = results.getString("BaseAttack");
-				defenseString = results.getString("BaseDefense");
-				specialAttackString = results.getString("BaseSpecialAttack");
-				specialDefenseString = results.getString("BaseSpecialDefense");
-				speedString = results.getString("BaseSpeed");
-				accuracyString = results.getString("Accuracy");
-			}
-
-			results.close();
-			pst.close();
+			throw new IllegalArgumentException("Passed value \"tempSpecialDefenseAdjustment\" was below -1 or above 1.");
 		}
 
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
+		int adjustment = (int) (specialDefenseAdjustment * mSpecialDefense);
 
-		types = generateTypes(typesString, types);
-		int totalHitPoints = Integer.parseInt(totalHitPointsString);
-		int indexNumber = Integer.parseInt(indexNumberString);
-		int attack = Integer.parseInt(attackString);
-		int defense = Integer.parseInt(defenseString);
-		int specialAttack = Integer.parseInt(specialAttackString);
-		int specialDefense = Integer.parseInt(specialDefenseString);
-		int speed = Integer.parseInt(speedString);
-		int accuracy = Integer.parseInt(accuracyString);
-
-		return new Anature().withName(name)
-				.withOwnerName(ownerName)
-				.isShiny(generateIsShiny())
-				.withSpecies(species)
-				.withGender(generateGender())
-				.withPrimaryType(types[0])
-				.withSecondaryType(types[1])
-				.withNature(generateNature())
-				.withMoveSet(generateMoveSet(species, level))
-				.withAbility(generateAbility(possibleAbilitiesString))
-				.withStatus(StatusEffects.None)
-				.withIndexNumber(indexNumber)
-				.withLevel(level)
-				.withCurrentExperiencePoints(0)
-				.withTotalHitPoints(totalHitPoints)
-				.withCurrentHitPoints(totalHitPoints)
-				.withAttack(attack)
-				.withDefense(defense)
-				.withSpecialAttack(specialAttack)
-				.withSpecialDefense(specialDefense)
-				.withSpeed(speed)
-				.withAccuracy(accuracy)
-				.create();
+		mTempSpecialDefense = mTempSpecialDefense + adjustment;
 	}
 
-	/*
-	 * STATIC PRIVATE METHODS
-	 */
-
-	private static MoveSet generateMoveSet(Species species, int level)
+	public void adjustSpeed(double speedAdjustment)
 	{
-		ArrayList<MoveIds> availableMoves = new ArrayList<MoveIds>();
-
-		try
+		if(speedAdjustment < -1 || speedAdjustment > 1)
 		{
-			Connection connect = DatabaseConnection.dbConnector(DatabaseType.AnatureSpeciesDatabase);
-
-			String query = "Select * from " + species.toString() + "Species";
-			PreparedStatement pst = connect.prepareStatement(query);
-
-			ResultSet results = pst.executeQuery();
-			while(results.next())
-			{
-				String minLevelStr = results.getString("Level");
-				String moveNameStr = results.getString("MoveName");
-
-				int minLevel = Integer.parseInt(minLevelStr);
-
-				if(minLevel > level)
-					continue;
-
-				MoveIds moveName = MoveIds.valueOf(moveNameStr);
-				availableMoves.add(moveName);
-			}
-
-			results.close();
-			pst.close();
+			throw new IllegalArgumentException("Passed value \"tempSpeedAdjustment\" was below -1 or above 1.");
 		}
 
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
+		int adjustment = (int) (speedAdjustment * mSpeed);
 
-		IMove move1 = null;
-		IMove move2 = null;
-		IMove move3 = null;
-		IMove move4 = null;
-
-		if(availableMoves.size() <= 4)
-		{
-			if(availableMoves.size() >= 1)
-				move1 = MovePool.getMove(availableMoves.get(0));
-
-			if(availableMoves.size() >= 2)
-				move2 = MovePool.getMove(availableMoves.get(1));
-
-			if(availableMoves.size() >= 3)
-				move3 = MovePool.getMove(availableMoves.get(2));
-
-			if(availableMoves.size() >= 4)
-				move4 = MovePool.getMove(availableMoves.get(3));
-		}
-
-		else
-		{
-			int chosenIndex1 = 0, chosenIndex2 = 0, chosenIndex3 = 0, chosenIndex4 = 0;
-
-			chosenIndex1 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex1, chosenIndex2, chosenIndex3, chosenIndex4);
-			chosenIndex2 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex2, chosenIndex1, chosenIndex3, chosenIndex4);
-			chosenIndex3 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex3, chosenIndex2, chosenIndex1, chosenIndex4);
-			chosenIndex4 = generateRandomUniqueIndex(availableMoves.size(), chosenIndex4, chosenIndex2, chosenIndex1, chosenIndex3);
-
-			move1 = MovePool.getMove(availableMoves.get(chosenIndex1));
-			move2 = MovePool.getMove(availableMoves.get(chosenIndex2));
-			move3 = MovePool.getMove(availableMoves.get(chosenIndex3));
-			move4 = MovePool.getMove(availableMoves.get(chosenIndex4));
-		}
-
-		return new MoveSet(move1, move2, move3, move4);
+		mTempSpeed = mTempSpeed + adjustment;
 	}
 
-	private static int generateRandomUniqueIndex(int max, int toGenerate, int otherIndex1, int otherIndex2, int otherIndex3)
+	public void adjustAccuracy(double accuracyAdjustment)
 	{
-		Random r = new Random();
-		toGenerate = r.nextInt(max);
-
-		while(toGenerate == otherIndex1 || toGenerate == otherIndex2 || toGenerate == otherIndex3)
+		if(accuracyAdjustment < -1 || accuracyAdjustment > 1)
 		{
-			toGenerate = r.nextInt(max);
+			throw new IllegalArgumentException("Passed value \"accuracyAdjustment\" was below -1 or above 1.");
 		}
 
-		return toGenerate;
+		int adjustment = (int) (accuracyAdjustment * mAccuracy);
+
+		mTempAccuracy = mTempAccuracy + adjustment;
 	}
 
-	private static Gender generateGender()
+	public void updateName(String name)
 	{
-		Random r = new Random();
-		Gender[] genderArray = Gender.values();
-		ArrayList<Gender> genderList = new ArrayList<Gender>();
+		setName(name);
+	}
 
-		for(Gender gender : genderArray)
+	public void updateStatus(StatusEffects status)
+	{
+		setStatus(status);
+	}
+
+	public void updateCurrentHitPoints(int hitPoints)
+	{
+		setCurrentHitPoints(hitPoints);
+	}
+
+	public ArrayList<Type> getTypes()
+	{
+		ArrayList<Type> types = new ArrayList<Type>();
+
+		if(!getPrimaryType().equals(Type.NotSet))
 		{
-			if(!gender.equals(Gender.NotSet))
-			{
-				genderList.add(gender);
-			}
+			types.add(getPrimaryType());
 		}
-
-		return genderList.get(r.nextInt(genderList.size()));
-	}
-
-	private static IAbility generateAbility(String possilbeAbilities)
-	{
-		Random r = new Random();
-
-		ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(possilbeAbilities.split(",")));
-		AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
-
-		return AbilityPool.getAbility(chosenAbility);
-	}
-
-	private static Type[] generateTypes(String typesString, Type[] types)
-	{
-		String[] typesStringArray = typesString.split(",");
-
-		for(int i = 0; i < typesStringArray.length && i < 2; i++)
+		if(!getSecondaryType().equals(Type.NotSet))
 		{
-			types[i] = Type.valueOf(typesStringArray[i]);
+			types.add(getSecondaryType());
 		}
 
 		return types;
 	}
 
-	private static Natures generateNature()
+	public void resetTempStats()
 	{
-		ArrayList<Natures> natureList = Natures.getNatureList();
-
-		return natureList.get(randomObject.nextInt(natureList.size()));
+		mTempAttack = 0;
+		mTempSpecialAttack = 0;
+		mTempDefense = 0;
+		mTempSpecialDefense = 0;
+		mTempSpeed = 0;
+		mTempAccuracy = 0;
 	}
 
-	private static boolean generateIsShiny()
+	public void takeDamage(int damage)
 	{
-		Random r = new Random();
+		mCurrentHitPoints -= damage;
 
-		return r.nextInt(4200) == 420;
+		if(mCurrentHitPoints < 0)
+			mCurrentHitPoints = 0;
+	}
+
+	public String healAnature(int healAmount)
+	{
+		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
+		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getTotalHitPoints())
+		{
+			setCurrentHitPoints(getTotalHitPoints());
+			return getName() + " was healed completely!";
+		}
+
+		setCurrentHitPoints(hitPointsAfterHeal);
+		return getName() + " was healed " + healAmount + " hp.";
+	}
+
+	public double getHitPointsPercent()
+	{
+		return ((double) mCurrentHitPoints) / ((double) mTotalHitPoints);
+	}
+
+	public AnatureBuilder getClone()
+	{
+		return new AnatureBuilder().withName(mName)
+				.withOwnerName(mOwnerName)
+				.isShiny(mIsShiny)
+				.withSpecies(mSpecies)
+				.withGender(mGender)
+				.withPrimaryType(mPrimaryType)
+				.withSecondaryType(mSecondaryType)
+				.withMoveSet(mMoveSet)
+				.withAbility(mAbility)
+				.withStatus(mStatus)
+				.withIndexNumber(mIndexNumber)
+				.withLevel(mLevel)
+				.withCurrentExperiencePoints(mCurrentExperiencePoints)
+				.withTotalHitPoints(mTotalHitPoints)
+				.withCurrentHitPoints(mCurrentHitPoints)
+				.withAttack(mAttack)
+				.withDefense(mDefense)
+				.withSpecialAttack(mSpecialAttack)
+				.withDefense(mSpecialDefense)
+				.withSpeed(mSpeed)
+				.withAccuracy(mAccuracy);
+	}
+
+	public Image getFrontSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Front.png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+
+	public Image getBackSprite()
+	{
+		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+
+	/*
+	 * PACKAGE METHODS
+	 */
+
+	boolean canCreate()
+	{
+		if(mName.isEmpty())
+		{
+			throw new IllegalStateException("The \"name\" variable was never set during construction.");
+		}
+
+		// TODO Is this a problem for wild anatures?
+		if(mOwnerName.isEmpty())
+		{
+			throw new IllegalStateException("The \"ownerName\" variable was never set during construction.");
+		}
+
+		if(mSpecies.equals(Species.NotSet))
+		{
+			throw new IllegalStateException("The \"species\" variable was never set during construction.");
+		}
+
+		if(mGender.equals(Gender.NotSet))
+		{
+			throw new IllegalStateException("The \"gender\" variable was never set during construction.");
+		}
+
+		if(mPrimaryType.equals(Type.NotSet))
+		{
+			throw new IllegalStateException("The \"primaryType\" variable was never set during construction.");
+		}
+		
+		if(mNature.equals(Natures.NotSet))
+		{
+			throw new IllegalStateException("The \"nature\" variable was never set during construction.");
+		}
+
+		if(mMoveSet.equals(NullMoveSet.getNullMoveSet()))
+		{
+			throw new IllegalStateException("The \"moveSet\" variable was never set during construction.");
+		}
+
+		if(mAbility.equals(NullAbility.getNullAbility()))
+		{
+			throw new IllegalStateException("The \"ability\" variable was never set during construction.");
+		}
+
+		if(mStatus.equals(StatusEffects.NotSet))
+		{
+			throw new IllegalStateException("The \"status\" variable was never set during construction.");
+		}
+
+		if(mLevel == -1)
+		{
+			throw new IllegalStateException("The \"\" variable was never set during construction.");
+		}
+
+		if(mCurrentExperiencePoints == -1)
+		{
+			throw new IllegalStateException("The \"currentExperience\" variable was never set during construction.");
+		}
+
+		if(mTotalHitPoints == -1)
+		{
+			throw new IllegalStateException("The \"totalHitPoints\" variable was never set during construction.");
+		}
+
+		if(mCurrentHitPoints == -1)
+		{
+			throw new IllegalStateException("The \"currentHitPoints\" variable was never set during construction.");
+		}
+
+		if(mIndexNumber == -1)
+		{
+			throw new IllegalStateException("The \"indexNumber\" variable was never set during construction.");
+		}
+
+		if(mAttack == -1)
+		{
+			throw new IllegalStateException("The \"attack\" variable was never set during construction.");
+		}
+
+		if(mDefense == -1)
+		{
+			throw new IllegalStateException("The \"defense\" variable was never set during construction.");
+		}
+
+		if(mSpecialAttack == -1)
+		{
+			throw new IllegalStateException("The \"specialAttack\" variable was never set during construction.");
+		}
+
+		if(mSpecialDefense == -1)
+		{
+			throw new IllegalStateException("The \"specialDefense\" variable was never set during construction.");
+		}
+
+		if(mSpeed == -1)
+		{
+			throw new IllegalStateException("The \"speed\" variable was never set during construction.");
+		}
+
+		if(mAccuracy == -1)
+		{
+			throw new IllegalStateException("The \"accuracy\" variable was never set during construction.");
+		}
+
+		return true;
 	}
 
 }

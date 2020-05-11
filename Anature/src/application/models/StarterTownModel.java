@@ -2,7 +2,7 @@ package application.models;
 
 import application.enums.TrainerIds;
 import application.interfaces.ITrainer;
-import application.trainers.Trainer;
+import application.trainers.TrainerBuilder;
 
 public class StarterTownModel
 {
@@ -10,7 +10,7 @@ public class StarterTownModel
 
 	public StarterTownModel()
 	{
-		mKelly = Trainer.createTrainer(TrainerIds.Kelly, 1, 13, 17);
+		mKelly = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
 	}
 
 	public ITrainer getKelly()

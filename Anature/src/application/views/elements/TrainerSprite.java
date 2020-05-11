@@ -180,15 +180,15 @@ public class TrainerSprite
 		return mTrainer;
 	}
 	
-	public void setTrainerModel(ITrainer trainerBase)
+	public void setTrainerModel(ITrainer trainer)
 	{
-		if(trainerBase == null)
+		if(trainer == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "Tried giving trainer sprite a null model.");
 			return;
 		}
 		
-		mTrainer = trainerBase;
+		mTrainer = trainer;
 	}
 	
 	public String[] getDialogue()

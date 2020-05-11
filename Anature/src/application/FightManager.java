@@ -81,11 +81,11 @@ public class FightManager
 		int oldTargetHp = targetAnature.getCurrentHitPoints();
 		ArrayList<String> dialogue = new ArrayList<String>();
 		MoveSet moveSet = userAnature.getMoveSet();
-		IMove moveBase = moveSet.getMove(indexOfMove);
+		IMove move = moveSet.getMove(indexOfMove);
 
 		if(indexOfMove <= 0)
 		{
-			moveBase = MovePool.getMove(MoveIds.Flail);
+			move = MovePool.getMove(MoveIds.Flail);
 		}
 
 		AbilityIds userAbilityId = userAnature.getAbility()
@@ -95,27 +95,27 @@ public class FightManager
 
 		moveSet.useMovePoint(indexOfMove);
 
-		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, moveBase);
-		boolean landedTheAttack = landedAttack(userAnature, moveBase);
+		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, move);
+		boolean landedTheAttack = landedAttack(userAnature, move);
 
 		if(landedTheAttack)
 		{
-			dialogue.add(userAnature.getName() + " used " + moveBase.getName() + " on " + targetAnature.getName());
+			dialogue.add(userAnature.getName() + " used " + move.getName() + " on " + targetAnature.getName());
 
 			if(!canAttackAbilityResult.isActiviated())
 			{
-				moveBase.activateMove(userAnature, targetAnature);
+				move.activateMove(userAnature, targetAnature);
 			}
 		}
 
 		else
 		{
-			dialogue.add(userAnature.getName() + " used " + moveBase.getName() + " but missed!");
+			dialogue.add(userAnature.getName() + " used " + move.getName() + " but missed!");
 		}
 
-		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityId, targetAnature, userAnature, moveBase, oldTargetHp,
+		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityId, targetAnature, userAnature, move, oldTargetHp,
 				false, !landedTheAttack);
-		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbilityId, userAnature, targetAnature, moveBase, oldUserHp, true,
+		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbilityId, userAnature, targetAnature, move, oldUserHp, true,
 				!landedTheAttack);
 
 		ArrayList<String> afterTurnDialogue = new ArrayList<String>();
@@ -131,10 +131,10 @@ public class FightManager
 
 		AbilityResult afterTurn = new AbilityResult(afterTurnDialogue, abilitiesWereActivated);
 
-		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, moveBase);
+		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, move);
 	}
 
-	private boolean landedAttack(IAnature userAnature, IMove iMove)
+	private boolean landedAttack(IAnature userAnature, IMove move)
 	{
 		Random rng = new Random();
 		double anatureAccuracy = userAnature.getAccuracy();
@@ -143,11 +143,11 @@ public class FightManager
 			anatureAccuracy = 1.0;
 		}
 
-		double totalAccuracy = iMove.getAccuracy() * anatureAccuracy;
+		double totalAccuracy = move.getAccuracy() * anatureAccuracy;
 		return rng.nextInt(101) < totalAccuracy * 100;
 	}
 
-	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, IItem iItem)
+	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, IItem item)
 	{
 		mTurnCount++;
 		IAnature target;
@@ -155,13 +155,13 @@ public class FightManager
 		if(isPlayer)
 		{
 			target = mPlayerTeam.get(indexOfTeam);
-			return iItem.useItem(target);
+			return item.useItem(target);
 		}
 
 		else
 		{
 			target = mEnemyTeam.get(indexOfTeam);
-			return iItem.useItem(target);
+			return item.useItem(target);
 		}
 	}
 

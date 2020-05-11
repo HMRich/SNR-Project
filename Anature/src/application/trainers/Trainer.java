@@ -1,233 +1,242 @@
 package application.trainers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
-import application.DatabaseConnection;
-import application.anatures.Anature;
-import application.controllers.LoggerController;
-import application.enums.AttackEffectiveness;
-import application.enums.DatabaseType;
-import application.enums.ItemIds;
-import application.enums.LoggingTypes;
-import application.enums.Species;
 import application.enums.TrainerIds;
+import application.interfaces.AiChoiceObject;
 import application.interfaces.IAI;
 import application.interfaces.IAnature;
-import application.interfaces.IBuilder;
 import application.interfaces.IHealthPotion;
 import application.interfaces.ITrainer;
-import application.pools.ItemPool;
-import application.trainers.ai.AI;
+import application.trainers.ai.choice_objects.AiHealthPotionChoice;
+import application.trainers.ai.choice_objects.AiMoveChoice;
+import application.trainers.ai.choice_objects.AiNoChoice;
+import application.trainers.ai.choice_objects.AiSwitchChoice;
+import javafx.scene.image.Image;
 
-public class Trainer implements IBuilder<ITrainer>
+class Trainer implements ITrainer
 {
-	private TrainerBase mTrainer;
+	private TrainerIds mId;
+	private String mName;
+	private ArrayList<IAnature> mAnatures;
+	private ArrayList<IHealthPotion> mHealthPotions;
+	private IAnature mCurrentAnature;
+	private IAI mAI;
 
-	public Trainer()
+	Trainer()
 	{
-		genertaeNewTrainer();
+		mId = TrainerIds.Null;
+		mName = "";
+		mAnatures = null;
+		mHealthPotions = null;
+		mCurrentAnature = null;
+		mAI = null;
 	}
 
 	/*
-	 * PUBLIC SETS
+	 * PACKAGE SETS
 	 */
 
-	public Trainer withTrainerId(TrainerIds trainerId)
+	void setTrainerId(TrainerIds trainerId)
 	{
-		mTrainer.setTrainerId(trainerId);
-		return this;
+		if(trainerId == null)
+		{
+			throw new IllegalArgumentException("Passed value \"trainerId\" was null.");
+		}
+		mId = trainerId;
 	}
 
-	public Trainer withTrainerName(String name)
+	void setTrainerName(String name)
 	{
-		mTrainer.setTrainerName(name);
-		return this;
+		if(name == null)
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was null.");
+		}
+
+		if(name.trim()
+				.isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
+		}
+		mName = name;
 	}
 
-	public Trainer withAnatureParty(ArrayList<IAnature> anatureParty)
+	void setAnatureParty(ArrayList<IAnature> anatureBases)
 	{
-		mTrainer.setAnatureParty(anatureParty);
-		return this;
+		// TODO talk with team about if we should allow the trainer anatures variable to
+		// be empty
+		if(anatureBases == null)
+		{
+			throw new IllegalArgumentException("Passed value \"anatures\" was null.");
+		}
+		mAnatures = anatureBases;
 	}
 
-	public Trainer withHealthPotions(ArrayList<IHealthPotion> healthPotionBases)
+	void setHealthPotions(ArrayList<IHealthPotion> healthPotionBases)
 	{
-		mTrainer.setHealthPotions(healthPotionBases);
-		return this;
+		if(healthPotionBases == null)
+		{
+			throw new IllegalArgumentException("Passed value \"potions\" was null.");
+		}
+		mHealthPotions = healthPotionBases;
 	}
 
-	public Trainer withCurrentAnature(IAnature currentAnature)
+	void setCurrentAnature(IAnature currentAnature)
 	{
-		mTrainer.setCurrentAnature(currentAnature);
-		return this;
+		if(currentAnature == null)
+		{
+			throw new IllegalArgumentException("Passed value \"anature\" was null.");
+		}
+		mCurrentAnature = currentAnature;
 	}
 
-	public Trainer withAI(IAI ai)
+	void setAI(IAI ai)
 	{
-		mTrainer.setAI(ai);
-		return this;
+		if(ai == null)
+		{
+			throw new IllegalArgumentException("Passed value \"ai\" was null.");
+		}
+		mAI = ai;
+	}
+
+	/*
+	 * PUBLIC GETS
+	 */
+
+	public TrainerIds getId()
+	{
+		return mId;
+	}
+
+	public String getName()
+	{
+		return mName;
+	}
+
+	public ArrayList<IAnature> getAnatureParty()
+	{
+		return mAnatures;
+	}
+
+	public ArrayList<IHealthPotion> getHealthPotions()
+	{
+		return mHealthPotions;
+	}
+
+	public IAnature getCurrentAnature()
+	{
+		return mCurrentAnature;
 	}
 
 	/*
 	 * PUBLIC METHODS
 	 */
 
-	public ITrainer create()
+	public Image getBattleSprite()
 	{
-		if(!buildIsComplete())
+		if(mId == TrainerIds.Wild)
+			return null;
+
+		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString()
+				.toLowerCase() + "/" + mId.toString() + ".png")
+				.toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+
+	// TODO We need to get rid of this method
+	public int getNextAnature(int index)
+	{
+		index++;
+		if(index >= mAnatures.size())
 		{
-			throw new IllegalStateException("All the builder variables need to have a value before you create a Trainer.");
+			index = 0;
+		}
+		return index;
+	}
+
+	// TODO We need to move this method. It most likely does not belong here
+	public int getAnatureIndex(IAnature anatureBase)
+	{
+		int index = 0;
+		for(IAnature currentAnature : mAnatures)
+		{
+			if(currentAnature.equals(anatureBase))
+			{
+				return index;
+			}
+			index++;
+		}
+		return -1;
+	}
+
+	public boolean canBattle()
+	{
+		if(mAnatures.size() == 0)
+		{
+			return false;
 		}
 
-		TrainerBase trainerToReturn = mTrainer;
+		boolean result = false;
+		for(IAnature anatureBase : mAnatures)
+		{
+			if(anatureBase.getCurrentHitPoints() == 0)
+			{
+				result = true;
+				break;
+			}
+		}
 
-		genertaeNewTrainer();
+		return !result;
+	}
 
-		return trainerToReturn;
+	public AiChoiceObject<?> useTurn(IAnature playerAnature)
+	{
+		boolean willUseHealthPotion = mAI.willUseHealthPotion(mHealthPotions, mCurrentAnature);
+
+		if(willUseHealthPotion)
+			return chooseHealthPotion();
+
+		boolean willSwitchAnature = mAI.willSwitchAnature(mAnatures, playerAnature, mCurrentAnature);
+
+		if(willSwitchAnature)
+			return chooseAnature(playerAnature);
+
+		AiMoveChoice moveChoice = chooseMove(playerAnature);
+		if(moveChoice != null)
+			return moveChoice;
+
+		return new AiNoChoice();
 	}
 
 	/*
-	 * STATIC PUBLIC METHODS
+	 * PACKAGE METHODS
 	 */
 
-	public static ITrainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
+	boolean canComplete()
 	{
-		// TODO Fully implement the column moveThreshold in the database
-
-		String trainerName = "";
-		String partyList = "";
-		String itemsList = "";
-		String aiHealthThreshold = "";
-		String aiSwitchThreshold = "";
-		String aiMoveThreshold = "";
-
-		try
-		{
-			Connection connect = DatabaseConnection.dbConnector(DatabaseType.TrainerDatabase);
-
-			String query = "Select * from Trainers Where TrainerID=?";
-			PreparedStatement pst = connect.prepareStatement(query);
-			pst.setString(1, id.toString());
-
-			ResultSet results = pst.executeQuery();
-			if(results.next())
-			{
-				trainerName = results.getString("Name");
-				partyList = results.getString("Anatures");
-				itemsList = results.getString("ItemList");
-				aiHealthThreshold = results.getString("HealthThreshold");
-				aiSwitchThreshold = results.getString("SwitchThreshold");
-				aiMoveThreshold = results.getString("MoveThreshold");
-			}
-
-			results.close();
-			pst.close();
-		}
-
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-
-		ArrayList<IAnature> party = parsePartyList(partyList, anatureCount, minLevel, maxLevel);
-		ArrayList<IHealthPotion> potions = parsePotionList(itemsList);
-		IAI ai = parseAi(aiHealthThreshold, aiSwitchThreshold, aiMoveThreshold);
-
-		return new Trainer().withTrainerId(id)
-				.withTrainerName(trainerName)
-				.withAnatureParty(party)
-				.withHealthPotions(potions)
-				.withCurrentAnature(party.get(0))
-				.withAI(ai)
-				.create();
+		return mId != TrainerIds.Null && !mName.isEmpty() && mAnatures != null && mHealthPotions != null && mCurrentAnature != null && mAI != null;
 	}
 
 	/*
 	 * PRIVATE METHODS
 	 */
 
-	private void genertaeNewTrainer()
+	private AiHealthPotionChoice chooseHealthPotion()
 	{
-		mTrainer = new TrainerBase();
+		IHealthPotion healthPotionToUse = mAI.healthPotionToUse(mHealthPotions, mCurrentAnature);
+		AiHealthPotionChoice healthPotionChoice = new AiHealthPotionChoice(healthPotionToUse);
+		return healthPotionChoice;
 	}
 
-	private boolean buildIsComplete()
+	private AiSwitchChoice chooseAnature(IAnature playerAnature)
 	{
-		return mTrainer.canComplete();
+		IAnature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
+		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
+		return switchChoice;
 	}
 
-	/*
-	 * STATIC PRIVATE METHODS
-	 */
-
-	private static ArrayList<IHealthPotion> parsePotionList(String itemsString)
+	private AiMoveChoice chooseMove(IAnature playerAnature)
 	{
-		ArrayList<IHealthPotion> items = new ArrayList<IHealthPotion>();
-
-		if(itemsString.length() != 0)
-		{
-			ArrayList<String> itemsStrAra = new ArrayList<String>(Arrays.asList(itemsString.split(",")));
-
-			for(String itemId : itemsStrAra)
-			{
-				try
-				{
-					IHealthPotion toAdd = ItemPool.getHealthPotion(ItemIds.valueOf(itemId)); // TODO redo ItemPool.java file to decouple
-
-					if(toAdd == null)
-					{
-						LoggerController.logEvent(LoggingTypes.Error, "Trainer Builder tried to retrieve an item with an invalid Id.");
-					}
-
-					else
-					{
-						items.add(toAdd);
-					}
-				}
-
-				catch(Exception e)
-				{
-					LoggerController.logEvent(LoggingTypes.Error, "Trainer Builder tried to retrieve an item with an invalid Id.");
-				}
-			}
-		}
-
-		return items;
+		AiMoveChoice moveChoice = mAI.chooseMove(mCurrentAnature, playerAnature);
+		return moveChoice;
 	}
-
-	private static ArrayList<IAnature> parsePartyList(String partyString, int anatureCount, int anatureMinLevel, int anatureMaxLevel)
-	{
-		ArrayList<IAnature> party = new ArrayList<IAnature>();
-
-		ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyString.split(",")));
-		Random levelGen = new Random();
-
-		for(String anatureStr : partyStrAra)
-		{
-			int level = levelGen.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
-			party.add(Anature.createAnature(Species.valueOf(anatureStr), level));
-		}
-
-		return party;
-	}
-
-	private static IAI parseAi(String aiHealthThreshold, String aiSwitchThreshold, String aiMoveThreshold)
-	{
-		double healthThreshold = Double.parseDouble(aiHealthThreshold);
-		AttackEffectiveness switchThreshold = AttackEffectiveness.valueOf(aiSwitchThreshold);
-		AttackEffectiveness moveThreshold = AttackEffectiveness.valueOf(aiMoveThreshold);
-
-		return new AI().withHealthThreshold(healthThreshold)
-				.withSwitchThreshold(switchThreshold)
-				.withMoveThreshold(moveThreshold)
-				.create();
-	}
-
 }

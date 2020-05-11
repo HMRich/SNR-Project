@@ -1,33 +1,52 @@
 package application.anatures.moves;
 
-import application.anatures.moves.moves.DoublePunch;
-import application.anatures.moves.moves.Flail;
-import application.anatures.moves.moves.Flamethrower;
-import application.anatures.moves.moves.Grumble;
-import application.anatures.moves.moves.NullMove;
-import application.anatures.moves.moves.PocketSand;
-import application.anatures.moves.moves.SkipTurn;
-import application.anatures.moves.moves.Tackle;
 import application.enums.MoveIds;
 import application.enums.Type;
-import application.interfaces.IBuilder;
+import application.interfaces.IAnature;
+import application.interfaces.IMove;
 
-public class Move<M extends MoveBase> implements IBuilder<M>
+public class Move implements IMove
 {
-	private M mMove;
+	private String mName;
 	private MoveIds mMoveId;
+	private Type mType;
+	private boolean mDoesDamage;
+	private boolean mIsPhysicalAttack;
+	private int mTotalMovePoints;
+	private double mAccuracy;
 
-	public Move(MoveIds moveId)
+	protected Move()
 	{
-		setMoveType(moveId);
-		generateNewMove();
+		mName = "";
+		mMoveId = MoveIds.NullMove;
+		mType = Type.NotSet;
+		mDoesDamage = false;
+		mIsPhysicalAttack = false;
+		mTotalMovePoints = -1;
+		mAccuracy = -1;
 	}
 
 	/*
-	 * PRIVATE SETS
+	 * PACKAGE SETS
 	 */
 
-	private void setMoveType(MoveIds moveId)
+	void setName(String name)
+	{
+		if(name == null)
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was null.");
+		}
+
+		if(name.trim()
+				.isEmpty())
+		{
+			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
+		}
+
+		mName = name;
+	}
+
+	void setMoveId(MoveIds moveId)
 	{
 		if(moveId == null)
 		{
@@ -42,115 +61,130 @@ public class Move<M extends MoveBase> implements IBuilder<M>
 		mMoveId = moveId;
 	}
 
+	void setType(Type type)
+	{
+		if(type == null)
+		{
+			throw new IllegalArgumentException("Passed value \"type\" was null.");
+		}
+
+		if(type.equals(Type.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"type\" was equal to " + type.toString() + ".");
+		}
+
+		mType = type;
+	}
+
+	void setDoesDamage(boolean doesDamage)
+	{
+		mDoesDamage = doesDamage;
+	}
+
+	void setIsPhysicalAttack(boolean isPhysicalAttack)
+	{
+		mIsPhysicalAttack = isPhysicalAttack;
+	}
+
+	void setTotalMovePoints(int totalMovePoints)
+	{
+		if(totalMovePoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"totalMovePoints\" was less than 0.");
+		}
+
+		mTotalMovePoints = totalMovePoints;
+	}
+
+	void setAccuracy(double accuracy)
+	{
+		if(accuracy < 0 || accuracy > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"\" was less than zero or above 1.");
+		}
+
+		mAccuracy = accuracy;
+	}
+
 	/*
-	 * PUBLIC SETS
+	 * PUBLIC GETS
 	 */
 
-	public Move<M> withName(String name)
+	public String getName()
 	{
-		mMove.setName(name);
-		return this;
+		return mName;
 	}
 
-	public Move<M> withType(Type type)
+	public MoveIds getMoveId()
 	{
-		mMove.setType(type);
-		return this;
+		return mMoveId;
 	}
 
-	public Move<M> doesDamage(boolean doesDamage)
+	public Type getType()
 	{
-		mMove.setDoesDamage(doesDamage);
-		return this;
+		return mType;
 	}
 
-	public Move<M> isPhysicalAttack(boolean isPhysicalAttack)
+	public boolean doesDamage()
 	{
-		mMove.setIsPhysicalAttack(isPhysicalAttack);
-		return this;
+		return mDoesDamage;
 	}
 
-	public Move<M> withTotalMovePoints(int totalMovePoints)
+	public boolean isPhysicalAttack()
 	{
-		mMove.setTotalMovePoints(totalMovePoints);
-		return this;
+		return mIsPhysicalAttack;
 	}
 
-	public Move<M> withAccuracy(double accuracy)
+	public int getTotalMovePoints()
 	{
-		mMove.setAccuracy(accuracy);
-		return this;
+		return mTotalMovePoints;
+	}
+
+	public double getAccuracy()
+	{
+		return mAccuracy;
+	}
+
+	/*
+	 * PACKAGE METHODS
+	 */
+
+	boolean canCreate()
+	{
+		if(mName.isEmpty())
+		{
+			throw new IllegalStateException("The \"name\" variable was never set during construction.");
+		}
+
+		if(mMoveId.equals(MoveIds.NullMove))
+		{
+			throw new IllegalStateException("The \"moveId\" variable was never set during construction.");
+		}
+
+		if(mType.equals(Type.NotSet))
+		{
+			throw new IllegalStateException("The \"type\" variable was never set during construction.");
+		}
+
+		if(mTotalMovePoints == -1)
+		{
+			throw new IllegalStateException("The \"totalMovePoints\" variable was never set during construction.");
+		}
+
+		if(mAccuracy == -1)
+		{
+			throw new IllegalStateException("The \"accuracy\" variable was never set during construction.");
+		}
+		return true;
 	}
 
 	/*
 	 * PUBLIC METHODS
 	 */
 
-	public M create()
+	public void activateMove(IAnature source, IAnature target)
 	{
-		if(buildIsComplete())
-		{
-			M moveToReturn = mMove;
-
-			generateNewMove();
-
-			return moveToReturn;
-		}
-
-		throw new IllegalStateException("All the builder variables need to have a value before you create a Move.");
-	}
-
-	/*
-	 * PRIVATE METHODS
-	 */
-
-	@SuppressWarnings("unchecked")
-	private void generateNewMove()
-	{
-		switch(mMoveId)
-		{
-			case Grumble:
-				mMove = (M) new Grumble();
-				break;
-
-			case Double_Punch:
-				mMove = (M) new DoublePunch();
-				break;
-
-			case Flamethrower:
-				mMove = (M) new Flamethrower();
-				break;
-
-			case Pocket_Sand:
-				mMove = (M) new PocketSand();
-				break;
-
-			case Skip_Turn:
-				mMove = (M) new SkipTurn();
-				break;
-
-			case Flail:
-				mMove = (M) new Flail();
-				break;
-
-			case Tackle:
-				mMove = (M) new Tackle();
-				break;
-
-			case NullMove:
-				mMove = (M) new NullMove();
-				break;
-
-			default:
-				throw new IllegalStateException("The variable \"moveId\" was not found. Please add it to the list.");
-		}
-
-		mMove.setMoveId(mMoveId);
-	}
-
-	private boolean buildIsComplete()
-	{
-		return mMove.canCreate();
+		throw new IllegalStateException("This method should not be called.");
 	}
 
 }

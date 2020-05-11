@@ -2,7 +2,7 @@ package application.interfaces;
 
 import java.util.ArrayList;
 
-import application.anatures.Anature;
+import application.anatures.AnatureBuilder;
 import application.anatures.movesets.MoveSet;
 import application.enums.Gender;
 import application.enums.Natures;
@@ -58,7 +58,7 @@ public interface IAnature
 	public void takeDamage(int damage);
 	public String healAnature(int healAmount);
 	public double getHitPointsPercent();
-	public Anature getClone();
+	public AnatureBuilder getClone();
 	public Image getFrontSprite();
 	public Image getBackSprite();
 }

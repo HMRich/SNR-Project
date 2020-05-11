@@ -1,9 +1,9 @@
 package application.anatures.moves.moves;
 
-import application.anatures.moves.MoveBase;
+import application.anatures.moves.Move;
 import application.interfaces.IAnature;
 
-public class Flail extends MoveBase
+public class Flail extends Move
 {
 	@Override
 	public void activateMove(IAnature source, IAnature target)

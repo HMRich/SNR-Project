@@ -2,154 +2,286 @@ package application.anatures.stats;
 
 import application.enums.LevelingSpeed;
 import application.enums.Natures;
-import application.interfaces.IBuilder;
+import application.enums.Natures.NatureStats;
 import application.interfaces.IStats;
 
-public class Stats implements IBuilder<IStats>
+class Stats extends StatsBase implements IStats
 {
-	private StatsCore mStatsCore;
+	private int mLevel;
+	private int mExperiencePoints;
+	private LevelingSpeed mLevelingSpeed;
+	private Natures mNature;
 
-	public Stats()
+	Stats()
 	{
-		generateNewStatsCore();
+		mLevel = 1;
+		mExperiencePoints = 0;
+		mLevelingSpeed = LevelingSpeed.NotSet;
+		mNature = Natures.NotSet;
 	}
 
 	/*
-	 * PUBLIC SETS
+	 * PACKAGE SETS
 	 */
 
-	public Stats withLevlingSpeed(LevelingSpeed levelingSpeed)
+	void setLevel(int level)
 	{
-		mStatsCore.setLevelingSpeed(levelingSpeed);
-		return this;
+		if(level < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"level\" was below 0.");
+		}
+
+		mLevel = level;
 	}
 
-	public Stats withNature(Natures nature)
+	void setLevelingSpeed(LevelingSpeed levelingSpeed)
 	{
-		mStatsCore.setNature(nature);
-		return this;
+		if(levelingSpeed == null)
+		{
+			throw new IllegalArgumentException("Passed value\"levelingSpeed\" was null.");
+		}
+
+		if(levelingSpeed.equals(LevelingSpeed.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value\"levelingSpeed\" was equal to " + levelingSpeed.toString() + ".");
+		}
+
+		mLevelingSpeed = levelingSpeed;
 	}
 
-	public Stats withBaseHitPoints(int baseHitPoints)
+	void setNature(Natures nature)
 	{
-		mStatsCore.setBaseHitPoints(baseHitPoints);
-		return this;
+		if(nature == null)
+		{
+			throw new IllegalArgumentException("Passed value\"nature\" was null.");
+		}
+
+		if(nature.equals(Natures.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value\"nature\" was equal to " + nature.toString() + ".");
+		}
+
+		mNature = nature;
 	}
 
-	public Stats withBaseAttack(int baseAttack)
+	/*
+	 * PUBLIC GETS
+	 */
+
+	public int getLevel()
 	{
-		mStatsCore.setBaseAttack(baseAttack);
-		return this;
+		return mLevel;
 	}
 
-	public Stats withBaseDefense(int baseDefense)
+	public int getExperiencePoints()
 	{
-		mStatsCore.setBaseDefense(baseDefense);
-		return this;
+		return mExperiencePoints;
 	}
 
-	public Stats withBaseSpecialAttack(int baseSpecialAttack)
+	public LevelingSpeed getLevelingSpeed()
 	{
-		mStatsCore.setBaseSpecialAttack(baseSpecialAttack);
-		return this;
+		return mLevelingSpeed;
 	}
 
-	public Stats withBaseSpecialDefense(int baseSpecialDefense)
+	public Natures getNature()
 	{
-		mStatsCore.setBaseSpecialDefense(baseSpecialDefense);
-		return this;
+		return mNature;
 	}
 
-	public Stats withBaseSpeed(int baseSpeed)
+	public int getTotalAttack()
 	{
-		mStatsCore.setBaseSpeed(baseSpeed);
-		return this;
+		if(mNature.getDecreasedStat()
+				.equals(NatureStats.Attack))
+		{
+			int calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
+			calculatedAttack = calculatedAttack + (int) (calculatedAttack * -mNature.getModifier());
+			return calculatedAttack + getTempAttack();
+		}
+
+		else if(mNature.getIncreasedStat()
+				.equals(NatureStats.Attack))
+		{
+			int calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
+			calculatedAttack = calculatedAttack + (int) (calculatedAttack * mNature.getModifier());
+			return calculatedAttack + getTempAttack();
+		}
+
+		return getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack() + getTempAttack();
 	}
 
-	public Stats withBaseAccuracy(int baseAccuracy)
+	public int getTotalDefense()
 	{
-		mStatsCore.setBaseAccuracy(baseAccuracy);
-		return this;
+		if(mNature.getDecreasedStat()
+				.equals(NatureStats.Defense))
+		{
+			int calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
+			calculatedDefense = calculatedDefense + (int) (calculatedDefense * -mNature.getModifier());
+			return calculatedDefense + getTempDefense();
+		}
+
+		else if(mNature.getIncreasedStat()
+				.equals(NatureStats.Defense))
+		{
+			int calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
+			calculatedDefense = calculatedDefense + (int) (calculatedDefense * mNature.getModifier());
+			return calculatedDefense + getTempDefense();
+		}
+
+		return getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense() + getTempDefense();
 	}
 
-	public Stats withBaseEvasion(int baseEvasion)
+	public int getTotalSpecialAttack()
 	{
-		mStatsCore.setBaseEvasion(baseEvasion);
-		return this;
+		if(mNature.getDecreasedStat()
+				.equals(NatureStats.SpecialAttack))
+		{
+			int calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
+			calculatedSpecialAttack = calculatedSpecialAttack + (int) (calculatedSpecialAttack * -mNature.getModifier());
+			return calculatedSpecialAttack + getTempSpecialAttack();
+		}
+
+		else if(mNature.getIncreasedStat()
+				.equals(NatureStats.SpecialAttack))
+		{
+			int calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
+			calculatedSpecialAttack = calculatedSpecialAttack + (int) (calculatedSpecialAttack * mNature.getModifier());
+			return calculatedSpecialAttack + getTempSpecialAttack();
+		}
+
+		return getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack() + getTempSpecialAttack();
 	}
 
-	public Stats withIVHitPoints(int IVHitpoints)
+	public int getTotalSpecialDefense()
 	{
-		mStatsCore.setIVHitPoints(IVHitpoints);
-		return this;
+		if(mNature.getDecreasedStat()
+				.equals(NatureStats.SpecialDefense))
+		{
+			int calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
+			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * -mNature.getModifier());
+			return calculatedSpecialDefense + getTempSpecialDefense();
+		}
+
+		else if(mNature.getIncreasedStat()
+				.equals(NatureStats.SpecialDefense))
+		{
+			int calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
+			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * mNature.getModifier());
+			return calculatedSpecialDefense + getTempSpecialDefense();
+		}
+
+		return getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense() + getTempSpecialDefense();
 	}
 
-	public Stats withIVAttack(int IVAttack)
+	public int getTotalSpeed()
 	{
-		mStatsCore.setIVAttack(IVAttack);
-		return this;
+		if(mNature.getDecreasedStat()
+				.equals(NatureStats.Speed))
+		{
+			int calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
+			calculatedSpeed = calculatedSpeed + (int) (calculatedSpeed * -mNature.getModifier());
+			return calculatedSpeed + getTempSpeed();
+		}
+
+		else if(mNature.getIncreasedStat()
+				.equals(NatureStats.Speed))
+		{
+			int calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
+			calculatedSpeed = calculatedSpeed + (int) (calculatedSpeed * -mNature.getModifier());
+			return calculatedSpeed + getTempSpeed();
+		}
+
+		return getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed() + getTempSpeed();
 	}
 
-	public Stats withIVDefense(int IVDefense)
+	public int getTotalAccuracy()
 	{
-		mStatsCore.setIVDefense(IVDefense);
-		return this;
+		return getBaseAccuracy() + getTempAccuracy();
 	}
 
-	public Stats withIVSpecialAttack(int IVSpecialAttack)
+	public int getTotalEvasion()
 	{
-		mStatsCore.setIVSpecialAttack(IVSpecialAttack);
-		return this;
+		return getBaseEvasion() + getTempEvasion();
 	}
-
-	public Stats withIVSpecialDefense(int IVSpecialDefnese)
-	{
-		mStatsCore.setIVSpecialDefense(IVSpecialDefnese);
-		return this;
-	}
-
-	public Stats withIVSpeed(int IVSpeed)
-	{
-		mStatsCore.setIVSpeed(IVSpeed);
-		return this;
-	}
-
-	public Stats atLevel(int level)
-	{
-		mStatsCore.setLevel(level);
-		return this;
-	}
-
-//public Stats  {
-//	
-//}
 
 	/*
 	 * PUBLIC METHODS
 	 */
 
-	public IStats create()
+	public void addExperience(int expeienceGain)
 	{
-		if(mStatsCore.canCreateStatsCore())
+		if(expeienceGain < 0)
 		{
-			mStatsCore.levelUpStats();
-
-			IStats statsToReturn = mStatsCore;
-
-			generateNewStatsCore();
-
-			return statsToReturn;
+			throw new IllegalArgumentException("Passed value \"expeienceGain\" was below 0.");
 		}
 
-		throw new IllegalStateException("All the builder variables need to have a value before you create a Stats.");
+		mExperiencePoints += expeienceGain;
+		while(levelGained())
+			;
+	}
+
+	/*
+	 * PACKAGE METHODS
+	 */
+
+	void levelUpStats()
+	{
+		addExperience(requiredExperienceForLevel(getLevel()));
+	}
+
+	boolean canCreateStatsCore()
+	{
+		if(getLevelingSpeed().equals(LevelingSpeed.NotSet))
+		{
+			throw new IllegalStateException("The \"levelingSpeed\" variable was never set during construction.");
+		}
+
+		return canCreateStatsBase() && canCreateStatsCore();
 	}
 
 	/*
 	 * PRIVATE METHODS
 	 */
 
-	private void generateNewStatsCore()
+	private int requiredExperienceForLevel(int level)
 	{
-		mStatsCore = new StatsCore();
+		double levelingSpeedModifier = mLevelingSpeed.getModifier();
+		return (int) (levelingSpeedModifier * Math.pow(level, 3));
+	}
+
+	private boolean levelGained()
+	{
+		int nextLevel = getLevel() + 1;
+		int requiredExperienceForLevel = requiredExperienceForLevel(nextLevel);
+
+		if(getExperiencePoints() >= requiredExperienceForLevel)
+		{
+			return incrementLevel();
+		}
+		return false;
+	}
+
+	private boolean incrementLevel()
+	{
+		mLevel = +1;
+
+		int hitPointsIncrese = (int) ((0.01 * getBaseHitPoints()) + (0.02 * (getIVHitPoints() + getEVHitPoints())));
+		addLevelHitPoints(hitPointsIncrese);
+
+		int attackIncrese = (int) ((0.01 * getBaseAttack()) + (0.02 * (getIVAttack() + getEVAttack())));
+		addLevelAttack(attackIncrese);
+
+		int defenseIncrese = (int) ((0.01 * getBaseDefense()) + (0.02 * (getIVDefense() + getEVDefense())));
+		addLevelDefnse(defenseIncrese);
+
+		int specialAttackIncrese = (int) ((0.01 * getBaseSpecialAttack()) + (0.02 * (getIVSpecialAttack() + getEVSpecialAttack())));
+		addLevelSpecialAttack(specialAttackIncrese);
+
+		int specialDefenseIncrese = (int) ((0.01 * getBaseSpecialDefense()) + (0.02 * (getIVSpecialDefnese() + getEVSpecialDefense())));
+		addLevelSpecialDefense(specialDefenseIncrese);
+
+		int speedIncrese = (int) ((0.01 * getBaseSpeed()) + (0.02 * (getIVSpeed() + getEVSpeed())));
+		addLevelSpeed(speedIncrese);
+
+		return true;
 	}
 }

@@ -12,7 +12,7 @@ import application.enums.TrainerIds;
 import application.enums.WarpPoints;
 import application.interfaces.ITrainer;
 import application.player.Player;
-import application.trainers.Trainer;
+import application.trainers.TrainerBuilder;
 import application.views.elements.PlayerSprite;
 import application.views.elements.TrainerSprite;
 import application.views.elements.WarpPointBox;
@@ -273,7 +273,7 @@ public abstract class AbstractController
 							if(r.nextInt(100) > 85) // TODO modify encounter rate calculations
 							{
 								LoggerController.logEvent(LoggingTypes.Misc, "Player has encountered a wild Anature.");
-								ITrainer wildEncounter = Trainer.createTrainer(TrainerIds.Wild, 1, 3, 6);
+								ITrainer wildEncounter = TrainerBuilder.createTrainer(TrainerIds.Wild, 1, 3, 6);
 								
 								mView.mCanMove = false;
 								mView.mUp = false;

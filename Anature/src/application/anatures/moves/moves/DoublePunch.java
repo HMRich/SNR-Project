@@ -1,9 +1,9 @@
 package application.anatures.moves.moves;
 
-import application.anatures.moves.MoveBase;
+import application.anatures.moves.Move;
 import application.interfaces.IAnature;
 
-public class DoublePunch extends MoveBase
+public class DoublePunch extends Move
 {
 	private static int mDamageDone = 25;
 

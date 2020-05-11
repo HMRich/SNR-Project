@@ -2,7 +2,7 @@ package application;
 
 import java.io.IOException;
 
-import application.anatures.Anature;
+import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.overworld_cells.GrassTownController;
@@ -239,11 +239,11 @@ public class Startup extends Application
 
 	public static void createDemo()
 	{
-		IAnature first = Anature.createAnature(Species.Null, 15);
+		IAnature first = AnatureBuilder.createAnature(Species.Null, 15);
 		first.updateName("Main Null");
 		mPlayer.addAnatures(first);
 
-		IAnature second = Anature.createAnature(Species.Null, 12);
+		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
 

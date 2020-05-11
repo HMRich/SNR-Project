@@ -96,9 +96,9 @@ public class Player
 		return mPartyAnature;
 	}
 
-	public void setAnature(int position, IAnature anatureBase)
+	public void setAnature(int position, IAnature anature)
 	{
-		mPartyAnature.set(position, anatureBase);
+		mPartyAnature.set(position, anature);
 	}
 
 	public void addAnatures(IAnature toAdd)

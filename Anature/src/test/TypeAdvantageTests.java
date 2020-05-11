@@ -17,7 +17,7 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
 import application.TypeAdvantage;
-import application.anatures.Anature;
+import application.anatures.AnatureBuilder;
 import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.NullMoveSet;
 import application.enums.AttackEffectiveness;
@@ -43,7 +43,7 @@ class TypeAdvantageTests
 	@BeforeAll
 	void generateBaseAnature()
 	{
-		baseAnature = new Anature().withName("<Test Creature>")
+		baseAnature = new AnatureBuilder().withName("<Test Creature>")
 				.withOwnerName("<Test Owner>")
 				.isShiny(false)
 				.withSpecies(Species.Null)
