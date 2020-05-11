@@ -6,6 +6,7 @@ import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.MoveSet;
 import application.anatures.movesets.NullMoveSet;
 import application.enums.AbilityIds;
+import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Natures;
 import application.enums.Species;
@@ -13,6 +14,7 @@ import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
+import application.interfaces.IMove;
 import application.pools.AbilityPool;
 import javafx.scene.image.Image;
 
@@ -614,6 +616,21 @@ class Anature implements IAnature
 	{
 		return new Image(getClass().getResource("/resources/images/anatures/" + mSpecies.toString() + "_Back.png")
 				.toExternalForm(), 1000.0, 1000.0, true, false);
+	}
+	
+	public BattleAnimationType getMoveAnimationType(int moveIndex)
+	{
+		IMove move = getMoveSet().getMove(moveIndex);
+		if(move.isPhysicalAttack())
+		{
+			return BattleAnimationType.Physical;
+		}
+		
+		else
+		{
+			return BattleAnimationType.Special;
+		}
+
 	}
 
 	/*

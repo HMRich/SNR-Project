@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import application.anatures.AnatureBuilder;
 import application.anatures.movesets.MoveSet;
+import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Natures;
 import application.enums.Species;
@@ -61,4 +62,5 @@ public interface IAnature
 	public AnatureBuilder getClone();
 	public Image getFrontSprite();
 	public Image getBackSprite();
+	public BattleAnimationType getMoveAnimationType(int moveIndex);
 }

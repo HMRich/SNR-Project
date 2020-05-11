@@ -11,11 +11,13 @@ import application.animations.OpacityAnimation;
 import application.animations.PlayerAnimation;
 import application.animations.ProgressBarDecrease;
 import application.animations.ProgressBarIncrease;
+import application.animations.ThreeFrameAnimation;
 import application.animations.XSlideAnimation;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
 import application.enums.AiChoice;
+import application.enums.BattleAnimationType;
 import application.enums.BattleChoice;
 import application.enums.Gender;
 import application.enums.LoggingTypes;
@@ -1656,6 +1658,58 @@ public class BattleController
 			}
 		}, "Activate Switch");
 	}
+	
+	private void activateEnemySwitch(AiChoiceObject<?> enemyTurn, Runnable nextTurn)
+	{
+		mClickQueue.enqueue(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				mPlayerFaintSequenceActive = false;
+
+				IAnature oldAnature = mFightManager.getEnemyAnature();
+				IAnature newAnature = (IAnature) enemyTurn.getChoiceObject();
+				int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
+				mFightManager.setEnemySelectedIndex(newAnatureIndex);
+
+				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
+				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
+				{
+					@Override
+					public void handle(ActionEvent event)
+					{
+						updateEnemyAnature(newAnature);
+
+						try
+						{
+							Thread.sleep(500);
+						}
+
+						catch(InterruptedException e)
+						{
+							LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
+						}
+
+						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
+						fadeInNew.setOnFinished(actionEvent ->
+						{
+							if(nextTurn != null)
+							{
+								activateAfterTurn(nextTurn);
+							}
+
+							mCanClick.set(true);
+						});
+						fadeInNew.play();
+					}
+				});
+
+				fadeOld.play();
+				mDialogueTxt.set(mEnemyTrainer.getName() + " calls back" + oldAnature.getName() + ".");
+			}
+		}, "Enemy Activate Switch");
+	}
 
 	private void activateEntryAbility(boolean isPlayer)
 	{
@@ -1714,58 +1768,6 @@ public class BattleController
 		animation.setOnFinished(event);
 
 		animation.play();
-	}
-
-	private void useAttack(Anature anature, boolean isPlayer, BattleChoice choice, int moveNum)
-	{
-		mClickQueue.enqueue(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				mPlayerFaintSequenceActive = false;
-
-				IAnature oldAnature = mFightManager.getEnemyAnature();
-				IAnature newAnature = (IAnature) enemyTurn.getChoiceObject();
-				int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
-				mFightManager.setEnemySelectedIndex(newAnatureIndex);
-
-				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
-				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
-				{
-					@Override
-					public void handle(ActionEvent event)
-					{
-						updateEnemyAnature(newAnature);
-
-						try
-						{
-							Thread.sleep(500);
-						}
-
-						catch(InterruptedException e)
-						{
-							LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
-						}
-
-						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
-						fadeInNew.setOnFinished(actionEvent ->
-						{
-							if(nextTurn != null)
-							{
-								activateAfterTurn(nextTurn);
-							}
-
-							mCanClick.set(true);
-						});
-						fadeInNew.play();
-					}
-				});
-
-				fadeOld.play();
-				mDialogueTxt.set(mEnemyTrainer.getName() + " calls back" + oldAnature.getName() + ".");
-			}
-		}, "Enemy Activate Switch");
 	}
 
 	private void useAttack(IAnature anature, boolean isPlayer, BattleChoice choice, int moveNum)
