@@ -181,7 +181,7 @@ public abstract class AbstractCell
 		
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			LoggerController.logEvent(LoggingTypes.Error, "IOException when trying to load Dialogue Box.\n" + e.getStackTrace());
 		}
 	}
 	
