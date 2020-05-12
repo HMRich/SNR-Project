@@ -8,7 +8,7 @@ public class Tyrannize implements IAbility
 {
 	public static String activateAbility(IAnature user, IAnature target)
 	{
-		target.adjustAttack(-0.1);
+		target.getStats().adjustAttack(-0.1);
 		return target.getName() + "'s attack was lowered by " + user.getName() + "'s Tyrannize ability!";
 	}
 

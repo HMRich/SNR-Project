@@ -1,9 +1,9 @@
 package application.anatures.stats;
 
-import application.enums.LevelingSpeed;
-import application.enums.Natures;
+import application.enums.stats.LevelingSpeed;
+import application.enums.stats.Natures;
 import application.interfaces.IBuilder;
-import application.interfaces.IStats;
+import application.interfaces.stats.IStats;
 
 public class StatsBuilder implements IBuilder<IStats>
 {
@@ -27,6 +27,12 @@ public class StatsBuilder implements IBuilder<IStats>
 	public StatsBuilder withNature(Natures nature)
 	{
 		mStatsCore.setNature(nature);
+		return this;
+	}
+
+	public StatsBuilder withBaseExperience(int baseExperience)
+	{
+		mStatsCore.setBaseExperience(baseExperience);
 		return this;
 	}
 
@@ -120,17 +126,13 @@ public class StatsBuilder implements IBuilder<IStats>
 		return this;
 	}
 
-//public Stats  {
-//	
-//}
-
 	/*
 	 * PUBLIC METHODS
 	 */
 
 	public IStats create()
 	{
-		if(mStatsCore.canCreateStatsCore())
+		if(mStatsCore.canCreateStats())
 		{
 			mStatsCore.levelUpStats();
 

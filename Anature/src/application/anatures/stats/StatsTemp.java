@@ -1,6 +1,8 @@
 package application.anatures.stats;
 
-class StatsTemp
+import application.interfaces.stats.IStatsTemp;
+
+class StatsTemp implements IStatsTemp
 {
 	private int mTempAttack;
 	private int mTempDefense;
@@ -92,8 +94,12 @@ class StatsTemp
 	{
 		mTempEvasion += tempEvasion;
 	}
+	
+	/*
+	 * PUBLIC METHODS
+	 */
 
-	void resetTempStats()
+	public void resetTempStats()
 	{
 		mTempAttack = 0;
 		mTempDefense = 0;

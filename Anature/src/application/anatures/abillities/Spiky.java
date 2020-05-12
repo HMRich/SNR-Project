@@ -15,14 +15,14 @@ public class Spiky implements IAbility
 
 		if(!hasNull(userAnature, targetAnature, moveThatAttacked) && moveThatAttacked.isPhysicalAttack() && !isUserAttacking && !attackMissed)
 		{
-			int newHp = targetAnature.getCurrentHitPoints() - (targetAnature.getTotalHitPoints() / 8);
+			int newHp = targetAnature.getStats().getCurrentHitPoints() - (targetAnature.getStats().getTotalHitPoints() / 8);
 
 			if(newHp < 0)
 			{
 				newHp = 0;
 			}
 
-			targetAnature.updateCurrentHitPoints(newHp);
+			targetAnature.getStats().setCurrentHitPoints(newHp);
 			result = targetAnature.getName() + " got hurt from attacking " + userAnature.getName() + "'s spikes!";
 		}
 

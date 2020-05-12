@@ -16,9 +16,9 @@ public class Determination implements IAbility
 			return "";
 		}
 
-		if(move.doesDamage() && (userOldHp == userAnature.getTotalHitPoints()))
+		if(move.doesDamage() && (userOldHp == userAnature.getStats().getTotalHitPoints()))
 		{
-			userAnature.updateCurrentHitPoints(1);
+			userAnature.getStats().setCurrentHitPoints(1);
 			return userAnature.getName() + " survived on 1 hp thanks to their Determination!";
 		}
 

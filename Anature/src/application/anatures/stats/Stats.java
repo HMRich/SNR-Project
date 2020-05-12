@@ -1,14 +1,15 @@
 package application.anatures.stats;
 
-import application.enums.LevelingSpeed;
-import application.enums.Natures;
-import application.enums.Natures.NatureStats;
-import application.interfaces.IStats;
+import application.enums.stats.LevelingSpeed;
+import application.enums.stats.Natures;
+import application.enums.stats.Natures.NatureStats;
+import application.interfaces.stats.IStats;
 
 class Stats extends StatsBase implements IStats
 {
 	private int mLevel;
 	private int mExperiencePoints;
+	private int mCurrentHitPoints;
 	private LevelingSpeed mLevelingSpeed;
 	private Natures mNature;
 
@@ -16,6 +17,7 @@ class Stats extends StatsBase implements IStats
 	{
 		mLevel = 1;
 		mExperiencePoints = 0;
+		mCurrentHitPoints = 0;
 		mLevelingSpeed = LevelingSpeed.NotSet;
 		mNature = Natures.NotSet;
 	}
@@ -78,6 +80,11 @@ class Stats extends StatsBase implements IStats
 		return mExperiencePoints;
 	}
 
+	public int getCurrentHitPoints()
+	{
+		return mCurrentHitPoints;
+	}
+
 	public LevelingSpeed getLevelingSpeed()
 	{
 		return mLevelingSpeed;
@@ -86,6 +93,11 @@ class Stats extends StatsBase implements IStats
 	public Natures getNature()
 	{
 		return mNature;
+	}
+
+	public int getTotalHitPoints()
+	{
+		return getBaseHitPoints() + getIVHitPoints() + getEVHitPointsReduced() + getLevelHitPoints();
 	}
 
 	public int getTotalAttack()
@@ -204,6 +216,25 @@ class Stats extends StatsBase implements IStats
 	}
 
 	/*
+	 * PUBLIC SETS
+	 */
+
+	public void setCurrentHitPoints(int hitPoints)
+	{
+		if(hitPoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"hitPoints\" was below 0.");
+		}
+
+		if(hitPoints > getTotalHitPoints())
+		{
+			throw new IllegalArgumentException("Passed value \"hitPoints\" was above Anature's total hit points.");
+		}
+
+		mCurrentHitPoints = hitPoints;
+	}
+
+	/*
 	 * PUBLIC METHODS
 	 */
 
@@ -219,6 +250,125 @@ class Stats extends StatsBase implements IStats
 			;
 	}
 
+	public void adjustAttack(double attackAdjustment)
+	{
+		if(attackAdjustment < -1 || attackAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
+		}
+
+		if(attackAdjustment > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
+		}
+
+		int adjustment = (int) (attackAdjustment * getTotalAttack());
+
+		adjustTempAttack(adjustment);
+	}
+
+	public void adjustDefense(double adjustmentPercentage)
+	{
+		if(adjustmentPercentage < -1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
+		}
+
+		if(adjustmentPercentage > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
+		}
+
+		int adjustment = (int) (adjustmentPercentage * getTotalDefense());
+
+		adjustTempDefense(adjustment);
+	}
+
+	public void adjustSpecialAttack(double adjustmentPercentage)
+	{
+		if(adjustmentPercentage < -1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
+		}
+
+		if(adjustmentPercentage > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
+		}
+
+		int adjustment = (int) (adjustmentPercentage * getTotalSpecialAttack());
+
+		adjustTempSpecialAttack(adjustment);
+	}
+
+	public void adjustSpecialDefense(double adjustmentPercentage)
+	{
+		if(adjustmentPercentage < -1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
+		}
+
+		if(adjustmentPercentage > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
+		}
+
+		int adjustment = (int) (adjustmentPercentage * getTotalSpecialDefense());
+
+		adjustTempSpecialDefense(adjustment);
+	}
+
+	public void adjustSpeed(double adjustmentPercentage)
+	{
+		if(adjustmentPercentage < -1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
+		}
+
+		if(adjustmentPercentage > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
+		}
+
+		int adjustment = (int) (adjustmentPercentage * getTotalSpeed());
+
+		adjustTempSpeed(adjustment);
+	}
+
+	public void adjustAccuracy(double adjustmentPercentage)
+	{
+		if(adjustmentPercentage < -1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
+		}
+
+		if(adjustmentPercentage > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
+		}
+
+		int adjustment = (int) (adjustmentPercentage * getTotalAccuracy());
+
+		adjustTempAccuracy(adjustment);
+	}
+
+	public void adjustEvasion(double adjustmentPercentage)
+	{
+		if(adjustmentPercentage < -1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
+		}
+
+		if(adjustmentPercentage > 1)
+		{
+			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
+		}
+
+		int adjustment = (int) (adjustmentPercentage * getTotalEvasion());
+
+		adjustTempEvaion(adjustment);
+	}
+
 	/*
 	 * PACKAGE METHODS
 	 */
@@ -228,14 +378,14 @@ class Stats extends StatsBase implements IStats
 		addExperience(requiredExperienceForLevel(getLevel()));
 	}
 
-	boolean canCreateStatsCore()
+	boolean canCreateStats()
 	{
 		if(getLevelingSpeed().equals(LevelingSpeed.NotSet))
 		{
 			throw new IllegalStateException("The \"levelingSpeed\" variable was never set during construction.");
 		}
 
-		return canCreateStatsBase() && canCreateStatsCore();
+		return canCreateStatsBase() && canCreateStats();
 	}
 
 	/*

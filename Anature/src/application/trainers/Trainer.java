@@ -178,7 +178,7 @@ class Trainer implements ITrainer
 		boolean result = false;
 		for(IAnature anatureBase : mAnatures)
 		{
-			if(anatureBase.getCurrentHitPoints() == 0)
+			if(anatureBase.getStats().getCurrentHitPoints() == 0)
 			{
 				result = true;
 				break;

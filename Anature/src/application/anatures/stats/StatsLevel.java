@@ -1,6 +1,8 @@
 package application.anatures.stats;
 
-class StatsLevel extends StatsTemp
+import application.interfaces.stats.IStatsLevel;
+
+class StatsLevel extends StatsTemp implements IStatsLevel
 {
 	private int mLevelHitPoints;
 	private int mLevelAttack;

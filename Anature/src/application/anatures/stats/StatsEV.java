@@ -1,6 +1,8 @@
 package application.anatures.stats;
 
-class StatsEV extends StatsLevel
+import application.interfaces.stats.IStatsEV;
+
+class StatsEV extends StatsLevel implements IStatsEV
 {
 	private int mEVHitPoints;
 	private int mEVAttack;

@@ -1,4 +1,4 @@
-package application.enums;
+package application.enums.stats;
 
 public enum LevelingSpeed
 {

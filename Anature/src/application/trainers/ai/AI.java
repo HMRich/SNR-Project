@@ -121,7 +121,7 @@ class AI implements IAI
 		{
 			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId())
 					.getHealAmount();
-			double healPercent = itemHealAmount / currentAnature.getTotalHitPoints();
+			double healPercent = itemHealAmount / currentAnature.getStats().getTotalHitPoints();
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);

@@ -1,7 +1,10 @@
 package application.anatures.stats;
 
-class StatsBase extends StatsIV
+import application.interfaces.stats.IStatsBase;
+
+class StatsBase extends StatsIV implements IStatsBase
 {
+	private int mBaseExperience;
 	private int mBaseHitPoints;
 	private int mBaseAttack;
 	private int mBaseDefense;
@@ -13,6 +16,7 @@ class StatsBase extends StatsIV
 
 	StatsBase()
 	{
+		mBaseExperience = -1;
 		mBaseHitPoints = -1;
 		mBaseAttack = -1;
 		mBaseDefense = -1;
@@ -26,6 +30,11 @@ class StatsBase extends StatsIV
 	/*
 	 * PUBLIC GETS
 	 */
+	
+	public int getBaseExperience()
+	{
+		return mBaseExperience;
+	}
 
 	public int getBaseHitPoints()
 	{
@@ -70,6 +79,15 @@ class StatsBase extends StatsIV
 	/*
 	 * PACKAGE SETS
 	 */
+	
+	void setBaseExperience(int baseExperience)
+	{
+		if(baseExperience < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"baseExperience\" was below 0.");
+		}
+		mBaseExperience = baseExperience;
+	}
 
 	void setBaseHitPoints(int baseHitPoints)
 	{
@@ -157,6 +175,10 @@ class StatsBase extends StatsIV
 
 	boolean canCreateStatsBase()
 	{
+		if(getBaseExperience() == -1)
+		{
+			throw new IllegalStateException("The \"baseExperience\" variable was never set during construction.");
+		}
 		if(getBaseHitPoints() == -1)
 		{
 			throw new IllegalStateException("The \"baseHitPoints\" variable was never set during construction.");
