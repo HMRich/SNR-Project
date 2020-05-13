@@ -31,7 +31,7 @@ public class AnatureSlot extends Pane
 	private AnatureSlotHpBar mHpBar;
 
 	public AnatureSlot(Scene scene, boolean isSelected, Image anatureImg, Gender gender, String nameTxt, String lvlTxt, String hpTxt, BooleanProperty isShown,
-			BooleanProperty isTabVisible, double hpNum, boolean isCurrent, StatusEffects status)
+			BooleanProperty isTabVisible, double currHp, double totalHp, boolean isCurrent, StatusEffects status)
 	{
 		nullChecks(scene, anatureImg, nameTxt, lvlTxt, hpTxt);
 		mIsShown = isShown;
@@ -74,7 +74,7 @@ public class AnatureSlot extends Pane
 		mLvlTxt = createText(mLvlProperty, scene, 65);
 		mHpTxt = createText(mHpProperty, scene, 85);
 
-		mHpBar = new AnatureSlotHpBar(hpNum, hpNum, this);
+		mHpBar = new AnatureSlotHpBar(currHp, totalHp, this);
 		mHpBar.bindX(3.9);
 		mHpBar.bindY(1.55);
 		mHpBar.visibleProperty().bind(isShown.and(isTabVisible));
@@ -136,7 +136,7 @@ public class AnatureSlot extends Pane
 	}
 
 	public void updateSlot(boolean isCurrent, Image anatureImg, Gender gender, String nameTxt, String lvlTxt, String hpTxt, boolean isShown,
-			boolean isTabVisible, double hp, StatusEffects status)
+			boolean isTabVisible, double currHp, double totalHp, StatusEffects status)
 	{
 		if(isCurrent)
 			mBg.setImage(mSelected);
@@ -187,7 +187,7 @@ public class AnatureSlot extends Pane
 		mIsShown.set(isShown);
 		mIsTabVisible.set(isTabVisible);
 
-		mHpBar.updateProgress(hp);
+		mHpBar.updateProgress(currHp, totalHp);
 	}
 
 	private Text createText(StringProperty txt, Scene scene, int fontSize)

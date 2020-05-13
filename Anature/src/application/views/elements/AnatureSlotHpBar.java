@@ -65,8 +65,9 @@ public class AnatureSlotHpBar extends ProgressBar
 		layoutYProperty().bind(mToBindTo.heightProperty().divide(toDivideBy));
 	}
 
-	public void updateProgress(double currValue)
+	public void updateProgress(double currValue, double totalValue)
 	{
+		mTotalValue.set(totalValue);
 		mCurrValue.set(currValue);
 	}
 }
