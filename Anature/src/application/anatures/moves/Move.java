@@ -1,19 +1,24 @@
 package application.anatures.moves;
 
+import java.util.Random;
+
 import application.enums.MoveIds;
 import application.enums.Type;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
+import application.interfaces.stats.IStats;
 
 public class Move implements IMove
 {
+	private static Random randomObject = new Random();
 	private String mName;
 	private MoveIds mMoveId;
 	private Type mType;
 	private boolean mDoesDamage;
 	private boolean mIsPhysicalAttack;
 	private int mTotalMovePoints;
-	private double mAccuracy;
+	private int mMovePower;
+	private int mAccuracy;
 
 	protected Move()
 	{
@@ -23,6 +28,7 @@ public class Move implements IMove
 		mDoesDamage = false;
 		mIsPhysicalAttack = false;
 		mTotalMovePoints = -1;
+		mMovePower = -1;
 		mAccuracy = -1;
 	}
 
@@ -96,11 +102,21 @@ public class Move implements IMove
 		mTotalMovePoints = totalMovePoints;
 	}
 
-	void setAccuracy(double accuracy)
+	void setMovePower(int movePower)
 	{
-		if(accuracy < 0 || accuracy > 1)
+		if(movePower < 0)
 		{
-			throw new IllegalArgumentException("Passed value \"\" was less than zero or above 1.");
+			throw new IllegalArgumentException("Passed value \"movePower\" was less than 0.");
+		}
+
+		mMovePower = movePower;
+	}
+
+	void setAccuracy(int accuracy)
+	{
+		if(accuracy < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"accuracy\" was less than 0.");
 		}
 
 		mAccuracy = accuracy;
@@ -140,9 +156,35 @@ public class Move implements IMove
 		return mTotalMovePoints;
 	}
 
+	public int getMovePower()
+	{
+		return mMovePower;
+	}
+
 	public double getAccuracy()
 	{
 		return mAccuracy;
+	}
+
+	/*
+	 * PROTECTED METHODS
+	 */
+
+	protected int calculateDamage(IAnature source, IAnature target, boolean isSpecialMove)
+	{
+		IStats sourceStats = source.getStats();
+		IStats targetStats = target.getStats();
+
+		double levelCalculation = ((2.0 * (double) sourceStats.getLevel()) / 5.0) + 2.0;
+		double attackStatCalculation = isSpecialMove ? sourceStats.getTotalSpecialAttack() : sourceStats.getTotalAttack();
+		double movePowerCalculation = isSpecialMove ? (double) getMovePower() / (double) targetStats.getTotalSpecialDefense() : (double) getMovePower() / (double) targetStats.getTotalDefense();
+		double typeMatchCalculation = source.getTypes()
+				.contains(getType()) ? 1.5 : 1.0;
+		double typeAdvantageCalculation = 1; // TODO Make the stupid new Type Advantage Enum class
+		double randomNumberCalculation = randomObject.nextInt(16) + 85;
+
+		return (int) ( (((levelCalculation * attackStatCalculation * movePowerCalculation) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation
+				* (randomNumberCalculation / 100) );
 	}
 
 	/*
@@ -151,27 +193,32 @@ public class Move implements IMove
 
 	boolean canCreate()
 	{
-		if(mName.isEmpty())
+		if(getName().isEmpty())
 		{
 			throw new IllegalStateException("The \"name\" variable was never set during construction.");
 		}
 
-		if(mMoveId.equals(MoveIds.NullMove))
+		if(getMoveId().equals(MoveIds.NullMove))
 		{
 			throw new IllegalStateException("The \"moveId\" variable was never set during construction.");
 		}
 
-		if(mType.equals(Type.NotSet))
+		if(getType().equals(Type.NotSet))
 		{
 			throw new IllegalStateException("The \"type\" variable was never set during construction.");
 		}
 
-		if(mTotalMovePoints == -1)
+		if(getTotalMovePoints() == -1)
 		{
 			throw new IllegalStateException("The \"totalMovePoints\" variable was never set during construction.");
 		}
 
-		if(mAccuracy == -1)
+		if(getMovePower() == -1)
+		{
+			throw new IllegalStateException("The \"movePower\" variable was never set during construction.");
+		}
+
+		if(getAccuracy() == -1)
 		{
 			throw new IllegalStateException("The \"accuracy\" variable was never set during construction.");
 		}

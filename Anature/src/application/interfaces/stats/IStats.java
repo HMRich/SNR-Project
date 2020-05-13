@@ -11,7 +11,7 @@ public interface IStats extends IStatsBase
 	
 	public int getLevel();
 
-	public int getExperiencePoints();
+	public int getTotalExperiencePoints();
 	
 	public int getCurrentHitPoints();
 
@@ -46,6 +46,10 @@ public interface IStats extends IStatsBase
 	 */
 
 	public void addExperience(int expeienceGain);
+	
+	public int getExperienceProgression();
+	
+	public int getRequiredExperience();
 	
 	public void adjustAttack(double attackAdjustment);
 	

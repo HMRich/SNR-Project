@@ -334,12 +334,15 @@ public class BattleController
 		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
 
 		StringProperty playerHpTxt = new SimpleStringProperty(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
-		mPlayerHp.addListener(
-				(observable, oldValue, newValue) -> playerHpTxt.set(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue()));
+		ChangeListener<Number> player = (observable, oldValue, newValue) -> playerHpTxt.set(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
+		mPlayerHp.addListener(player);
+		mPlayerHpTotal.addListener(player);
 
 		StringProperty enemyHpTxt = new SimpleStringProperty(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue());
-		mEnemyHp.addListener((observable, oldValue, newValue) -> enemyHpTxt.set(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue()));
-
+		ChangeListener<Number> enemy = (observable, oldValue, newValue) -> enemyHpTxt.set(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue());
+		mEnemyHp.addListener(enemy);
+		mEnemyHpTotal.addListener(enemy);
+		
 		createBindsTxt(mPlayerHpTxt, scene, 1.41, 1.83, fontProperty, playerHpTxt);
 		createBindsTxt(mEnemyHpTxt, scene, 4.7, 5.8, fontProperty, enemyHpTxt);
 	}
@@ -437,15 +440,8 @@ public class BattleController
 			@Override
 			public void handle(ActionEvent event)
 			{
-				if(mPlayerXp.get() < 100)
-				{
-					mPlayerXp.set(mPlayerXp.add(10).doubleValue());
-				}
-
-				else
-				{
-					mPlayerXp.set(0);
-				}
+				int experienceToEarn = mFightManager.getPlayerAnature().getStats().getRequiredExperience() / 10;
+				mFightManager.getPlayerAnature().getStats().addExperience(experienceToEarn);
 			}
 		});
 	}
@@ -998,8 +994,8 @@ public class BattleController
 		mPlayerHp.set(playerCurr.getStats().getCurrentHitPoints());
 		mPlayerHpTotal.set(playerCurr.getStats().getTotalHitPoints());
 
-		mPlayerXp.set(playerCurr.getStats().getExperiencePoints());
-		mPlayerXpTotal.set(100); // TODO change to a standard
+		mPlayerXp.set(playerCurr.getStats().getExperienceProgression());
+		mPlayerXpTotal.set(playerCurr.getStats().getRequiredExperience());
 
 		mPlayerLvl.set(playerCurr.getStats().getLevel());
 		updateStatusIcon(mStatusIconPlayer, playerCurr);
@@ -1165,14 +1161,15 @@ public class BattleController
 		mSwitchSelectedCatalogNum.setText(String.format("%03d", selected.getIndexNumber()));
 		mSwitchSelectedName.setText(selected.getName());
 		mSwitchSelectedOwner.setText(selected.getOwner());
-		mSwitchSelectedCurrXp.setText(selected.getStats().getExperiencePoints() + "");
-		mSwitchSelectedNextXp.setText((100 - selected.getStats().getExperiencePoints()) + "");
+		mSwitchSelectedCurrXp.setText(selected.getStats().getExperienceProgression() + "");
+		mSwitchSelectedNextXp.setText(selected.getStats().getRequiredExperience() + "");
 
 		mSwitchSelectedHp.setText(selected.getStats().getTotalHitPoints() + "");
 		mSwitchSelectedAtk.setText(selected.getStats().getTotalAttack() + "");
 		mSwitchSelectedSpAtk.setText(selected.getStats().getTotalSpecialAttack() + "");
 		mSwitchSelectedDef.setText(selected.getStats().getTotalDefense() + "");
 		mSwitchSelectedSpDef.setText(selected.getStats().getTotalSpecialDefense() + "");
+		mSwitchSelectedSpeed.setText(selected.getStats().getTotalSpeed() + "");
 
 		mSwitchSelectedAbilityName.setText(selected.getAbility().getAbilityName());
 		mSwitchSelectedAbilityDesc.setText(selected.getAbility().getAbilityDescription());

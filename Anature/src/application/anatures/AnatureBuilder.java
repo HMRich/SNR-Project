@@ -101,7 +101,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 		return this;
 	}
 
-	public AnatureBuilder hasStats(IStats stats)
+	public AnatureBuilder withStats(IStats stats)
 	{
 		mAnature.setStats(stats);
 		return this;
@@ -163,7 +163,6 @@ public class AnatureBuilder implements IBuilder<Anature>
 		String typesString = "";
 		String indexNumberString = "";
 		String levelingSpeedString = "";
-		String natureString = "";
 
 		String baseExperienceString = "";
 		String baseHitPointsString = "";
@@ -188,19 +187,18 @@ public class AnatureBuilder implements IBuilder<Anature>
 			{
 				possibleAbilitiesString = results.getString("PossibleAbilities");
 				typesString = results.getString("Types");
-				indexNumberString = results.getString("IndexNum");
-				levelingSpeedString = results.getString("LevelingSpeedString");
-				natureString = results.getString("Nature");
+				indexNumberString = results.getString("IndexNumber");
+				levelingSpeedString = results.getString("LevelingSpeed");
 
 				baseExperienceString = results.getString("BaseExperience");
-				baseHitPointsString = results.getString("BaseHp");
+				baseHitPointsString = results.getString("BaseHitPoints");
 				baseAttackString = results.getString("BaseAttack");
 				baseDefenseString = results.getString("BaseDefense");
 				baseSpecialAttackString = results.getString("BaseSpecialAttack");
 				baseSpecialDefenseString = results.getString("BaseSpecialDefense");
 				baseSpeedString = results.getString("BaseSpeed");
-				baseAccuracyString = results.getString("Accuracy");
-				baseEvasionString = results.getString("Evasion");
+				baseAccuracyString = results.getString("BaseAccuracy");
+				baseEvasionString = results.getString("BaseEvasion");
 			}
 
 			results.close();
@@ -236,9 +234,9 @@ public class AnatureBuilder implements IBuilder<Anature>
 				.withMoveSet(generateMoveSet(species, level))
 				.withAbility(generateAbility(possibleAbilitiesString))
 				.withStatus(StatusEffects.None)
-				.hasStats(new StatsBuilder().atLevel(level)
+				.withStats(new StatsBuilder().atLevel(level)
 						.withLevlingSpeed(generateLevelingSpeed(levelingSpeedString))
-						.withNature(generateNature(natureString))
+						.withNature(generateRandomNature())
 						.withBaseExperience(baseExperience)
 						.withBaseHitPoints(baseHitPoints)
 						.withBaseAttack(baseAttack)
@@ -394,9 +392,11 @@ public class AnatureBuilder implements IBuilder<Anature>
 		return LevelingSpeed.valueOf(levelingSpeedString);
 	}
 
-	private static Natures generateNature(String natureString)
+	private static Natures generateRandomNature()
 	{
-		return Natures.valueOf(natureString);
+		ArrayList<Natures> natureList = Natures.getNatureList();
+
+		return natureList.get(randomObject.nextInt(natureList.size()));
 	}
 
 	private static boolean generateIsShiny()

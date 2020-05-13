@@ -12,7 +12,6 @@ import application.enums.Gender;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
-import application.enums.stats.Natures;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
@@ -319,9 +318,14 @@ class Anature implements IAnature
 	{
 		int newCurrentHitPoints = getStats().getCurrentHitPoints() - damage;
 
-		if(newCurrentHitPoints < 0)
+		if(newCurrentHitPoints > 0)
 		{
 			getStats().setCurrentHitPoints(newCurrentHitPoints);
+		}
+		
+		else
+		{
+			getStats().setCurrentHitPoints(0);
 		}
 	}
 

@@ -12,5 +12,6 @@ public interface IMove
 	public boolean doesDamage();
 	public boolean isPhysicalAttack();
 	public int getTotalMovePoints();
+	public int getMovePower();
 	public double getAccuracy();
 }

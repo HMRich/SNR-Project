@@ -86,6 +86,12 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseExperience\" was below 0.");
 		}
+		
+		if(baseExperience > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseExperience\" was above 255.");
+		}
+		
 		mBaseExperience = baseExperience;
 	}
 
@@ -96,6 +102,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseHitPoints\" was below 0.");
 		}
 
+		if(baseHitPoints > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseHitPoints\" was above 255.");
+		}
+		
 		mBaseHitPoints = baseHitPoints;
 	}
 
@@ -106,6 +117,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseAttack\" was below 0.");
 		}
 
+		if(baseAttack > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseAttack\" was above 255.");
+		}
+		
 		mBaseAttack = baseAttack;
 	}
 
@@ -116,6 +132,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseDefense\" was below 0.");
 		}
 
+		if(baseDefense > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseDefense\" was above 255.");
+		}
+		
 		mBaseDefense = baseDefense;
 	}
 
@@ -126,6 +147,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseSpecialAttack\" was below 0.");
 		}
 
+		if(baseSpecialAttack > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseSpecialAttack\" was above 255.");
+		}
+		
 		mBaseSpecialAttack = baseSpecialAttack;
 	}
 
@@ -136,6 +162,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseSpecialDefense\" was below 0.");
 		}
 
+		if(baseSpecialDefense > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseSpecialDefense\" was above 255.");
+		}
+		
 		mBaseSpecialDefense = baseSpecialDefense;
 	}
 
@@ -146,6 +177,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseSpeed\" was below 0.");
 		}
 
+		if(baseSpeed > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseSpeed\" was above 255.");
+		}
+		
 		mBaseSpeed = baseSpeed;
 	}
 
@@ -156,6 +192,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseAccuracy\" was below 0.");
 		}
 
+		if(baseAccuracy > 100)
+		{
+			throw new IllegalArgumentException("Passed value \"baseAccuracy\" was above 100.");
+		}
+		
 		mBaseAccuracy = baseAccuracy;
 	}
 
@@ -166,6 +207,11 @@ class StatsBase extends StatsIV implements IStatsBase
 			throw new IllegalArgumentException("Passed value \"baseEvasion\" was below 0.");
 		}
 
+		if(baseEvasion > 100)
+		{
+			throw new IllegalArgumentException("Passed value \"baseEvasion\" was above 100.");
+		}
+		
 		mBaseEvasion = baseEvasion;
 	}
 

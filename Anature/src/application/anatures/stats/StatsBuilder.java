@@ -137,6 +137,8 @@ public class StatsBuilder implements IBuilder<IStats>
 			mStatsCore.levelUpStats();
 
 			IStats statsToReturn = mStatsCore;
+			
+			statsToReturn.setCurrentHitPoints(statsToReturn.getTotalHitPoints());
 
 			generateNewStatsCore();
 

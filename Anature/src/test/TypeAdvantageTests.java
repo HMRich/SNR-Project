@@ -20,6 +20,7 @@ import application.TypeAdvantage;
 import application.anatures.AnatureBuilder;
 import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.NullMoveSet;
+import application.anatures.stats.StatsBuilder;
 import application.enums.AttackEffectiveness;
 import application.enums.Gender;
 import application.enums.Species;
@@ -54,16 +55,22 @@ class TypeAdvantageTests
 				.withAbility(NullAbility.getNullAbility())
 				.withStatus(StatusEffects.None)
 				.withIndexNumber(Integer.MAX_VALUE)
-				.withLevel(0)
-				.withCurrentExperiencePoints(0)
-				.withTotalHitPoints(100)
-				.withCurrentHitPoints(100)
-				.withAttack(10)
-				.withDefense(10)
-				.withSpecialAttack(10)
-				.withSpecialDefense(10)
-				.withSpeed(10)
-				.withAccuracy(10)
+				.withStats(new StatsBuilder().withBaseExperience(100)
+						.withBaseHitPoints(100)
+						.withBaseAttack(100)
+						.withBaseDefense(100)
+						.withBaseSpecialAttack(100)
+						.withBaseSpecialDefense(100)
+						.withBaseSpeed(100)
+						.withBaseAccuracy(100)
+						.withBaseEvasion(100)
+						.withIVHitPoints(0)
+						.withIVAttack(0)
+						.withIVDefense(0)
+						.withIVSpecialAttack(0)
+						.withIVSpecialDefense(0)
+						.withIVSpeed(0)
+						.create())
 				.create();
 	}
 

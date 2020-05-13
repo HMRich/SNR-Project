@@ -37,7 +37,8 @@ public class MovePool
 						.doesDamage(false)
 						.isPhysicalAttack(false)
 						.withTotalMovePoints(25)
-						.withAccuracy(1)
+						.withMovePower(0)
+						.withAccuracy(100)
 						.create());
 
 		mMoves.put(MoveIds.Double_Punch,
@@ -46,7 +47,8 @@ public class MovePool
 						.doesDamage(true)
 						.isPhysicalAttack(true)
 						.withTotalMovePoints(20)
-						.withAccuracy(1)
+						.withMovePower(35)
+						.withAccuracy(75)
 						.create());
 
 		mMoves.put(MoveIds.Flamethrower,
@@ -55,7 +57,8 @@ public class MovePool
 						.doesDamage(true)
 						.isPhysicalAttack(false)
 						.withTotalMovePoints(10)
-						.withAccuracy(.75)
+						.withMovePower(80)
+						.withAccuracy(75)
 						.create());
 
 		mMoves.put(MoveIds.Pocket_Sand,
@@ -64,7 +67,8 @@ public class MovePool
 						.doesDamage(false)
 						.isPhysicalAttack(false)
 						.withTotalMovePoints(25)
-						.withAccuracy(1)
+						.withMovePower(0)
+						.withAccuracy(100)
 						.create());
 
 		mMoves.put(MoveIds.Skip_Turn,
@@ -73,7 +77,8 @@ public class MovePool
 						.doesDamage(false)
 						.isPhysicalAttack(false)
 						.withTotalMovePoints(0)
-						.withAccuracy(1)
+						.withMovePower(0)
+						.withAccuracy(100)
 						.create());
 
 		// TODO Flail will eventually run out of Move Points... almost impossible but
@@ -84,7 +89,8 @@ public class MovePool
 						.doesDamage(true)
 						.isPhysicalAttack(true)
 						.withTotalMovePoints(Integer.MAX_VALUE)
-						.withAccuracy(1)
+						.withMovePower(50)
+						.withAccuracy(100)
 						.create());
 
 		mMoves.put(MoveIds.Tackle,
@@ -93,7 +99,8 @@ public class MovePool
 						.doesDamage(true)
 						.isPhysicalAttack(true)
 						.withTotalMovePoints(25)
-						.withAccuracy(1)
+						.withMovePower(60)
+						.withAccuracy(85)
 						.create());
 	}
 }

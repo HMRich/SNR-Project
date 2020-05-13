@@ -8,7 +8,8 @@ public class Flail extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		source.takeDamage(10);
-		target.takeDamage(20);
+		int selfDamage = source.getStats().getTotalHitPoints() / 4;
+		source.takeDamage(selfDamage);
+		target.takeDamage(calculateDamage(source, target, false));
 	}
 }

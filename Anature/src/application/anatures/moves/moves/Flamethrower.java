@@ -6,12 +6,10 @@ import application.interfaces.IAnature;
 
 public class Flamethrower extends Move
 {
-	private static int mDamageDone = 50;
-
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.takeDamage(mDamageDone);
+		target.takeDamage(calculateDamage(source, target, false));
 		target.updateStatus(StatusEffects.Burn);
 	}
 }

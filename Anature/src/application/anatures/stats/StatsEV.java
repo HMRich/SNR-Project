@@ -22,6 +22,100 @@ class StatsEV extends StatsLevel implements IStatsEV
 	}
 
 	/*
+	 * PACKAGE SETS
+	 */
+
+	void setEVHitPoints(int EVHitPoints)
+	{
+		if(EVHitPoints < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"EVHitPoints\" was below 0.");
+		}
+
+		if(EVHitPoints > 252)
+		{
+			throw new IllegalArgumentException("Passed value \"EVHitPoints\" was above 255.");
+		}
+
+		mEVHitPoints = EVHitPoints;
+	}
+
+	void setEVAttack(int EVAttack)
+	{
+		if(EVAttack < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"EVAttack\" was below 0.");
+		}
+
+		if(EVAttack > 252)
+		{
+			throw new IllegalArgumentException("Passed value \"EVAttack\" was above 255.");
+		}
+
+		mEVAttack = EVAttack;
+	}
+
+	void setEVDefense(int EVDefense)
+	{
+		if(EVDefense < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"EVDefense\" was below 0.");
+		}
+
+		if(EVDefense > 252)
+		{
+			throw new IllegalArgumentException("Passed value \"EVDefense\" was above 255.");
+		}
+
+		mEVDefense = EVDefense;
+	}
+
+	void setEVSpecialAttack(int EVSpecialAttack)
+	{
+		if(EVSpecialAttack < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"EVSpecialAttack\" was below 0.");
+		}
+
+		if(EVSpecialAttack > 252)
+		{
+			throw new IllegalArgumentException("Passed value \"EVSpecialAttack\" was above 255.");
+		}
+
+		mEVSpecialAttack = EVSpecialAttack;
+	}
+
+	void setEVSpecialDefense(int EVSpecialDefense)
+	{
+		if(EVSpecialDefense < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"EVSpecialDefense\" was below 0.");
+		}
+
+		if(EVSpecialDefense > 252)
+		{
+			throw new IllegalArgumentException("Passed value \"EVSpecialDefense\" was above 255.");
+		}
+
+		mEVSpecialDefense = EVSpecialDefense;
+	}
+
+	void setEVSpeed(int EVSpeed)
+	{
+		if(EVSpeed < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"EVSpeed\" was below 0.");
+		}
+
+		if(EVSpeed > 252)
+		{
+			throw new IllegalArgumentException("Passed value \"EVSpeed\" was above 255.");
+		}
+
+		mEVSpeed = EVSpeed;
+	}
+
+	/*
 	 * PACKAGE METHODS
 	 */
 
