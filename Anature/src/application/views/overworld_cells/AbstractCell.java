@@ -1,9 +1,10 @@
 package application.views.overworld_cells;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import application.LoggerStartUp;
-import application.animations.BlinkingAnimation;
+import application.controllers.DialogueBoxController;
 import application.controllers.LoggerController;
 import application.controllers.ShoppingMenuController;
 import application.enums.Direction;
@@ -26,11 +27,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -42,7 +43,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 public abstract class AbstractCell
 {
@@ -160,53 +160,29 @@ public abstract class AbstractCell
 	
 	private void setUpDialogueBox(BorderPane cell)
 	{
-		ImageView dialogueBox = new ImageView(
-				new Image(getClass().getResource("/resources/images/overworld/dialogue/Blue_Dialogue_Box.png").toExternalForm(), 1000.0, 1000.0, true, false));
-		
-		dialogueBox.fitWidthProperty().bind(mScene.widthProperty().divide(1.022));
-		dialogueBox.fitHeightProperty().bind(mScene.heightProperty().divide(4.5569));
-		dialogueBox.layoutXProperty().bind(mScene.widthProperty().divide(91.428));
-		dialogueBox.layoutYProperty().bind(mScene.heightProperty().divide(1.306));
-		dialogueBox.visibleProperty().bind(mShowDialogueProperty);
+		try
+		{
+			Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), 75);
+			ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
 
-		ImageView dialogueClickIndicator = new ImageView(
-				new Image(getClass().getResource("/resources/images/battle/BattleScreen_ClickIndicator.png").toExternalForm(), 1000.0, 1000.0, true, false));
-		
-		dialogueClickIndicator.fitWidthProperty().bind(mScene.widthProperty().divide(35.55));
-		dialogueClickIndicator.fitHeightProperty().bind(mScene.heightProperty().divide(25.714));
-		dialogueClickIndicator.layoutXProperty().bind(mScene.widthProperty().divide(1.0987));
-		dialogueClickIndicator.layoutYProperty().bind(mScene.heightProperty().divide(1.0746));
-		dialogueClickIndicator.visibleProperty().bind(mShowDialogueProperty);
-		
-		BlinkingAnimation blinkAnimation = new BlinkingAnimation(dialogueClickIndicator, Duration.seconds(1.5));
-		blinkAnimation.play();
-		
-		TextArea dialogueTxt = new TextArea();
-		dialogueTxt.setEditable(false);
-		dialogueTxt.setWrapText(true);
-		dialogueTxt.setFocusTraversable(false);
-		
-		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), 75);
-		ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
+			mScene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
+					.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
 
-		mScene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
-
-		mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
+			mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
+					.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/views/elements/DialogueBox.fxml"));
+			Parent root = loader.load();
+			
+			DialogueBoxController controller = loader.getController();
+			controller.updateBinds(mScene, mBackground, mShowDialogueProperty, fontProperty, mDialogueTxtProperty);
+			cell.getChildren().add(root);
+		}
 		
-		dialogueTxt.getStylesheets().add("/resources/css/BattleStyle.css");
-		dialogueTxt.textProperty().bind(mDialogueTxtProperty);
-		dialogueTxt.visibleProperty().bind(dialogueBox.visibleProperty());
-		dialogueTxt.fontProperty().bind(fontProperty);
-		
-		dialogueTxt.prefWidthProperty().bind(mScene.widthProperty().divide(1.14));
-		dialogueTxt.prefHeightProperty().bind(mScene.heightProperty().divide(5.29));
-		dialogueTxt.layoutXProperty().bind(mScene.widthProperty().divide(16.202));
-		dialogueTxt.layoutYProperty().bind(mScene.heightProperty().divide(1.28));
-		
-		Pane overlay = new Pane(dialogueBox, dialogueTxt, dialogueClickIndicator);
-		cell.getChildren().add(overlay);
+		catch(IOException e)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "IOException when trying to load Dialogue Box.\n" + e.getStackTrace());
+		}
 	}
 	
 	private void setUpShoppingMenu(BorderPane cell)
