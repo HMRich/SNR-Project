@@ -3,7 +3,7 @@ package application.pools;
 import java.util.HashMap;
 
 import application.enums.AiIds;
-import application.enums.AttackEffectiveness;
+import application.enums.TypeEffectiveness;
 import application.interfaces.IAI;
 import application.trainers.ai.AIBuilder;
 
@@ -35,21 +35,21 @@ public class AiPool
 
 	private static void generateAis()
 	{
-		mAis = new HashMap<AiIds, IAI>();
+		mAis = new HashMap<AiIds, IAI>(); 
 
 		mAis.put(AiIds.Balanced, new AIBuilder().withHealthThreshold(.35)
-				.withMoveThreshold(AttackEffectiveness.NotEffective)
-				.withSwitchThreshold(AttackEffectiveness.NotEffective)
+				.withMoveThreshold(TypeEffectiveness.NotEffective)
+				.withSwitchThreshold(TypeEffectiveness.NotEffective)
 				.create());
 
 		mAis.put(AiIds.Dumb, new AIBuilder().withHealthThreshold(.05)
-				.withMoveThreshold(AttackEffectiveness.NoEffect)
-				.withSwitchThreshold(AttackEffectiveness.NoEffect)
+				.withMoveThreshold(TypeEffectiveness.NoEffect)
+				.withSwitchThreshold(TypeEffectiveness.NoEffect)
 				.create());
 
 		mAis.put(AiIds.Smart, new AIBuilder().withHealthThreshold(0.25)
-				.withMoveThreshold(AttackEffectiveness.SuperEffective)
-				.withSwitchThreshold(AttackEffectiveness.SuperEffective)
+				.withMoveThreshold(TypeEffectiveness.ExtremelyEffective)
+				.withSwitchThreshold(TypeEffectiveness.ExtremelyEffective)
 				.create());
 	}
 }

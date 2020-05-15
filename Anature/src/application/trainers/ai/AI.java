@@ -3,12 +3,11 @@ package application.trainers.ai;
 import java.util.ArrayList;
 import java.util.Random;
 
-import application.TypeAdvantage;
 import application.anatures.movesets.MoveSet;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
-import application.enums.AttackEffectiveness;
 import application.enums.LoggingTypes;
+import application.enums.TypeEffectiveness;
 import application.interfaces.IAI;
 import application.interfaces.IAnature;
 import application.interfaces.IHealthPotion;
@@ -19,14 +18,14 @@ import application.trainers.ai.choice_objects.AiMoveChoice;
 class AI implements IAI
 {
 	private double mHealthThreshold;
-	private AttackEffectiveness mSwitchThreshold;
-	private AttackEffectiveness mMoveThreshold;
+	private TypeEffectiveness mSwitchThreshold;
+	private TypeEffectiveness mMoveThreshold;
 
 	AI()
 	{
 		mHealthThreshold = -1;
-		mSwitchThreshold = AttackEffectiveness.NoEffect;
-		mMoveThreshold = AttackEffectiveness.NoEffect;
+		mSwitchThreshold = TypeEffectiveness.NotSet;
+		mMoveThreshold = TypeEffectiveness.NotSet;
 	}
 
 	/*
@@ -42,30 +41,28 @@ class AI implements IAI
 		mHealthThreshold = healthThreshold;
 	}
 
-	void setSwitchThreshold(AttackEffectiveness switchThreshold)
+	void setSwitchThreshold(TypeEffectiveness switchThreshold)
 	{
 		if(switchThreshold == null)
 		{
 			throw new IllegalArgumentException("Passed value \"switchThreshold\" was null.");
 		}
 
-		boolean notVaildChoice = switchThreshold.equals(AttackEffectiveness.Error) || switchThreshold.equals(AttackEffectiveness.NotSet);
-		if(notVaildChoice)
+		if(switchThreshold.equals(TypeEffectiveness.NotSet))
 		{
 			throw new IllegalArgumentException("Passed value \"switchThreshold\" needs to be a valid value. Value was " + switchThreshold.toString() + ".");
 		}
 		mSwitchThreshold = switchThreshold;
 	}
 
-	void setMoveThreshold(AttackEffectiveness moveThreshold)
+	void setMoveThreshold(TypeEffectiveness moveThreshold)
 	{
 		if(moveThreshold == null)
 		{
 			throw new IllegalArgumentException("Passed value \"moveThreshold\" was null.");
 		}
 
-		boolean notVaildChoice = moveThreshold.equals(AttackEffectiveness.Error) || moveThreshold.equals(AttackEffectiveness.NotSet);
-		if(notVaildChoice)
+		if(moveThreshold.equals(TypeEffectiveness.NotSet))
 		{
 			throw new IllegalArgumentException("Passed value \"moveThreshold\" needs to be a valid value. Value was " + moveThreshold.toString() + ".");
 		}
@@ -121,7 +118,8 @@ class AI implements IAI
 		{
 			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId())
 					.getHealAmount();
-			double healPercent = itemHealAmount / currentAnature.getStats().getTotalHitPoints();
+			double healPercent = itemHealAmount / currentAnature.getStats()
+					.getTotalHitPoints();
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);
@@ -219,7 +217,7 @@ class AI implements IAI
 
 	boolean canCreate()
 	{
-		return mHealthThreshold != -1 && !mSwitchThreshold.equals(AttackEffectiveness.NotSet) && !mMoveThreshold.equals(AttackEffectiveness.NotSet);
+		return mHealthThreshold != -1 && !mSwitchThreshold.equals(TypeEffectiveness.NotSet) && !mMoveThreshold.equals(TypeEffectiveness.NotSet);
 	}
 
 	/*
@@ -233,35 +231,14 @@ class AI implements IAI
 
 	private boolean isAnatureAtThreshold(IAnature currentAnature, IAnature enemyAnature)
 	{
-		AttackEffectiveness anatureEffectiveness = TypeAdvantage.anatureEffectiveness(currentAnature, enemyAnature);
-		return isAtOrAboveThreshold(anatureEffectiveness, mSwitchThreshold);
+		TypeEffectiveness anatureEffectiveness = TypeEffectiveness.typeEffectiveness(currentAnature, enemyAnature);
+		return anatureEffectiveness.isAtOrAboveThreshold(mSwitchThreshold);
 	}
 
 	private boolean moveIsAtThreshold(IMove move, IAnature target)
 	{
-		AttackEffectiveness moveEffectiveness = TypeAdvantage.moveEffectiveness(move, target);
-		return isAtOrAboveThreshold(moveEffectiveness, mMoveThreshold);
-	}
-
-	private boolean isAtOrAboveThreshold(AttackEffectiveness effectiveness, AttackEffectiveness threshold)
-	{
-		switch(threshold)
-		{
-			case NoEffect:
-				return TypeAdvantage.isNoEffect(effectiveness);
-
-			case NotEffective:
-				return TypeAdvantage.isAboveNoEffect(effectiveness);
-
-			case Normal:
-				return TypeAdvantage.isAboveNoEffect(effectiveness);
-
-			case SuperEffective:
-				return TypeAdvantage.isAboveNormal(effectiveness);
-
-			default:
-				return false;
-		}
+		TypeEffectiveness moveEffectiveness = TypeEffectiveness.typeEffectiveness(move, target);
+		return moveEffectiveness.isAtOrAboveThreshold(mMoveThreshold);
 	}
 
 	private boolean hasAnAnatureAtThreshold(ArrayList<IAnature> anatureParty, IAnature currentAnature, IAnature enemyAnature)
@@ -279,20 +256,20 @@ class AI implements IAI
 	private ArrayList<AiMoveChoice> moveChoiceList(IAnature source, IAnature target)
 	{
 		ArrayList<AiMoveChoice> choices = new ArrayList<AiMoveChoice>();
-		AttackEffectiveness moveThreshold = mMoveThreshold;
+		TypeEffectiveness moveThreshold = mMoveThreshold;
 		do
 		{
 			choices = moveChoiceListAtThreshold(source, target, moveThreshold);
 			if(choices == null || choices.isEmpty())
 			{
-				moveThreshold = TypeAdvantage.decrementEffectiveness(moveThreshold);
+				moveThreshold = TypeEffectiveness.decrementEffectiveness(moveThreshold);
 			}
-		} while(!moveThreshold.equals(AttackEffectiveness.NoEffect) && choices.isEmpty());
+		} while(!moveThreshold.equals(TypeEffectiveness.NoEffect) && choices.isEmpty());
 
 		return choices;
 	}
 
-	private ArrayList<AiMoveChoice> moveChoiceListAtThreshold(IAnature source, IAnature target, AttackEffectiveness threshold)
+	private ArrayList<AiMoveChoice> moveChoiceListAtThreshold(IAnature source, IAnature target, TypeEffectiveness threshold)
 	{
 		ArrayList<AiMoveChoice> choices = new ArrayList<AiMoveChoice>();
 

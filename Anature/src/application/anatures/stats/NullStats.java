@@ -1,5 +1,6 @@
 package application.anatures.stats;
 
+import application.enums.TempStatsStages;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.stats.IStats;
@@ -212,45 +213,45 @@ public class NullStats implements IStats
 	}
 
 	@Override
-	public int getTempAttack()
+	public TempStatsStages getTempAttack()
 	{
-		return -1;
+		return TempStatsStages.zero;
 	}
 
 	@Override
-	public int getTempDefense()
+	public TempStatsStages getTempDefense()
 	{
-		return -1;
+		return TempStatsStages.zero;
 	}
 
 	@Override
-	public int getTempSpecialAttack()
+	public TempStatsStages getTempSpecialAttack()
 	{
-		return -1;
+		return TempStatsStages.zero;
 	}
 
 	@Override
-	public int getTempSpecialDefense()
+	public TempStatsStages getTempSpecialDefense()
 	{
-		return -1;
+		return TempStatsStages.zero;
 	}
 
 	@Override
-	public int getTempSpeed()
+	public TempStatsStages getTempSpeed()
 	{
-		return -1;
+		return TempStatsStages.zero;
 	}
 
 	@Override
-	public int getTempAccuracy()
+	public TempStatsStages getTempAccuracy()
 	{
-		return -1;
+		return TempStatsStages.zero;
 	}
 
 	@Override
-	public int getTempEvasion()
+	public TempStatsStages getTempEvasion()
 	{
-		return -1;
+		return TempStatsStages.zero;
 	}
 
 	@Override
@@ -344,48 +345,6 @@ public class NullStats implements IStats
 	}
 
 	@Override
-	public void adjustAttack(double attackAdjustment)
-	{
-
-	}
-
-	@Override
-	public void adjustDefense(double attackAdjustment)
-	{
-
-	}
-
-	@Override
-	public void adjustSpecialAttack(double attackAdjustment)
-	{
-
-	}
-
-	@Override
-	public void adjustSpecialDefense(double attackAdjustment)
-	{
-
-	}
-
-	@Override
-	public void adjustSpeed(double attackAdjustment)
-	{
-
-	}
-
-	@Override
-	public void adjustAccuracy(double attackAdjustment)
-	{
-
-	}
-
-	@Override
-	public void adjustEvasion(double attackAdjustment)
-	{
-
-	}
-
-	@Override
 	public int getTotalExperiencePoints()
 	{
 		return -1;
@@ -401,6 +360,90 @@ public class NullStats implements IStats
 	public int getRequiredExperience()
 	{
 		return -1;
+	}
+
+	@Override
+	public void increaseTempAttack()
+	{
+
+	}
+
+	@Override
+	public void decreaseTempAttack()
+	{
+
+	}
+
+	@Override
+	public void increaseTempDefense()
+	{
+
+	}
+
+	@Override
+	public void decreaseTempDefense()
+	{
+
+	}
+
+	@Override
+	public void increaseTempSpecialAttack()
+	{
+
+	}
+
+	@Override
+	public void decreaseTempSpecialAttack()
+	{
+
+	}
+
+	@Override
+	public void increaseTempSpecialDefense()
+	{
+
+	}
+
+	@Override
+	public void decreaseTempSpecialDefense()
+	{
+
+	}
+
+	@Override
+	public void increaseTempSpeed()
+	{
+
+	}
+
+	@Override
+	public void decreaseTempSpeed()
+	{
+
+	}
+
+	@Override
+	public void increaseTempAccuracy()
+	{
+
+	}
+
+	@Override
+	public void decreaseTempAccuracy()
+	{
+
+	}
+
+	@Override
+	public void increaseTempEvaion()
+	{
+
+	}
+
+	@Override
+	public void decreaseTempEvaion()
+	{
+
 	}
 
 }

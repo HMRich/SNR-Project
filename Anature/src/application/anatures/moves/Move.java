@@ -4,6 +4,7 @@ import java.util.Random;
 
 import application.enums.MoveIds;
 import application.enums.Type;
+import application.enums.TypeEffectiveness;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
@@ -180,7 +181,7 @@ public class Move implements IMove
 		double movePowerCalculation = isSpecialMove ? (double) getMovePower() / (double) targetStats.getTotalSpecialDefense() : (double) getMovePower() / (double) targetStats.getTotalDefense();
 		double typeMatchCalculation = source.getTypes()
 				.contains(getType()) ? 1.5 : 1.0;
-		double typeAdvantageCalculation = 1; // TODO Make the stupid new Type Advantage Enum class
+		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectivenes();
 		double randomNumberCalculation = randomObject.nextInt(16) + 85;
 
 		return (int) ( (((levelCalculation * attackStatCalculation * movePowerCalculation) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation

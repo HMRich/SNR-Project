@@ -1,28 +1,59 @@
 package application.interfaces.stats;
 
+import application.enums.TempStatsStages;
+
 public interface IStatsTemp
 {
 	/*
 	 * PUBLIC GETS
 	 */
-	
-	public int getTempAttack();
 
-	public int getTempDefense();
+	public TempStatsStages getTempAttack();
 
-	public int getTempSpecialAttack();
+	public TempStatsStages getTempDefense();
 
-	public int getTempSpecialDefense();
+	public TempStatsStages getTempSpecialAttack();
 
-	public int getTempSpeed();
+	public TempStatsStages getTempSpecialDefense();
 
-	public int getTempAccuracy();
+	public TempStatsStages getTempSpeed();
 
-	public int getTempEvasion();
-	
+	public TempStatsStages getTempAccuracy();
+
+	public TempStatsStages getTempEvasion();
+
 	/*
 	 * PUBLIC METHODS
 	 */
-	
+
 	public void resetTempStats();
+
+	public void increaseTempAttack();
+
+	public void decreaseTempAttack();
+
+	public void increaseTempDefense();
+
+	public void decreaseTempDefense();
+
+	public void increaseTempSpecialAttack();
+
+	public void decreaseTempSpecialAttack();
+
+	public void increaseTempSpecialDefense();
+
+	public void decreaseTempSpecialDefense();
+
+	public void increaseTempSpeed();
+
+	public void decreaseTempSpeed();
+
+	public void increaseTempAccuracy();
+
+	public void decreaseTempAccuracy();
+
+	public void increaseTempEvaion();
+
+	public void decreaseTempEvaion();
+
 }

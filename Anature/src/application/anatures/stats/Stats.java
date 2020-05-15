@@ -105,20 +105,20 @@ class Stats extends StatsBase implements IStats
 		if(getNature().getDecreasedStat()
 				.equals(NatureStats.Attack))
 		{
-			int calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
+			double calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
 			calculatedAttack = calculatedAttack + (int) (calculatedAttack * -getNature().getModifier());
-			return calculatedAttack + getTempAttack();
+			return (int) ( calculatedAttack * getTempAttack().getModifier() );
 		}
 
 		else if(getNature().getIncreasedStat()
 				.equals(NatureStats.Attack))
 		{
-			int calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
+			double calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
 			calculatedAttack = calculatedAttack + (int) (calculatedAttack * getNature().getModifier());
-			return calculatedAttack + getTempAttack();
+			return (int) (calculatedAttack * getTempAttack().getModifier());
 		}
 
-		return getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack() + getTempAttack();
+		return (int) ( (getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack()) * getTempAttack().getModifier() );
 	}
 
 	public int getTotalDefense()
@@ -126,20 +126,20 @@ class Stats extends StatsBase implements IStats
 		if(getNature().getDecreasedStat()
 				.equals(NatureStats.Defense))
 		{
-			int calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
+			double calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
 			calculatedDefense = calculatedDefense + (int) (calculatedDefense * -getNature().getModifier());
-			return calculatedDefense + getTempDefense();
+			return (int) (calculatedDefense * getTempDefense().getModifier());
 		}
 
 		else if(getNature().getIncreasedStat()
 				.equals(NatureStats.Defense))
 		{
-			int calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
+			double calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
 			calculatedDefense = calculatedDefense + (int) (calculatedDefense * getNature().getModifier());
-			return calculatedDefense + getTempDefense();
+			return (int) (calculatedDefense * getTempDefense().getModifier());
 		}
 
-		return getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense() + getTempDefense();
+		return (int) ( (getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense()) * getTempDefense().getModifier());
 	}
 
 	public int getTotalSpecialAttack()
@@ -147,20 +147,20 @@ class Stats extends StatsBase implements IStats
 		if(getNature().getDecreasedStat()
 				.equals(NatureStats.SpecialAttack))
 		{
-			int calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
+			double calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
 			calculatedSpecialAttack = calculatedSpecialAttack + (int) (calculatedSpecialAttack * -getNature().getModifier());
-			return calculatedSpecialAttack + getTempSpecialAttack();
+			return (int) (calculatedSpecialAttack * getTempSpecialAttack().getModifier());
 		}
 
 		else if(getNature().getIncreasedStat()
 				.equals(NatureStats.SpecialAttack))
 		{
-			int calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
+			double calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
 			calculatedSpecialAttack = calculatedSpecialAttack + (int) (calculatedSpecialAttack * getNature().getModifier());
-			return calculatedSpecialAttack + getTempSpecialAttack();
+			return (int) (calculatedSpecialAttack * getTempSpecialAttack().getModifier());
 		}
 
-		return getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack() + getTempSpecialAttack();
+		return (int) ( (getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack()) * getTempSpecialAttack().getModifier());
 	}
 
 	public int getTotalSpecialDefense()
@@ -168,20 +168,20 @@ class Stats extends StatsBase implements IStats
 		if(getNature().getDecreasedStat()
 				.equals(NatureStats.SpecialDefense))
 		{
-			int calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
+			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
 			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * -getNature().getModifier());
-			return calculatedSpecialDefense + getTempSpecialDefense();
+			return (int) (calculatedSpecialDefense * getTempSpecialDefense().getModifier());
 		}
 
 		else if(getNature().getIncreasedStat()
 				.equals(NatureStats.SpecialDefense))
 		{
-			int calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
+			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
 			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * getNature().getModifier());
-			return calculatedSpecialDefense + getTempSpecialDefense();
+			return (int) (calculatedSpecialDefense * getTempSpecialDefense().getModifier());
 		}
 
-		return getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense() + getTempSpecialDefense();
+		return (int) ( (getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense()) * getTempSpecialDefense().getModifier());
 	}
 
 	public int getTotalSpeed()
@@ -189,30 +189,30 @@ class Stats extends StatsBase implements IStats
 		if(getNature().getDecreasedStat()
 				.equals(NatureStats.Speed))
 		{
-			int calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
+			double calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
 			calculatedSpeed = calculatedSpeed + (int) (calculatedSpeed * -getNature().getModifier());
-			return calculatedSpeed + getTempSpeed();
+			return (int) (calculatedSpeed * getTempSpeed().getModifier());
 		}
 
 		else if(getNature().getIncreasedStat()
 				.equals(NatureStats.Speed))
 		{
-			int calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
+			double calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
 			calculatedSpeed = calculatedSpeed + (int) (calculatedSpeed * -getNature().getModifier());
-			return calculatedSpeed + getTempSpeed();
+			return (int) (calculatedSpeed * getTempSpeed().getModifier());
 		}
 
-		return getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed() + getTempSpeed();
+		return (int) ( (getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed()) * getTempSpeed().getModifier());
 	}
 
 	public int getTotalAccuracy()
 	{
-		return getBaseAccuracy() + getTempAccuracy();
+		return (int) (getBaseAccuracy() * getTempAccuracy().getModifier());
 	}
 
 	public int getTotalEvasion()
 	{
-		return getBaseEvasion() + getTempEvasion();
+		return (int) (getBaseEvasion() * getTempEvasion().getModifier());
 	}
 
 	/*
@@ -258,125 +258,6 @@ class Stats extends StatsBase implements IStats
 	public int getRequiredExperience()
 	{
 		return requiredExperienceForLevel(getLevel() + 1) - requiredExperienceForLevel(getLevel());
-	}
-
-	public void adjustAttack(double attackAdjustment)
-	{
-		if(attackAdjustment < -1 || attackAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
-		}
-
-		if(attackAdjustment > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
-		}
-
-		int adjustment = (int) (attackAdjustment * getTotalAttack());
-
-		adjustTempAttack(adjustment);
-	}
-
-	public void adjustDefense(double adjustmentPercentage)
-	{
-		if(adjustmentPercentage < -1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
-		}
-
-		if(adjustmentPercentage > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
-		}
-
-		int adjustment = (int) (adjustmentPercentage * getTotalDefense());
-
-		adjustTempDefense(adjustment);
-	}
-
-	public void adjustSpecialAttack(double adjustmentPercentage)
-	{
-		if(adjustmentPercentage < -1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
-		}
-
-		if(adjustmentPercentage > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
-		}
-
-		int adjustment = (int) (adjustmentPercentage * getTotalSpecialAttack());
-
-		adjustTempSpecialAttack(adjustment);
-	}
-
-	public void adjustSpecialDefense(double adjustmentPercentage)
-	{
-		if(adjustmentPercentage < -1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
-		}
-
-		if(adjustmentPercentage > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
-		}
-
-		int adjustment = (int) (adjustmentPercentage * getTotalSpecialDefense());
-
-		adjustTempSpecialDefense(adjustment);
-	}
-
-	public void adjustSpeed(double adjustmentPercentage)
-	{
-		if(adjustmentPercentage < -1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
-		}
-
-		if(adjustmentPercentage > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
-		}
-
-		int adjustment = (int) (adjustmentPercentage * getTotalSpeed());
-
-		adjustTempSpeed(adjustment);
-	}
-
-	public void adjustAccuracy(double adjustmentPercentage)
-	{
-		if(adjustmentPercentage < -1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
-		}
-
-		if(adjustmentPercentage > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
-		}
-
-		int adjustment = (int) (adjustmentPercentage * getTotalAccuracy());
-
-		adjustTempAccuracy(adjustment);
-	}
-
-	public void adjustEvasion(double adjustmentPercentage)
-	{
-		if(adjustmentPercentage < -1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was below -1.");
-		}
-
-		if(adjustmentPercentage > 1)
-		{
-			throw new IllegalArgumentException("Passed value \"adjustmentPercentage\" was above 1.");
-		}
-
-		int adjustment = (int) (adjustmentPercentage * getTotalEvasion());
-
-		adjustTempEvaion(adjustment);
 	}
 
 	/*

@@ -50,18 +50,4 @@ public interface IStats extends IStatsBase
 	public int getExperienceProgression();
 	
 	public int getRequiredExperience();
-	
-	public void adjustAttack(double attackAdjustment);
-	
-	public void adjustDefense(double attackAdjustment);
-	
-	public void adjustSpecialAttack(double attackAdjustment);
-	
-	public void adjustSpecialDefense(double attackAdjustment);
-	
-	public void adjustSpeed(double attackAdjustment);
-	
-	public void adjustAccuracy(double attackAdjustment);
-	
-	public void adjustEvasion(double attackAdjustment);
 }

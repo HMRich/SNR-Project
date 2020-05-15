@@ -8,7 +8,7 @@ public class PocketSand extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.getStats().adjustAccuracy(-0.1);
+		target.getStats().decreaseTempAccuracy();
 	}
 
 }

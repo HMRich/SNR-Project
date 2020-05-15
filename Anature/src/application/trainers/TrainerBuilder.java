@@ -11,12 +11,12 @@ import java.util.Random;
 import application.DatabaseConnection;
 import application.anatures.AnatureBuilder;
 import application.controllers.LoggerController;
-import application.enums.AttackEffectiveness;
 import application.enums.DatabaseType;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
+import application.enums.TypeEffectiveness;
 import application.interfaces.IAI;
 import application.interfaces.IAnature;
 import application.interfaces.IBuilder;
@@ -221,8 +221,8 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 	private static IAI parseAi(String aiHealthThreshold, String aiSwitchThreshold, String aiMoveThreshold)
 	{
 		double healthThreshold = Double.parseDouble(aiHealthThreshold);
-		AttackEffectiveness switchThreshold = AttackEffectiveness.valueOf(aiSwitchThreshold);
-		AttackEffectiveness moveThreshold = AttackEffectiveness.valueOf(aiMoveThreshold);
+		TypeEffectiveness switchThreshold = TypeEffectiveness.valueOf(aiSwitchThreshold);
+		TypeEffectiveness moveThreshold = TypeEffectiveness.valueOf(aiMoveThreshold);
 
 		return new AIBuilder().withHealthThreshold(healthThreshold)
 				.withSwitchThreshold(switchThreshold)
