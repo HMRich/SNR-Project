@@ -1,5 +1,6 @@
 package application.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ import application.enums.Gender;
 import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
+import application.enums.Type;
 import application.interfaces.AiChoiceObject;
 import application.interfaces.IAnature;
 import application.interfaces.IItem;
@@ -1177,7 +1179,31 @@ public class BattleController
 		mSwitchSelectedAbilityName.setText(selected.getAbility().getAbilityName());
 		mSwitchSelectedAbilityDesc.setText(selected.getAbility().getAbilityDescription());
 
-		// TODO Add different type imgs
+		mSwitchSelectedTypeOne.setImage(getTypeIcon(selected.getPrimaryType()));
+		
+		if(selected.getSecondaryType() != Type.NotSet)
+		{
+			mSwitchSelectedTypeTwo.setImage(getTypeIcon(selected.getSecondaryType()));
+		}
+		
+		else
+		{
+			mSwitchSelectedTypeTwo.setImage(null);
+		}
+	}
+
+	private Image getTypeIcon(Type type)
+	{
+		String path = getClass().getResource("/resources/images/types/" + type + "_Type.png").toExternalForm().replace("file:/", "");
+		File toCheck = new File(path);
+		
+		if(!toCheck.exists())
+		{
+			path = getClass().getResource("/resources/images/types/Normal_Type.png").toExternalForm().replace("file:/", "");
+			toCheck = new File(path);
+		}
+		
+		return new Image(toCheck.toURI().toString(), 100.0, 100.0, true, false);
 	}
 
 	private void updateSwitchSlot(IAnature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)

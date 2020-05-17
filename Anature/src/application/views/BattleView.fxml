@@ -208,12 +208,12 @@
             <Text fx:id="mSwitchSelectedNextXp" layoutX="408.0" layoutY="645.0" strokeType="OUTSIDE" strokeWidth="0.0" text="999" wrappingWidth="239.13671875" />
             <ImageView fx:id="mSwitchSelectedTypeOne" fitHeight="43.0" fitWidth="121.0" layoutX="298.0" layoutY="657.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../resources/images/battle/switching/Switch_Type_Normal.png" />
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
                </image>
             </ImageView>
             <ImageView fx:id="mSwitchSelectedTypeTwo" fitHeight="43.0" fitWidth="121.0" layoutX="428.0" layoutY="657.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../resources/images/battle/switching/Switch_Type_Normal.png" />
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
                </image>
             </ImageView>
             <Text fx:id="mSwitchPageTxt" layoutX="416.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Page 1" wrappingWidth="182.13671875" />
