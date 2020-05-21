@@ -442,6 +442,8 @@ public class BattleController
 			{
 				int experienceToEarn = mFightManager.getPlayerAnature().getStats().getRequiredExperience() / 10;
 				mFightManager.getPlayerAnature().getStats().addExperience(experienceToEarn);
+			 	
+				mPlayerXp.set(mFightManager.getPlayerAnature().getStats().getExperienceProgression());
 			}
 		});
 	}

@@ -107,7 +107,7 @@ class Stats extends StatsBase implements IStats
 		{
 			double calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
 			calculatedAttack = calculatedAttack + (int) (calculatedAttack * -getNature().getModifier());
-			return (int) ( calculatedAttack * getTempAttack().getModifier() );
+			return (int) (calculatedAttack * getTempAttack().getModifier());
 		}
 
 		else if(getNature().getIncreasedStat()
@@ -118,7 +118,7 @@ class Stats extends StatsBase implements IStats
 			return (int) (calculatedAttack * getTempAttack().getModifier());
 		}
 
-		return (int) ( (getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack()) * getTempAttack().getModifier() );
+		return (int) ((getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack()) * getTempAttack().getModifier());
 	}
 
 	public int getTotalDefense()
@@ -139,7 +139,7 @@ class Stats extends StatsBase implements IStats
 			return (int) (calculatedDefense * getTempDefense().getModifier());
 		}
 
-		return (int) ( (getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense()) * getTempDefense().getModifier());
+		return (int) ((getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense()) * getTempDefense().getModifier());
 	}
 
 	public int getTotalSpecialAttack()
@@ -160,7 +160,8 @@ class Stats extends StatsBase implements IStats
 			return (int) (calculatedSpecialAttack * getTempSpecialAttack().getModifier());
 		}
 
-		return (int) ( (getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack()) * getTempSpecialAttack().getModifier());
+		return (int) ((getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack())
+				* getTempSpecialAttack().getModifier());
 	}
 
 	public int getTotalSpecialDefense()
@@ -181,7 +182,8 @@ class Stats extends StatsBase implements IStats
 			return (int) (calculatedSpecialDefense * getTempSpecialDefense().getModifier());
 		}
 
-		return (int) ( (getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense()) * getTempSpecialDefense().getModifier());
+		return (int) ((getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense())
+				* getTempSpecialDefense().getModifier());
 	}
 
 	public int getTotalSpeed()
@@ -202,7 +204,7 @@ class Stats extends StatsBase implements IStats
 			return (int) (calculatedSpeed * getTempSpeed().getModifier());
 		}
 
-		return (int) ( (getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed()) * getTempSpeed().getModifier());
+		return (int) ((getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed()) * getTempSpeed().getModifier());
 	}
 
 	public int getTotalAccuracy()
@@ -234,6 +236,22 @@ class Stats extends StatsBase implements IStats
 		mCurrentHitPoints = hitPoints;
 	}
 
+	public int healAnature(int healAmount)
+	{
+		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
+		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getTotalHitPoints())
+		{
+			setCurrentHitPoints(getTotalHitPoints());
+		}
+
+		else
+		{
+			setCurrentHitPoints(hitPointsAfterHeal);
+		}
+
+		return getCurrentHitPoints();
+	}
+
 	/*
 	 * PUBLIC METHODS
 	 */
@@ -249,12 +267,12 @@ class Stats extends StatsBase implements IStats
 		while(levelGained())
 			;
 	}
-	
+
 	public int getExperienceProgression()
 	{
 		return getTotalExperiencePoints() - requiredExperienceForLevel(getLevel());
 	}
-	
+
 	public int getRequiredExperience()
 	{
 		return requiredExperienceForLevel(getLevel() + 1) - requiredExperienceForLevel(getLevel());
@@ -317,6 +335,7 @@ class Stats extends StatsBase implements IStats
 		int hitPointsIncrease = (int) ((0.01 * (double) getBaseHitPoints()) + (0.02 * ((double) getIVHitPoints() + (double) getEVHitPoints())));
 		hitPointsIncrease = hitPointsIncrease == 0 ? 1 : hitPointsIncrease;
 		addLevelHitPoints(hitPointsIncrease);
+		healAnature(hitPointsIncrease);
 
 		int attackIncrease = (int) ((0.01 * (double) getBaseAttack()) + (0.02 * ((double) getIVAttack() + (double) getEVAttack())));
 		attackIncrease = attackIncrease == 0 ? 1 : attackIncrease;
@@ -330,7 +349,8 @@ class Stats extends StatsBase implements IStats
 		specialAttackIncrease = specialAttackIncrease == 0 ? 1 : specialAttackIncrease;
 		addLevelSpecialAttack(specialAttackIncrease);
 
-		int specialDefenseIncrease = (int) ((0.01 * (double) getBaseSpecialDefense()) + (0.02 * ((double) getIVSpecialDefnese() + (double) getEVSpecialDefense())));
+		int specialDefenseIncrease = (int) ((0.01 * (double) getBaseSpecialDefense())
+				+ (0.02 * ((double) getIVSpecialDefnese() + (double) getEVSpecialDefense())));
 		specialDefenseIncrease = specialDefenseIncrease == 0 ? 1 : specialDefenseIncrease;
 		addLevelSpecialDefense(specialDefenseIncrease);
 

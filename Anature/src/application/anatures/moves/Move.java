@@ -177,15 +177,16 @@ public class Move implements IMove
 		IStats targetStats = target.getStats();
 
 		double levelCalculation = ((2.0 * (double) sourceStats.getLevel()) / 5.0) + 2.0;
-		double attackStatCalculation = isSpecialMove ? sourceStats.getTotalSpecialAttack() : sourceStats.getTotalAttack();
-		double movePowerCalculation = isSpecialMove ? (double) getMovePower() / (double) targetStats.getTotalSpecialDefense() : (double) getMovePower() / (double) targetStats.getTotalDefense();
+		double movePower = (double) getMovePower();
+		double attackStat = isSpecialMove ? sourceStats.getTotalSpecialAttack() : sourceStats.getTotalAttack();
+		double defenseStat = isSpecialMove ?(double) targetStats.getTotalSpecialDefense() : (double) targetStats.getTotalDefense();
 		double typeMatchCalculation = source.getTypes()
 				.contains(getType()) ? 1.5 : 1.0;
 		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectivenes();
 		double randomNumberCalculation = randomObject.nextInt(16) + 85;
 
-		return (int) ( (((levelCalculation * attackStatCalculation * movePowerCalculation) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation
-				* (randomNumberCalculation / 100) );
+		return (int) ( (((levelCalculation * movePower * attackStat / defenseStat) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation
+				* randomNumberCalculation / 100.0);
 	}
 
 	/*

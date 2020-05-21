@@ -40,6 +40,7 @@ public interface IStats extends IStatsBase
 	 */
 	
 	public void setCurrentHitPoints(int hitPoints);
+	public int healAnature(int healAmount);
 	
 	/*
 	 * PUBLIC METHODS

@@ -446,4 +446,10 @@ public class NullStats implements IStats
 
 	}
 
+	@Override
+	public int healAnature(int healAmount)
+	{
+		return -1;
+	}
+
 }

@@ -24,8 +24,8 @@ class AI implements IAI
 	AI()
 	{
 		mHealthThreshold = -1;
-		mSwitchThreshold = TypeEffectiveness.NotSet;
-		mMoveThreshold = TypeEffectiveness.NotSet;
+		mSwitchThreshold = TypeEffectiveness.Not_Set;
+		mMoveThreshold = TypeEffectiveness.Not_Set;
 	}
 
 	/*
@@ -48,7 +48,7 @@ class AI implements IAI
 			throw new IllegalArgumentException("Passed value \"switchThreshold\" was null.");
 		}
 
-		if(switchThreshold.equals(TypeEffectiveness.NotSet))
+		if(switchThreshold.equals(TypeEffectiveness.Not_Set))
 		{
 			throw new IllegalArgumentException("Passed value \"switchThreshold\" needs to be a valid value. Value was " + switchThreshold.toString() + ".");
 		}
@@ -62,7 +62,7 @@ class AI implements IAI
 			throw new IllegalArgumentException("Passed value \"moveThreshold\" was null.");
 		}
 
-		if(moveThreshold.equals(TypeEffectiveness.NotSet))
+		if(moveThreshold.equals(TypeEffectiveness.Not_Set))
 		{
 			throw new IllegalArgumentException("Passed value \"moveThreshold\" needs to be a valid value. Value was " + moveThreshold.toString() + ".");
 		}
@@ -217,7 +217,7 @@ class AI implements IAI
 
 	boolean canCreate()
 	{
-		return mHealthThreshold != -1 && !mSwitchThreshold.equals(TypeEffectiveness.NotSet) && !mMoveThreshold.equals(TypeEffectiveness.NotSet);
+		return mHealthThreshold != -1 && !mSwitchThreshold.equals(TypeEffectiveness.Not_Set) && !mMoveThreshold.equals(TypeEffectiveness.Not_Set);
 	}
 
 	/*
@@ -264,7 +264,7 @@ class AI implements IAI
 			{
 				moveThreshold = TypeEffectiveness.decrementEffectiveness(moveThreshold);
 			}
-		} while(!moveThreshold.equals(TypeEffectiveness.NoEffect) && choices.isEmpty());
+		} while(!moveThreshold.equals(TypeEffectiveness.No_Effect) && choices.isEmpty());
 
 		return choices;
 	}

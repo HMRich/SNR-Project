@@ -166,7 +166,6 @@ class Anature implements IAnature
 			throw new IllegalArgumentException("Passed value \"ability\" was null.");
 		}
 
-		// TODO Should we add the ability to add the NullAbility to the Anature?
 		if(iAbility.equals(AbilityPool.getAbility(AbilityIds.NullAbility)))
 		{
 			throw new IllegalArgumentException("Passed value \"ability\" was equal to the NullAbility ability.");
@@ -331,14 +330,12 @@ class Anature implements IAnature
 
 	public String healAnature(int healAmount)
 	{
-		int hitPointsAfterHeal = getStats().getCurrentHitPoints() + healAmount;
-		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getStats().getTotalHitPoints())
+		int hitPointsAfterHeal = getStats().healAnature(healAmount);
+		if(hitPointsAfterHeal == getStats().getTotalHitPoints())
 		{
-			getStats().setCurrentHitPoints(getStats().getTotalHitPoints());
 			return getName() + " was healed completely!";
 		}
 
-		getStats().setCurrentHitPoints(hitPointsAfterHeal);
 		return getName() + " was healed " + healAmount + " hp.";
 	}
 
@@ -406,7 +403,6 @@ class Anature implements IAnature
 			throw new IllegalStateException("The \"name\" variable was never set during construction.");
 		}
 
-		// TODO Is this a problem for wild anatures?
 		if(getOwner().isEmpty())
 		{
 			throw new IllegalStateException("The \"ownerName\" variable was never set during construction.");

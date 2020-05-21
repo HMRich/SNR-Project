@@ -38,18 +38,18 @@ public class AiPool
 		mAis = new HashMap<AiIds, IAI>(); 
 
 		mAis.put(AiIds.Balanced, new AIBuilder().withHealthThreshold(.35)
-				.withMoveThreshold(TypeEffectiveness.NotEffective)
-				.withSwitchThreshold(TypeEffectiveness.NotEffective)
+				.withMoveThreshold(TypeEffectiveness.Not_Effective)
+				.withSwitchThreshold(TypeEffectiveness.Not_Effective)
 				.create());
 
 		mAis.put(AiIds.Dumb, new AIBuilder().withHealthThreshold(.05)
-				.withMoveThreshold(TypeEffectiveness.NoEffect)
-				.withSwitchThreshold(TypeEffectiveness.NoEffect)
+				.withMoveThreshold(TypeEffectiveness.No_Effect)
+				.withSwitchThreshold(TypeEffectiveness.No_Effect)
 				.create());
 
 		mAis.put(AiIds.Smart, new AIBuilder().withHealthThreshold(0.25)
-				.withMoveThreshold(TypeEffectiveness.ExtremelyEffective)
-				.withSwitchThreshold(TypeEffectiveness.ExtremelyEffective)
+				.withMoveThreshold(TypeEffectiveness.Extremely_Effective)
+				.withSwitchThreshold(TypeEffectiveness.Extremely_Effective)
 				.create());
 	}
 }
