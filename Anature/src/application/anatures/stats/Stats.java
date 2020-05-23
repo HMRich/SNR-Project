@@ -335,7 +335,7 @@ class Stats extends StatsBase implements IStats
 		int hitPointsIncrease = (int) ((0.01 * (double) getBaseHitPoints()) + (0.02 * ((double) getIVHitPoints() + (double) getEVHitPoints())));
 		hitPointsIncrease = hitPointsIncrease == 0 ? 1 : hitPointsIncrease;
 		addLevelHitPoints(hitPointsIncrease);
-		healAnature(hitPointsIncrease);
+		maintainHitPointPercentage(hitPointsIncrease);
 
 		int attackIncrease = (int) ((0.01 * (double) getBaseAttack()) + (0.02 * ((double) getIVAttack() + (double) getEVAttack())));
 		attackIncrease = attackIncrease == 0 ? 1 : attackIncrease;
@@ -359,5 +359,16 @@ class Stats extends StatsBase implements IStats
 		addLevelSpeed(speedIncrease);
 
 		return true;
+	}
+	
+	private void maintainHitPointPercentage(int hitPointsIncrease)
+	{
+		int currentHitPoitns = getCurrentHitPoints();
+		int previousTotalHitPoints = getTotalHitPoints() - hitPointsIncrease;
+		
+		double getHitPoitnsPercent = (double) currentHitPoitns / (double) previousTotalHitPoints;
+		
+		int setHitPoitnsValue = (int) (  ( (double) getTotalHitPoints() ) * getHitPoitnsPercent );
+		setCurrentHitPoints(setHitPoitnsValue);
 	}
 }

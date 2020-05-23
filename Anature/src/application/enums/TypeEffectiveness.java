@@ -6,13 +6,13 @@ import application.interfaces.IMove;
 
 public enum TypeEffectiveness
 {
-	Not_Set("", -1),
-	No_Effect("No Effect", 0),
-	Seriously_Not_Effective("Seriously Not Effective", 0.25),
-	Not_Effective("Not Effective", 0.5),
-	Normal("Noraml", 1),
-	Super_Effective("Super Effective", 2),
-	Extremely_Effective("Extremely Effective", 4);
+	NotSet("", -1),
+	NoEffect("No Effect", 0),
+	SeriouslyNotEffective("Seriously Not Effective", 0.25),
+	NotEffective("Not Effective", 0.5),
+	Normal("Normal", 1),
+	SuperEffective("Super Effective", 2),
+	ExtremelyEffective("Extremely Effective", 4);
 
 	private final String mName;
 	private final double mEffectiveness;
@@ -94,23 +94,23 @@ public enum TypeEffectiveness
 	{
 		switch(typeEffectiveness)
 		{
-			case Extremely_Effective:
-				return Super_Effective;
+			case ExtremelyEffective:
+				return SuperEffective;
 
-			case Super_Effective:
+			case SuperEffective:
 				return Normal;
 
 			case Normal:
-				return Not_Effective;
+				return NotEffective;
 
-			case Not_Effective:
-				return Seriously_Not_Effective;
+			case NotEffective:
+				return SeriouslyNotEffective;
 
-			case Seriously_Not_Effective:
-				return No_Effect;
+			case SeriouslyNotEffective:
+				return NoEffect;
 
 			default:
-				return No_Effect;
+				return NoEffect;
 		}
 	}
 
@@ -127,17 +127,17 @@ public enum TypeEffectiveness
 	{
 		if(number <= 0)
 		{
-			return TypeEffectiveness.No_Effect;
+			return TypeEffectiveness.NoEffect;
 		}
 
 		else if(number <= 0.25)
 		{
-			return TypeEffectiveness.Seriously_Not_Effective;
+			return TypeEffectiveness.SeriouslyNotEffective;
 		}
 
 		else if(number <= 0.5)
 		{
-			return TypeEffectiveness.Not_Effective;
+			return TypeEffectiveness.NotEffective;
 		}
 
 		else if(number <= 1)
@@ -147,12 +147,12 @@ public enum TypeEffectiveness
 
 		else if(number <= 2)
 		{
-			return TypeEffectiveness.Super_Effective;
+			return TypeEffectiveness.SuperEffective;
 		}
 
 		else
 		{
-			return TypeEffectiveness.Extremely_Effective;
+			return TypeEffectiveness.ExtremelyEffective;
 		}
 	}
 
@@ -225,13 +225,13 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Rock:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ghost:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -243,28 +243,28 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Water:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Grass:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ice:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Bug:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Rock:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Dragon:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Steel:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -276,22 +276,22 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Water:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Grass:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ground:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Rock:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Dragon:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -303,22 +303,22 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Water:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Electric:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Grass:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ground:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			case Flying:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Dragon:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -330,34 +330,34 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Water:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Grass:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Poison:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ground:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Flying:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Bug:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Rock:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Dragon:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -369,28 +369,28 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Water:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Grass:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ice:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ground:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Flying:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Dragon:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -402,37 +402,37 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Normal:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ice:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Poison:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Flying:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Psychic:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Bug:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Rock:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ghost:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			case Dark:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Fairy:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -444,25 +444,25 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Grass:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Poison:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ground:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Rock:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ghost:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Steel:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			case Fairy:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -474,28 +474,28 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Electric:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Grass:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Poison:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Flying:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			case Bug:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Rock:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -507,22 +507,22 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Electric:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Grass:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Fighting:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Bug:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Rock:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -534,19 +534,19 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fighting:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Poison:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Psychic:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Dark:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -558,34 +558,34 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Grass:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Fighting:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Poison:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Flying:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Psychic:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ghost:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Dark:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Fairy:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -597,25 +597,25 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ice:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Fighting:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ground:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Flying:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Bug:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -627,16 +627,16 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Normal:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			case Psychic:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ghost:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Dark:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -648,13 +648,13 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Dragon:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Fairy:
-				return TypeEffectiveness.No_Effect;
+				return TypeEffectiveness.NoEffect;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -666,19 +666,19 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fighting:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Psychic:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Ghost:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Dark:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Fairy:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -690,25 +690,25 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Water:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Electric:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Ice:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Rock:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Fairy:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
@@ -720,22 +720,22 @@ public enum TypeEffectiveness
 		switch(targetType)
 		{
 			case Fire:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Fighting:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Poison:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			case Dragon:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Dark:
-				return TypeEffectiveness.Super_Effective;
+				return TypeEffectiveness.SuperEffective;
 
 			case Steel:
-				return TypeEffectiveness.Not_Effective;
+				return TypeEffectiveness.NotEffective;
 
 			default:
 				return TypeEffectiveness.Normal;
