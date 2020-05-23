@@ -27,6 +27,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -60,7 +62,7 @@ public abstract class AbstractCell
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 	protected SceneType mId;
-
+	private Rectangle test;
 	private ShoppingMenuController mShoppingController;
 
 	private StringProperty mDialogueTxtProperty;
@@ -143,6 +145,7 @@ public abstract class AbstractCell
 
 		setUpDialogueBox(cell);
 		setUpShoppingMenu(cell);
+		setUpStartMenu(cell);
 	}
 
 	protected abstract void createTrainers();
@@ -208,6 +211,29 @@ public abstract class AbstractCell
 				fontProperty, mShowShoppingProperty);
 
 		cell.getChildren().add(shoppingMenu);
+	}
+	
+	private void setUpStartMenu(BorderPane cell)
+	{
+		test = new Rectangle();
+		test.widthProperty().bind(mScene.widthProperty().divide(3.55));
+		test.heightProperty().bind(mScene.heightProperty().divide(1.16));
+		
+		ChangeListener<Number> pos = new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+			{
+				test.setLayoutX(mScene.getWidth() - test.getWidth());
+				test.setLayoutY(mScene.getHeight() / 14.4);
+			}
+		};
+		
+		test.widthProperty().addListener(pos);
+		test.heightProperty().addListener(pos);
+		
+		test.setFill(Color.RED);
+		cell.getChildren().add(test);
 	}
 
 	public double clampRange(double value, double min, double max)
