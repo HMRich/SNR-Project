@@ -535,6 +535,47 @@ public class BattleController
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
 
+			
+			// New Code
+			
+			ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
+			for(IAnature anature : mFightManager.getEnemyTeam())
+			{
+				if(anature.getStats().getCurrentHitPoints() == 0)
+				{
+					defeatedAnatures.add(anature);
+				}
+			}
+			
+			ArrayList<IAnature> partisipatingAnatures = mFightManager.getPlayerParticipantingAnatures();
+			// TODO we need to gather the Exp gains here or somewhere else
+			// TODO there is more to do for Exp share but we don't have it
+			double isTrainerCalulation = mEnemyTrainer.getId().equals(TrainerIds.Wild) ? 1.0 : 1.5;
+			
+			for(IAnature playerAnature : partisipatingAnatures)
+			{
+				double playerAnatreLevel = playerAnature.getStats().getLevel();
+				
+				for(IAnature enemyAnature : defeatedAnatures)
+				{
+					double enemyAnatureLevel = enemyAnature.getStats().getLevel();
+					
+					double calculationA = (enemyAnatureLevel * 2) + 10;
+					double calculationB = enemyAnatureLevel + playerAnatreLevel + 10;
+					double calculationC = ( (double) (enemyAnatureLevel * playerAnatreLevel) ) / 5.0  * isTrainerCalulation ;
+					
+					double finalCalculation = Math.floor(
+							Math.floor(Math.sqrt(calculationA) * Math.pow(calculationA, 2)) * calculationB /
+							Math.floor(Math.sqrt(calculationC) * Math.pow(calculationC, 2)) );
+					
+					int result = ( (int) ( finalCalculation / ( (double) partisipatingAnatures.size() ))) + 1;
+					
+					playerAnature.getStats().addExperience(result);
+				}
+			}
+			
+			// End of New Code
+			
 			mShowBtns.set(false);
 
 			mClickQueue.clear();
