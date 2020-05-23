@@ -1,9 +1,16 @@
 package application.anatures.moves;
 
+import application.anatures.moves.moves.BodySlam;
+import application.anatures.moves.moves.DeepFreeze;
 import application.anatures.moves.moves.DoublePunch;
 import application.anatures.moves.moves.Flail;
 import application.anatures.moves.moves.Flamethrower;
+import application.anatures.moves.moves.ForcefulSlam;
+import application.anatures.moves.moves.FreezingBlast;
 import application.anatures.moves.moves.Grumble;
+import application.anatures.moves.moves.IceLayer;
+import application.anatures.moves.moves.IceSpike;
+import application.anatures.moves.moves.IceWhip;
 import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.PocketSand;
 import application.anatures.moves.moves.SkipTurn;
@@ -145,6 +152,34 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 
 			case NullMove:
 				mMove = (M) new NullMove();
+				break;
+			
+			case Ice_Whip:
+				mMove = (M) new IceWhip();
+				break;
+				
+			case Body_Slam:
+				mMove = (M) new BodySlam();
+				break;
+				
+			case Freezing_Blast:
+				mMove = (M) new FreezingBlast();
+				break;
+				
+			case Ice_Layer:
+				mMove = (M) new IceLayer();
+				break;
+				
+			case Ice_Spike:
+				mMove = (M) new IceSpike();
+				break;
+				
+			case Deep_Freeze:
+				mMove = (M) new DeepFreeze();
+				break;
+				
+			case Forceful_Slam:
+				mMove = (M) new ForcefulSlam();
 				break;
 
 			default:
