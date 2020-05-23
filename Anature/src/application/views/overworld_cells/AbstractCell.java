@@ -11,6 +11,7 @@ import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.WarpPoints;
+import application.models.KeysPressed;
 import application.player.Player;
 import application.views.elements.ImageLayer;
 import application.views.elements.PlayerSprite;
@@ -48,7 +49,7 @@ public abstract class AbstractCell
 {
 	protected double mHeight, mWidth;
 	protected final DoubleProperty mZoom;
-	public boolean mUp, mDown, mLeft, mRight, mCanMove;
+	protected KeysPressed mKeysPressed;
 	private Scene mScene;
 	protected PlayerSprite mPlayerSprite;
 	private Direction mPcFacing;
@@ -59,7 +60,7 @@ public abstract class AbstractCell
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 	protected SceneType mId;
-	
+
 	private ShoppingMenuController mShoppingController;
 
 	private StringProperty mDialogueTxtProperty;
@@ -71,14 +72,14 @@ public abstract class AbstractCell
 		mZoom = new SimpleDoubleProperty(2.6);
 		mShowDialogueProperty = new SimpleBooleanProperty(false);
 		mShowShoppingProperty = new SimpleBooleanProperty(false);
-		
+
 		mDialogueTxtProperty = new SimpleStringProperty("Sample Text");
 		mShowCollision = LoggerController.getCollisionBoxProperty();
 		mCollisions = new ArrayList<Rectangle>();
 		mGrassPatches = new ArrayList<Rectangle>();
 		mWarpPoints = new ArrayList<WarpPointBox>();
 		mTrainerSprites = new ArrayList<TrainerSprite>();
-		mCanMove = true;
+		mKeysPressed = new KeysPressed();
 		mId = id;
 
 		mHeight = height;
@@ -96,12 +97,12 @@ public abstract class AbstractCell
 		{
 			mMap = new StackPane(mBackground);
 		}
-		
+
 		else
 		{
 			mMap = new StackPane(mBackground, foreground);
 		}
-		
+
 		mMap.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
 		mPlayerSprite.addToContainer(mBackground);
@@ -111,7 +112,7 @@ public abstract class AbstractCell
 		createGrassPatches();
 		createWarpPoints();
 		createTrainers();
-		
+
 		for(TrainerSprite trainer : mTrainerSprites)
 		{
 			mCollisions.add(trainer.getCollisionBox());
@@ -123,25 +124,27 @@ public abstract class AbstractCell
 		mBackground.getChildren().addAll(mCollisions);
 
 		BorderPane cell = new BorderPane(mMap);
-		
+
 		mScene = new Scene(cell, 1280, 720, Color.BLACK);
 		Rectangle clip = new Rectangle();
 		clip.widthProperty().bind(mScene.widthProperty());
 		clip.heightProperty().bind(mScene.heightProperty());
 
-		clip.xProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayerSprite.getX() - mScene.getWidth() / 2, 0, mMap.getWidth() - mScene.getWidth()),
-				mPlayerSprite.xProp(), mScene.widthProperty()));
-		clip.yProperty().bind(Bindings.createDoubleBinding(() -> clampRange(mPlayerSprite.getY() - mScene.getHeight() / 2, 0, mMap.getHeight() - mScene.getHeight()),
-				mPlayerSprite.yProp(), mScene.heightProperty()));
+		clip.xProperty()
+				.bind(Bindings.createDoubleBinding(() -> clampRange(mPlayerSprite.getX() - mScene.getWidth() / 2, 0, mMap.getWidth() - mScene.getWidth()),
+						mPlayerSprite.xProp(), mScene.widthProperty()));
+		clip.yProperty()
+				.bind(Bindings.createDoubleBinding(() -> clampRange(mPlayerSprite.getY() - mScene.getHeight() / 2, 0, mMap.getHeight() - mScene.getHeight()),
+						mPlayerSprite.yProp(), mScene.heightProperty()));
 
 		mMap.setClip(clip);
 		mMap.translateXProperty().bind(clip.xProperty().multiply(-1));
 		mMap.translateYProperty().bind(clip.yProperty().multiply(-1));
-		
+
 		setUpDialogueBox(cell);
 		setUpShoppingMenu(cell);
 	}
-	
+
 	protected abstract void createTrainers();
 
 	protected abstract void addToBackground();
@@ -157,7 +160,7 @@ public abstract class AbstractCell
 	protected abstract void createGrassPatches();
 
 	protected abstract void createWarpPoints();
-	
+
 	private void setUpDialogueBox(BorderPane cell)
 	{
 		try
@@ -170,21 +173,21 @@ public abstract class AbstractCell
 
 			mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
 					.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
-			
+
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/views/elements/DialogueBox.fxml"));
 			Parent root = loader.load();
-			
+
 			DialogueBoxController controller = loader.getController();
 			controller.updateBinds(mScene, mBackground, mShowDialogueProperty, fontProperty, mDialogueTxtProperty);
 			cell.getChildren().add(root);
 		}
-		
+
 		catch(IOException e)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "IOException when trying to load Dialogue Box.\n" + e.getStackTrace());
 		}
 	}
-	
+
 	private void setUpShoppingMenu(BorderPane cell)
 	{
 		// Font Prop
@@ -195,15 +198,15 @@ public abstract class AbstractCell
 				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
 
 		mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));		
-		
+				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / 75)));
+
 		// Shopping Menu
 		ShoppingMenu shoppingMenu = new ShoppingMenu();
 		mShoppingController = new ShoppingMenuController(shoppingMenu);
-		
-		mShoppingController.updateBinds(mScene.heightProperty().divide(5), 
-				mScene.widthProperty().divide(3.28), mScene.heightProperty().divide(1.67), fontProperty, mShowShoppingProperty);
-		
+
+		mShoppingController.updateBinds(mScene.heightProperty().divide(5), mScene.widthProperty().divide(3.28), mScene.heightProperty().divide(1.67),
+				fontProperty, mShowShoppingProperty);
+
 		cell.getChildren().add(shoppingMenu);
 	}
 
@@ -217,7 +220,7 @@ public abstract class AbstractCell
 
 		return value;
 	}
-	
+
 	private double getFontSize()
 	{
 		double value = mScene.getWidth();
@@ -239,7 +242,7 @@ public abstract class AbstractCell
 	{
 		mCollisions.add(createRectangle(x, y, width, height, Color.LIGHTGREY));
 	}
-	
+
 	protected void addCollisionRectangleUsingCoords(double upperLeftX, double upperLeftY, double lowerRightX, double lowerRightY)
 	{
 		mCollisions.add(createRectangle(upperLeftX, upperLeftY, lowerRightX - upperLeftX, lowerRightY - upperLeftY, Color.LIGHTGREY));
@@ -257,16 +260,16 @@ public abstract class AbstractCell
 		warp.visibleProperty().bind(mShowCollision);
 		mWarpPoints.add(warp);
 	}
-	
+
 	private Rectangle createRectangle(double x, double y, double width, double height, Color color)
 	{
 		Rectangle rect = new Rectangle(x, y, width, height);
 		rect.visibleProperty().bind(mShowCollision);
 		rect.setFill(color);
-		
+
 		return rect;
 	}
-	
+
 	protected void addTrainer(TrainerSprite trainer)
 	{
 		if(trainer == null)
@@ -274,19 +277,14 @@ public abstract class AbstractCell
 			LoggerController.logEvent(LoggingTypes.Error, "Tried to add a trainer spite that was null.");
 			return;
 		}
-		
+
 		mTrainerSprites.add(trainer);
 	}
 
 	public Scene getScene()
 	{
-		mRight = false;
-		mLeft = false;
-		mUp = false;
-		mDown = false;
-		mCanMove = true;
 		mPlayerSprite.hideEmote();
-		
+
 		return mScene;
 	}
 
@@ -347,7 +345,7 @@ public abstract class AbstractCell
 
 		mScene.setOnKeyReleased(event);
 	}
-	
+
 	public void setSceneOnMouseClicked(EventHandler<MouseEvent> event)
 	{
 		if(event == null)
@@ -373,12 +371,33 @@ public abstract class AbstractCell
 	{
 		return mWarpPoints;
 	}
-	
+
 	public ArrayList<TrainerSprite> getTrainerSprites()
 	{
 		return mTrainerSprites;
 	}
-	
+
+	public KeysPressed getKeysPressed()
+	{
+		return mKeysPressed;
+	}
+
+	public void setKeysPressed(KeysPressed keys)
+	{
+		if(keys == null)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "Tried setting KeysPressed as null.");
+			return;
+		}
+
+		mKeysPressed.setCanMove(keys.canMove());
+		mKeysPressed.setUp(keys.isUp());
+		mKeysPressed.setDown(keys.isDown());
+		mKeysPressed.setRight(keys.isRight());
+		mKeysPressed.setLeft(keys.isLeft());
+		mKeysPressed.setSprint(keys.isSprint());
+	}
+
 	public void showDialogue(String txt)
 	{
 		if(txt == null)
@@ -386,34 +405,34 @@ public abstract class AbstractCell
 			LoggerController.logEvent(LoggingTypes.Error, "Tried to show overworld dialogue that was null");
 			return;
 		}
-		
+
 		mDialogueTxtProperty.set(txt);
 		mShowDialogueProperty.set(true);
 	}
-	
+
 	public void hideDialogue()
 	{
 		mShowDialogueProperty.set(false);
 	}
-	
+
 	public void showshopMenu()
 	{
 		mShoppingController.updateItems();
 		mShowShoppingProperty.set(true);
 	}
-	
+
 	public void hideShopMenu()
 	{
 		mShowShoppingProperty.set(false);
 	}
-	
+
 	public void assignPlayerForShop(Player player, Runnable dequeue)
 	{
 		if(player == null)
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "Tried assigning a null player to cell.");
 		}
-		
+
 		else
 		{
 			mShoppingController.assignPlayer(player, dequeue);
