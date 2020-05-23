@@ -576,6 +576,16 @@ public class BattleController
 			
 			// End of New Code
 			
+			// addingTokenGain
+			// TODO We need to track changes for reporting it to the player
+			// TODO We need to figure out what the amount should be fro each Trainer
+			// and where we are going to store the base amount
+			// We should add a percent randomness for the amount like + or - 10 percent
+			if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
+			{
+				mPlayer.addTokens(new Random().nextInt(101));
+			}
+			
 			mShowBtns.set(false);
 
 			mClickQueue.clear();
