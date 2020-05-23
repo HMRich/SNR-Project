@@ -37,6 +37,18 @@ public class MovePool
 	private static void generateMoves()
 	{
 		mMoves = new HashMap<MoveIds, IMove>();
+		
+		// Template
+		/* 		
+		mMoves.put(MoveIds.{Move Name}, new MoveBuilder<{Move Class Name}>(MoveIds.{Move Name}).withName()
+				.withType()
+				.doesDamage()
+				.isPhysicalAttack()
+				.withTotalMovePoints()
+				.withMovePower()
+				.withAccuracy()
+				.create());
+		 */
 
 		mMoves.put(MoveIds.Grumble, new MoveBuilder<Grumble>(MoveIds.Grumble).withName("Grumble")
 				.withType(Type.Normal)
