@@ -225,12 +225,17 @@ public class MoveSet
 
 	private boolean canUseMove(int moveNumber)
 	{
-		int movePoints = getMovePoints(moveNumber);
-
-		if(movePoints <= 0)
-			return false;
-
-		return setMovePoints(moveNumber, movePoints--);
+		if(!getMove(moveNumber).equals(MovePool.getMove(MoveIds.Flail)))
+		{
+			int movePoints = getMovePoints(moveNumber);
+			
+			if(movePoints <= 0)
+				return false;
+			
+			return setMovePoints(moveNumber, movePoints--);
+		}
+		
+		return true;
 	}
 
 	public void refreshAllMovePoints()
