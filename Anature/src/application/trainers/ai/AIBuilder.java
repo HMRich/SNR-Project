@@ -1,6 +1,6 @@
 package application.trainers.ai;
 
-import application.enums.AttackEffectiveness;
+import application.enums.TypeEffectiveness;
 import application.interfaces.IAI;
 import application.interfaces.IBuilder;
 
@@ -23,13 +23,13 @@ public class AIBuilder implements IBuilder<IAI>
 		return this;
 	}
 
-	public AIBuilder withSwitchThreshold(AttackEffectiveness switchThreshold)
+	public AIBuilder withSwitchThreshold(TypeEffectiveness switchThreshold)
 	{
 		mAI.setSwitchThreshold(switchThreshold);
 		return this;
 	}
 
-	public AIBuilder withMoveThreshold(AttackEffectiveness moveThreshold)
+	public AIBuilder withMoveThreshold(TypeEffectiveness moveThreshold)
 	{
 		mAI.setMoveThreshold(moveThreshold);
 		return this;

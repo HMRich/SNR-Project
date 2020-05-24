@@ -5,11 +5,9 @@ import application.interfaces.IAnature;
 
 public class DoublePunch extends Move
 {
-	private static int mDamageDone = 25;
-
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.takeDamage(mDamageDone);
-
+		target.takeDamage(calculateDamage(source, target, false));
+		target.takeDamage(calculateDamage(source, target, false));
 	}
 }

@@ -75,8 +75,14 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 		mMove.setTotalMovePoints(totalMovePoints);
 		return this;
 	}
+	
+	public MoveBuilder<M> withMovePower(int movePower)
+	{
+		mMove.setMovePower(movePower);
+		return this;
+	}
 
-	public MoveBuilder<M> withAccuracy(double accuracy)
+	public MoveBuilder<M> withAccuracy(int accuracy)
 	{
 		mMove.setAccuracy(accuracy);
 		return this;

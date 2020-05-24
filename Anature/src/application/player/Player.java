@@ -131,7 +131,7 @@ public class Player
 
 		for(IAnature anatureBase : mPartyAnature)
 		{
-			if(anatureBase.getCurrentHitPoints() > 0)
+			if(anatureBase.getStats().getCurrentHitPoints() > 0)
 			{
 				canBattle = true;
 				break;

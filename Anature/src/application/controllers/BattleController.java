@@ -336,12 +336,15 @@ public class BattleController
 		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
 
 		StringProperty playerHpTxt = new SimpleStringProperty(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
-		mPlayerHp.addListener(
-				(observable, oldValue, newValue) -> playerHpTxt.set(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue()));
+		ChangeListener<Number> player = (observable, oldValue, newValue) -> playerHpTxt.set(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
+		mPlayerHp.addListener(player);
+		mPlayerHpTotal.addListener(player);
 
 		StringProperty enemyHpTxt = new SimpleStringProperty(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue());
-		mEnemyHp.addListener((observable, oldValue, newValue) -> enemyHpTxt.set(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue()));
-
+		ChangeListener<Number> enemy = (observable, oldValue, newValue) -> enemyHpTxt.set(mEnemyHp.getValue().intValue() + " / " + mEnemyHpTotal.getValue().intValue());
+		mEnemyHp.addListener(enemy);
+		mEnemyHpTotal.addListener(enemy);
+		
 		createBindsTxt(mPlayerHpTxt, scene, 1.41, 1.83, fontProperty, playerHpTxt);
 		createBindsTxt(mEnemyHpTxt, scene, 4.7, 5.8, fontProperty, enemyHpTxt);
 	}
@@ -439,15 +442,10 @@ public class BattleController
 			@Override
 			public void handle(ActionEvent event)
 			{
-				if(mPlayerXp.get() < 100)
-				{
-					mPlayerXp.set(mPlayerXp.add(10).doubleValue());
-				}
-
-				else
-				{
-					mPlayerXp.set(0);
-				}
+				int experienceToEarn = mFightManager.getPlayerAnature().getStats().getRequiredExperience() / 10;
+				mFightManager.getPlayerAnature().getStats().addExperience(experienceToEarn);
+			 	
+				mPlayerXp.set(mFightManager.getPlayerAnature().getStats().getExperienceProgression());
 			}
 		});
 	}
@@ -470,7 +468,7 @@ public class BattleController
 		boolean isThereAliveAnatureInParty = false;
 		for(IAnature anature : mPlayer.getAnatures())
 		{
-			if(anature.getCurrentHitPoints() > 0)
+			if(anature.getStats().getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -520,7 +518,7 @@ public class BattleController
 		boolean isThereAliveAnatureInParty = false;
 		for(IAnature anature : mEnemyTrainer.getAnatureParty())
 		{
-			if(anature.getCurrentHitPoints() > 0)
+			if(anature.getStats().getCurrentHitPoints() > 0)
 			{
 				isThereAliveAnatureInParty = true;
 				break;
@@ -586,7 +584,7 @@ public class BattleController
 			}
 			else
 			{
-				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getCurrentHitPoints() <= 0)
+				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getStats().getCurrentHitPoints() <= 0)
 				{
 					return;
 				}
@@ -880,10 +878,10 @@ public class BattleController
 
 		mEnemyName.set(enemyCurr.getName());
 
-		mEnemyHp.set(enemyCurr.getCurrentHitPoints());
-		mEnemyHpTotal.set(enemyCurr.getTotalHitPoints());
+		mEnemyHp.set(enemyCurr.getStats().getCurrentHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getStats().getTotalHitPoints());
 
-		mEnemyLvl.set(enemyCurr.getLevel());
+		mEnemyLvl.set(enemyCurr.getStats().getLevel());
 
 		mPlayer = player;
 		mEnemyTrainer = enemyTrainer;
@@ -997,13 +995,13 @@ public class BattleController
 	{
 		mPlayerName.set(playerCurr.getName());
 
-		mPlayerHp.set(playerCurr.getCurrentHitPoints());
-		mPlayerHpTotal.set(playerCurr.getTotalHitPoints());
+		mPlayerHp.set(playerCurr.getStats().getCurrentHitPoints());
+		mPlayerHpTotal.set(playerCurr.getStats().getTotalHitPoints());
 
-		mPlayerXp.set(playerCurr.getCurrentExperiencePoints());
-		mPlayerXpTotal.set(100); // TODO change to a standard
+		mPlayerXp.set(playerCurr.getStats().getExperienceProgression());
+		mPlayerXpTotal.set(playerCurr.getStats().getRequiredExperience());
 
-		mPlayerLvl.set(playerCurr.getLevel());
+		mPlayerLvl.set(playerCurr.getStats().getLevel());
 		updateStatusIcon(mStatusIconPlayer, playerCurr);
 
 		mAnatureBack.setImage(playerCurr.getBackSprite());
@@ -1015,10 +1013,10 @@ public class BattleController
 	{
 		mEnemyName.set(enemyCurr.getName());
 
-		mEnemyHp.set(enemyCurr.getCurrentHitPoints());
-		mEnemyHpTotal.set(enemyCurr.getTotalHitPoints());
+		mEnemyHp.set(enemyCurr.getStats().getCurrentHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getStats().getTotalHitPoints());
 
-		mEnemyLvl.set(enemyCurr.getLevel());
+		mEnemyLvl.set(enemyCurr.getStats().getLevel());
 
 		mAnatureFront.setImage(enemyCurr.getFrontSprite());
 	}
@@ -1167,14 +1165,15 @@ public class BattleController
 		mSwitchSelectedCatalogNum.setText(String.format("%03d", selected.getIndexNumber()));
 		mSwitchSelectedName.setText(selected.getName());
 		mSwitchSelectedOwner.setText(selected.getOwner());
-		mSwitchSelectedCurrXp.setText(selected.getCurrentExperiencePoints() + "");
-		mSwitchSelectedNextXp.setText((100 - selected.getCurrentExperiencePoints()) + "");
+		mSwitchSelectedCurrXp.setText(selected.getStats().getExperienceProgression() + "");
+		mSwitchSelectedNextXp.setText(selected.getStats().getRequiredExperience() + "");
 
-		mSwitchSelectedHp.setText(selected.getTotalHitPoints() + "");
-		mSwitchSelectedAtk.setText(selected.getAttack() + "");
-		mSwitchSelectedSpAtk.setText(selected.getSpecialAttack() + "");
-		mSwitchSelectedDef.setText(selected.getDefense() + "");
-		mSwitchSelectedSpDef.setText(selected.getSpecialDefense() + "");
+		mSwitchSelectedHp.setText(selected.getStats().getTotalHitPoints() + "");
+		mSwitchSelectedAtk.setText(selected.getStats().getTotalAttack() + "");
+		mSwitchSelectedSpAtk.setText(selected.getStats().getTotalSpecialAttack() + "");
+		mSwitchSelectedDef.setText(selected.getStats().getTotalDefense() + "");
+		mSwitchSelectedSpDef.setText(selected.getStats().getTotalSpecialDefense() + "");
+		mSwitchSelectedSpeed.setText(selected.getStats().getTotalSpeed() + "");
 
 		mSwitchSelectedAbilityName.setText(selected.getAbility().getAbilityName());
 		mSwitchSelectedAbilityDesc.setText(selected.getAbility().getAbilityDescription());
@@ -1209,9 +1208,8 @@ public class BattleController
 	private void updateSwitchSlot(IAnature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)
 	{
 		visibleProp.set(true);
-		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getLevel(),
-				curr.getCurrentHitPoints() + "/" + curr.getTotalHitPoints(), mShowSwitch.get(), visibleProp.get(), curr.getCurrentHitPoints(), curr.getTotalHitPoints(),
-				curr.getStatus());
+		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getStats().getLevel(),
+				curr.getStats().getCurrentHitPoints() + "/" + curr.getStats().getTotalHitPoints(), mShowSwitch.get(), visibleProp.get(), curr.getStats().getCurrentHitPoints(), curr.getStats().getTotalHitPoints(), curr.getStatus());
 	}
 
 	private void updateBagMenu()
@@ -1352,7 +1350,7 @@ public class BattleController
 	{
 		IAnature anatureForSwitching = mPlayer.getAnatures().get(mSwitchIndexSelected);
 
-		if(anatureForSwitching.getCurrentHitPoints() <= 0)
+		if(anatureForSwitching.getStats().getCurrentHitPoints() <= 0)
 		{
 			return;
 		}
@@ -1363,7 +1361,7 @@ public class BattleController
 
 		AiChoiceObject<?> enemyTurn = mEnemyTrainer.useTurn(playerCurr);
 
-		int whoGoesFirst = playerCurr.getSpeed() - enemyCurr.getSpeed();
+		int whoGoesFirst = playerCurr.getStats().getTotalSpeed() - enemyCurr.getStats().getTotalSpeed();
 
 		if(whoGoesFirst == 0) // Will either add 0 or 1 to the total
 		{
@@ -1845,8 +1843,8 @@ public class BattleController
 			targetOldHp = mEnemyHp;
 		}
 
-		double damageDoneToTarget = targetOldHp.get() - targetAnature.getCurrentHitPoints();
-		double damageDoneToUser = userOldHp.get() - userAnature.getCurrentHitPoints();
+		double damageDoneToTarget = targetOldHp.get() - targetAnature.getStats().getCurrentHitPoints();
+		double damageDoneToUser = userOldHp.get() - userAnature.getStats().getCurrentHitPoints();
 
 		if(result.isPlayer() && damageDoneToTarget > mEnemyHp.get())
 		{
@@ -2083,8 +2081,8 @@ public class BattleController
 			case Burn:
 				mClickQueue.enqueue(() ->
 				{
-					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getTotalHitPoints() / 16, isPlayer, nextTurn);
-					mFightManager.applyDamage(isPlayer, 0, anature.getTotalHitPoints() / 16);
+					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getStats().getTotalHitPoints() / 16, isPlayer, nextTurn);
+					mFightManager.applyDamage(isPlayer, 0, anature.getStats().getTotalHitPoints() / 16);
 				}, "Burn After All Turns");
 
 				return true;

@@ -1,15 +1,15 @@
 package test;
 
-import application.enums.AttackEffectiveness;
+import application.enums.TypeEffectiveness;
 import application.interfaces.IAnature;
 
 class TypeEffectivenessTestCase
 {
 	IAnature attacker;
 	IAnature defender;
-	AttackEffectiveness expectedEffectiveness;
+	TypeEffectiveness expectedEffectiveness;
 
-	public TypeEffectivenessTestCase(IAnature attacker, IAnature defender, AttackEffectiveness expectedEffectiveness)
+	public TypeEffectivenessTestCase(IAnature attacker, IAnature defender, TypeEffectiveness expectedEffectiveness)
 	{
 		this.attacker = attacker;
 		this.defender = defender;

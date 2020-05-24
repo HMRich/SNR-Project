@@ -1,4 +1,4 @@
-package application.enums;
+package application.enums.stats;
 
 public enum LevelingSpeed
 {
@@ -10,21 +10,21 @@ public enum LevelingSpeed
 	Slow("Slow", 1.25),
 	Fluctuating("Fluctuating", 1.64),
 	NotSet("Not Set", 0.0);
-	
+
 	private final String mName;
 	private final double mSpeedModifier;
-	
+
 	private LevelingSpeed(String name, double speedModifier)
 	{
 		mName = name;
 		mSpeedModifier = speedModifier;
 	}
-	
+
 	public String toString()
 	{
 		return mName;
 	}
-	
+
 	public double getModifier()
 	{
 		return mSpeedModifier;

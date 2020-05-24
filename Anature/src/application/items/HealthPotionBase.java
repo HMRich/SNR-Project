@@ -33,9 +33,9 @@ public class HealthPotionBase extends ItemBase implements IHealthPotion
 
 	public ItemResult useItem(IAnature target)
 	{
-		double oldHp = target.getCurrentHitPoints();
+		double oldHp = target.getStats().getCurrentHitPoints();
 		String dialogue = target.healAnature(getHealAmount());
-		double newHp = target.getCurrentHitPoints();
+		double newHp = target.getStats().getCurrentHitPoints();
 
 		return new ItemResult(dialogue, newHp - oldHp);
 	}

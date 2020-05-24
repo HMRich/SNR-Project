@@ -9,21 +9,21 @@ import application.interfaces.IMove;
 
 public class Spiky implements IAbility
 {
-	public static String activateAbility(IAnature userAnature, IAnature targetAnature, IMove moveThatAttacked, boolean isUserAttacking, boolean attackMissed)
+	public static String activateAbility(IAnature source, IAnature target, IMove sourceMove, boolean isSourceAttacking, boolean attackMissed)
 	{
 		String result = "";
 
-		if(!hasNull(userAnature, targetAnature, moveThatAttacked) && moveThatAttacked.isPhysicalAttack() && !isUserAttacking && !attackMissed)
+		if(!hasNull(source, target, sourceMove) && sourceMove.isPhysicalAttack() && !isSourceAttacking && !attackMissed)
 		{
-			int newHp = targetAnature.getCurrentHitPoints() - (targetAnature.getTotalHitPoints() / 8);
+			int newHp = target.getStats().getCurrentHitPoints() - (target.getStats().getTotalHitPoints() / 8);
 
 			if(newHp < 0)
 			{
 				newHp = 0;
 			}
 
-			targetAnature.updateCurrentHitPoints(newHp);
-			result = targetAnature.getName() + " got hurt from attacking " + userAnature.getName() + "'s spikes!";
+			target.getStats().setCurrentHitPoints(newHp);
+			result = target.getName() + " got hurt from attacking " + source.getName() + "'s spikes!";
 		}
 
 		return result;
@@ -33,19 +33,19 @@ public class Spiky implements IAbility
 	{
 		if(userAnature == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Determination was null.");
+			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in Spikey was null.");
 			return true;
 		}
 
 		else if(targetAnature == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "targetAnature parameter in Determination was null.");
+			LoggerController.logEvent(LoggingTypes.Error, "targetAnature parameter in Spikey was null.");
 			return true;
 		}
 
 		else if(moveThatAttacked == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "moveThatAttacked parameter in Determination was null.");
+			LoggerController.logEvent(LoggingTypes.Error, "moveThatAttacked parameter in Spikey was null.");
 			return true;
 		}
 

@@ -8,6 +8,6 @@ public class SkipTurn extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		System.out.println("Turn skipped");
+		
 	}
 }

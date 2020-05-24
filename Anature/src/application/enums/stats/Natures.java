@@ -1,4 +1,4 @@
-package application.enums;
+package application.enums.stats;
 
 import java.util.ArrayList;
 

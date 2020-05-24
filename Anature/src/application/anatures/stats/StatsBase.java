@@ -1,7 +1,10 @@
 package application.anatures.stats;
 
-class StatsBase extends StatsIV
+import application.interfaces.stats.IStatsBase;
+
+class StatsBase extends StatsIV implements IStatsBase
 {
+	private int mBaseExperience;
 	private int mBaseHitPoints;
 	private int mBaseAttack;
 	private int mBaseDefense;
@@ -13,6 +16,7 @@ class StatsBase extends StatsIV
 
 	StatsBase()
 	{
+		mBaseExperience = -1;
 		mBaseHitPoints = -1;
 		mBaseAttack = -1;
 		mBaseDefense = -1;
@@ -26,6 +30,11 @@ class StatsBase extends StatsIV
 	/*
 	 * PUBLIC GETS
 	 */
+	
+	public int getBaseExperience()
+	{
+		return mBaseExperience;
+	}
 
 	public int getBaseHitPoints()
 	{
@@ -70,6 +79,21 @@ class StatsBase extends StatsIV
 	/*
 	 * PACKAGE SETS
 	 */
+	
+	void setBaseExperience(int baseExperience)
+	{
+		if(baseExperience < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"baseExperience\" was below 0.");
+		}
+		
+		if(baseExperience > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseExperience\" was above 255.");
+		}
+		
+		mBaseExperience = baseExperience;
+	}
 
 	void setBaseHitPoints(int baseHitPoints)
 	{
@@ -78,6 +102,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseHitPoints\" was below 0.");
 		}
 
+		if(baseHitPoints > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseHitPoints\" was above 255.");
+		}
+		
 		mBaseHitPoints = baseHitPoints;
 	}
 
@@ -88,6 +117,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseAttack\" was below 0.");
 		}
 
+		if(baseAttack > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseAttack\" was above 255.");
+		}
+		
 		mBaseAttack = baseAttack;
 	}
 
@@ -98,6 +132,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseDefense\" was below 0.");
 		}
 
+		if(baseDefense > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseDefense\" was above 255.");
+		}
+		
 		mBaseDefense = baseDefense;
 	}
 
@@ -108,6 +147,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseSpecialAttack\" was below 0.");
 		}
 
+		if(baseSpecialAttack > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseSpecialAttack\" was above 255.");
+		}
+		
 		mBaseSpecialAttack = baseSpecialAttack;
 	}
 
@@ -118,6 +162,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseSpecialDefense\" was below 0.");
 		}
 
+		if(baseSpecialDefense > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseSpecialDefense\" was above 255.");
+		}
+		
 		mBaseSpecialDefense = baseSpecialDefense;
 	}
 
@@ -128,6 +177,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseSpeed\" was below 0.");
 		}
 
+		if(baseSpeed > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"baseSpeed\" was above 255.");
+		}
+		
 		mBaseSpeed = baseSpeed;
 	}
 
@@ -138,6 +192,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseAccuracy\" was below 0.");
 		}
 
+		if(baseAccuracy > 100)
+		{
+			throw new IllegalArgumentException("Passed value \"baseAccuracy\" was above 100.");
+		}
+		
 		mBaseAccuracy = baseAccuracy;
 	}
 
@@ -148,6 +207,11 @@ class StatsBase extends StatsIV
 			throw new IllegalArgumentException("Passed value \"baseEvasion\" was below 0.");
 		}
 
+		if(baseEvasion > 100)
+		{
+			throw new IllegalArgumentException("Passed value \"baseEvasion\" was above 100.");
+		}
+		
 		mBaseEvasion = baseEvasion;
 	}
 
@@ -157,6 +221,10 @@ class StatsBase extends StatsIV
 
 	boolean canCreateStatsBase()
 	{
+		if(getBaseExperience() == -1)
+		{
+			throw new IllegalStateException("The \"baseExperience\" variable was never set during construction.");
+		}
 		if(getBaseHitPoints() == -1)
 		{
 			throw new IllegalStateException("The \"baseHitPoints\" variable was never set during construction.");

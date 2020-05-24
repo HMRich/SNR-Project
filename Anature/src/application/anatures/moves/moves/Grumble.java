@@ -8,7 +8,7 @@ public class Grumble extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.adjustAttack(-0.1);
+		target.getStats().decreaseTempAttack();
 	}
 
 }

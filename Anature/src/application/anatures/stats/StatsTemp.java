@@ -1,14 +1,17 @@
 package application.anatures.stats;
 
-class StatsTemp
+import application.enums.TempStatsStages;
+import application.interfaces.stats.IStatsTemp;
+
+class StatsTemp implements IStatsTemp
 {
-	private int mTempAttack;
-	private int mTempDefense;
-	private int mTempSpecialAttack;
-	private int mTempSpecialDefense;
-	private int mTempSpeed;
-	private int mTempAccuracy;
-	private int mTempEvasion;
+	private TempStatsStages mTempAttack;
+	private TempStatsStages mTempDefense;
+	private TempStatsStages mTempSpecialAttack;
+	private TempStatsStages mTempSpecialDefense;
+	private TempStatsStages mTempSpeed;
+	private TempStatsStages mTempAccuracy;
+	private TempStatsStages mTempEvasion;
 
 	StatsTemp()
 	{
@@ -19,37 +22,37 @@ class StatsTemp
 	 * PUBLIC GETS
 	 */
 
-	public int getTempAttack()
+	public TempStatsStages getTempAttack()
 	{
 		return mTempAttack;
 	}
 
-	public int getTempDefense()
+	public TempStatsStages getTempDefense()
 	{
 		return mTempDefense;
 	}
 
-	public int getTempSpecialAttack()
+	public TempStatsStages getTempSpecialAttack()
 	{
 		return mTempSpecialAttack;
 	}
 
-	public int getTempSpecialDefense()
+	public TempStatsStages getTempSpecialDefense()
 	{
 		return mTempSpecialDefense;
 	}
 
-	public int getTempSpeed()
+	public TempStatsStages getTempSpeed()
 	{
 		return mTempSpeed;
 	}
 
-	public int getTempAccuracy()
+	public TempStatsStages getTempAccuracy()
 	{
 		return mTempAccuracy;
 	}
 
-	public int getTempEvasion()
+	public TempStatsStages getTempEvasion()
 	{
 		return mTempEvasion;
 	}
@@ -58,49 +61,88 @@ class StatsTemp
 	 * PROTECTED METHODS
 	 */
 
-	void adjustTempAttack(int tempAttack)
+	public void increaseTempAttack()
 	{
-		mTempAttack += tempAttack;
+		mTempAttack = mTempAttack.incrementStage();
 	}
 
-	void adjustTempDefense(int tempDefense)
+	public void decreaseTempAttack()
 	{
-		mTempDefense += tempDefense;
+		mTempAttack = mTempAttack.decrementStage();
 	}
 
-	void adjustTempSpecialAttack(int tempSpecialAttack)
+	public void increaseTempDefense()
 	{
-		mTempSpecialAttack += tempSpecialAttack;
+		mTempDefense = mTempDefense.incrementStage();
 	}
 
-	void adjustTempSpecialDefense(int tempSpecialDefense)
+	public void decreaseTempDefense()
 	{
-		mTempSpecialDefense += tempSpecialDefense;
+		mTempDefense = mTempDefense.decrementStage();
 	}
 
-	void adjustTempSpeed(int tempSpeed)
+	public void increaseTempSpecialAttack()
 	{
-		mTempSpeed += tempSpeed;
+		mTempSpecialAttack = mTempSpecialAttack.incrementStage();
 	}
 
-	void adjustTempAccuracy(int tempAccuracy)
+	public void decreaseTempSpecialAttack()
 	{
-		mTempAccuracy += tempAccuracy;
+		mTempSpecialAttack = mTempSpecialAttack.decrementStage();
 	}
 
-	void adjustTempEvaion(int tempEvasion)
+	public void increaseTempSpecialDefense()
 	{
-		mTempEvasion += tempEvasion;
+		mTempSpecialDefense = mTempSpecialDefense.incrementStage();
 	}
 
-	void resetTempStats()
+	public void decreaseTempSpecialDefense()
 	{
-		mTempAttack = 0;
-		mTempDefense = 0;
-		mTempSpecialAttack = 0;
-		mTempSpecialDefense = 0;
-		mTempSpeed = 0;
-		mTempAccuracy = 0;
-		mTempEvasion = 0;
+		mTempSpecialDefense = mTempSpecialDefense.decrementStage();
+	}
+
+	public void increaseTempSpeed()
+	{
+		mTempSpeed = mTempSpeed.incrementStage();
+	}
+
+	public void decreaseTempSpeed()
+	{
+		mTempSpeed = mTempSpeed.decrementStage();
+	}
+
+	public void increaseTempAccuracy()
+	{
+		mTempAccuracy = mTempAccuracy.incrementStage();
+	}
+
+	public void decreaseTempAccuracy()
+	{
+		mTempAccuracy = mTempAccuracy.decrementStage();
+	}
+
+	public void increaseTempEvaion()
+	{
+		mTempEvasion = mTempEvasion.incrementStage();
+	}
+
+	public void decreaseTempEvaion()
+	{
+		mTempEvasion = mTempEvasion.decrementStage();
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
+	public void resetTempStats()
+	{
+		mTempAttack = TempStatsStages.zero;
+		mTempDefense = TempStatsStages.zero;
+		mTempSpecialAttack = TempStatsStages.zero;
+		mTempSpecialDefense = TempStatsStages.zero;
+		mTempSpeed = TempStatsStages.zero;
+		mTempAccuracy = TempStatsStages.zero;
+		mTempEvasion = TempStatsStages.zero;
 	}
 }
