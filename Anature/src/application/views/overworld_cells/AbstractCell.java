@@ -7,6 +7,7 @@ import application.LoggerStartUp;
 import application.controllers.DialogueBoxController;
 import application.controllers.LoggerController;
 import application.controllers.ShoppingMenuController;
+import application.controllers.SideMenuController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
@@ -27,8 +28,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -62,11 +61,10 @@ public abstract class AbstractCell
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 	protected SceneType mId;
-	private Rectangle test;
 	private ShoppingMenuController mShoppingController;
 
 	private StringProperty mDialogueTxtProperty;
-	private BooleanProperty mShowDialogueProperty, mShowShoppingProperty;
+	private BooleanProperty mShowDialogueProperty, mShowShoppingProperty, mShowSideMenuProperty;
 	private Image mStandDownImg;
 
 	public AbstractCell(LoggerStartUp logger, double width, double height, SceneType id)
@@ -74,7 +72,8 @@ public abstract class AbstractCell
 		mZoom = new SimpleDoubleProperty(2.6);
 		mShowDialogueProperty = new SimpleBooleanProperty(false);
 		mShowShoppingProperty = new SimpleBooleanProperty(false);
-
+		mShowSideMenuProperty = new SimpleBooleanProperty(false);
+		
 		mDialogueTxtProperty = new SimpleStringProperty("Sample Text");
 		mShowCollision = LoggerController.getCollisionBoxProperty();
 		mCollisions = new ArrayList<Rectangle>();
@@ -145,7 +144,7 @@ public abstract class AbstractCell
 
 		setUpDialogueBox(cell);
 		setUpShoppingMenu(cell);
-		setUpStartMenu(cell);
+		setUpSideMenu(cell);
 	}
 
 	protected abstract void createTrainers();
@@ -213,27 +212,33 @@ public abstract class AbstractCell
 		cell.getChildren().add(shoppingMenu);
 	}
 	
-	private void setUpStartMenu(BorderPane cell)
+	private void setUpSideMenu(BorderPane cell)
 	{
-		test = new Rectangle();
-		test.widthProperty().bind(mScene.widthProperty().divide(3.55));
-		test.heightProperty().bind(mScene.heightProperty().divide(1.16));
-		
-		ChangeListener<Number> pos = new ChangeListener<Number>()
+		try
 		{
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-			{
-				test.setLayoutX(mScene.getWidth() - test.getWidth());
-				test.setLayoutY(mScene.getHeight() / 14.4);
-			}
-		};
+			int fontSize = 50;
+			
+			Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), fontSize);
+			ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
+
+			mScene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
+					.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / fontSize)));
+
+			mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
+					.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / fontSize)));
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/views/elements/SideMenu.fxml"));
+			Parent root = loader.load();
+			
+			SideMenuController controller = loader.getController();
+			controller.updateBinds(mScene, fontProperty, mShowSideMenuProperty);
+			cell.getChildren().add(root);
+		}
 		
-		test.widthProperty().addListener(pos);
-		test.heightProperty().addListener(pos);
-		
-		test.setFill(Color.RED);
-		cell.getChildren().add(test);
+		catch(IOException e)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "IOException when trying to load Side Menu.\n" + e.getStackTrace());
+		}
 	}
 
 	public double clampRange(double value, double min, double max)
@@ -451,7 +456,22 @@ public abstract class AbstractCell
 	{
 		mShowShoppingProperty.set(false);
 	}
-
+	
+	public void toggleSideMenu()
+	{
+		mShowSideMenuProperty.set(!mShowSideMenuProperty.get());
+	}
+	
+	public void showSideMenu()
+	{
+		mShowSideMenuProperty.set(true);
+	}
+	
+	public void hideSideMenu()
+	{
+		mShowSideMenuProperty.set(false);
+	}
+	
 	public void assignPlayerForShop(Player player, Runnable dequeue)
 	{
 		if(player == null)
