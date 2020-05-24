@@ -363,12 +363,12 @@ class Stats extends StatsBase implements IStats
 	
 	private void maintainHitPointPercentage(int hitPointsIncrease)
 	{
-		int currentHitPoitns = getCurrentHitPoints();
+		int currentHitPoints = getCurrentHitPoints();
 		int previousTotalHitPoints = getTotalHitPoints() - hitPointsIncrease;
 		
-		double getHitPointsPercent = (double) currentHitPoitns / (double) previousTotalHitPoints;
+		double getHitPointsPercent = (double) currentHitPoints / (double) previousTotalHitPoints;
 		
-		int setHitPoitnsValue = (int) Math.ceil((  ( (double) getTotalHitPoints() ) * getHitPointsPercent ));
-		setCurrentHitPoints(setHitPoitnsValue);
+		int setHitPointsValue = (int) Math.ceil((  ( (double) getTotalHitPoints() ) * getHitPointsPercent ));
+		setCurrentHitPoints(setHitPointsValue);
 	}
 }
