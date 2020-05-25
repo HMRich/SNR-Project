@@ -83,18 +83,30 @@ public class SideMenuController
 		mSettingsTxt.fontProperty().bind(fontProperty);
 		mSaveTxt.fontProperty().bind(fontProperty);
 		mQuitTxt.fontProperty().bind(fontProperty);
+
+		mSelectImg.setVisible(false);
 		
-		mouseOverEvents(mDexTxt, () -> System.out.println("Dex"));
-		mouseOverEvents(mAnatureTxt, () -> System.out.println("Anature"));
-		mouseOverEvents(mBackpackTxt, () -> System.out.println("Backpack"));
-		mouseOverEvents(mSettingsTxt, () -> System.out.println("Settings"));
-		mouseOverEvents(mSaveTxt, () -> System.out.println("Save"));
-		mouseOverEvents(mQuitTxt, () -> System.out.println("Quit"));
+		int index = 0;
+		tabAttributes(mDexTxt, index++, () -> System.out.println("Dex"));
+		tabAttributes(mAnatureTxt, index++, () -> System.out.println("Anature"));
+		tabAttributes(mBackpackTxt, index++, () -> System.out.println("Backpack"));
+		tabAttributes(mSettingsTxt, index++, () -> System.out.println("Settings"));
+		tabAttributes(mSaveTxt, index++, () -> System.out.println("Save"));
+		tabAttributes(mQuitTxt, index++, () -> System.out.println("Quit"));
 	}
 	
-	private void mouseOverEvents(Label txt, Runnable onClick)
+	private void tabAttributes(Label txt, int index, Runnable onClick)
 	{
-		txt.setOnMouseEntered(value -> txt.setUnderline(true));
+		txt.setOnMouseEntered(value -> 
+		{
+			txt.setUnderline(true);
+			
+			mGrid.getChildren().remove(mSelectImg);
+			mGrid.add(mSelectImg, 0, index);
+			
+			mSelectImg.setVisible(true);
+			mSelectImg.setOnMouseClicked(mouseEvent -> onClick.run());
+		});
 		txt.setOnMouseExited(value -> txt.setUnderline(false));
 		txt.setOnMouseClicked(value -> onClick.run());
 		
