@@ -1,14 +1,29 @@
 package application.anatures.moves;
 
+import application.anatures.moves.moves.Coil;
+import application.anatures.moves.moves.DamageAndStatus;
+import application.anatures.moves.moves.Disguise;
 import application.anatures.moves.moves.DoublePunch;
+import application.anatures.moves.moves.FactoryReset;
+import application.anatures.moves.moves.FiberOptic;
 import application.anatures.moves.moves.Flail;
 import application.anatures.moves.moves.Flamethrower;
+import application.anatures.moves.moves.FocusUp;
 import application.anatures.moves.moves.Grumble;
+import application.anatures.moves.moves.HoseDown;
+import application.anatures.moves.moves.JustDamageDealing;
 import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.PocketSand;
+import application.anatures.moves.moves.SharpenUp;
 import application.anatures.moves.moves.SkipTurn;
 import application.anatures.moves.moves.Tackle;
+import application.anatures.moves.moves.TailBlock;
+import application.anatures.moves.moves.Tornado;
+import application.anatures.moves.moves.Upgrade;
+import application.anatures.moves.moves.WaterToss;
+import application.anatures.moves.moves.WiredMess;
 import application.enums.MoveIds;
+import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IBuilder;
 
@@ -145,6 +160,118 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 
 			case NullMove:
 				mMove = (M) new NullMove();
+				break;
+				
+			case Water_Toss:
+				mMove = (M) new WaterToss();
+				break;
+				
+			case Hose_Down:
+				mMove = (M) new HoseDown();
+				break;
+				
+			case Water_Fang:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Water_Blast:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Flood:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Wing_Bash:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Tornado:
+				mMove = (M) new Tornado();
+				break;
+				
+			case Coil:
+				mMove = (M) new Coil();
+				break;
+				
+			case Body_Slam:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Pounce:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Sharpen_Up:
+				mMove = (M) new SharpenUp();
+				break;
+				
+			case Tail_Slap:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Tail_Block:
+				mMove = (M) new TailBlock();
+				break;
+				
+			case Disguise:
+				mMove = (M) new Disguise();
+				break;
+				
+			case Tail_Slam:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Focus_Up:
+				mMove = (M) new FocusUp();
+				break;
+				
+			case Acid_Spit:
+				mMove = (M) new DamageAndStatus(StatusEffects.Poison, 0.95);
+				break;
+				
+			case Poison_Bite:
+				mMove = (M) new DamageAndStatus(StatusEffects.Poison, 0.75);
+				break;
+				
+			case Poisonous_Slam:
+				mMove = (M) new DamageAndStatus(StatusEffects.Poison, 0.25);
+				break;
+				
+			case Zap:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.7);
+				break;
+				
+			case Shock_Blast:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.5);
+				break;
+				
+			case Wire_Smack:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Upgrade:
+				mMove = (M) new Upgrade();
+				break;
+				
+			case Factory_Reset:
+				mMove = (M) new FactoryReset();
+				break;
+				
+			case Thunder_Blast:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.9);
+				break;
+				
+			case Fiber_Optic:
+				mMove = (M) new FiberOptic();
+				break;
+				
+			case Wired_Mess:
+				mMove = (M) new WiredMess();
+				break;
+				
+			case Voltage_Overload:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.6);
 				break;
 
 			default:
