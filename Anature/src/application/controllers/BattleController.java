@@ -541,6 +541,17 @@ public class BattleController
 			
 			evaluateAnatgureExperienceGain();
 			
+			// TODO We need to add dialogue for the player with the amount rewarded
+			if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
+			{
+				int randomCalculation = new Random().nextInt(21) - 10;
+				double percentonvertion =  ((double) randomCalculation)  / 100.0;
+				double adjustmentPercent =  1.0 + percentonvertion;
+				int tokensToAdd = (int) (((double) mEnemyTrainer.getRewardForDefeat()) * adjustmentPercent);
+				
+				mPlayer.addTokens(tokensToAdd);
+			}
+			
 			mShowBtns.set(false);
 
 			mClickQueue.clear();

@@ -14,6 +14,8 @@ public interface ITrainer
 	public TrainerIds getId();
 
 	public String getName();
+	
+	public int getRewardForDefeat();
 
 	public ArrayList<IAnature> getAnatureParty();
 
