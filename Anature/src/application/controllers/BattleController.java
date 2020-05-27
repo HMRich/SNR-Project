@@ -1,5 +1,6 @@
 package application.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ import application.enums.Gender;
 import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
+import application.enums.Type;
 import application.interfaces.AiChoiceObject;
 import application.interfaces.IAnature;
 import application.interfaces.IItem;
@@ -525,6 +527,8 @@ public class BattleController
 
 		if(isThereAliveAnatureInParty)
 		{
+			evaluateAnatgureExperienceGain();
+			
 			afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), () ->
 			{
 				System.out.println("Choosing enemy anature yet to be implemented!"); // TODO
@@ -534,47 +538,8 @@ public class BattleController
 		else
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-
 			
-			// New Code
-			
-			ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
-			for(IAnature anature : mFightManager.getEnemyTeam())
-			{
-				if(anature.getStats().getCurrentHitPoints() == 0)
-				{
-					defeatedAnatures.add(anature);
-				}
-			}
-			
-			ArrayList<IAnature> partisipatingAnatures = mFightManager.getPlayerParticipantingAnatures();
-			// TODO we need to gather the Exp gains here or somewhere else
-			// TODO there is more to do for Exp share but we don't have it
-			double isTrainerCalulation = mEnemyTrainer.getId().equals(TrainerIds.Wild) ? 1.0 : 1.5;
-			
-			for(IAnature playerAnature : partisipatingAnatures)
-			{
-				double playerAnatreLevel = playerAnature.getStats().getLevel();
-				
-				for(IAnature enemyAnature : defeatedAnatures)
-				{
-					double enemyAnatureLevel = enemyAnature.getStats().getLevel();
-					
-					double calculationA = (enemyAnatureLevel * 2) + 10;
-					double calculationB = enemyAnatureLevel + playerAnatreLevel + 10;
-					double calculationC = ( (double) (enemyAnatureLevel * playerAnatreLevel) ) / 5.0  * isTrainerCalulation ;
-					
-					double finalCalculation = Math.floor(
-							Math.floor(Math.sqrt(calculationA) * Math.pow(calculationA, 2)) * calculationB /
-							Math.floor(Math.sqrt(calculationC) * Math.pow(calculationC, 2)) );
-					
-					int result = ( (int) ( finalCalculation / ( (double) partisipatingAnatures.size() ))) + 1;
-					
-					playerAnature.getStats().addExperience(result);
-				}
-			}
-			
-			// End of New Code
+			evaluateAnatgureExperienceGain();
 			
 			// addingTokenGain
 			// TODO We need to track changes for reporting it to the player
@@ -594,6 +559,45 @@ public class BattleController
 
 			mCanClick.set(true);
 			mToEnd = true;
+		}
+	}
+	
+	private void evaluateAnatgureExperienceGain()
+	{
+		ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
+		for(IAnature anature : mFightManager.getEnemyTeam())
+		{
+			if(anature.getStats().getCurrentHitPoints() == 0)
+			{
+				defeatedAnatures.add(anature);
+			}
+		}
+		
+		ArrayList<IAnature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
+		// TODO we need to gather the Exp gains here or somewhere else
+		// TODO there is more to do for Exp share but we don't have it
+		double isTrainerCalculation = mEnemyTrainer.getId().equals(TrainerIds.Wild) ? 1.0 : 1.5;
+		
+		for(IAnature playerAnature : participatingAnatures)
+		{
+			double playerAnatureLevel = playerAnature.getStats().getLevel();
+			
+			for(IAnature enemyAnature : defeatedAnatures)
+			{
+				double enemyAnatureLevel = enemyAnature.getStats().getLevel();
+				
+				double calculationA = (enemyAnatureLevel * 2) + 10;
+				double calculationB = enemyAnatureLevel + playerAnatureLevel + 10;
+				double calculationC = ( (double) (enemyAnatureLevel * playerAnatureLevel) ) / 5.0  * isTrainerCalculation ;
+				
+				double finalCalculation = calculationC *
+						(Math.floor(Math.pow(calculationA, 2.5)) /
+						Math.floor(Math.pow(calculationB, 2.5)));
+				
+				int result = ( (int) finalCalculation ) + 1;
+				
+				playerAnature.getStats().addExperience(result);
+			}
 		}
 	}
 
@@ -1227,7 +1231,31 @@ public class BattleController
 		mSwitchSelectedAbilityName.setText(selected.getAbility().getAbilityName());
 		mSwitchSelectedAbilityDesc.setText(selected.getAbility().getAbilityDescription());
 
-		// TODO Add different type imgs
+		mSwitchSelectedTypeOne.setImage(getTypeIcon(selected.getPrimaryType()));
+		
+		if(selected.getSecondaryType() != Type.NotSet)
+		{
+			mSwitchSelectedTypeTwo.setImage(getTypeIcon(selected.getSecondaryType()));
+		}
+		
+		else
+		{
+			mSwitchSelectedTypeTwo.setImage(null);
+		}
+	}
+
+	private Image getTypeIcon(Type type)
+	{
+		String path = getClass().getResource("/resources/images/types/" + type + "_Type.png").toExternalForm().replace("file:/", "");
+		File toCheck = new File(path);
+		
+		if(!toCheck.exists())
+		{
+			path = getClass().getResource("/resources/images/types/Normal_Type.png").toExternalForm().replace("file:/", "");
+			toCheck = new File(path);
+		}
+		
+		return new Image(toCheck.toURI().toString(), 100.0, 100.0, true, false);
 	}
 
 	private void updateSwitchSlot(IAnature curr, Image anatureImg, BooleanProperty visibleProp, AnatureSlot slot, boolean isSelected)

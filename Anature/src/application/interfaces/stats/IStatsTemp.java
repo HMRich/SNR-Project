@@ -52,7 +52,7 @@ public interface IStatsTemp
 
 	public void decreaseTempAccuracy();
 
-	public void increaseTempEvaion();
+	public void increaseTempEvasion();
 
 	public void decreaseTempEvaion();
 

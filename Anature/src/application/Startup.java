@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import application.anatures.AnatureBuilder;
+import application.controllers.AnatureSummaryController;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.overworld_cells.GrassTownController;
@@ -20,6 +21,7 @@ import application.models.PathOneModel;
 import application.models.StarterTownModel;
 import application.player.Player;
 import application.pools.ItemPool;
+import application.views.overworld_cells.AbstractCell;
 import application.views.overworld_cells.GrassTownCell;
 import application.views.overworld_cells.PathOneCell;
 import application.views.overworld_cells.RestStationCell;
@@ -40,6 +42,9 @@ public class Startup extends Application
 	private static Player mPlayer;
 	private static EventHandler<KeyEvent> mKeyListener;
 	private static SceneType mLastSceneType, mCurrSceneType;
+	
+	private static Scene mAnatureSummaryView;
+	private static AnatureSummaryController mAnatureSummaryController;
 
 	private static StarterTownModel mStarterTownModel;
 	private static StarterTownCell mStarterTownView;
@@ -56,6 +61,8 @@ public class Startup extends Application
 //	private static RestStationModel mRestStationGrassModel;
 	private static RestStationCell mRestStationGrassView;
 	private static RestStationController mRestStationGrassController;
+
+	private static AbstractCell mCurrentCell;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -124,6 +131,24 @@ public class Startup extends Application
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Intro");
 					mStage.setScene(intro);
 					break;
+					
+				case Anature_Summary:
+					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
+					{
+						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
+						Parent summaryRoot = summaryLoader.load();
+						mAnatureSummaryView = new Scene(summaryRoot);
+						mAnatureSummaryView.setOnKeyReleased(mKeyListener);
+						
+						mAnatureSummaryController = summaryLoader.getController();
+						mAnatureSummaryController.updateBinds(mAnatureSummaryView);
+					}
+					
+					mAnatureSummaryController.displayParty(mPlayer.getAnatures());
+
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Anature Summary");
+					mStage.setScene(mAnatureSummaryView);
+					break;
 
 				case Starter_Town:
 					if(mStarterTownModel == null)
@@ -142,7 +167,14 @@ public class Startup extends Application
 					}
 
 					Scene townScene = mStarterTownView.getScene();
+
+					if(mCurrentCell != null)
+					{
+						mStarterTownView.setKeysPressed(mCurrentCell.getKeysPressed());
+					}
+
 					mStarterTownController.movePlayer(warpPoint);
+					mCurrentCell = mStarterTownView;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Starter Town");
 					mStage.setScene(townScene);
@@ -165,7 +197,14 @@ public class Startup extends Application
 					}
 
 					Scene pathOneScene = mPathOneView.getScene();
+
+					if(mCurrentCell != null)
+					{
+						mPathOneView.setKeysPressed(mCurrentCell.getKeysPressed());
+					}
+
 					mPathOneController.movePlayer(warpPoint);
+					mCurrentCell = mPathOneView;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Path 1");
 					mStage.setScene(pathOneScene);
@@ -187,8 +226,14 @@ public class Startup extends Application
 						mGrassTownController = new GrassTownController(mLogger, mGrassTownView, mPlayer);
 					}
 
+					if(mCurrentCell != null)
+					{
+						mGrassTownView.setKeysPressed(mCurrentCell.getKeysPressed());
+					}
+
 					Scene grassTownScene = mGrassTownView.getScene();
 					mGrassTownController.movePlayer(warpPoint);
+					mCurrentCell = mGrassTownView;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Grass Town");
 					mStage.setScene(grassTownScene);
@@ -210,8 +255,14 @@ public class Startup extends Application
 						mRestStationGrassController = new RestStationController(mLogger, mRestStationGrassView, mPlayer);
 					}
 
+					if(mCurrentCell != null)
+					{
+						mRestStationGrassView.setKeysPressed(mCurrentCell.getKeysPressed());
+					}
+
 					Scene restStationScene = mRestStationGrassView.getScene();
 					mRestStationGrassController.movePlayer(warpPoint);
+					mCurrentCell = mRestStationGrassView;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Rest Station in Grass Town");
 					mStage.setScene(restStationScene);

@@ -4,6 +4,7 @@ import application.LoggerStartUp;
 import application.enums.Direction;
 import application.enums.WarpPoints;
 import application.interfaces.IAnature;
+import application.models.KeysPressed;
 import application.player.Player;
 import application.views.overworld_cells.RestStationCell;
 import javafx.scene.input.KeyCode;
@@ -20,57 +21,58 @@ public class RestStationController extends AbstractController
 	@Override
 	protected void timerHook(double elapsedSeconds)
 	{
-		
+
 	}
 
 	@Override
 	protected void keyPressHook(KeyEvent event)
 	{
+		KeysPressed keys = mView.getKeysPressed();
 		event.consume();
-		
-		if(event.getCode() == KeyCode.E && mView.getPlayerFacing() == Direction.Up && mView.mCanMove)
+
+		if(event.getCode() == KeyCode.E && mView.getPlayerFacing() == Direction.Up && keys.canMove())
 		{
 			if(((RestStationCell) mView).interactHealStation())
-			{				
-				mView.mCanMove = false;
-				
+			{
+				keys.setCanMove(false);
+
 				mClickQueue.enqueue(() -> mView.showDialogue("Hi there, I'm the local nurse!"), "Nurse Intro");
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					mView.showDialogue("I'll heal your Anatures!");
-					
+
 					for(IAnature anature : mPlayerModel.getAnatures())
 					{
 						anature.restore();
 					}
-					
+
 				}, "Nurse Healing");
-				
+
 				mClickQueue.enqueue(() ->
 				{
 					mView.hideDialogue();
-					mView.mCanMove = true;
+					keys.setCanMove(true);
 				}, "End Nurse Dialogue");
 			}
-			
+
 			else if(((RestStationCell) mView).interactClerkStation())
-			{				
-				mView.mCanMove = false;
-				
+			{
+				keys.setCanMove(false);
+
 				mClickQueue.enqueue(() -> mView.showDialogue("Hi there, I'm the local store clerk!"), "Clerk Intro");
 				mClickQueue.enqueue(() -> mView.showDialogue("Are you interested in some of my wares?"), "Clerk Buying Text");
-				mClickQueue.enqueue(() -> 
+				mClickQueue.enqueue(() ->
 				{
 					mView.showshopMenu();
 					mView.hideDialogue();
-					
+
 				}, "Show Buying Menu");
-				
-				mClickQueue.enqueue(() -> 
+
+				mClickQueue.enqueue(() ->
 				{
 					mView.hideShopMenu();
-					mView.mCanMove = true;
-					
+					keys.setCanMove(true);
+
 				}, "End Clerk Dialogue");
 			}
 		}
@@ -81,7 +83,7 @@ public class RestStationController extends AbstractController
 	{
 		if(warpPoint == null)
 			return;
-		
+
 		switch(warpPoint)
 		{
 			case Rest_Station_Grass_Town:

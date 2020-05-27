@@ -17,7 +17,7 @@ import application.pools.MovePool;
 
 public class FightManager
 {
-	private ArrayList<IAnature> mPlayerTeam, mEnemyTeam, mPlayerPartisipatingAnatures;
+	private ArrayList<IAnature> mPlayerTeam, mEnemyTeam, mPlayerParticipatingAnatures;
 	private int mPlayerIndex, mEnemyIndex, mTurnCount;
 
 	public FightManager(ArrayList<IAnature> playerTeam, ArrayList<IAnature> enemyTeam)
@@ -27,7 +27,7 @@ public class FightManager
 
 		mPlayerTeam = playerTeam;
 		mEnemyTeam = enemyTeam;
-		mPlayerPartisipatingAnatures = new ArrayList<IAnature>();
+		mPlayerParticipatingAnatures = new ArrayList<IAnature>();
 
 		mPlayerIndex = 0;
 		addPlayerAnatureParticipant(0);
@@ -265,11 +265,11 @@ public class FightManager
 	
 	public ArrayList<IAnature> getPlayerParticipantingAnatures()
 	{
-		return new ArrayList<IAnature>(mPlayerPartisipatingAnatures);
+		return new ArrayList<IAnature>(mPlayerParticipatingAnatures);
 	}
 	
 	private void addPlayerAnatureParticipant(int index)
 	{
-		mPlayerPartisipatingAnatures.add(mPlayerTeam.get(index));
+		mPlayerParticipatingAnatures.add(mPlayerTeam.get(index));
 	}
 }

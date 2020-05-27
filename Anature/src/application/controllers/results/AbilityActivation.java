@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import application.anatures.abillities.Determination;
 import application.anatures.abillities.DrySkin;
+import application.anatures.abillities.LittleGuy;
+import application.anatures.abillities.Overclocked;
 import application.anatures.abillities.SleepDeprived;
 import application.anatures.abillities.Spiky;
 import application.anatures.abillities.ToughSkin;
+import application.anatures.abillities.Toxic;
 import application.anatures.abillities.Tyrannize;
 import application.enums.AbilityIds;
 import application.enums.Type;
@@ -23,6 +26,10 @@ public class AbilityActivation
 		{
 			case Tyrannize: // Intimidate
 				result = new AbilityResult(Tyrannize.activateAbility(userAnature, targetAnature), true);
+				break;
+
+			case LittleGuy:
+				result = new AbilityResult(LittleGuy.activateAbility(userAnature), true);
 				break;
 
 			default:
@@ -79,6 +86,14 @@ public class AbilityActivation
 				abilityTxt = Spiky.activateAbility(userAnature, targetAnature, moveThatAttacked, isUserAttacking, attackMissed);
 				break;
 
+			case Toxic:
+				abilityTxt = Toxic.activateAbility(userAnature, targetAnature);
+				break;
+
+			case Overclocked:
+				abilityTxt = Overclocked.activateAbility(userAnature, moveThatAttacked);
+				break;
+
 			default:
 				break;
 		}
@@ -86,6 +101,7 @@ public class AbilityActivation
 		if(!abilityTxt.equals(""))
 		{
 			dialogue.add(abilityTxt);
+			result.setActivated(true);
 		}
 
 		return result;
