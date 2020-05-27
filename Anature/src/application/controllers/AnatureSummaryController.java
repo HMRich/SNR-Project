@@ -62,6 +62,8 @@ public class AnatureSummaryController
 	private int mCurrPageNum, mSelectedMoveIndex;
 	private ObjectProperty<Font> mMediumFontProperty;
 	private Scene mScene;
+	private ArrayList<IAnature> mParty;
+	private IAnature mCurrAnature;
 
 	public void initialize()
 	{
@@ -96,12 +98,15 @@ public class AnatureSummaryController
 			return;
 		}
 
+		mAnatureTabGrid.getChildren().clear();
 		for(int i = 0; i < party.size(); i++)
 		{
 			setUpTabs(i, party.get(i));
 		}
 
-		displayAnature(party.get(0));
+		mParty = party;
+		mCurrAnature = mParty.get(0);
+		displayAnature(mCurrAnature);
 	}
 
 	private void displayAnature(IAnature anature)
@@ -117,6 +122,7 @@ public class AnatureSummaryController
 		mPageOneBtn.setImage(mPageOneSelectImg);
 		mPageOneGrid.setVisible(true);
 
+		mCurrAnature = anature;
 		IStats stats = anature.getStats();
 		displayLeftSideInfo(anature, stats);
 		displayPageOneInfo(anature, stats);
@@ -230,6 +236,16 @@ public class AnatureSummaryController
 		mDetailMoveTypeImg.setImage(new Image(getClass().getResource("/resources/images/types/" + move.getType() + "_Type.png").toExternalForm()));
 	}
 
+	private void releaseAnature()
+	{
+		if(mParty.size() > 1)
+		{
+			mParty.remove(mCurrAnature);
+		}
+		
+		displayParty(mParty);
+	}
+
 	public void updateBinds(Scene scene)
 	{
 		if(scene == null)
@@ -266,7 +282,7 @@ public class AnatureSummaryController
 
 		mReleaseBtn.setOnMouseEntered(value -> mReleaseBtn.setImage(mReleaseSelectImg));
 		mReleaseBtn.setOnMouseExited(value -> mReleaseBtn.setImage(mReleaseImg));
-		mReleaseBtn.setOnMouseClicked(value -> System.out.println("Release"));
+		mReleaseBtn.setOnMouseClicked(value -> releaseAnature());
 
 		mBackBtn.setOnMouseEntered(value -> mBackBtn.setImage(mBackSelectImg));
 		mBackBtn.setOnMouseExited(value -> mBackBtn.setImage(mBackImg));
