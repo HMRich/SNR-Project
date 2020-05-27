@@ -14,6 +14,7 @@ import application.animations.ProgressBarDecrease;
 import application.animations.ProgressBarIncrease;
 import application.animations.ThreeFrameAnimation;
 import application.animations.XSlideAnimation;
+import application.animations.XpBarIncrease;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
@@ -538,7 +539,8 @@ public class BattleController
 		else
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-			
+
+			mClickQueue.clear();
 			evaluateAnatgureExperienceGain();
 			
 			// TODO We need to add dialogue for the player with the amount rewarded
@@ -554,7 +556,6 @@ public class BattleController
 			
 			mShowBtns.set(false);
 
-			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + "!"), "Enemy Dead");
 			mClickQueue.enqueue(() -> Startup.changeScene(null, null), "To Overworld");
 
@@ -598,8 +599,33 @@ public class BattleController
 				int result = ( (int) finalCalculation ) + 1;
 				
 				playerAnature.getStats().addExperience(result);
+				updateXp(playerAnature, result, playerAnatureLevel);
 			}
 		}
+	}
+
+	private void updateXp(IAnature anature, int xpGained, double oldLvl)
+	{
+		mClickQueue.enqueue(() ->
+		{
+			String toDisplay = anature.getName() + " gained " + xpGained + " xp!";
+			
+			if(oldLvl != anature.getStats().getLevel())
+			{
+				toDisplay += "\nAnd also leveled up!";
+			}
+			
+			mDialogueTxt.set(toDisplay);
+			
+			if(mFightManager.getPlayerAnature().equals(anature))
+			{
+				mCanClick.set(false);
+				XpBarIncrease animation = new XpBarIncrease(mPlayerXp, Duration.seconds(2.5), anature.getStats().getExperienceProgression());
+				animation.setOnFinished(event -> mCanClick.set(true));
+				animation.play();
+			}
+			
+		}, "Xp display for currently showing Anature");
 	}
 
 	private void setUpClickTracker(Scene scene)
