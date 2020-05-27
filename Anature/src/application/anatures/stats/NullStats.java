@@ -93,7 +93,7 @@ public class NullStats implements IStats
 	}
 
 	@Override
-	public int getIVSpecialDefnese()
+	public int getIVSpecialDefense()
 	{
 		return -1;
 	}
@@ -435,7 +435,7 @@ public class NullStats implements IStats
 	}
 
 	@Override
-	public void increaseTempEvaion()
+	public void increaseTempEvasion()
 	{
 
 	}

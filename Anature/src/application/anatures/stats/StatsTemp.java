@@ -121,7 +121,7 @@ class StatsTemp implements IStatsTemp
 		mTempAccuracy = mTempAccuracy.decrementStage();
 	}
 
-	public void increaseTempEvaion()
+	public void increaseTempEvasion()
 	{
 		mTempEvasion = mTempEvasion.incrementStage();
 	}
