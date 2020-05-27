@@ -527,6 +527,8 @@ public class BattleController
 
 		if(isThereAliveAnatureInParty)
 		{
+			evaluateAnatgureExperienceGain();
+			
 			afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), () ->
 			{
 				System.out.println("Choosing enemy anature yet to be implemented!"); // TODO
@@ -536,7 +538,9 @@ public class BattleController
 		else
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-
+			
+			evaluateAnatgureExperienceGain();
+			
 			mShowBtns.set(false);
 
 			mClickQueue.clear();
@@ -545,6 +549,45 @@ public class BattleController
 
 			mCanClick.set(true);
 			mToEnd = true;
+		}
+	}
+	
+	private void evaluateAnatgureExperienceGain()
+	{
+		ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
+		for(IAnature anature : mFightManager.getEnemyTeam())
+		{
+			if(anature.getStats().getCurrentHitPoints() == 0)
+			{
+				defeatedAnatures.add(anature);
+			}
+		}
+		
+		ArrayList<IAnature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
+		// TODO we need to gather the Exp gains here or somewhere else
+		// TODO there is more to do for Exp share but we don't have it
+		double isTrainerCalculation = mEnemyTrainer.getId().equals(TrainerIds.Wild) ? 1.0 : 1.5;
+		
+		for(IAnature playerAnature : participatingAnatures)
+		{
+			double playerAnatureLevel = playerAnature.getStats().getLevel();
+			
+			for(IAnature enemyAnature : defeatedAnatures)
+			{
+				double enemyAnatureLevel = enemyAnature.getStats().getLevel();
+				
+				double calculationA = (enemyAnatureLevel * 2) + 10;
+				double calculationB = enemyAnatureLevel + playerAnatureLevel + 10;
+				double calculationC = ( (double) (enemyAnatureLevel * playerAnatureLevel) ) / 5.0  * isTrainerCalculation ;
+				
+				double finalCalculation = calculationC *
+						(Math.floor(Math.pow(calculationA, 2.5)) /
+						Math.floor(Math.pow(calculationB, 2.5)));
+				
+				int result = ( (int) finalCalculation ) + 1;
+				
+				playerAnature.getStats().addExperience(result);
+			}
 		}
 	}
 
