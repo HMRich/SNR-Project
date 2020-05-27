@@ -339,9 +339,9 @@ public class NullStats implements IStats
 	}
 
 	@Override
-	public void addExperience(int expeienceGain)
+	public int addExperience(int expeienceGain)
 	{
-
+		return -1;
 	}
 
 	@Override

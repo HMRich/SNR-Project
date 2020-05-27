@@ -256,7 +256,7 @@ class Stats extends StatsBase implements IStats
 	 * PUBLIC METHODS
 	 */
 
-	public void addExperience(int expeienceGain)
+	public int addExperience(int expeienceGain)
 	{
 		if(expeienceGain < 0)
 		{
@@ -264,8 +264,14 @@ class Stats extends StatsBase implements IStats
 		}
 
 		mTotalExperiencePoints += expeienceGain;
+		
+		int levelsGained = 0;
 		while(levelGained())
-			;
+		{
+			levelsGained++;
+		}
+		
+		return levelsGained;
 	}
 
 	public int getExperienceProgression()
