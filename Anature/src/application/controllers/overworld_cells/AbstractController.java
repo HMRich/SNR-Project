@@ -36,7 +36,7 @@ public abstract class AbstractController
 	protected PlayerSprite mPlayerView;
 	protected Player mPlayerModel;
 	protected ClickQueue mClickQueue;
-
+	private boolean mCanTalkToTrainer;
 	protected Image mWalkUpImg, mWalkDownImg, mWalkRightImg, mWalkLeftImg, mStandUpImg, mStandDownImg, mStandRightImg, mStandLeftImg;
 
 	public AbstractController(LoggerStartUp logger, AbstractCell view, Player playerModel)
@@ -53,6 +53,7 @@ public abstract class AbstractController
 		mLogger = logger;
 		mSpeedMultiplier = 1;
 		mClickQueue = new ClickQueue();
+		mCanTalkToTrainer = true;
 
 		mWalkUpImg = new Image(getClass().getResource("/resources/images/player/up_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
 		mWalkDownImg = new Image(getClass().getResource("/resources/images/player/down_walk.gif").toExternalForm(), 100.0, 100.0, true, false);
@@ -356,7 +357,16 @@ public abstract class AbstractController
 			case TAB:
 				if(on)
 				{
-					mView.toggleSideMenu();
+					boolean result = mView.toggleSideMenu();
+					
+					keys.setCanMove(!result);
+					mCanTalkToTrainer = !result;
+					
+					if(result)
+					{
+						keys.turnOffAll();
+						updatePcSprite();
+					}
 				}
 				break;
 				
@@ -384,6 +394,11 @@ public abstract class AbstractController
 
 	private void trainerEvents()
 	{
+		if(!mCanTalkToTrainer)
+		{
+			return;
+		}
+		
 		boolean interactingWithTrainer = false;
 		KeysPressed keys = mView.getKeysPressed();
 

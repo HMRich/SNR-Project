@@ -457,9 +457,10 @@ public abstract class AbstractCell
 		mShowShoppingProperty.set(false);
 	}
 	
-	public void toggleSideMenu()
+	public boolean toggleSideMenu()
 	{
 		mShowSideMenuProperty.set(!mShowSideMenuProperty.get());
+		return mShowSideMenuProperty.get();
 	}
 	
 	public void showSideMenu()
