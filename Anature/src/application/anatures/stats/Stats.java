@@ -169,7 +169,7 @@ class Stats extends StatsBase implements IStats
 		if(getNature().getDecreasedStat()
 				.equals(NatureStats.SpecialDefense))
 		{
-			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
+			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefense() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
 			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * -getNature().getModifier());
 			return (int) (calculatedSpecialDefense * getTempSpecialDefense().getModifier());
 		}
@@ -177,12 +177,12 @@ class Stats extends StatsBase implements IStats
 		else if(getNature().getIncreasedStat()
 				.equals(NatureStats.SpecialDefense))
 		{
-			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
+			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefense() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
 			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * getNature().getModifier());
 			return (int) (calculatedSpecialDefense * getTempSpecialDefense().getModifier());
 		}
 
-		return (int) ((getBaseSpecialDefense() + getIVSpecialDefnese() + getEVSpecialDefenseReduced() + getLevelSpecialDefense())
+		return (int) ((getBaseSpecialDefense() + getIVSpecialDefense() + getEVSpecialDefenseReduced() + getLevelSpecialDefense())
 				* getTempSpecialDefense().getModifier());
 	}
 
@@ -350,7 +350,7 @@ class Stats extends StatsBase implements IStats
 		addLevelSpecialAttack(specialAttackIncrease);
 
 		int specialDefenseIncrease = (int) ((0.01 * (double) getBaseSpecialDefense())
-				+ (0.02 * ((double) getIVSpecialDefnese() + (double) getEVSpecialDefense())));
+				+ (0.02 * ((double) getIVSpecialDefense() + (double) getEVSpecialDefense())));
 		specialDefenseIncrease = specialDefenseIncrease == 0 ? 1 : specialDefenseIncrease;
 		addLevelSpecialDefense(specialDefenseIncrease);
 

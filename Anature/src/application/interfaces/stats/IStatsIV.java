@@ -10,7 +10,7 @@ public interface IStatsIV extends IStatsEV
 
 	public int getIVSpecialAttack();
 
-	public int getIVSpecialDefnese();
+	public int getIVSpecialDefense();
 
 	public int getIVSpeed();
 }

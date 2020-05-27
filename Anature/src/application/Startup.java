@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import application.anatures.AnatureBuilder;
+import application.controllers.AnatureSummaryController;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.overworld_cells.GrassTownController;
@@ -41,6 +42,9 @@ public class Startup extends Application
 	private static Player mPlayer;
 	private static EventHandler<KeyEvent> mKeyListener;
 	private static SceneType mLastSceneType, mCurrSceneType;
+	
+	private static Scene mAnatureSummaryView;
+	private static AnatureSummaryController mAnatureSummaryController;
 
 	private static StarterTownModel mStarterTownModel;
 	private static StarterTownCell mStarterTownView;
@@ -126,6 +130,24 @@ public class Startup extends Application
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Intro");
 					mStage.setScene(intro);
+					break;
+					
+				case Anature_Summary:
+					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
+					{
+						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
+						Parent summaryRoot = summaryLoader.load();
+						mAnatureSummaryView = new Scene(summaryRoot);
+						mAnatureSummaryView.setOnKeyReleased(mKeyListener);
+						
+						mAnatureSummaryController = summaryLoader.getController();
+						mAnatureSummaryController.updateBinds(mAnatureSummaryView);
+					}
+					
+					mAnatureSummaryController.displayParty(mPlayer.getAnatures());
+
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Anature Summary");
+					mStage.setScene(mAnatureSummaryView);
 					break;
 
 				case Starter_Town:
