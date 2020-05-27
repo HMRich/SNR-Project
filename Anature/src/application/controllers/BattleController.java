@@ -1417,15 +1417,14 @@ public class BattleController
 
 		int whoGoesFirst = playerCurr.getStats().getTotalSpeed() - enemyCurr.getStats().getTotalSpeed();
 
-		if(whoGoesFirst == 0) // Will either add 0 or 1 to the total
+		if(whoGoesFirst == 0)
 		{
-			Random r = new Random();
-			whoGoesFirst += r.nextInt(2);
+			whoGoesFirst += Math.random() > 0.5 ? -1 : 1;
 		}
 
 		if(choice == BattleChoice.Switch || choice == BattleChoice.Item)
 		{
-			whoGoesFirst = 0;
+			whoGoesFirst = 1;
 		}
 
 		Runnable resetGui = new Runnable()
@@ -1466,7 +1465,7 @@ public class BattleController
 
 		mCanClick.set(false);
 
-		if(whoGoesFirst == 0) // Player goes first
+		if(whoGoesFirst > 0) // Player goes first
 		{
 			activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice,
 					() -> activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn, afterTurns));
