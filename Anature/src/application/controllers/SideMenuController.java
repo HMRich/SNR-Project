@@ -1,5 +1,7 @@
 package application.controllers;
 
+import application.Startup;
+import application.enums.SceneType;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -88,7 +90,7 @@ public class SideMenuController
 		
 		int index = 0;
 		tabAttributes(mDexTxt, index++, () -> System.out.println("Dex"));
-		tabAttributes(mAnatureTxt, index++, () -> System.out.println("Anature"));
+		tabAttributes(mAnatureTxt, index++, () -> Startup.changeScene(SceneType.Anature_Summary, null));
 		tabAttributes(mBackpackTxt, index++, () -> System.out.println("Backpack"));
 		tabAttributes(mSettingsTxt, index++, () -> System.out.println("Settings"));
 		tabAttributes(mSaveTxt, index++, () -> System.out.println("Save"));
