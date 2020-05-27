@@ -6,40 +6,38 @@ import application.enums.LoggingTypes;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 
-public class DrySkin implements IAbility
+public class LittleGuy implements IAbility
 {
 	public static String activateAbility(IAnature userAnature)
 	{
 		if(userAnature == null)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in DrySkin was null.");
+			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in LittleGuy was null.");
 			return "";
 		}
-		
-		return userAnature.getName() + " nullified the move with its Dry Skin ability!";
+
+		userAnature.getStats().increaseTempEvasion();
+
+		return userAnature.getName() + " increased it's evasion with its \"Little Guy\" ability!";
 	}
 
-	@Override
 	public AbilityIds getAbilityId()
 	{
-		return AbilityIds.Dry_Skin;
+		return AbilityIds.LittleGuy;
 	}
 
-	@Override
 	public String getAbilityName()
 	{
-		return "Dry Skin";
+		return "Little Guy";
 	}
 
-	@Override
 	public String getAbilityDescription()
 	{
-		return "The user is able to absorb all water moves, thus nullifying the moves affects!";
+		return "User gets a boost to evasion on entry.";
 	}
 
-	@Override
 	public boolean happensEveryTurn()
 	{
-		return true;
+		return false;
 	}
 }

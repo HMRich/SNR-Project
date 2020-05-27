@@ -435,7 +435,7 @@ public class NullStats implements IStats
 	}
 
 	@Override
-	public void increaseTempEvaion()
+	public void increaseTempEvasion()
 	{
 
 	}
