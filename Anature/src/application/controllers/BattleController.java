@@ -541,14 +541,15 @@ public class BattleController
 			
 			evaluateAnatgureExperienceGain();
 			
-			// addingTokenGain
-			// TODO We need to track changes for reporting it to the player
-			// TODO We need to figure out what the amount should be fro each Trainer
-			// and where we are going to store the base amount
-			// We should add a percent randomness for the amount like + or - 10 percent
+			// TODO We need to add dialogue for the player with the amount rewarded
 			if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
 			{
-				mPlayer.addTokens(new Random().nextInt(101));
+				int randomCalculation = new Random().nextInt(21) - 10;
+				double percentonvertion =  ((double) randomCalculation)  / 100.0;
+				double adjustmentPercent =  1.0 + percentonvertion;
+				int tokensToAdd = (int) (((double) mEnemyTrainer.getRewardForDefeat()) * adjustmentPercent);
+				
+				mPlayer.addTokens(tokensToAdd);
 			}
 			
 			mShowBtns.set(false);
