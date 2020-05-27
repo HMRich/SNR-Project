@@ -353,6 +353,13 @@ public abstract class AbstractController
 				keys.setDown(on);
 				break;
 
+			case TAB:
+				if(on)
+				{
+					mView.toggleSideMenu();
+				}
+				break;
+				
 			default:
 				break;
 		}
