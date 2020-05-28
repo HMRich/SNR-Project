@@ -283,6 +283,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 				if(minLevel > level)
 					continue;
 
+				moveNameStr = moveNameStr.replace(" ", "_");
 				MoveIds moveName = MoveIds.valueOf(moveNameStr);
 				availableMoves.add(moveName);
 			}
