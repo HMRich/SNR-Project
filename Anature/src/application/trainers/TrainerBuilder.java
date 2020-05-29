@@ -217,14 +217,19 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		ArrayList<IAnature> party = new ArrayList<IAnature>();
 
 		ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyString.split(",")));
-		Random levelGen = new Random();
+		Random rng = new Random();
 
 		for(String anatureStr : partyStrAra)
 		{
-			int level = levelGen.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
+			int level = rng.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
 			party.add(AnatureBuilder.createAnature(Species.valueOf(anatureStr), level));
 		}
 
+		while(party.size() > anatureCount)
+		{
+			party.remove(rng.nextInt(party.size()));
+		}
+		
 		return party;
 	}
 
