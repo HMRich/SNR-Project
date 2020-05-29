@@ -14,6 +14,7 @@ import application.animations.ProgressBarDecrease;
 import application.animations.ProgressBarIncrease;
 import application.animations.ThreeFrameAnimation;
 import application.animations.XSlideAnimation;
+import application.animations.XpBarIncrease;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
@@ -538,10 +539,10 @@ public class BattleController
 		else
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
-			
+
+			mClickQueue.clear();
 			evaluateAnatgureExperienceGain();
 			
-			// TODO We need to add dialogue for the player with the amount rewarded
 			if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
 			{
 				int randomCalculation = new Random().nextInt(21) - 10;
@@ -550,11 +551,12 @@ public class BattleController
 				int tokensToAdd = (int) (((double) mEnemyTrainer.getRewardForDefeat()) * adjustmentPercent);
 				
 				mPlayer.addTokens(tokensToAdd);
+				
+				mClickQueue.enqueue(() -> mDialogueTxt.set("You earned " + tokensToAdd + " tokens!"), "Earning tokens.");
 			}
 			
 			mShowBtns.set(false);
 
-			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + "!"), "Enemy Dead");
 			mClickQueue.enqueue(() -> Startup.changeScene(null, null), "To Overworld");
 
@@ -597,9 +599,73 @@ public class BattleController
 				
 				int result = ( (int) finalCalculation ) + 1;
 				
-				playerAnature.getStats().addExperience(result);
+				int lvlsGained = playerAnature.getStats().addExperience(result);
+				updateXp(playerAnature, result, lvlsGained);
 			}
 		}
+	}
+
+	private void updateXp(IAnature anature, int xpGained, int lvlsGained)
+	{
+		mClickQueue.enqueue(() ->
+		{
+			String toDisplay = anature.getName() + " gained " + xpGained + " xp!";
+			
+			if(lvlsGained > 0)
+			{
+				toDisplay += "\nAnd also leveled up!";
+			}
+			
+			mDialogueTxt.set(toDisplay);
+			
+			if(mFightManager.getPlayerAnature().equals(anature))
+			{
+				mCanClick.set(false);
+				animateXpBar(xpGained, lvlsGained);
+			}
+			
+		}, "Xp display for currently showing Anature");
+	}
+	
+	private void animateXpBar(int xpGained, int lvlsGained)
+	{
+		double newCurrXp = mPlayerXp.get() + xpGained;
+		
+		if(newCurrXp > mPlayerXpTotal.doubleValue())
+		{
+			newCurrXp = mPlayerXpTotal.doubleValue() - mPlayerXp.doubleValue();		
+		}
+		
+		XpBarIncrease animation = new XpBarIncrease(mPlayerXp, Duration.seconds(1), mPlayerXp.get() + newCurrXp, lvlsGained);
+		animation.setOnFinished(event -> 
+		{
+			IAnature curr =  mFightManager.getPlayerAnature();
+			
+			if(animation.getLvlsGained() > 0)
+			{
+				mPlayerLvl.set(mPlayerLvl.get() + 1);
+			}
+			
+			if(animation.getLvlsGained() - 1 > 0)
+			{
+				mPlayerXp.set(0);
+				mPlayerXpTotal.set(100);
+				animateXpBar(100, animation.getLvlsGained() - 1);
+			}
+			
+			else if(animation.getLvlsGained() - 1 == 0)
+			{
+				mPlayerXp.set(0);
+				mPlayerXpTotal.set(curr.getStats().getRequiredExperience());
+				animateXpBar(curr.getStats().getExperienceProgression(), -1);
+			}
+			
+			else
+			{
+				mCanClick.set(true);
+			}
+		});
+		animation.play();
 	}
 
 	private void setUpClickTracker(Scene scene)

@@ -322,7 +322,7 @@ public class Startup extends Application
 		IAnature first = AnatureBuilder.createAnature(Species.Null, 54);
 		first.updateName("Main Null");
 		mPlayer.addAnatures(first);
-		mPlayer.getAnatures().get(0).getStats().addExperience(10001);
+		mPlayer.getAnatures().get(0).getStats().addExperience(14601);
 
 		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
