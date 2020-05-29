@@ -1,6 +1,12 @@
 package application;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import application.anatures.AnatureBuilder;
 import application.controllers.AnatureSummaryController;
@@ -341,5 +347,63 @@ public class Startup extends Application
 	public static String getPlayerName()
 	{
 		return mPlayer.getName();
+	}
+	
+	public static boolean save() {
+		
+		ArrayList<Object> itemsToSave = new ArrayList<Object>();
+		
+		itemsToSave.add(mPlayer);
+		
+		try
+		{	
+			FileOutputStream fileOutputStream = new FileOutputStream(new File("./save.save"));
+			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+			
+			out.writeObject(itemsToSave);
+			out.close();
+			fileOutputStream.close();
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static boolean laod() {
+		
+		Object objRead = new Object();
+		FileInputStream fileInStream;
+		ObjectInputStream in;
+		try
+		{
+			fileInStream = new FileInputStream(new File("./save.save"));
+			in = new ObjectInputStream(fileInStream);
+
+			objRead = in.readObject();
+			
+			for(Object item : (ArrayList<Object>) objRead )
+			{
+				if(item instanceof Player)
+				{
+					mPlayer = (Player) item;
+				}
+			}
+			
+			in.close();
+			fileInStream.close();
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return true;
 	}
 }
