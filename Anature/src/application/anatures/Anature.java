@@ -152,10 +152,12 @@ class Anature implements IAnature
 		{
 			throw new IllegalArgumentException("Passed value \"moveSet\" was null.");
 		}
-
-		// TODO Should we check for the NullMoveSet object here? And how would we do
-		// that
-
+		
+		if(moveSet.equals(NullMoveSet.getNullMoveSet()))
+		{
+			throw new IllegalArgumentException("Passed value \"moveSet\" was equivalent to global NullMoveSet please use a clone instead.");
+		}
+		
 		mMoveSet = moveSet;
 	}
 
@@ -352,17 +354,18 @@ class Anature implements IAnature
 
 	public AnatureBuilder getClone()
 	{
-		return new AnatureBuilder().withName(mName)
-				.withOwnerName(mOwnerName)
-				.isShiny(mIsShiny)
-				.withSpecies(mSpecies)
-				.withGender(mGender)
-				.withPrimaryType(mPrimaryType)
-				.withSecondaryType(mSecondaryType)
-				.withMoveSet(mMoveSet)
-				.withAbility(mAbility)
-				.withStatus(mStatus)
-				.withIndexNumber(mIndexNumber);
+		return new AnatureBuilder().withName(getName())
+				.withOwnerName(getOwner())
+				.isShiny(isShiny())
+				.withSpecies(getSpecies())
+				.withGender(getGender())
+				.withPrimaryType(getPrimaryType())
+				.withSecondaryType(getSecondaryType())
+				.withMoveSet(getMoveSet())
+				.withAbility(getAbility())
+				.withStatus(getStatus())
+				.withStats(getStats())
+				.withIndexNumber(getIndexNumber());
 	}
 
 	public Image getFrontSprite()
