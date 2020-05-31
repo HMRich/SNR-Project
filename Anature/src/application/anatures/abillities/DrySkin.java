@@ -26,7 +26,7 @@ public class DrySkin implements IAbility
 	}
 
 	@Override
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Dry Skin";
 	}

@@ -17,7 +17,7 @@ public class Tyrannize implements IAbility
 		return AbilityIds.Tyrannize;
 	}
 
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Tyrannize";
 	}

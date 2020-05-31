@@ -26,7 +26,7 @@ public class LittleGuy implements IAbility
 		return AbilityIds.LittleGuy;
 	}
 
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Little Guy";
 	}

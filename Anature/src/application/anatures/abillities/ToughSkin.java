@@ -41,7 +41,7 @@ public class ToughSkin implements IAbility
 	}
 
 	@Override
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Tough Skin";
 	}

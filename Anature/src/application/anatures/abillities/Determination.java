@@ -47,7 +47,7 @@ public class Determination implements IAbility
 		return AbilityIds.Determination;
 	}
 
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Determination";
 	}
