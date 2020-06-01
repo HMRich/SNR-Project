@@ -2,54 +2,56 @@ package application.enums.stats;
 
 import java.util.ArrayList;
 
+import application.enums.Stat;
+
 public enum Natures
 {
-	Hardy(NatureStats.None, NatureStats.None),
-	Lonely(NatureStats.Attack, NatureStats.Defense),
-	Brave(NatureStats.Attack, NatureStats.Speed),
-	Adamant(NatureStats.Attack, NatureStats.SpecialAttack),
-	Naughty(NatureStats.Attack, NatureStats.SpecialDefense),
-	Docile(NatureStats.None, NatureStats.None),
-	Bold(NatureStats.Defense, NatureStats.Attack),
-	Relaxed(NatureStats.Defense, NatureStats.Speed),
-	Impish(NatureStats.Defense, NatureStats.SpecialAttack),
-	Lax(NatureStats.Defense, NatureStats.SpecialDefense),
-	Serious(NatureStats.None, NatureStats.None),
-	Timid(NatureStats.Speed, NatureStats.Attack),
-	Hasty(NatureStats.Speed, NatureStats.Defense),
-	Jolly(NatureStats.Speed, NatureStats.SpecialAttack),
-	Naive(NatureStats.Speed, NatureStats.SpecialDefense),
-	Bashful(NatureStats.None, NatureStats.None),
-	Modest(NatureStats.SpecialAttack, NatureStats.Attack),
-	Mild(NatureStats.SpecialAttack, NatureStats.Defense),
-	Quiet(NatureStats.SpecialAttack, NatureStats.Speed),
-	Rash(NatureStats.SpecialAttack, NatureStats.SpecialDefense),
-	Quirky(NatureStats.None, NatureStats.None),
-	Calm(NatureStats.SpecialDefense, NatureStats.Attack),
-	Gentle(NatureStats.SpecialDefense, NatureStats.Defense),
-	Sassy(NatureStats.SpecialDefense, NatureStats.Speed),
-	Careful(NatureStats.SpecialDefense, NatureStats.SpecialAttack),
-	NotSet(NatureStats.None, NatureStats.None);
+	Hardy(null, null),
+	Lonely(Stat.Attack, Stat.Defense),
+	Brave(Stat.Attack, Stat.Speed),
+	Adamant(Stat.Attack, Stat.SpecialAttack),
+	Naughty(Stat.Attack, Stat.SpecialDefense),
+	Docile(null, null),
+	Bold(Stat.Defense, Stat.Attack),
+	Relaxed(Stat.Defense, Stat.Speed),
+	Impish(Stat.Defense, Stat.SpecialAttack),
+	Lax(Stat.Defense, Stat.SpecialDefense),
+	Serious(null, null),
+	Timid(Stat.Speed, Stat.Attack),
+	Hasty(Stat.Speed, Stat.Defense),
+	Jolly(Stat.Speed, Stat.SpecialAttack),
+	Naive(Stat.Speed, Stat.SpecialDefense),
+	Bashful(null, null),
+	Modest(Stat.SpecialAttack, Stat.Attack),
+	Mild(Stat.SpecialAttack, Stat.Defense),
+	Quiet(Stat.SpecialAttack, Stat.Speed),
+	Rash(Stat.SpecialAttack, Stat.SpecialDefense),
+	Quirky(null, null),
+	Calm(Stat.SpecialDefense, Stat.Attack),
+	Gentle(Stat.SpecialDefense, Stat.Defense),
+	Sassy(Stat.SpecialDefense, Stat.Speed),
+	Careful(Stat.SpecialDefense, Stat.SpecialAttack),
+	NotSet(null, null);
 
-	private final NatureStats mIncreasedStat;
-	private final NatureStats mDecreasedStat;
+	private final Stat mIncreasedStat;
+	private final Stat mDecreasedStat;
 
-	private Natures(NatureStats increasedStat, NatureStats decreasedStat)
+	private Natures(Stat increasedStat, Stat decreasedStat)
 	{
 		mIncreasedStat = increasedStat;
 		mDecreasedStat = decreasedStat;
 	}
 
-	public NatureStats getIncreasedStat()
+	public Stat getIncreasedStat()
 	{
 		return mIncreasedStat;
 	}
 
-	public NatureStats getDecreasedStat()
+	public Stat getDecreasedStat()
 	{
 		return mDecreasedStat;
 	}
-	
+
 	public double getModifier()
 	{
 		return 0.10;
@@ -69,27 +71,5 @@ public enum Natures
 		}
 
 		return natures;
-	}
-	
-	public enum NatureStats
-	{
-		Attack("Attack"),
-		Defense("Defense"),
-		SpecialAttack("Special Attack"),
-		SpecialDefense("Special Defense"),
-		Speed("Speed"),
-		None("None");
-		
-		private final String name;
-		
-		private NatureStats(String name)
-		{
-			this.name = name;
-		}
-		
-		public String toString()
-		{
-			return this.name;
-		}
 	}
 }

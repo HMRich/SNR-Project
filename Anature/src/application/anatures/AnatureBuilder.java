@@ -113,6 +113,12 @@ public class AnatureBuilder implements IBuilder<Anature>
 		return this;
 	}
 
+	private AnatureBuilder withCatchRate(int catchRate)
+	{
+		mAnature.setCatchRate(catchRate);
+		return this;
+	}
+
 	/*
 	 * PUBLIC METHODS
 	 */
@@ -173,6 +179,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 		String baseSpeedString = "";
 		String baseAccuracyString = "";
 		String baseEvasionString = "";
+		String catchRateString = "";
 
 		try
 		{
@@ -199,6 +206,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 				baseSpeedString = results.getString("BaseSpeed");
 				baseAccuracyString = results.getString("BaseAccuracy");
 				baseEvasionString = results.getString("BaseEvasion");
+				catchRateString = results.getString("CatchRate");
 			}
 
 			results.close();
@@ -223,6 +231,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 		int baseSpeed = Integer.parseInt(baseSpeedString);
 		int baseAccuracy = Integer.parseInt(baseAccuracyString);
 		int baseEvasion = Integer.parseInt(baseEvasionString);
+		int catchRate = Integer.parseInt(catchRateString);
 
 		return new AnatureBuilder().withName(name)
 				.withOwnerName(ownerName)
@@ -234,6 +243,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 				.withMoveSet(generateMoveSet(species, level))
 				.withAbility(generateAbility(possibleAbilitiesString))
 				.withStatus(StatusEffects.None)
+				.withCatchRate(catchRate)
 				.withStats(new StatsBuilder().atLevel(level)
 						.withLevlingSpeed(generateLevelingSpeed(levelingSpeedString))
 						.withNature(generateRandomNature())
@@ -371,7 +381,8 @@ public class AnatureBuilder implements IBuilder<Anature>
 		Random r = new Random();
 
 		ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(possilbeAbilities.split(",")));
-		AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
+		String abilityStr = abilities.get(r.nextInt(abilities.size())).replace(" ", "");
+		AbilityIds chosenAbility = AbilityIds.valueOf(abilityStr);
 
 		return AbilityPool.getAbility(chosenAbility);
 	}

@@ -46,7 +46,7 @@ public class AbilityActivation
 
 		switch(abilityIds)
 		{
-			case Dry_Skin: // Dry Skin
+			case DrySkin: // Dry Skin
 				if(move.getType() == Type.Water)
 				{
 					dialogue.add(DrySkin.activateAbility(userAnature));
