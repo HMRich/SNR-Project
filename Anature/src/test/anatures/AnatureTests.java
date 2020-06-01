@@ -617,7 +617,6 @@ class AnatureTests
 					.getIndexNumber() == TestObjects.getDefaultIndexNumber());
 		}
 	}
-
 }
 
 class AnatureTestsProviders

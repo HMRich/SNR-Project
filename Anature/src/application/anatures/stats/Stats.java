@@ -286,7 +286,6 @@ class Stats extends StatsBase implements IStats
 
 	public StatsBuilder getClone()
 	{
-		// TODO OP Evolutions because of EV points
 		return new StatsBuilder().atLevel(getLevel())
 				.withLevlingSpeed(getLevelingSpeed())
 				.withNature(getNature())
