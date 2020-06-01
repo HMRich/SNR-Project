@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import application.Startup;
 import application.anatures.movesets.MoveSet;
 import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.enums.Type;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
@@ -169,20 +170,20 @@ public class AnatureSummaryController
 		String hp = String.format("   %s + %s + %s + %s = %s", stats.getBaseHitPoints(), stats.getIVHitPoints(), stats.getEVHitPoints(),
 				stats.getLevelHitPoints(), stats.getTotalHitPoints());
 
-		String atk = String.format("   %s + %s + %s + %s = %s", stats.getBaseAttack(), stats.getIVAttack(), stats.getEVAttack(), stats.getLevelAttack(),
-				stats.getTotalAttack());
+		String atk = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseAttack(), stats.getIVAttack(), stats.getEVAttack(), stats.getLevelAttack(),
+				stats.getNatureModifierValue(Stat.Attack), stats.getTotalAttack());
 
-		String def = String.format("   %s + %s + %s + %s = %s", stats.getBaseDefense(), stats.getIVDefense(), stats.getEVDefense(), stats.getLevelDefense(),
-				stats.getTotalDefense());
+		String def = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseDefense(), stats.getIVDefense(), stats.getEVDefense(), stats.getLevelDefense(),
+				stats.getNatureModifierValue(Stat.Defense), stats.getTotalDefense());
 
-		String specAtk = String.format("   %s + %s + %s + %s = %s", stats.getBaseSpecialAttack(), stats.getIVSpecialAttack(), stats.getEVSpecialAttack(),
-				stats.getLevelSpecialAttack(), stats.getTotalSpecialAttack());
+		String specAtk = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpecialAttack(), stats.getIVSpecialAttack(), stats.getEVSpecialAttack(),
+				stats.getLevelSpecialAttack(), stats.getNatureModifierValue(Stat.SpecialAttack), stats.getTotalSpecialAttack());
 
-		String specDef = String.format("   %s + %s + %s + %s = %s", stats.getBaseSpecialDefense(), stats.getIVSpecialDefense(), stats.getEVSpecialDefense(),
-				stats.getLevelSpecialDefense(), stats.getTotalSpecialDefense());
+		String specDef = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpecialDefense(), stats.getIVSpecialDefense(), stats.getEVSpecialDefense(),
+				stats.getLevelSpecialDefense(), stats.getNatureModifierValue(Stat.SpecialDefense), stats.getTotalSpecialDefense());
 
-		String speed = String.format("   %s + %s + %s + %s = %s", stats.getBaseSpeed(), stats.getIVSpeed(), stats.getEVSpeed(), stats.getLevelSpeed(),
-				stats.getTotalSpeed());
+		String speed = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpeed(), stats.getIVSpeed(), stats.getEVSpeed(), stats.getLevelSpeed(),
+				stats.getNatureModifierValue(Stat.Speed), stats.getTotalSpeed());
 
 		mDetailHpTxt.setText(hp);
 		mDetailAtkTxt.setText(atk);
