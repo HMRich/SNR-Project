@@ -11,15 +11,15 @@ public enum Stat
 	Accuracy("Accuracy"),
 	Evasion("Evasion");
 	
-	private final String name;
+	private final String mName;
 	
 	private Stat(String name)
 	{
-		this.name = name;
+		mName = name;
 	}
 	
 	public String toString()
 	{
-		return this.name;
+		return mName;
 	}
 }
