@@ -328,7 +328,7 @@ public class Startup extends Application
 		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
-
+ 
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
