@@ -554,7 +554,7 @@ public class BattleController
 
 		if(isThereAliveAnatureInParty)
 		{
-			evaluateAnatgureExperienceGain();
+			evaluateAnatureExperienceGain();
 
 			afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), () ->
 			{
@@ -568,7 +568,7 @@ public class BattleController
 		}
 	}
 
-	private void evaluateAnatgureExperienceGain()
+	private void evaluateAnatureExperienceGain()
 	{
 		ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
 		for(IAnature anature : mFightManager.getEnemyTeam())
@@ -2486,23 +2486,6 @@ public class BattleController
 		}
 	}
 	
-	private void endBattle(BattleEndMethods endMethod)
-	{
-		HashMap<IAnature, Species> evolutions = new HashMap<IAnature, Species>();
-		
-		for(IAnature toCheck : mPlayer.getAnatures())
-		{
-			Species canEvolveInto = EvolutionManager.checkEvolution(toCheck);
-			
-			if(canEvolveInto.size() > 0)
-			{
-				evolutions.put(toCheck, canEvolveInto);
-			}
-		}
-		
-		Startup.endBattle(new BattleResult(endMethod, evolutions));
-	}
-	
 	private void dequeueClickTracker(Event event)
 	{
 		event.consume();
@@ -2549,7 +2532,7 @@ public class BattleController
 		}
 
 		mClickQueue.clear();
-		evaluateAnatgureExperienceGain();
+		evaluateAnatureExperienceGain();
 
 		if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
 		{
@@ -2560,16 +2543,35 @@ public class BattleController
 
 			mPlayer.addTokens(tokensToAdd);
 
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You earned " + tokensToAdd + " tokens!"), "Earning tokens.");
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + "!"), "Enemy Dead");
+			enqueueDialogue("You earned " + tokensToAdd + " tokens!", "Earning tokens");
+			enqueueDialogue("You have defeated " + mEnemyTrainer.getName() + "!", "Enemy Dead");
 		}
+		
+		// TODO add evs
 
 		mShowBtns.set(false);
 		
-		mClickQueue.enqueue(() -> Startup.changeScene(null, null), "To Overworld");
+		mClickQueue.enqueue(() -> endBattle(BattleEndMethods.Victory), "To Overworld");
 
 		mCanClick.set(true);
 		mToEnd = true;
+	}
+	
+	private void endBattle(BattleEndMethods endMethod)
+	{
+		HashMap<IAnature, Species> evolutions = new HashMap<IAnature, Species>();
+		
+		for(IAnature toCheck : mPlayer.getAnatures())
+		{
+			Species canEvolveInto = EvolutionManager.checkEvolution(toCheck);
+			
+			if(canEvolveInto == null)
+			{
+				evolutions.put(toCheck, canEvolveInto);
+			}
+		}
+		
+		Startup.endBattle(new BattleResult(endMethod, evolutions));
 	}
 
 	private ObjectProperty<Font> getFontProperty(int toDivideBy, Scene scene)

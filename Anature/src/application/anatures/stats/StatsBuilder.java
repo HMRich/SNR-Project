@@ -171,8 +171,6 @@ public class StatsBuilder implements IBuilder<IStats>
 		if(mStats.canCreateStats())
 		{
 			mStats.levelUpStats();
-			
-			portEVValues();
 
 			IStats statsToReturn = mStats;
 			
@@ -193,15 +191,5 @@ public class StatsBuilder implements IBuilder<IStats>
 	private void generateNewStatsCore()
 	{
 		mStats = new Stats();
-	}
-	
-	private void portEVValues()
-	{
-		this.withEVHitPoints(mStats.getEVHitPoints())
-		.withEVAttack(mStats.getEVAttack())
-		.withEVDefense(mStats.getEVDefense())
-		.withEVSpecialAttack(mStats.getEVSpecialAttack())
-		.withEVSpecialDefense(mStats.getEVSpecialDefense())
-		.withEVSpeed(mStats.getEVSpeed());
 	}
 }

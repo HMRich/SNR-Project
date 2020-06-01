@@ -10,6 +10,7 @@ class StatsEV extends StatsLevel implements IStatsEV
 	private int mEVSpecialAttack;
 	private int mEVSpecialDefense;
 	private int mEVSpeed;
+	// TODO add Hash
 
 	StatsEV()
 	{
@@ -25,7 +26,7 @@ class StatsEV extends StatsLevel implements IStatsEV
 	 * PACKAGE SETS
 	 */
 
-	void setEVHitPoints(int EVHitPoints)
+	void setEVHitPoints(int EVHitPoints) // TODO take level as param
 	{
 		if(EVHitPoints < 0)
 		{
@@ -35,6 +36,11 @@ class StatsEV extends StatsLevel implements IStatsEV
 		if(EVHitPoints > 252)
 		{
 			throw new IllegalArgumentException("Passed value \"EVHitPoints\" was above 255.");
+		}
+
+		if(!canAddEv())
+		{
+			return;
 		}
 
 		mEVHitPoints = EVHitPoints;
@@ -52,6 +58,11 @@ class StatsEV extends StatsLevel implements IStatsEV
 			throw new IllegalArgumentException("Passed value \"EVAttack\" was above 255.");
 		}
 
+		if(!canAddEv())
+		{
+			return;
+		}
+
 		mEVAttack = EVAttack;
 	}
 
@@ -65,6 +76,11 @@ class StatsEV extends StatsLevel implements IStatsEV
 		if(EVDefense > 252)
 		{
 			throw new IllegalArgumentException("Passed value \"EVDefense\" was above 255.");
+		}
+
+		if(!canAddEv())
+		{
+			return;
 		}
 
 		mEVDefense = EVDefense;
@@ -82,6 +98,11 @@ class StatsEV extends StatsLevel implements IStatsEV
 			throw new IllegalArgumentException("Passed value \"EVSpecialAttack\" was above 255.");
 		}
 
+		if(!canAddEv())
+		{
+			return;
+		}
+
 		mEVSpecialAttack = EVSpecialAttack;
 	}
 
@@ -97,6 +118,11 @@ class StatsEV extends StatsLevel implements IStatsEV
 			throw new IllegalArgumentException("Passed value \"EVSpecialDefense\" was above 255.");
 		}
 
+		if(!canAddEv())
+		{
+			return;
+		}
+
 		mEVSpecialDefense = EVSpecialDefense;
 	}
 
@@ -110,6 +136,11 @@ class StatsEV extends StatsLevel implements IStatsEV
 		if(EVSpeed > 252)
 		{
 			throw new IllegalArgumentException("Passed value \"EVSpeed\" was above 255.");
+		}
+
+		if(!canAddEv())
+		{
+			return;
 		}
 
 		mEVSpeed = EVSpeed;
@@ -211,6 +242,11 @@ class StatsEV extends StatsLevel implements IStatsEV
 			return true;
 		}
 		return false;
+	}
+
+	boolean canAddEv()
+	{
+		return mEVHitPoints + mEVAttack + mEVDefense + mEVSpecialAttack + mEVSpecialDefense + mEVSpeed < 510;
 	}
 
 	/*

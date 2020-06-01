@@ -253,7 +253,13 @@ class Stats extends StatsBase implements IStats
 				.withIVHitPoints(getIVHitPoints())
 				.withIVSpecialAttack(getIVSpecialAttack())
 				.withIVSpecialDefense(getIVSpecialDefense())
-				.withIVSpeed(getIVSpeed());
+				.withIVSpeed(getIVSpeed())
+				.withEVHitPoints(getEVHitPoints())
+				.withEVAttack(getEVAttack())
+				.withEVDefense(getEVDefense())
+				.withEVSpecialAttack(getEVSpecialAttack())
+				.withEVSpecialDefense(getEVSpecialDefense())
+				.withEVSpeed(getEVSpeed());
 	}
 
 	/*
@@ -310,6 +316,8 @@ class Stats extends StatsBase implements IStats
 
 	private boolean levelStats()
 	{
+		// TODO add evs from hashmap
+		
 		int hitPointsIncrease = (int) ((0.01 * (double) getBaseHitPoints()) + (0.02 * ((double) getIVHitPoints() + (double) getEVHitPoints())));
 		hitPointsIncrease = hitPointsIncrease == 0 ? 1 : hitPointsIncrease;
 		addLevelHitPoints(hitPointsIncrease);

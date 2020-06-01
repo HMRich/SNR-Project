@@ -31,7 +31,7 @@ public class EvolutionController
 	
 	public void startEvolution(ArrayList<IAnature> party, IAnature toEvolve, Species toEvolveInto)
 	{
-		
+		// TODO get xp overload and reapply it
 	}
 	
 	private double calculateValue(double first, double second)

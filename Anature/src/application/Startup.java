@@ -321,7 +321,8 @@ public class Startup extends Application
 	
 	public static void endBattle(BattleResult result)
 	{
-		
+		System.out.println("waeaeaweaeaweaew");
+		changeScene(null, null);
 	}
 
 	public static void createDemo()
