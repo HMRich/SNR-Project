@@ -7,6 +7,7 @@ import application.LoggerStartUp;
 import application.controllers.DialogueBoxController;
 import application.controllers.LoggerController;
 import application.controllers.ShoppingMenuController;
+import application.controllers.SideMenuController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
@@ -60,11 +61,10 @@ public abstract class AbstractCell
 	protected BooleanProperty mShowCollision;
 	private StackPane mMap;
 	protected SceneType mId;
-
 	private ShoppingMenuController mShoppingController;
 
 	private StringProperty mDialogueTxtProperty;
-	private BooleanProperty mShowDialogueProperty, mShowShoppingProperty;
+	private BooleanProperty mShowDialogueProperty, mShowShoppingProperty, mShowSideMenuProperty;
 	private Image mStandDownImg;
 
 	public AbstractCell(LoggerStartUp logger, double width, double height, SceneType id)
@@ -72,7 +72,8 @@ public abstract class AbstractCell
 		mZoom = new SimpleDoubleProperty(2.6);
 		mShowDialogueProperty = new SimpleBooleanProperty(false);
 		mShowShoppingProperty = new SimpleBooleanProperty(false);
-
+		mShowSideMenuProperty = new SimpleBooleanProperty(false);
+		
 		mDialogueTxtProperty = new SimpleStringProperty("Sample Text");
 		mShowCollision = LoggerController.getCollisionBoxProperty();
 		mCollisions = new ArrayList<Rectangle>();
@@ -143,6 +144,7 @@ public abstract class AbstractCell
 
 		setUpDialogueBox(cell);
 		setUpShoppingMenu(cell);
+		setUpSideMenu(cell);
 	}
 
 	protected abstract void createTrainers();
@@ -208,6 +210,35 @@ public abstract class AbstractCell
 				fontProperty, mShowShoppingProperty);
 
 		cell.getChildren().add(shoppingMenu);
+	}
+	
+	private void setUpSideMenu(BorderPane cell)
+	{
+		try
+		{
+			int fontSize = 50;
+			
+			Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), fontSize);
+			ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
+
+			mScene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
+					.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / fontSize)));
+
+			mScene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
+					.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize() / fontSize)));
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/views/elements/SideMenu.fxml"));
+			Parent root = loader.load();
+			
+			SideMenuController controller = loader.getController();
+			controller.updateBinds(mScene, fontProperty, mShowSideMenuProperty);
+			cell.getChildren().add(root);
+		}
+		
+		catch(IOException e)
+		{
+			LoggerController.logEvent(LoggingTypes.Error, "IOException when trying to load Side Menu.\n" + e.getStackTrace());
+		}
 	}
 
 	public double clampRange(double value, double min, double max)
@@ -425,7 +456,23 @@ public abstract class AbstractCell
 	{
 		mShowShoppingProperty.set(false);
 	}
-
+	
+	public boolean toggleSideMenu()
+	{
+		mShowSideMenuProperty.set(!mShowSideMenuProperty.get());
+		return mShowSideMenuProperty.get();
+	}
+	
+	public void showSideMenu()
+	{
+		mShowSideMenuProperty.set(true);
+	}
+	
+	public void hideSideMenu()
+	{
+		mShowSideMenuProperty.set(false);
+	}
+	
 	public void assignPlayerForShop(Player player, Runnable dequeue)
 	{
 		if(player == null)
