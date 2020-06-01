@@ -76,6 +76,11 @@
                   <Image url="@../../resources/images/battle/Male_Symbol.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="mThrownAnacubeImg" fitHeight="61.0" fitWidth="57.0" layoutX="804.0" layoutY="207.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/items/AnaCube.png" />
+               </image>
+            </ImageView>
             <TextArea fx:id="mDialogueTxtArea" editable="false" layoutX="64.0" layoutY="494.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
             <ImageView fx:id="mFightAnimationPlayer" fitHeight="88.0" fitWidth="91.0" layoutX="15.0" layoutY="354.0" pickOnBounds="true">
                <image>
@@ -191,7 +196,7 @@
                   <Image url="@../../resources/images/battle/switching/Switch_Dialogue_Panel.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="mSwitchBackBtn" fitHeight="55.0" fitWidth="140.0" layoutX="294.0" layoutY="445.0" pickOnBounds="true">
+            <ImageView fx:id="mSwitchBackBtn" fitHeight="55.0" fitWidth="140.0" layoutX="200.0" layoutY="453.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/battle/switching/Back_Button.png" />
                </image>

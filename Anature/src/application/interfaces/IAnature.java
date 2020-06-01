@@ -41,6 +41,8 @@ public interface IAnature
 	public IStats getStats();
 
 	public int getIndexNumber();
+	
+	public int getCatchRate();
 
 	/*
 	 * PUBLIC METHODS

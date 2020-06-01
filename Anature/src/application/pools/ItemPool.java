@@ -7,6 +7,7 @@ import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.interfaces.IHealthPotion;
 import application.interfaces.IItem;
+import application.items.Anacube;
 import application.items.HealthPotion;
 import application.items.HealthPotionBase;
 
@@ -84,6 +85,7 @@ public class ItemPool
 		{
 			generateItems();
 		}
+		
 		return mItems;
 	}
 
@@ -110,6 +112,26 @@ public class ItemPool
 				.withItemId(ItemIds.Master_Potion)
 				.withItemName("Master Potion")
 				.create());
+
+		Anacube anacube = new Anacube(1);
+		anacube.setItemId(ItemIds.Anacube);
+		anacube.setItemName("Anacube");
+		mItems.put(ItemIds.Anacube, anacube);
+
+		Anacube superAnacube = new Anacube(1.5);
+		superAnacube.setItemId(ItemIds.Super_Anacube);
+		superAnacube.setItemName("Super Anacube");
+		mItems.put(ItemIds.Super_Anacube, superAnacube);
+
+		Anacube hyperAnacube = new Anacube(2);
+		hyperAnacube.setItemId(ItemIds.Hyper_Anacube);
+		hyperAnacube.setItemName("Hyper Anacube");
+		mItems.put(ItemIds.Hyper_Anacube, hyperAnacube);
+
+		Anacube maxAnacube = new Anacube(255);
+		maxAnacube.setItemId(ItemIds.Max_Anacube);
+		maxAnacube.setItemName("Max Anacube");
+		mItems.put(ItemIds.Max_Anacube, maxAnacube);
 	}
 
 	private static boolean isHealthPotion(ItemIds itemId)
