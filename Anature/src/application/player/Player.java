@@ -140,4 +140,9 @@ public class Player
 
 		return canBattle;
 	}
+	
+	public void addTokens(int tokens)
+	{
+		setTokens(getTokens() + tokens);
+	}
 }

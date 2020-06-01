@@ -18,6 +18,7 @@ class Trainer implements ITrainer
 {
 	private TrainerIds mId;
 	private String mName;
+	private int mRewardForDefeat;
 	private ArrayList<IAnature> mAnatures;
 	private ArrayList<IHealthPotion> mHealthPotions;
 	private IAnature mCurrentAnature;
@@ -27,6 +28,7 @@ class Trainer implements ITrainer
 	{
 		mId = TrainerIds.Null;
 		mName = "";
+		mRewardForDefeat = -1;
 		mAnatures = null;
 		mHealthPotions = null;
 		mCurrentAnature = null;
@@ -59,6 +61,16 @@ class Trainer implements ITrainer
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
 		mName = name;
+	}
+
+	void setRewardForDefeat(int rewardAmount)
+	{
+		if(rewardAmount < 0)
+		{
+			throw new IllegalArgumentException("Passed value \"rewardAmount\" was below 0.");
+		}
+
+		mRewardForDefeat = rewardAmount;
 	}
 
 	void setAnatureParty(ArrayList<IAnature> anatureBases)
@@ -112,6 +124,11 @@ class Trainer implements ITrainer
 	{
 		return mName;
 	}
+	
+	public int getRewardForDefeat()
+	{
+		return mRewardForDefeat;
+	}
 
 	public ArrayList<IAnature> getAnatureParty()
 	{
@@ -126,6 +143,15 @@ class Trainer implements ITrainer
 	public IAnature getCurrentAnature()
 	{
 		return mCurrentAnature;
+	}
+	
+	/*
+	 * PRIVATE GETS
+	 */
+	
+	private IAI getTrainerAI()
+	{
+		return mAI;
 	}
 
 	/*
@@ -178,7 +204,8 @@ class Trainer implements ITrainer
 		boolean result = false;
 		for(IAnature anatureBase : mAnatures)
 		{
-			if(anatureBase.getStats().getCurrentHitPoints() == 0)
+			if(anatureBase.getStats()
+					.getCurrentHitPoints() == 0)
 			{
 				result = true;
 				break;
@@ -213,7 +240,42 @@ class Trainer implements ITrainer
 
 	boolean canComplete()
 	{
-		return mId != TrainerIds.Null && !mName.isEmpty() && mAnatures != null && mHealthPotions != null && mCurrentAnature != null && mAI != null;
+		if(mId.equals(TrainerIds.Null))
+		{
+			throw new IllegalStateException("The \"trainerId\" variable was never set during construction.");
+		}
+
+		if(getName().isEmpty())
+		{
+			throw new IllegalStateException("The \"trainerName\" variable was never set during construction.");
+		}
+
+		if(getRewardForDefeat() == -1)
+		{
+			throw new IllegalStateException("The \"rewardForDefeat\" variable was never set during construction.");
+		}
+
+		if(getAnatureParty() == null)
+		{
+			throw new IllegalStateException("The \"anatureParty\" variable was never set during construction.");
+		}
+
+		if(getHealthPotions() == null)
+		{
+			throw new IllegalStateException("The \"healthPotions\" variable was never set during construction.");
+		}
+
+		if(getCurrentAnature() == null)
+		{
+			throw new IllegalStateException("The \"currentAnature\" variable was never set during construction.");
+		}
+
+		if(getTrainerAI() == null)
+		{
+			throw new IllegalStateException("The \"Ai\" variable was never set during construction.");
+		}
+
+		return true;
 	}
 
 	/*

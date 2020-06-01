@@ -45,7 +45,7 @@ class StatsIV extends StatsEV implements IStatsIV
 		return mIVSpecialAttack;
 	}
 
-	public int getIVSpecialDefnese()
+	public int getIVSpecialDefense()
 	{
 		return mIVSpecialDefense;
 	}
@@ -145,7 +145,7 @@ class StatsIV extends StatsEV implements IStatsIV
 			throw new IllegalStateException("The \"IVSpecialAttack\" variable was never set during construction.");
 		}
 
-		if(getIVSpecialDefnese() == -1)
+		if(getIVSpecialDefense() == -1)
 		{
 			throw new IllegalStateException("The \"IVSpecialDefnese\" variable was never set during construction.");
 		}

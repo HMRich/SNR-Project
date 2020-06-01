@@ -76,6 +76,11 @@
                   <Image url="@../../resources/images/battle/Male_Symbol.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="mThrownAnacubeImg" fitHeight="61.0" fitWidth="57.0" layoutX="804.0" layoutY="207.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../resources/images/items/AnaCube.png" />
+               </image>
+            </ImageView>
             <TextArea fx:id="mDialogueTxtArea" editable="false" layoutX="64.0" layoutY="494.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
             <ImageView fx:id="mFightAnimationPlayer" fitHeight="88.0" fitWidth="91.0" layoutX="15.0" layoutY="354.0" pickOnBounds="true">
                <image>
@@ -191,7 +196,7 @@
                   <Image url="@../../resources/images/battle/switching/Switch_Dialogue_Panel.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="mSwitchBackBtn" fitHeight="55.0" fitWidth="140.0" layoutX="294.0" layoutY="445.0" pickOnBounds="true">
+            <ImageView fx:id="mSwitchBackBtn" fitHeight="55.0" fitWidth="140.0" layoutX="200.0" layoutY="453.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/battle/switching/Back_Button.png" />
                </image>
@@ -208,12 +213,12 @@
             <Text fx:id="mSwitchSelectedNextXp" layoutX="408.0" layoutY="645.0" strokeType="OUTSIDE" strokeWidth="0.0" text="999" wrappingWidth="239.13671875" />
             <ImageView fx:id="mSwitchSelectedTypeOne" fitHeight="43.0" fitWidth="121.0" layoutX="298.0" layoutY="657.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../resources/images/battle/switching/Switch_Type_Normal.png" />
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
                </image>
             </ImageView>
             <ImageView fx:id="mSwitchSelectedTypeTwo" fitHeight="43.0" fitWidth="121.0" layoutX="428.0" layoutY="657.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../resources/images/battle/switching/Switch_Type_Normal.png" />
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
                </image>
             </ImageView>
             <Text fx:id="mSwitchPageTxt" layoutX="416.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Page 1" wrappingWidth="182.13671875" />
