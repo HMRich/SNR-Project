@@ -1,8 +1,8 @@
 package application.anatures.stats;
 
+import application.enums.Stat;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
-import application.enums.stats.Natures.NatureStats;
 import application.interfaces.stats.IStats;
 
 class Stats extends StatsBase implements IStats
@@ -97,124 +97,74 @@ class Stats extends StatsBase implements IStats
 
 	public int getTotalHitPoints()
 	{
-		return getBaseHitPoints() + getIVHitPoints() + getEVHitPointsReduced() + getLevelHitPoints();
+		return getTotalStat(Stat.HitPoints);
 	}
 
 	public int getTotalAttack()
 	{
-		if(getNature().getDecreasedStat()
-				.equals(NatureStats.Attack))
-		{
-			double calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
-			calculatedAttack = calculatedAttack + (int) (calculatedAttack * -getNature().getModifier());
-			return (int) (calculatedAttack * getTempAttack().getModifier());
-		}
-
-		else if(getNature().getIncreasedStat()
-				.equals(NatureStats.Attack))
-		{
-			double calculatedAttack = getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
-			calculatedAttack = calculatedAttack + (int) (calculatedAttack * getNature().getModifier());
-			return (int) (calculatedAttack * getTempAttack().getModifier());
-		}
-
-		return (int) ((getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack()) * getTempAttack().getModifier());
+		return getTotalStat(Stat.Attack);
 	}
 
 	public int getTotalDefense()
 	{
-		if(getNature().getDecreasedStat()
-				.equals(NatureStats.Defense))
-		{
-			double calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
-			calculatedDefense = calculatedDefense + (int) (calculatedDefense * -getNature().getModifier());
-			return (int) (calculatedDefense * getTempDefense().getModifier());
-		}
-
-		else if(getNature().getIncreasedStat()
-				.equals(NatureStats.Defense))
-		{
-			double calculatedDefense = getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
-			calculatedDefense = calculatedDefense + (int) (calculatedDefense * getNature().getModifier());
-			return (int) (calculatedDefense * getTempDefense().getModifier());
-		}
-
-		return (int) ((getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense()) * getTempDefense().getModifier());
+		return getTotalStat(Stat.Defense);
 	}
 
 	public int getTotalSpecialAttack()
 	{
-		if(getNature().getDecreasedStat()
-				.equals(NatureStats.SpecialAttack))
-		{
-			double calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
-			calculatedSpecialAttack = calculatedSpecialAttack + (int) (calculatedSpecialAttack * -getNature().getModifier());
-			return (int) (calculatedSpecialAttack * getTempSpecialAttack().getModifier());
-		}
-
-		else if(getNature().getIncreasedStat()
-				.equals(NatureStats.SpecialAttack))
-		{
-			double calculatedSpecialAttack = getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
-			calculatedSpecialAttack = calculatedSpecialAttack + (int) (calculatedSpecialAttack * getNature().getModifier());
-			return (int) (calculatedSpecialAttack * getTempSpecialAttack().getModifier());
-		}
-
-		return (int) ((getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack())
-				* getTempSpecialAttack().getModifier());
+		return getTotalStat(Stat.Attack);
 	}
 
 	public int getTotalSpecialDefense()
 	{
-		if(getNature().getDecreasedStat()
-				.equals(NatureStats.SpecialDefense))
-		{
-			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefense() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
-			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * -getNature().getModifier());
-			return (int) (calculatedSpecialDefense * getTempSpecialDefense().getModifier());
-		}
-
-		else if(getNature().getIncreasedStat()
-				.equals(NatureStats.SpecialDefense))
-		{
-			double calculatedSpecialDefense = getBaseSpecialDefense() + getIVSpecialDefense() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
-			calculatedSpecialDefense = calculatedSpecialDefense + (int) (calculatedSpecialDefense * getNature().getModifier());
-			return (int) (calculatedSpecialDefense * getTempSpecialDefense().getModifier());
-		}
-
-		return (int) ((getBaseSpecialDefense() + getIVSpecialDefense() + getEVSpecialDefenseReduced() + getLevelSpecialDefense())
-				* getTempSpecialDefense().getModifier());
+		return getTotalStat(Stat.SpecialDefense);
 	}
 
 	public int getTotalSpeed()
 	{
-		if(getNature().getDecreasedStat()
-				.equals(NatureStats.Speed))
-		{
-			double calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
-			calculatedSpeed = calculatedSpeed + (int) (calculatedSpeed * -getNature().getModifier());
-			return (int) (calculatedSpeed * getTempSpeed().getModifier());
-		}
-
-		else if(getNature().getIncreasedStat()
-				.equals(NatureStats.Speed))
-		{
-			double calculatedSpeed = getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
-			calculatedSpeed = calculatedSpeed + (int) (calculatedSpeed * -getNature().getModifier());
-			return (int) (calculatedSpeed * getTempSpeed().getModifier());
-		}
-
-		return (int) ((getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed()) * getTempSpeed().getModifier());
+		return getTotalStat(Stat.Speed);
 	}
 
 	public int getTotalAccuracy()
 	{
-		return (int) (getBaseAccuracy() * getTempAccuracy().getModifier());
+		return getTotalStat(Stat.Accuracy);
 	}
 
 	public int getTotalEvasion()
 	{
-		return (int) (getBaseEvasion() * getTempEvasion().getModifier());
+		return getTotalStat(Stat.Evasion);
+	}
+
+	public int getTotalStat(Stat stat)
+	{
+		double value = getStatValue(stat);
+		double modifierValue = getNatureModifierValue(stat) + 1.0;
+
+		modifierValue = modifierValue == 0 ? 1 : modifierValue;
+
+		return (int) ((value + modifierValue) * getTempStatModifier(stat));
+	}
+
+	public int getNatureModifierValue(Stat stat)
+	{
+		if(getNature().getIncreasedStat() == null || getNature().getDecreasedStat() == null)
+		{
+			return 0;
+		}
+		
+		if(getNature().getIncreasedStat()
+				.equals(stat))
+		{
+			return (int) (getStatValue(stat) * getNature().getModifier());
+		}
+
+		if(getNature().getDecreasedStat()
+				.equals(stat))
+		{
+			return (int) (getStatValue(stat) * -getNature().getModifier());
+		}
+
+		return 0;
 	}
 
 	/*
@@ -399,4 +349,39 @@ class Stats extends StatsBase implements IStats
 		int setHitPointsValue = (int) Math.ceil((((double) getTotalHitPoints()) * getHitPointsPercent));
 		setCurrentHitPoints(setHitPointsValue);
 	}
+
+	private double getStatValue(Stat stat)
+	{
+		switch(stat)
+		{
+			case HitPoints:
+				return getBaseHitPoints() + getIVHitPoints() + getEVHitPointsReduced() + getLevelHitPoints();
+
+			case Attack:
+				return getBaseAttack() + getIVAttack() + getEVAttackReduced() + getLevelAttack();
+
+			case Defense:
+				return getBaseDefense() + getIVDefense() + getEVDefenseReduced() + getLevelDefense();
+
+			case SpecialAttack:
+				return getBaseSpecialAttack() + getIVSpecialAttack() + getEVSpecialAttackReduced() + getLevelSpecialAttack();
+
+			case SpecialDefense:
+				return getBaseSpecialDefense() + getIVSpecialDefense() + getEVSpecialDefenseReduced() + getLevelSpecialDefense();
+
+			case Speed:
+				return getBaseSpeed() + getIVSpeed() + getEVSpeedReduced() + getLevelSpeed();
+
+			case Evasion:
+				return getBaseEvasion();
+
+			case Accuracy:
+				return getBaseAccuracy();
+
+			default:
+		}
+
+		return 0;
+	}
+
 }

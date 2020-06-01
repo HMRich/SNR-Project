@@ -1,5 +1,6 @@
 package application.anatures.stats;
 
+import application.enums.Stat;
 import application.enums.TempStatsStages;
 import application.interfaces.stats.IStatsTemp;
 
@@ -144,5 +145,34 @@ class StatsTemp implements IStatsTemp
 		mTempSpeed = TempStatsStages.zero;
 		mTempAccuracy = TempStatsStages.zero;
 		mTempEvasion = TempStatsStages.zero;
+	}
+
+	/*
+	 * PACKAGE METHODS
+	 */
+
+	double getTempStatModifier(Stat stat)
+	{
+		switch(stat)
+		{
+			case Attack:
+				return getTempAttack().getModifier();
+
+			case Defense:
+				return getTempDefense().getModifier();
+
+			case SpecialAttack:
+				return getTempSpecialAttack().getModifier();
+
+			case SpecialDefense:
+				return getTempSpecialDefense().getModifier();
+
+			case Speed:
+				return getTempSpeed().getModifier();
+
+			default:
+				return 1.0;
+
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package application.interfaces.stats;
 
 import application.anatures.stats.StatsBuilder;
+import application.enums.Stat;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 
@@ -35,6 +36,10 @@ public interface IStats extends IStatsBase
 	public int getTotalAccuracy();
 
 	public int getTotalEvasion();
+	
+	public int getTotalStat(Stat stat);
+	
+	public int getNatureModifierValue(Stat stat);
 
 	/*
 	 * PUBLIC SETS
