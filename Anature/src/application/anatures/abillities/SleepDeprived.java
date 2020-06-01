@@ -34,7 +34,7 @@ public class SleepDeprived implements IAbility
 	}
 
 	@Override
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Sleep Deprived";
 	}

@@ -264,13 +264,13 @@ class Stats extends StatsBase implements IStats
 		}
 
 		mTotalExperiencePoints += expeienceGain;
-		
+
 		int levelsGained = 0;
 		while(levelGained())
 		{
 			levelsGained++;
 		}
-		
+
 		return levelsGained;
 	}
 
@@ -282,6 +282,28 @@ class Stats extends StatsBase implements IStats
 	public int getRequiredExperience()
 	{
 		return requiredExperienceForLevel(getLevel() + 1) - requiredExperienceForLevel(getLevel());
+	}
+
+	public StatsBuilder getClone()
+	{
+		return new StatsBuilder().atLevel(getLevel())
+				.withLevlingSpeed(getLevelingSpeed())
+				.withNature(getNature())
+				.withBaseExperience(getTotalExperiencePoints())
+				.withBaseHitPoints(getBaseHitPoints())
+				.withBaseAttack(getBaseAttack())
+				.withBaseDefense(getBaseDefense())
+				.withBaseSpecialAttack(getBaseSpecialAttack())
+				.withBaseSpecialDefense(getBaseSpecialDefense())
+				.withBaseSpeed(getBaseSpeed())
+				.withBaseAccuracy(getBaseAccuracy())
+				.withBaseEvasion(getBaseEvasion())
+				.withIVAttack(getIVAttack())
+				.withIVDefense(getIVDefense())
+				.withIVHitPoints(getIVHitPoints())
+				.withIVSpecialAttack(getIVSpecialAttack())
+				.withIVSpecialDefense(getIVSpecialDefense())
+				.withIVSpeed(getIVSpeed());
 	}
 
 	/*
@@ -366,15 +388,15 @@ class Stats extends StatsBase implements IStats
 
 		return true;
 	}
-	
+
 	private void maintainHitPointPercentage(int hitPointsIncrease)
 	{
 		int currentHitPoints = getCurrentHitPoints();
 		int previousTotalHitPoints = getTotalHitPoints() - hitPointsIncrease;
-		
+
 		double getHitPointsPercent = (double) currentHitPoints / (double) previousTotalHitPoints;
-		
-		int setHitPointsValue = (int) Math.ceil((  ( (double) getTotalHitPoints() ) * getHitPointsPercent ));
+
+		int setHitPointsValue = (int) Math.ceil((((double) getTotalHitPoints()) * getHitPointsPercent));
 		setCurrentHitPoints(setHitPointsValue);
 	}
 }

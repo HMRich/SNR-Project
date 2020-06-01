@@ -191,7 +191,7 @@ public class AnatureSummaryController
 		mDetailSpecialDefTxt.setText(specDef);
 		mDetailSpeedTxt.setText(speed);
 		mDetailNatureTxt.setText("   " + stats.getNature().toString());
-		mDetailAbilityNameTxt.setText("   " + anature.getAbility().getAbilityName());
+		mDetailAbilityNameTxt.setText("   " + anature.getAbility().toString());
 		mDetailAbilityDescTxt.setText("   " + anature.getAbility().getAbilityDescription());
 	}
 

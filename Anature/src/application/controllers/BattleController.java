@@ -1295,7 +1295,7 @@ public class BattleController
 		mSwitchSelectedSpDef.setText(selected.getStats().getTotalSpecialDefense() + "");
 		mSwitchSelectedSpeed.setText(selected.getStats().getTotalSpeed() + "");
 
-		mSwitchSelectedAbilityName.setText(selected.getAbility().getAbilityName());
+		mSwitchSelectedAbilityName.setText(selected.getAbility().toString());
 		mSwitchSelectedAbilityDesc.setText(selected.getAbility().getAbilityDescription());
 
 		mSwitchSelectedTypeOne.setImage(getTypeIcon(selected.getPrimaryType()));

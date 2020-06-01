@@ -6,7 +6,6 @@ import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.MoveSet;
 import application.anatures.movesets.NullMoveSet;
 import application.anatures.stats.NullStats;
-import application.enums.AbilityIds;
 import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Species;
@@ -16,7 +15,6 @@ import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
-import application.pools.AbilityPool;
 import javafx.scene.image.Image;
 
 class Anature implements IAnature
@@ -153,8 +151,10 @@ class Anature implements IAnature
 			throw new IllegalArgumentException("Passed value \"moveSet\" was null.");
 		}
 
-		// TODO Should we check for the NullMoveSet object here? And how would we do
-		// that
+		if(moveSet.equals(NullMoveSet.getNullMoveSet()))
+		{
+			throw new IllegalArgumentException("Passed value \"moveSet\" was equivalent to global NullMoveSet please use a clone instead.");
+		}
 
 		mMoveSet = moveSet;
 	}
@@ -166,7 +166,7 @@ class Anature implements IAnature
 			throw new IllegalArgumentException("Passed value \"ability\" was null.");
 		}
 
-		if(iAbility.equals(AbilityPool.getAbility(AbilityIds.NullAbility)))
+		if(iAbility.equals(NullAbility.getNullAbility()))
 		{
 			throw new IllegalArgumentException("Passed value \"ability\" was equal to the NullAbility ability.");
 		}
@@ -321,7 +321,7 @@ class Anature implements IAnature
 		{
 			getStats().setCurrentHitPoints(newCurrentHitPoints);
 		}
-		
+
 		else
 		{
 			getStats().setCurrentHitPoints(0);
@@ -352,17 +352,18 @@ class Anature implements IAnature
 
 	public AnatureBuilder getClone()
 	{
-		return new AnatureBuilder().withName(mName)
-				.withOwnerName(mOwnerName)
-				.isShiny(mIsShiny)
-				.withSpecies(mSpecies)
-				.withGender(mGender)
-				.withPrimaryType(mPrimaryType)
-				.withSecondaryType(mSecondaryType)
-				.withMoveSet(mMoveSet)
-				.withAbility(mAbility)
-				.withStatus(mStatus)
-				.withIndexNumber(mIndexNumber);
+		return new AnatureBuilder().withName(getName())
+				.withOwnerName(getOwner())
+				.isShiny(isShiny())
+				.withSpecies(getSpecies())
+				.withGender(getGender())
+				.withPrimaryType(getPrimaryType())
+				.withSecondaryType(getSecondaryType())
+				.withMoveSet(getMoveSet())
+				.withAbility(getAbility())
+				.withStatus(getStatus())
+				.withStats(getStats())
+				.withIndexNumber(getIndexNumber());
 	}
 
 	public Image getFrontSprite()

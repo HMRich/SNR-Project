@@ -7,7 +7,7 @@ import application.interfaces.stats.IStats;
 
 public class StatsBuilder implements IBuilder<IStats>
 {
-	private Stats mStatsCore;
+	private Stats mStats;
 
 	public StatsBuilder()
 	{
@@ -20,109 +20,145 @@ public class StatsBuilder implements IBuilder<IStats>
 
 	public StatsBuilder withLevlingSpeed(LevelingSpeed levelingSpeed)
 	{
-		mStatsCore.setLevelingSpeed(levelingSpeed);
+		mStats.setLevelingSpeed(levelingSpeed);
 		return this;
 	}
 
 	public StatsBuilder withNature(Natures nature)
 	{
-		mStatsCore.setNature(nature);
+		mStats.setNature(nature);
 		return this;
 	}
 
 	public StatsBuilder withBaseExperience(int baseExperience)
 	{
-		mStatsCore.setBaseExperience(baseExperience);
+		mStats.setBaseExperience(baseExperience);
 		return this;
 	}
 
 	public StatsBuilder withBaseHitPoints(int baseHitPoints)
 	{
-		mStatsCore.setBaseHitPoints(baseHitPoints);
+		mStats.setBaseHitPoints(baseHitPoints);
 		return this;
 	}
 
 	public StatsBuilder withBaseAttack(int baseAttack)
 	{
-		mStatsCore.setBaseAttack(baseAttack);
+		mStats.setBaseAttack(baseAttack);
 		return this;
 	}
 
 	public StatsBuilder withBaseDefense(int baseDefense)
 	{
-		mStatsCore.setBaseDefense(baseDefense);
+		mStats.setBaseDefense(baseDefense);
 		return this;
 	}
 
 	public StatsBuilder withBaseSpecialAttack(int baseSpecialAttack)
 	{
-		mStatsCore.setBaseSpecialAttack(baseSpecialAttack);
+		mStats.setBaseSpecialAttack(baseSpecialAttack);
 		return this;
 	}
 
 	public StatsBuilder withBaseSpecialDefense(int baseSpecialDefense)
 	{
-		mStatsCore.setBaseSpecialDefense(baseSpecialDefense);
+		mStats.setBaseSpecialDefense(baseSpecialDefense);
 		return this;
 	}
 
 	public StatsBuilder withBaseSpeed(int baseSpeed)
 	{
-		mStatsCore.setBaseSpeed(baseSpeed);
+		mStats.setBaseSpeed(baseSpeed);
 		return this;
 	}
 
 	public StatsBuilder withBaseAccuracy(int baseAccuracy)
 	{
-		mStatsCore.setBaseAccuracy(baseAccuracy);
+		mStats.setBaseAccuracy(baseAccuracy);
 		return this;
 	}
 
 	public StatsBuilder withBaseEvasion(int baseEvasion)
 	{
-		mStatsCore.setBaseEvasion(baseEvasion);
+		mStats.setBaseEvasion(baseEvasion);
+		return this;
+	}
+	
+	public StatsBuilder withEVHitPoints(int EVHitpoints)
+	{
+		mStats.setIVHitPoints(EVHitpoints);
+		return this;
+	}
+
+	public StatsBuilder withEVAttack(int EVAttack)
+	{
+		mStats.setIVAttack(EVAttack);
+		return this;
+	}
+
+	public StatsBuilder withEVDefense(int EVDefense)
+	{
+		mStats.setIVDefense(EVDefense);
+		return this;
+	}
+
+	public StatsBuilder withEVSpecialAttack(int EVSpecialAttack)
+	{
+		mStats.setIVSpecialAttack(EVSpecialAttack);
+		return this;
+	}
+
+	public StatsBuilder withEVSpecialDefense(int EVSpecialDefnese)
+	{
+		mStats.setIVSpecialDefense(EVSpecialDefnese);
+		return this;
+	}
+
+	public StatsBuilder withEVSpeed(int EVSpeed)
+	{
+		mStats.setIVSpeed(EVSpeed);
 		return this;
 	}
 
 	public StatsBuilder withIVHitPoints(int IVHitpoints)
 	{
-		mStatsCore.setIVHitPoints(IVHitpoints);
+		mStats.setIVHitPoints(IVHitpoints);
 		return this;
 	}
 
 	public StatsBuilder withIVAttack(int IVAttack)
 	{
-		mStatsCore.setIVAttack(IVAttack);
+		mStats.setIVAttack(IVAttack);
 		return this;
 	}
 
 	public StatsBuilder withIVDefense(int IVDefense)
 	{
-		mStatsCore.setIVDefense(IVDefense);
+		mStats.setIVDefense(IVDefense);
 		return this;
 	}
 
 	public StatsBuilder withIVSpecialAttack(int IVSpecialAttack)
 	{
-		mStatsCore.setIVSpecialAttack(IVSpecialAttack);
+		mStats.setIVSpecialAttack(IVSpecialAttack);
 		return this;
 	}
 
 	public StatsBuilder withIVSpecialDefense(int IVSpecialDefnese)
 	{
-		mStatsCore.setIVSpecialDefense(IVSpecialDefnese);
+		mStats.setIVSpecialDefense(IVSpecialDefnese);
 		return this;
 	}
 
 	public StatsBuilder withIVSpeed(int IVSpeed)
 	{
-		mStatsCore.setIVSpeed(IVSpeed);
+		mStats.setIVSpeed(IVSpeed);
 		return this;
 	}
 
 	public StatsBuilder atLevel(int level)
 	{
-		mStatsCore.setLevel(level);
+		mStats.setLevel(level);
 		return this;
 	}
 
@@ -132,11 +168,13 @@ public class StatsBuilder implements IBuilder<IStats>
 
 	public IStats create()
 	{
-		if(mStatsCore.canCreateStats())
+		if(mStats.canCreateStats())
 		{
-			mStatsCore.levelUpStats();
+			mStats.levelUpStats();
+			
+			portEVValues();
 
-			IStats statsToReturn = mStatsCore;
+			IStats statsToReturn = mStats;
 			
 			statsToReturn.setCurrentHitPoints(statsToReturn.getTotalHitPoints());
 
@@ -154,6 +192,16 @@ public class StatsBuilder implements IBuilder<IStats>
 
 	private void generateNewStatsCore()
 	{
-		mStatsCore = new Stats();
+		mStats = new Stats();
+	}
+	
+	private void portEVValues()
+	{
+		this.withEVHitPoints(mStats.getEVHitPoints())
+		.withEVAttack(mStats.getEVAttack())
+		.withEVDefense(mStats.getEVDefense())
+		.withEVSpecialAttack(mStats.getEVSpecialAttack())
+		.withEVSpecialDefense(mStats.getEVSpecialDefense())
+		.withEVSpeed(mStats.getEVSpeed());
 	}
 }
