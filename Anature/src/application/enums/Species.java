@@ -2,6 +2,13 @@ package application.enums;
 
 public enum Species
 {
-	NotSet, Null, Sardino, Midaqua, Smoldren, Scorta, Scaldris, Sapron, Sodren, Arganian, Transgendeero, 
-	Transgendeera, Clouder, Cloutrain, Cloudoom, Belvidia
+	NotSet, Null, 
+	Sardino, Midaqua, Aquatecta,
+	Smoldren, Scorta, Scaldris,
+	Sapron, Sodren, Arganian,
+	Transgendeero, Transgendeera,
+	Clouder, Cloutrain, Cloudoom,
+	Modenine, Routweiler, Fiberwire,
+	Belvidia,
+	Poire,
 }
