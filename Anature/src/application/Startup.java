@@ -43,7 +43,7 @@ public class Startup extends Application
 	private static Player mPlayer;
 	private static EventHandler<KeyEvent> mKeyListener;
 	private static SceneType mLastSceneType, mCurrSceneType;
-	
+
 	private static Scene mAnatureSummaryView;
 	private static AnatureSummaryController mAnatureSummaryController;
 
@@ -132,7 +132,7 @@ public class Startup extends Application
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Intro");
 					mStage.setScene(intro);
 					break;
-					
+
 				case Anature_Summary:
 					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
 					{
@@ -140,11 +140,11 @@ public class Startup extends Application
 						Parent summaryRoot = summaryLoader.load();
 						mAnatureSummaryView = new Scene(summaryRoot);
 						mAnatureSummaryView.setOnKeyReleased(mKeyListener);
-						
+
 						mAnatureSummaryController = summaryLoader.getController();
 						mAnatureSummaryController.updateBinds(mAnatureSummaryView);
 					}
-					
+
 					mAnatureSummaryController.displayParty(mPlayer.getAnatures());
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Anature Summary");
@@ -328,7 +328,7 @@ public class Startup extends Application
 		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
- 
+
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));

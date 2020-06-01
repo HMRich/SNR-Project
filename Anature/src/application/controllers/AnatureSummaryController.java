@@ -121,6 +121,7 @@ public class AnatureSummaryController
 		mCurrPageNum = 1;
 		mPageOneBtn.setImage(mPageOneSelectImg);
 		mPageOneGrid.setVisible(true);
+		mAnatureImg.setImage(anature.getFrontSprite());
 
 		mCurrAnature = anature;
 		IStats stats = anature.getStats();
@@ -156,6 +157,11 @@ public class AnatureSummaryController
 		{
 			mDetailTypeTwoImg
 					.setImage(new Image(getClass().getResource("/resources/images/types/" + anature.getSecondaryType() + "_Type.png").toExternalForm()));
+		}
+
+		else
+		{
+			mDetailTypeTwoImg.setImage(null);
 		}
 
 		mDetailOwnerTxt.setText("   " + anature.getOwner());
@@ -209,6 +215,11 @@ public class AnatureSummaryController
 
 	private void displayMoveRow(IMove move, MoveSet moveset, Label name, ImageView img, Label mp, int moveIndex)
 	{
+		if(move == null)
+		{
+			return;
+		}
+
 		name.setText("   " + move.getName());
 		img.setImage(new Image(getClass().getResource("/resources/images/types/" + move.getType() + "_Type.png").toExternalForm()));
 		mp.setText(moveset.getMovePoints(moveset.getMoveIndex(move)) + " / " + move.getTotalMovePoints());
@@ -242,7 +253,7 @@ public class AnatureSummaryController
 		{
 			mParty.remove(mCurrAnature);
 		}
-		
+
 		displayParty(mParty);
 	}
 
@@ -495,9 +506,12 @@ public class AnatureSummaryController
 
 	}
 
-	// This method exists because you can't use (first / second) when binding properties.
-	// The reason it needs to be like this is because the binding won't work with the full double value. It must be rounded / shortened.
-	// Normally I would just divide them and hardcode the input, but that not only got tiresome, it made it hard to know why the values were what they were.
+	// This method exists because you can't use (first / second) when binding
+	// properties.
+	// The reason it needs to be like this is because the binding won't work with
+	// the full double value. It must be rounded / shortened.
+	// Normally I would just divide them and hardcode the input, but that not only
+	// got tiresome, it made it hard to know why the values were what they were.
 	// So I've done this instead.
 	private double calculateValue(double first, double second)
 	{
