@@ -36,6 +36,8 @@ public enum MoveIds
 	Acid_Spit, Poison_Bite, Poisonous_Slam,
 	
 	// Electric Type
-	Zap, Shock_Blast, Wire_Smack, Upgrade, Factory_Reset, Thunder_Blast, Fiber_Optic, Wired_Mess, Voltage_Overload
-
+	Zap, Shock_Blast, Wire_Smack, Upgrade, Factory_Reset, Thunder_Blast, Fiber_Optic, Wired_Mess, Voltage_Overload,
+	
+	// Psychic  
+	Nimbleness, Miss_Direction, Zen, Slumber, Channel, Restore, Focused_Heatbutt, Mystic_Power
 }
