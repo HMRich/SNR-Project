@@ -17,6 +17,7 @@ import application.enums.Species;
 import application.enums.WarpPoints;
 import application.interfaces.IAnature;
 import application.interfaces.ITrainer;
+import application.items.Anacube;
 import application.models.PathOneModel;
 import application.models.StarterTownModel;
 import application.player.Player;
@@ -332,6 +333,11 @@ public class Startup extends Application
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
 		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
+
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
 
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 

@@ -9,7 +9,6 @@ import application.enums.Gender;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
-import application.enums.stats.Natures;
 import application.interfaces.stats.IStats;
 import javafx.scene.image.Image;
 
@@ -42,6 +41,8 @@ public interface IAnature
 	public IStats getStats();
 
 	public int getIndexNumber();
+	
+	public int getCatchRate();
 
 	/*
 	 * PUBLIC METHODS
