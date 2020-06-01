@@ -371,7 +371,8 @@ public class AnatureBuilder implements IBuilder<Anature>
 		Random r = new Random();
 
 		ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(possilbeAbilities.split(",")));
-		AbilityIds chosenAbility = AbilityIds.valueOf(abilities.get(r.nextInt(abilities.size())));
+		String abilityStr = abilities.get(r.nextInt(abilities.size())).replace(" ", "");
+		AbilityIds chosenAbility = AbilityIds.valueOf(abilityStr);
 
 		return AbilityPool.getAbility(chosenAbility);
 	}
