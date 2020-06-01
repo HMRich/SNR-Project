@@ -204,12 +204,12 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				mMove = (M) new HealingWinds();
 				break;
 				
-			case Tackle:
-				mMove = (M) new Tackle();
+			case Holler:
+				mMove = (M) new Holler();
 				break;
 				
-			case Tackle:
-				mMove = (M) new Tackle();
+			case Leen:
+				mMove = (M) new Leen();
 				break;
 
 			case NullMove:

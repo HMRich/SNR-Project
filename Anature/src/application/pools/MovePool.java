@@ -291,8 +291,8 @@ public class MovePool
 						.withAccuracy(100)
 						.create());
 		
-		mMoves.put(MoveIds.Healing_Wings,
-				new MoveBuilder<HealingWinds>(MoveIds.Healing_Wings).withName("Healing Winds")
+		mMoves.put(MoveIds.Healing_Winds,
+				new MoveBuilder<HealingWinds>(MoveIds.Healing_Winds).withName("Healing Winds")
 						.withType(Type.Normal)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
