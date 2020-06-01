@@ -3,17 +3,25 @@ package application.pools;
 import java.util.HashMap;
 
 import application.anatures.moves.MoveBuilder;
+import application.anatures.moves.moves.Channel;
 import application.anatures.moves.moves.Coil;
 import application.anatures.moves.moves.DoublePunch;
 import application.anatures.moves.moves.Flail;
 import application.anatures.moves.moves.Flamethrower;
+import application.anatures.moves.moves.Focused_Heatbutt;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
+import application.anatures.moves.moves.Miss_Direction;
+import application.anatures.moves.moves.Mystic_Power;
+import application.anatures.moves.moves.Nimbleness;
 import application.anatures.moves.moves.PocketSand;
+import application.anatures.moves.moves.Restore;
 import application.anatures.moves.moves.SkipTurn;
+import application.anatures.moves.moves.Slumber;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.moves.moves.WaterToss;
+import application.anatures.moves.moves.Zen;
 import application.enums.MoveIds;
 import application.enums.Type;
 import application.interfaces.IMove;
@@ -334,5 +342,93 @@ public class MovePool
 					.withAccuracy(85)
 					.create()
 				);
+		
+		mMoves.put(MoveIds.Nimbleness, new MoveBuilder<Nimbleness>(MoveIds.Nimbleness).withName("Nimbleness")
+				.withType(Type.Psychic)
+				.doesDamage(false)
+				.isPhysicalAttack(false)
+				.withTotalMovePoints(30)
+				.withMovePower(0)
+				.withAccuracy(100)
+				.create()
+				
+			);
+				
+		mMoves.put(MoveIds.Miss_Direction, new MoveBuilder<Miss_Direction>(MoveIds.Miss_Direction).withName("Miss Direction")
+				.withType(Type.Psychic)
+				.doesDamage(true)
+				.isPhysicalAttack(false)
+				.withTotalMovePoints(25)
+				.withMovePower(50)
+				.withAccuracy(100)
+				.create()
+				
+			);	
+		
+		mMoves.put(MoveIds.Zen, new MoveBuilder<Zen>(MoveIds.Zen).withName("Zen")
+				.withType(Type.Psychic)
+				.doesDamage(false)
+				.isPhysicalAttack(false)
+				.withTotalMovePoints(20)
+				.withMovePower(0)
+				.withAccuracy(100)
+				.create()
+				
+			);
+		
+		mMoves.put(MoveIds.Slumber, new MoveBuilder<Slumber>(MoveIds.Slumber).withName("Slumber")
+				.withType(Type.Psychic)
+				.doesDamage(false)
+				.isPhysicalAttack(false)
+				.withTotalMovePoints(20)
+				.withMovePower(0)
+				.withAccuracy(60)
+				.create()
+				
+			);
+		
+		mMoves.put(MoveIds.Channel, new MoveBuilder<Channel>(MoveIds.Channel).withName("Channel")
+				.withType(Type.Psychic)
+				.doesDamage(true)
+				.isPhysicalAttack(false)
+				.withTotalMovePoints(10)
+				.withMovePower(90)
+				.withAccuracy(100)
+				.create()
+				
+			);
+		
+		mMoves.put(MoveIds.Restore, new MoveBuilder<Restore>(MoveIds.Restore).withName("Restore")
+				.withType(Type.Psychic)
+				.doesDamage(false)
+				.isPhysicalAttack(false)
+				.withTotalMovePoints(10)
+				.withMovePower(0)
+				.withAccuracy(100)
+				.create()
+				
+			);
+		
+		mMoves.put(MoveIds.Focused_Heatbutt, new MoveBuilder<Focused_Heatbutt>(MoveIds.Focused_Heatbutt).withName("Focused Heatbutt")
+				.withType(Type.Psychic)
+				.doesDamage(true)
+				.isPhysicalAttack(true)
+				.withTotalMovePoints(15)
+				.withMovePower(80)
+				.withAccuracy(90)
+				.create()
+				
+			);
+		
+		mMoves.put(MoveIds.Mystic_Power, new MoveBuilder<Mystic_Power>(MoveIds.Mystic_Power).withName("Mystic Power")
+				.withType(Type.Psychic)
+				.doesDamage(false)
+				.isPhysicalAttack(false)
+				.withTotalMovePoints(20)
+				.withMovePower(0)
+				.withAccuracy(100)
+				.create()
+				
+			);
 	}
 }
