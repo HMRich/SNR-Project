@@ -40,6 +40,7 @@ import application.interfaces.IAnature;
 import application.interfaces.IItem;
 import application.interfaces.IMove;
 import application.interfaces.ITrainer;
+import application.interfaces.stats.IStats;
 import application.items.HealthPotionBase;
 import application.player.Backpack;
 import application.player.Player;
@@ -552,6 +553,8 @@ public class BattleController
 			}
 		}
 
+		addEvs();
+		
 		if(isThereAliveAnatureInParty)
 		{
 			evaluateAnatureExperienceGain();
@@ -2519,6 +2522,22 @@ public class BattleController
 		}
 	}
 	
+	private void addEvs()
+	{
+		// TODO add evs
+		Stat toChange = findEnemyLargestStat();
+	}
+	
+	private Stat findEnemyLargestStat()
+	{
+		IAnature enemy = mFightManager.getEnemyAnature();
+		IStats stats = enemy.getStats();
+		
+		int hp = stats.get
+		
+		return null;
+	}
+
 	private void playerWin(boolean enemyWasCaught)
 	{
 		if(!enemyWasCaught)
@@ -2546,8 +2565,6 @@ public class BattleController
 			enqueueDialogue("You earned " + tokensToAdd + " tokens!", "Earning tokens");
 			enqueueDialogue("You have defeated " + mEnemyTrainer.getName() + "!", "Enemy Dead");
 		}
-		
-		// TODO add evs
 
 		mShowBtns.set(false);
 		

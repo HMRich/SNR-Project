@@ -1,6 +1,8 @@
 package application.anatures.stats;
 
 import application.enums.Stat;
+import java.util.HashMap;
+
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.stats.IStats;
@@ -316,7 +318,7 @@ class Stats extends StatsBase implements IStats
 
 	private boolean levelStats()
 	{
-		// TODO add evs from hashmap
+		checkEvRoadmap();
 		
 		int hitPointsIncrease = (int) ((0.01 * (double) getBaseHitPoints()) + (0.02 * ((double) getIVHitPoints() + (double) getEVHitPoints())));
 		hitPointsIncrease = hitPointsIncrease == 0 ? 1 : hitPointsIncrease;
@@ -345,6 +347,61 @@ class Stats extends StatsBase implements IStats
 		addLevelSpeed(speedIncrease);
 
 		return true;
+	}
+
+	private void checkEvRoadmap()
+	{
+		HashMap<Integer, EvChanged> roadmap = getEvRoadMap();
+		
+		if(roadmap.containsKey(mLevel))
+		{
+			EvChanged changed = roadmap.get(mLevel);
+			
+			int evHp = changed.getStatAmount(Stat.HitPoints);
+			int evAtk = changed.getStatAmount(Stat.Attack);
+			int evDef = changed.getStatAmount(Stat.Defense);
+			int evSpAtk = changed.getStatAmount(Stat.SpecialAttack);
+			int evSpDef = changed.getStatAmount(Stat.SpecialDefense);
+			int evSpeed = changed.getStatAmount(Stat.Speed);
+			
+			for(int i = 0; i < evHp; i++)
+			{
+				addEVHitPoint(mLevel);
+			}
+			changed.setStatAmount(Stat.HitPoints, evHp);
+			
+			for(int i = 0; i < evAtk; i++)
+			{
+				addEVAttack(mLevel);
+			}
+			changed.setStatAmount(Stat.Attack, evAtk);
+			
+			for(int i = 0; i < evDef; i++)
+			{
+				addEVDefense(mLevel);
+			}
+			changed.setStatAmount(Stat.Defense, evDef);
+			
+			for(int i = 0; i < evSpAtk; i++)
+			{
+				addEVSpecialAttack(mLevel);
+			}
+			changed.setStatAmount(Stat.SpecialAttack, evSpAtk);
+			
+			for(int i = 0; i < evSpDef; i++)
+			{
+				addEVSpecialDefense(mLevel);
+			}
+			changed.setStatAmount(Stat.SpecialDefense, evSpDef);
+			
+			for(int i = 0; i < evSpeed; i++)
+			{
+				addEVSpeed(mLevel);
+			}
+			changed.setStatAmount(Stat.Speed, evSpeed);
+			
+			roadmap.put(mLevel, changed);
+		}
 	}
 
 	private void maintainHitPointPercentage(int hitPointsIncrease)
