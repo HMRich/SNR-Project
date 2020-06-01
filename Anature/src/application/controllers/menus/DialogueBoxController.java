@@ -1,4 +1,4 @@
-package application.controllers;
+package application.controllers.menus;
 
 import application.animations.BlinkingAnimation;
 import application.views.elements.ImageLayer;

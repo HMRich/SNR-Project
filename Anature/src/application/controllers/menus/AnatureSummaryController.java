@@ -1,9 +1,10 @@
-package application.controllers;
+package application.controllers.menus;
 
 import java.util.ArrayList;
 
 import application.Startup;
 import application.anatures.movesets.MoveSet;
+import application.controllers.LoggerController;
 import application.enums.LoggingTypes;
 import application.enums.Stat;
 import application.enums.Type;

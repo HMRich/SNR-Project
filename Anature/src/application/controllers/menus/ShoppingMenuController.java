@@ -1,5 +1,6 @@
-package application.controllers;
+package application.controllers.menus;
 
+import application.controllers.LoggerController;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.interfaces.IHealthPotion;

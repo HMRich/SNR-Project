@@ -3,13 +3,14 @@ package application;
 import java.io.IOException;
 
 import application.anatures.AnatureBuilder;
-import application.controllers.AnatureSummaryController;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.controllers.menus.AnatureSummaryController;
 import application.controllers.overworld_cells.GrassTownController;
 import application.controllers.overworld_cells.PathOneController;
 import application.controllers.overworld_cells.RestStationController;
 import application.controllers.overworld_cells.StarterTownController;
+import application.controllers.results.BattleResult;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
@@ -316,6 +317,11 @@ public class Startup extends Application
 		{
 			LoggerController.logEvent(LoggingTypes.Error, "Exception when starting battle. \n" + e.getStackTrace());
 		}
+	}
+	
+	public static void endBattle(BattleResult result)
+	{
+		
 	}
 
 	public static void createDemo()

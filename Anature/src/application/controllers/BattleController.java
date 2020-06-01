@@ -2,8 +2,10 @@ package application.controllers;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
+import application.EvolutionManager;
 import application.FightManager;
 import application.Startup;
 import application.anatures.movesets.MoveSet;
@@ -18,15 +20,18 @@ import application.animations.ThreeFrameAnimation;
 import application.animations.XSlideAnimation;
 import application.animations.XpBarIncrease;
 import application.controllers.results.AbilityResult;
+import application.controllers.results.BattleResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
 import application.enums.AiChoice;
 import application.enums.AnacubeResults;
 import application.enums.BattleAnimationType;
 import application.enums.BattleChoice;
+import application.enums.BattleEndMethods;
 import application.enums.Gender;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
+import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
 import application.enums.Type;
@@ -451,7 +456,7 @@ public class BattleController
 		grid.add(bagImage, 0, 1);
 
 		ResizableImage escapeImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
-		escapeImage.setOnAction(event -> Startup.changeScene(null, null)); // TODO for demo
+		escapeImage.setOnAction(event -> endBattle(BattleEndMethods.Escape)); // TODO for demo
 		grid.add(escapeImage, 1, 1);
 
 		grid.visibleProperty().bind(mShowBtns);
@@ -528,7 +533,7 @@ public class BattleController
 
 			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures!\nYou quickly run back to the nearest Rest Station!"), "Player Dead");
-			mClickQueue.enqueue(() -> Startup.changeScene(null, null), "To Overworld");
+			mClickQueue.enqueue(() -> endBattle(BattleEndMethods.Defeat), "To Overworld");
 
 			mCanClick.set(true);
 			mToEnd = true;
@@ -2480,7 +2485,24 @@ public class BattleController
 			mAttackMpOneTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
 		}
 	}
-
+	
+	private void endBattle(BattleEndMethods endMethod)
+	{
+		HashMap<IAnature, Species> evolutions = new HashMap<IAnature, Species>();
+		
+		for(IAnature toCheck : mPlayer.getAnatures())
+		{
+			Species canEvolveInto = EvolutionManager.checkEvolution(toCheck);
+			
+			if(canEvolveInto.size() > 0)
+			{
+				evolutions.put(toCheck, canEvolveInto);
+			}
+		}
+		
+		Startup.endBattle(new BattleResult(endMethod, evolutions));
+	}
+	
 	private void dequeueClickTracker(Event event)
 	{
 		event.consume();

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import application.anatures.movesets.MoveSet;
-import application.controllers.results.AbilityActivation;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
