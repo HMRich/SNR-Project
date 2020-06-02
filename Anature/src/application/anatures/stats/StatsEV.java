@@ -2,6 +2,8 @@ package application.anatures.stats;
 
 import java.util.HashMap;
 
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
 import application.enums.Stat;
 import application.interfaces.stats.IStatsEV;
 
@@ -223,35 +225,61 @@ class StatsEV extends StatsLevel implements IStatsEV
 	/*
 	 * PACKAGE METHODS
 	 */
-
-	public int getEVHitPoints()
+	
+	public int getEvStat(Stat stat)
 	{
-		return mEVHitPoints;
+		switch(stat)
+		{
+			case HitPoints:
+				return mEVHitPoints;
+
+			case Attack:
+				return mEVAttack;
+				
+			case Defense:
+				return mEVDefense;
+
+			case SpecialAttack:
+				return mEVSpecialAttack;
+				
+			case SpecialDefense:
+				return mEVSpecialDefense;
+				
+			case Speed:
+				return mEVSpeed;
+				
+			default:
+				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Ev Stat with non applicable enum.");
+				return -1;
+		}
 	}
-
-	public int getEVAttack()
+	
+	public int getEvReducedStat(Stat stat)
 	{
-		return mEVAttack;
-	}
+		switch(stat)
+		{
+			case HitPoints:
+				return mEVHitPoints / 4;
 
-	public int getEVDefense()
-	{
-		return mEVDefense;
-	}
+			case Attack:
+				return mEVAttack / 4;
+				
+			case Defense:
+				return mEVDefense / 4;
 
-	public int getEVSpecialAttack()
-	{
-		return mEVSpecialAttack;
-	}
-
-	public int getEVSpecialDefense()
-	{
-		return mEVSpecialDefense;
-	}
-
-	public int getEVSpeed()
-	{
-		return mEVSpeed;
+			case SpecialAttack:
+				return mEVSpecialAttack / 4;
+				
+			case SpecialDefense:
+				return mEVSpecialDefense / 4;
+				
+			case Speed:
+				return mEVSpeed / 4;
+				
+			default:
+				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Ev Stat with non applicable enum.");
+				return -1;
+		}
 	}
 
 	/*
@@ -388,39 +416,5 @@ class StatsEV extends StatsLevel implements IStatsEV
 			changed.addStatAmount(stat);
 			mEvRoadmap.put(level, changed);
 		}
-	}
-
-	/*
-	 * PUBLIC METHODS
-	 */
-
-	public int getEVHitPointsReduced()
-	{
-		return mEVHitPoints / 4;
-	}
-
-	public int getEVAttackReduced()
-	{
-		return mEVAttack / 4;
-	}
-
-	public int getEVDefenseReduced()
-	{
-		return mEVDefense / 4;
-	}
-
-	public int getEVSpecialAttackReduced()
-	{
-		return mEVSpecialAttack / 4;
-	}
-
-	public int getEVSpecialDefenseReduced()
-	{
-		return mEVSpecialDefense / 4;
-	}
-
-	public int getEVSpeedReduced()
-	{
-		return mEVSpeed / 4;
 	}
 }

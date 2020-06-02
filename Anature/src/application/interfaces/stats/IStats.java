@@ -20,22 +20,6 @@ public interface IStats extends IStatsBase
 	public LevelingSpeed getLevelingSpeed();
 
 	public Natures getNature();
-
-	public int getTotalHitPoints();
-
-	public int getTotalAttack();
-
-	public int getTotalDefense();
-
-	public int getTotalSpecialAttack();
-
-	public int getTotalSpecialDefense();
-
-	public int getTotalSpeed();
-
-	public int getTotalAccuracy();
-
-	public int getTotalEvasion();
 	
 	public int getTotalStat(Stat stat);
 	
@@ -62,4 +46,6 @@ public interface IStats extends IStatsBase
 	public int getRequiredExperience();
 
 	public StatsBuilder getClone();
+	
+	public boolean addEv(Stat statToAdd, int level);
 }

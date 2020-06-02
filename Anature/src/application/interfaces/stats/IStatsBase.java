@@ -1,22 +1,10 @@
 package application.interfaces.stats;
 
+import application.enums.Stat;
+
 public interface IStatsBase extends IStatsIV
 {
 	public int getBaseExperience();
 	
-	public int getBaseHitPoints();
-
-	public int getBaseAttack();
-
-	public int getBaseDefense();
-
-	public int getBaseSpecialAttack();
-
-	public int getBaseSpecialDefense();
-
-	public int getBaseSpeed();
-
-	public int getBaseAccuracy();
-
-	public int getBaseEvasion();
+	public int getBaseStat(Stat stat);
 }

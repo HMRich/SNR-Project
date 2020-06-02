@@ -1,5 +1,8 @@
 package application.anatures.stats;
 
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.interfaces.stats.IStatsLevel;
 
 class StatsLevel extends StatsTemp implements IStatsLevel
@@ -24,35 +27,33 @@ class StatsLevel extends StatsTemp implements IStatsLevel
 	/*
 	 * PUBLIC GETS
 	 */
-
-	public int getLevelHitPoints()
+	
+	public int getLevelStat(Stat stat)
 	{
-		return mLevelHitPoints;
-	}
+		switch(stat)
+		{
+			case HitPoints:
+				return mLevelHitPoints;
 
-	public int getLevelAttack()
-	{
-		return mLevelAttack;
-	}
+			case Attack:
+				return mLevelAttack;
+				
+			case Defense:
+				return mLevelDefense;
 
-	public int getLevelDefense()
-	{
-		return mLevelDefense;
-	}
-
-	public int getLevelSpecialAttack()
-	{
-		return mLevelSpecialAttack;
-	}
-
-	public int getLevelSpecialDefense()
-	{
-		return mLevelSpecialDefense;
-	}
-
-	public int getLevelSpeed()
-	{
-		return mLevelSpeed;
+			case SpecialAttack:
+				return mLevelSpecialAttack;
+				
+			case SpecialDefense:
+				return mLevelSpecialDefense;
+				
+			case Speed:
+				return mLevelSpeed;
+				
+			default:
+				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Ev Stat with non applicable enum.");
+				return -1;
+		}
 	}
 
 	/*

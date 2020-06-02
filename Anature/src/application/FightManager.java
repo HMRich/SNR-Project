@@ -9,6 +9,7 @@ import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
 import application.enums.AbilityIds;
 import application.enums.MoveIds;
+import application.enums.Stat;
 import application.interfaces.IAnature;
 import application.interfaces.IItem;
 import application.interfaces.IMove;
@@ -138,7 +139,7 @@ public class FightManager
 	private boolean landedAttack(IAnature userAnature, IMove move)
 	{
 		Random rng = new Random();
-		double anatureAccuracy = userAnature.getStats().getTotalAccuracy();
+		double anatureAccuracy = userAnature.getStats().getTotalStat(Stat.Accuracy);
 		if(anatureAccuracy >= 1.0)
 		{
 			anatureAccuracy = 1.0;
@@ -269,6 +270,9 @@ public class FightManager
 	
 	private void addPlayerAnatureParticipant(int index)
 	{
-		mPlayerParticipatingAnatures.add(mPlayerTeam.get(index));
+		if(!mPlayerParticipatingAnatures.contains(mPlayerTeam.get(index)))
+		{
+			mPlayerParticipatingAnatures.add(mPlayerTeam.get(index));
+		}
 	}
 }

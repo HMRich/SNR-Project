@@ -3,6 +3,7 @@ package application.anatures.moves;
 import java.util.Random;
 
 import application.enums.MoveIds;
+import application.enums.Stat;
 import application.enums.Type;
 import application.enums.TypeEffectiveness;
 import application.interfaces.IAnature;
@@ -178,8 +179,8 @@ public class Move implements IMove
 
 		double levelCalculation = ((2.0 * (double) sourceStats.getLevel()) / 5.0) + 2.0;
 		double movePower = (double) getMovePower();
-		double attackStat = isSpecialMove ? sourceStats.getTotalSpecialAttack() : sourceStats.getTotalAttack();
-		double defenseStat = isSpecialMove ?(double) targetStats.getTotalSpecialDefense() : (double) targetStats.getTotalDefense();
+		double attackStat = isSpecialMove ? sourceStats.getTotalStat(Stat.SpecialAttack) : sourceStats.getTotalStat(Stat.Attack);
+		double defenseStat = isSpecialMove ?(double) targetStats.getTotalStat(Stat.SpecialDefense) : (double) targetStats.getTotalStat(Stat.Defense);
 		double typeMatchCalculation = source.getTypes()
 				.contains(getType()) ? 1.5 : 1.0;
 		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectivenes();

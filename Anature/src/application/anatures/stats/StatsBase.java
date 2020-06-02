@@ -1,5 +1,8 @@
 package application.anatures.stats;
 
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.interfaces.stats.IStatsBase;
 
 class StatsBase extends StatsIV implements IStatsBase
@@ -35,45 +38,39 @@ class StatsBase extends StatsIV implements IStatsBase
 	{
 		return mBaseExperience;
 	}
-
-	public int getBaseHitPoints()
+	
+	public int getBaseStat(Stat stat)
 	{
-		return mBaseHitPoints;
-	}
+		switch(stat)
+		{
+			case HitPoints:
+				return mBaseHitPoints;
 
-	public int getBaseAttack()
-	{
-		return mBaseAttack;
-	}
+			case Attack:
+				return mBaseAttack;
+				
+			case Defense:
+				return mBaseDefense;
 
-	public int getBaseDefense()
-	{
-		return mBaseDefense;
-	}
-
-	public int getBaseSpecialAttack()
-	{
-		return mBaseSpecialAttack;
-	}
-
-	public int getBaseSpecialDefense()
-	{
-		return mBaseSpecialDefense;
-	}
-
-	public int getBaseSpeed()
-	{
-		return mBaseSpeed;
-	}
-
-	public int getBaseAccuracy()
-	{
-		return mBaseAccuracy;
-	}
-
-	public int getBaseEvasion()
-	{
-		return mBaseEvasion;
+			case SpecialAttack:
+				return mBaseSpecialAttack;
+				
+			case SpecialDefense:
+				return mBaseSpecialDefense;
+				
+			case Speed:
+				return mBaseSpeed;
+				
+			case Accuracy:
+				return mBaseAccuracy;
+				
+			case Evasion:
+				return mBaseEvasion;
+				
+			default:
+				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Base Stat with non applicable enum.");
+				return -1;
+		}
 	}
 
 	/*
@@ -225,42 +222,42 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalStateException("The \"baseExperience\" variable was never set during construction.");
 		}
-		if(getBaseHitPoints() == -1)
+		if(getBaseStat(Stat.HitPoints) == -1)
 		{
 			throw new IllegalStateException("The \"baseHitPoints\" variable was never set during construction.");
 		}
 
-		if(getBaseAttack() == -1)
+		if(getBaseStat(Stat.Attack) == -1)
 		{
 			throw new IllegalStateException("The \"baseAttack\" variable was never set during construction.");
 		}
 
-		if(getBaseDefense() == -1)
+		if(getBaseStat(Stat.Defense) == -1)
 		{
 			throw new IllegalStateException("The \"baseDefense\" variable was never set during construction.");
 		}
 
-		if(getBaseSpecialAttack() == -1)
+		if(getBaseStat(Stat.SpecialAttack) == -1)
 		{
 			throw new IllegalStateException("The \"baseSpecialAttack\" variable was never set during construction.");
 		}
 
-		if(getBaseSpecialDefense() == -1)
+		if(getBaseStat(Stat.SpecialDefense) == -1)
 		{
 			throw new IllegalStateException("The \"baseSpecialDefense\" variable was never set during construction.");
 		}
 
-		if(getBaseSpeed() == -1)
+		if(getBaseStat(Stat.Speed) == -1)
 		{
 			throw new IllegalStateException("The \"baseSpeed\" variable was never set during construction.");
 		}
 
-		if(getBaseAccuracy() == -1)
+		if(getBaseStat(Stat.Accuracy) == -1)
 		{
 			throw new IllegalStateException("The \"baseAccuracy\" variable was never set during construction.");
 		}
 
-		if(getBaseEvasion() == -1)
+		if(getBaseStat(Stat.Evasion) == -1)
 		{
 			throw new IllegalStateException("The \"baseEvasion\" variable was never set during construction.");
 		}

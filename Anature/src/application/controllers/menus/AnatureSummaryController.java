@@ -174,23 +174,12 @@ public class AnatureSummaryController
 
 	private void displayPageTwoInfo(IAnature anature, IStats stats)
 	{
-		String hp = String.format("   %s + %s + %s + %s = %s", stats.getBaseHitPoints(), stats.getIVHitPoints(), stats.getEVHitPoints(),
-				stats.getLevelHitPoints(), stats.getTotalHitPoints());
-
-		String atk = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseAttack(), stats.getIVAttack(), stats.getEVAttack(), stats.getLevelAttack(),
-				stats.getNatureModifierValue(Stat.Attack), stats.getTotalAttack());
-
-		String def = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseDefense(), stats.getIVDefense(), stats.getEVDefense(), stats.getLevelDefense(),
-				stats.getNatureModifierValue(Stat.Defense), stats.getTotalDefense());
-
-		String specAtk = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpecialAttack(), stats.getIVSpecialAttack(), stats.getEVSpecialAttack(),
-				stats.getLevelSpecialAttack(), stats.getNatureModifierValue(Stat.SpecialAttack), stats.getTotalSpecialAttack());
-
-		String specDef = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpecialDefense(), stats.getIVSpecialDefense(), stats.getEVSpecialDefense(),
-				stats.getLevelSpecialDefense(), stats.getNatureModifierValue(Stat.SpecialDefense), stats.getTotalSpecialDefense());
-
-		String speed = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpeed(), stats.getIVSpeed(), stats.getEVSpeed(), stats.getLevelSpeed(),
-				stats.getNatureModifierValue(Stat.Speed), stats.getTotalSpeed());
+		String hp = generateStatString(Stat.HitPoints, stats);
+		String atk = generateStatString(Stat.Attack, stats);
+		String def = generateStatString(Stat.Defense, stats);
+		String specAtk = generateStatString(Stat.SpecialAttack, stats);
+		String specDef = generateStatString(Stat.SpecialDefense, stats);
+		String speed = generateStatString(Stat.Speed, stats);
 
 		mDetailHpTxt.setText(hp);
 		mDetailAtkTxt.setText(atk);
@@ -247,6 +236,27 @@ public class AnatureSummaryController
 		mDetailMovePowerTxt.setText("   " + move.getMovePower());
 		mDetailMoveAccTxt.setText("   " + move.getAccuracy() + "%");
 		mDetailMoveTypeImg.setImage(new Image(getClass().getResource("/resources/images/types/" + move.getType() + "_Type.png").toExternalForm()));
+	}
+
+	private String generateStatString(Stat statToGenerate, IStats stats)
+	{
+		int base = stats.getBaseStat(statToGenerate);
+		int iv = stats.getIvStat(statToGenerate);
+		int ev = stats.getEvReducedStat(statToGenerate);
+		int lvl = stats.getLevelStat(statToGenerate);
+		int nature = stats.getNatureModifierValue(statToGenerate);
+		int total = stats.getTotalStat(statToGenerate);
+		
+		String str = String.format("   %s + %s + %s + %s", base, iv, ev, lvl);
+
+		if(nature != 0)
+		{
+			str += nature > 0 ? (" + " + nature) : (" - " + (nature * -1));
+		}
+
+		str += " = " + total;
+
+		return str;
 	}
 
 	private void releaseAnature()

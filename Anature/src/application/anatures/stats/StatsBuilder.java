@@ -1,5 +1,6 @@
 package application.anatures.stats;
 
+import application.enums.Stat;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.IBuilder;
@@ -174,7 +175,7 @@ public class StatsBuilder implements IBuilder<IStats>
 
 			IStats statsToReturn = mStats;
 			
-			statsToReturn.setCurrentHitPoints(statsToReturn.getTotalHitPoints());
+			statsToReturn.setCurrentHitPoints(statsToReturn.getTotalStat(Stat.HitPoints));
 
 			generateNewStatsCore();
 
