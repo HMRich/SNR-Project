@@ -40,6 +40,8 @@ public interface IStats extends IStatsBase
 	public int getTotalStat(Stat stat);
 	
 	public int getNatureModifierValue(Stat stat);
+	
+	public Stat getLargestStat();
 
 	/*
 	 * PUBLIC SETS

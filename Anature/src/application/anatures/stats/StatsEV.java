@@ -2,6 +2,7 @@ package application.anatures.stats;
 
 import java.util.HashMap;
 
+import application.enums.Stat;
 import application.interfaces.stats.IStatsEV;
 
 class StatsEV extends StatsLevel implements IStatsEV
@@ -16,23 +17,26 @@ class StatsEV extends StatsLevel implements IStatsEV
 			{
 				case HitPoints:
 					return mHp;
-					
+
 				case Attack:
 					return mAtk;
-					
+
 				case Defense:
-					return nDef ;
-					
+					return nDef;
+
 				case SpecialAttack:
 					return mSpAtk;
-					
+
 				case SpecialDefense:
 					return mSpDef;
-					
+
 				case Speed:
 					return mSpd;
+					
+				default:
+					break;
 			}
-			
+
 			return -1;
 		}
 
@@ -43,56 +47,63 @@ class StatsEV extends StatsLevel implements IStatsEV
 				case HitPoints:
 					mHp++;
 					break;
-					
+
 				case Attack:
 					mAtk++;
 					break;
-					
+
 				case Defense:
 					nDef++;
 					break;
-					
+
 				case SpecialAttack:
 					mSpAtk++;
 					break;
-					
+
 				case SpecialDefense:
 					mSpDef++;
 					break;
-					
+
 				case Speed:
 					mSpd++;
 					break;
-			}
 
-			public void setStatAmount(Stat stat, int amount)
+				default:
+					break;
+			}
+		}
+
+		public void setStatAmount(Stat stat, int amount)
+		{
+			switch(stat)
 			{
-				switch(stat)
-				{
-					case HitPoints:
-						mHp = amount;
-						break;
-						
-					case Attack:
-						mAtk = amount;
-						break;
-						
-					case Defense:
-						nDef = amount;
-						break;
-						
-					case SpecialAttack:
-						mSpAtk = amount;
-						break;
-						
-					case SpecialDefense:
-						mSpDef = amount;
-						break;
-						
-					case Speed:
-						mSpd = amount;
-						break;
-				}
+				case HitPoints:
+					mHp = amount;
+					break;
+
+				case Attack:
+					mAtk = amount;
+					break;
+
+				case Defense:
+					nDef = amount;
+					break;
+
+				case SpecialAttack:
+					mSpAtk = amount;
+					break;
+
+				case SpecialDefense:
+					mSpDef = amount;
+					break;
+
+				case Speed:
+					mSpd = amount;
+					break;
+
+				default:
+					break;
+			}
 		}
 	}
 
@@ -353,7 +364,7 @@ class StatsEV extends StatsLevel implements IStatsEV
 	{
 		return mEVHitPoints + mEVAttack + mEVDefense + mEVSpecialAttack + mEVSpecialDefense + mEVSpeed < 510;
 	}
-	
+
 	HashMap<Integer, EvChanged> getEvRoadMap()
 	{
 		return mEvRoadmap;
@@ -362,7 +373,7 @@ class StatsEV extends StatsLevel implements IStatsEV
 	/*
 	 * PRIVATE METHODS
 	 */
-	
+
 	private void addToRoadMap(Stat stat, int level)
 	{
 		if(mEvRoadmap.containsKey(level))
@@ -370,7 +381,7 @@ class StatsEV extends StatsLevel implements IStatsEV
 			EvChanged changed = mEvRoadmap.get(level);
 			changed.addStatAmount(stat);
 		}
-		
+
 		else
 		{
 			EvChanged changed = new EvChanged();

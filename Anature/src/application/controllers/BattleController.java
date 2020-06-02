@@ -32,6 +32,7 @@ import application.enums.Gender;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.Species;
+import application.enums.Stat;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
 import application.enums.Type;
@@ -2532,8 +2533,6 @@ public class BattleController
 	{
 		IAnature enemy = mFightManager.getEnemyAnature();
 		IStats stats = enemy.getStats();
-		
-		int hp = stats.get
 		
 		return null;
 	}

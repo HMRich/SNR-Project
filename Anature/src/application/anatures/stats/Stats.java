@@ -1,8 +1,8 @@
 package application.anatures.stats;
 
-import application.enums.Stat;
 import java.util.HashMap;
 
+import application.enums.Stat;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.stats.IStats;
@@ -167,6 +167,20 @@ class Stats extends StatsBase implements IStats
 		}
 
 		return 0;
+	}
+	
+	public Stat getLargestStat()
+	{
+		int hp = getTotalStat(Stat.HitPoints);
+		int atk = getTotalStat(Stat.Attack);
+		int def = getTotalStat(Stat.Defense);
+		int spAtk = getTotalStat(Stat.SpecialAttack);
+		int spDef = getTotalStat(Stat.SpecialDefense);
+		int spd = getTotalStat(Stat.Speed);
+		
+		if(hp )
+		
+		return null;
 	}
 
 	/*
