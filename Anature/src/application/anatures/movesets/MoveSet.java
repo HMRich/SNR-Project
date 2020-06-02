@@ -257,6 +257,11 @@ public class MoveSet
 
 		return setMovePoints(moveNumber, movePoints--);
 	}
+	
+	public MoveSet getClone()
+	{
+		return new MoveSet(getMove(1), getMove(2), getMove(3), getMove(4));
+	}
 
 	public void refreshAllMovePoints()
 	{

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import application.Startup;
 import application.anatures.movesets.MoveSet;
 import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.enums.Type;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
@@ -121,6 +122,7 @@ public class AnatureSummaryController
 		mCurrPageNum = 1;
 		mPageOneBtn.setImage(mPageOneSelectImg);
 		mPageOneGrid.setVisible(true);
+		mAnatureImg.setImage(anature.getFrontSprite());
 
 		mCurrAnature = anature;
 		IStats stats = anature.getStats();
@@ -158,6 +160,11 @@ public class AnatureSummaryController
 					.setImage(new Image(getClass().getResource("/resources/images/types/" + anature.getSecondaryType() + "_Type.png").toExternalForm()));
 		}
 
+		else
+		{
+			mDetailTypeTwoImg.setImage(null);
+		}
+
 		mDetailOwnerTxt.setText("   " + anature.getOwner());
 
 		mDetailXpBar.setProgress(stats.getExperienceProgression() / (stats.getRequiredExperience() * 1.0));
@@ -169,20 +176,20 @@ public class AnatureSummaryController
 		String hp = String.format("   %s + %s + %s + %s = %s", stats.getBaseHitPoints(), stats.getIVHitPoints(), stats.getEVHitPoints(),
 				stats.getLevelHitPoints(), stats.getTotalHitPoints());
 
-		String atk = String.format("   %s + %s + %s + %s = %s", stats.getBaseAttack(), stats.getIVAttack(), stats.getEVAttack(), stats.getLevelAttack(),
-				stats.getTotalAttack());
+		String atk = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseAttack(), stats.getIVAttack(), stats.getEVAttack(), stats.getLevelAttack(),
+				stats.getNatureModifierValue(Stat.Attack), stats.getTotalAttack());
 
-		String def = String.format("   %s + %s + %s + %s = %s", stats.getBaseDefense(), stats.getIVDefense(), stats.getEVDefense(), stats.getLevelDefense(),
-				stats.getTotalDefense());
+		String def = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseDefense(), stats.getIVDefense(), stats.getEVDefense(), stats.getLevelDefense(),
+				stats.getNatureModifierValue(Stat.Defense), stats.getTotalDefense());
 
-		String specAtk = String.format("   %s + %s + %s + %s = %s", stats.getBaseSpecialAttack(), stats.getIVSpecialAttack(), stats.getEVSpecialAttack(),
-				stats.getLevelSpecialAttack(), stats.getTotalSpecialAttack());
+		String specAtk = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpecialAttack(), stats.getIVSpecialAttack(), stats.getEVSpecialAttack(),
+				stats.getLevelSpecialAttack(), stats.getNatureModifierValue(Stat.SpecialAttack), stats.getTotalSpecialAttack());
 
-		String specDef = String.format("   %s + %s + %s + %s = %s", stats.getBaseSpecialDefense(), stats.getIVSpecialDefense(), stats.getEVSpecialDefense(),
-				stats.getLevelSpecialDefense(), stats.getTotalSpecialDefense());
+		String specDef = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpecialDefense(), stats.getIVSpecialDefense(), stats.getEVSpecialDefense(),
+				stats.getLevelSpecialDefense(), stats.getNatureModifierValue(Stat.SpecialDefense), stats.getTotalSpecialDefense());
 
-		String speed = String.format("   %s + %s + %s + %s = %s", stats.getBaseSpeed(), stats.getIVSpeed(), stats.getEVSpeed(), stats.getLevelSpeed(),
-				stats.getTotalSpeed());
+		String speed = String.format("   %s + %s + %s + %s ? %s = %s", stats.getBaseSpeed(), stats.getIVSpeed(), stats.getEVSpeed(), stats.getLevelSpeed(),
+				stats.getNatureModifierValue(Stat.Speed), stats.getTotalSpeed());
 
 		mDetailHpTxt.setText(hp);
 		mDetailAtkTxt.setText(atk);
@@ -191,7 +198,7 @@ public class AnatureSummaryController
 		mDetailSpecialDefTxt.setText(specDef);
 		mDetailSpeedTxt.setText(speed);
 		mDetailNatureTxt.setText("   " + stats.getNature().toString());
-		mDetailAbilityNameTxt.setText("   " + anature.getAbility().getAbilityName());
+		mDetailAbilityNameTxt.setText("   " + anature.getAbility().toString());
 		mDetailAbilityDescTxt.setText("   " + anature.getAbility().getAbilityDescription());
 	}
 
@@ -209,6 +216,11 @@ public class AnatureSummaryController
 
 	private void displayMoveRow(IMove move, MoveSet moveset, Label name, ImageView img, Label mp, int moveIndex)
 	{
+		if(move == null)
+		{
+			return;
+		}
+
 		name.setText("   " + move.getName());
 		img.setImage(new Image(getClass().getResource("/resources/images/types/" + move.getType() + "_Type.png").toExternalForm()));
 		mp.setText(moveset.getMovePoints(moveset.getMoveIndex(move)) + " / " + move.getTotalMovePoints());
@@ -242,7 +254,7 @@ public class AnatureSummaryController
 		{
 			mParty.remove(mCurrAnature);
 		}
-		
+
 		displayParty(mParty);
 	}
 
@@ -495,9 +507,12 @@ public class AnatureSummaryController
 
 	}
 
-	// This method exists because you can't use (first / second) when binding properties.
-	// The reason it needs to be like this is because the binding won't work with the full double value. It must be rounded / shortened.
-	// Normally I would just divide them and hardcode the input, but that not only got tiresome, it made it hard to know why the values were what they were.
+	// This method exists because you can't use (first / second) when binding
+	// properties.
+	// The reason it needs to be like this is because the binding won't work with
+	// the full double value. It must be rounded / shortened.
+	// Normally I would just divide them and hardcode the input, but that not only
+	// got tiresome, it made it hard to know why the values were what they were.
 	// So I've done this instead.
 	private double calculateValue(double first, double second)
 	{

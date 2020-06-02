@@ -57,7 +57,7 @@ public class Spiky implements IAbility
 		return AbilityIds.Spiky;
 	}
 
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Spiky";
 	}

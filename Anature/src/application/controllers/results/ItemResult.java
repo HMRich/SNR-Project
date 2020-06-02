@@ -1,10 +1,13 @@
 package application.controllers.results;
 
+import application.enums.AnacubeResults;
+
 public class ItemResult extends Result
 {
 	private double mHpGained;
 	private AbilityResult mEnemyAbilityResult;
 	private AbilityResult mPlayerAbilityResult;
+	private AnacubeResults mCatchResults;
 
 	public ItemResult(String dialogue, double hpGained)
 	{
@@ -25,5 +28,15 @@ public class ItemResult extends Result
 	public AbilityResult getPlayerAbilityResult() 
 	{
 		return mPlayerAbilityResult;
+	}
+
+	public AnacubeResults getCatchResults()
+	{
+		return mCatchResults;
+	}
+
+	public void setCatchResults(AnacubeResults catchResults)
+	{
+		mCatchResults = catchResults;
 	}
 }

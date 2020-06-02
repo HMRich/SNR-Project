@@ -49,7 +49,7 @@ public class Toxic implements IAbility
 	}
 
 	@Override
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Toxic";
 	}

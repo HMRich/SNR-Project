@@ -62,7 +62,7 @@ public class Overclocked implements IAbility
 	}
 
 	@Override
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Overclocked";
 	}

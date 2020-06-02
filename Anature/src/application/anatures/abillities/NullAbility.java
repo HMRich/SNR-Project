@@ -6,12 +6,12 @@ import application.interfaces.IAbility;
 public class NullAbility implements IAbility
 {
 	private static IAbility mNullAbility = new NullAbility();
-	
+
 	public static IAbility getNullAbility()
 	{
 		return mNullAbility;
 	}
-	
+
 	@Override
 	public AbilityIds getAbilityId()
 	{
@@ -19,7 +19,7 @@ public class NullAbility implements IAbility
 	}
 
 	@Override
-	public String getAbilityName()
+	public String toString()
 	{
 		return "Null Ability";
 	}
@@ -35,4 +35,5 @@ public class NullAbility implements IAbility
 	{
 		return false;
 	}
+
 }
