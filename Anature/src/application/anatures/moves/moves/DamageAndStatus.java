@@ -24,8 +24,8 @@ public class DamageAndStatus extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		Type primary = source.getPrimaryType();
-		Type secondary = source.getSecondaryType();
+		Type primary = target.getPrimaryType();
+		Type secondary = target.getSecondaryType();
 		
 		target.takeDamage(calculateDamage(source, target, false));
 
