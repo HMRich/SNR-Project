@@ -390,7 +390,6 @@ public class BattleController
 		HpBar playerHpBar = new HpBar(mPlayerHp, mPlayerHpTotal, scene);
 		playerHpBar.bindX(1.509);
 		playerHpBar.bindY(1.995);
-		playerHpBar.progressProperty().bind(mPlayerHp.divide(mPlayerHpTotal));
 		playerHpBar.visibleProperty().bind(mShowPlayerBars);
 
 		mPane.getChildren().add(playerHpBar);
@@ -398,7 +397,6 @@ public class BattleController
 		HpBar enemyHpBar = new HpBar(mEnemyHp, mEnemyHpTotal, scene);
 		enemyHpBar.bindX(4.15);
 		enemyHpBar.bindY(7.95);
-		enemyHpBar.progressProperty().bind(mEnemyHp.divide(mEnemyHpTotal));
 
 		mPane.getChildren().add(enemyHpBar);
 

@@ -17,18 +17,17 @@ public class HpBar extends ProgressBar
 		mTotalValue = totalValue;
 		mScene = sceneToBindTo;
 
-		progressProperty().bind(mCurrValue.divide(mTotalValue));
 		prefWidthProperty().bind(mScene.widthProperty().divide(9));
 		prefHeightProperty().bind(mScene.heightProperty().divide(55));
 
 		getStylesheets().add("/resources/css/BattleStyle.css");
 		getStyleClass().add("green-bar");
-		mCurrValue.addListener(new ChangeListener<Number>()
+		progressProperty().addListener(new ChangeListener<Number>()
 		{
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
 			{
-				double progress = newValue.doubleValue();
+				double progress = newValue.doubleValue() * 100;
 
 				getStyleClass().removeAll("red-bar", "orange-bar", "yellow-bar", "green-bar");
 				if(progress < 20)
@@ -52,6 +51,14 @@ public class HpBar extends ProgressBar
 				}
 			}
 		});
+		
+		ChangeListener<Number> hpListener = (observable, oldValue, newValue) ->
+		{
+			setProgress(mCurrValue.divide(mTotalValue).get());
+		};
+		
+		mCurrValue.addListener(hpListener);
+		mTotalValue.addListener(hpListener);
 	}
 
 	public void bindX(double toDivideBy)
