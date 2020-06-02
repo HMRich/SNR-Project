@@ -9,19 +9,27 @@ import application.anatures.moves.moves.FiberOptic;
 import application.anatures.moves.moves.Flail;
 import application.anatures.moves.moves.Flamethrower;
 import application.anatures.moves.moves.FocusUp;
+import application.anatures.moves.moves.Grass_Whip;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
 import application.anatures.moves.moves.Mystic_Power;
+import application.anatures.moves.moves.Knock_Down;
+import application.anatures.moves.moves.Leaf_Storm;
+import application.anatures.moves.moves.Leaf_Sword;
 import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.PocketSand;
 import application.anatures.moves.moves.Restore;
 import application.anatures.moves.moves.SharpenUp;
 import application.anatures.moves.moves.SkipTurn;
 import application.anatures.moves.moves.Slumber;
+import application.anatures.moves.moves.Slow_Spore;
+import application.anatures.moves.moves.Sludge_Missile;
+import application.anatures.moves.moves.Sludge_Slap;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.moves.moves.TailBlock;
 import application.anatures.moves.moves.Tornado;
+import application.anatures.moves.moves.Tremor;
 import application.anatures.moves.moves.Upgrade;
 import application.anatures.moves.moves.WaterToss;
 import application.anatures.moves.moves.WiredMess;
@@ -384,6 +392,39 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				
 			case Focused_Heatbutt:
 				mMove = (M) new JustDamageDealing();
+				break;
+			
+				
+			case Knock_Down:
+				mMove = (M) new Knock_Down();
+				break;
+				
+			case Tremor:
+				mMove = (M) new Tremor();
+				break;
+
+			case Sludge_Missile:
+				mMove = (M) new Sludge_Missile();
+				break;
+				
+			case Sludge_Slap:
+				mMove = (M) new Sludge_Slap();
+				break;
+					
+			case Leaf_Storm:
+				mMove = (M) new Leaf_Storm();
+				break;
+				
+			case Leaf_Sword:
+				mMove = (M) new Leaf_Sword();
+				break;
+				
+			case Grass_Whip:
+				mMove = (M) new Grass_Whip();
+				break;
+				
+			case Slow_Spore:
+				mMove = (M) new Slow_Spore();
 				break;
 			
 			default:
