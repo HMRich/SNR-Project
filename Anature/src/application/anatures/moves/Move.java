@@ -9,7 +9,7 @@ import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 
-public class Move implements IMove
+public abstract class Move implements IMove
 {
 	private static Random randomObject = new Random();
 	private String mName;
@@ -62,7 +62,8 @@ public class Move implements IMove
 
 		if(moveId.equals(MoveIds.NullMove))
 		{
-			throw new IllegalArgumentException("Passed value \"moveId\" was equal to " + moveId.toString() + ".");
+			// TODO We need to allow this until we figure out a new way to make a NullMove in MoveCollection.java
+			// throw new IllegalArgumentException("Passed value \"moveId\" was equal to " + moveId.toString() + ".");
 		}
 
 		mMoveId = moveId;
@@ -179,13 +180,14 @@ public class Move implements IMove
 		double levelCalculation = ((2.0 * (double) sourceStats.getLevel()) / 5.0) + 2.0;
 		double movePower = (double) getMovePower();
 		double attackStat = isSpecialMove ? sourceStats.getTotalSpecialAttack() : sourceStats.getTotalAttack();
-		double defenseStat = isSpecialMove ?(double) targetStats.getTotalSpecialDefense() : (double) targetStats.getTotalDefense();
+		double defenseStat = isSpecialMove ? (double) targetStats.getTotalSpecialDefense() : (double) targetStats.getTotalDefense();
 		double typeMatchCalculation = source.getTypes()
 				.contains(getType()) ? 1.5 : 1.0;
-		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectivenes();
+		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target)
+				.getEffectivenes();
 		double randomNumberCalculation = randomObject.nextInt(16) + 85;
 
-		return (int) ( (((levelCalculation * movePower * attackStat / defenseStat) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation
+		return (int) ((((levelCalculation * movePower * attackStat / defenseStat) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation
 				* randomNumberCalculation / 100.0);
 	}
 
@@ -228,12 +230,9 @@ public class Move implements IMove
 	}
 
 	/*
-	 * PUBLIC METHODS
+	 * ABSTRACT METHODS
 	 */
 
-	public void activateMove(IAnature source, IAnature target)
-	{
-		throw new IllegalStateException("This method should not be called.");
-	}
+	public abstract void activateMove(IAnature source, IAnature target);
 
 }

@@ -69,7 +69,7 @@ class StatsTemp implements IStatsTemp
 
 	public void decreaseTempAttack()
 	{
-		mTempAttack = mTempAttack.decrementStage();
+		decreaseTempStat(Stat.Attack);
 	}
 
 	public void increaseTempDefense()
@@ -79,7 +79,7 @@ class StatsTemp implements IStatsTemp
 
 	public void decreaseTempDefense()
 	{
-		mTempDefense = mTempDefense.decrementStage();
+		decreaseTempStat(Stat.Defense);
 	}
 
 	public void increaseTempSpecialAttack()
@@ -89,7 +89,7 @@ class StatsTemp implements IStatsTemp
 
 	public void decreaseTempSpecialAttack()
 	{
-		mTempSpecialAttack = mTempSpecialAttack.decrementStage();
+		decreaseTempStat(Stat.SpecialAttack);
 	}
 
 	public void increaseTempSpecialDefense()
@@ -99,7 +99,7 @@ class StatsTemp implements IStatsTemp
 
 	public void decreaseTempSpecialDefense()
 	{
-		mTempSpecialDefense = mTempSpecialDefense.decrementStage();
+		decreaseTempStat(Stat.SpecialDefense);
 	}
 
 	public void increaseTempSpeed()
@@ -109,7 +109,7 @@ class StatsTemp implements IStatsTemp
 
 	public void decreaseTempSpeed()
 	{
-		mTempSpeed = mTempSpeed.decrementStage();
+		decreaseTempStat(Stat.Speed);
 	}
 
 	public void increaseTempAccuracy()
@@ -119,7 +119,7 @@ class StatsTemp implements IStatsTemp
 
 	public void decreaseTempAccuracy()
 	{
-		mTempAccuracy = mTempAccuracy.decrementStage();
+		decreaseTempStat(Stat.Accuracy);
 	}
 
 	public void increaseTempEvasion()
@@ -127,9 +127,9 @@ class StatsTemp implements IStatsTemp
 		mTempEvasion = mTempEvasion.incrementStage();
 	}
 
-	public void decreaseTempEvaion()
+	public void decreaseTempEvasion()
 	{
-		mTempEvasion = mTempEvasion.decrementStage();
+		decreaseTempStat(Stat.Evasion);
 	}
 
 	/*
@@ -145,6 +145,96 @@ class StatsTemp implements IStatsTemp
 		mTempSpeed = TempStatsStages.zero;
 		mTempAccuracy = TempStatsStages.zero;
 		mTempEvasion = TempStatsStages.zero;
+	}
+
+	public void decreaseTempStat(Stat stat)
+	{
+		switch(stat)
+		{
+			case Accuracy:
+				mTempAccuracy = mTempAccuracy.decrementStage();
+				break;
+
+			case Attack:
+				mTempAttack = mTempAttack.decrementStage();
+				break;
+
+			case Defense:
+				mTempDefense = mTempDefense.decrementStage();
+				break;
+
+			case Evasion:
+				mTempEvasion = mTempEvasion.decrementStage();
+				break;
+
+			case SpecialAttack:
+				mTempSpecialAttack = mTempSpecialAttack.decrementStage();
+				break;
+
+			case SpecialDefense:
+				mTempSpecialDefense = mTempSpecialDefense.decrementStage();
+				break;
+
+			case Speed:
+				mTempSpeed = mTempSpeed.decrementStage();
+				break;
+
+			default:
+				throw new IllegalArgumentException("Value \"stat\" was " + stat.toString() + " and is not a supported Temp stat.");
+		}
+	}
+
+	public void increaseTempStat(Stat stat)
+	{
+		switch(stat)
+		{
+			case Accuracy:
+				mTempAccuracy = mTempAccuracy.incrementStage();
+				break;
+
+			case Attack:
+				mTempAttack = mTempAttack.incrementStage();
+				break;
+
+			case Defense:
+				mTempDefense = mTempDefense.incrementStage();
+				break;
+
+			case Evasion:
+				mTempEvasion = mTempEvasion.incrementStage();
+				break;
+
+			case SpecialAttack:
+				mTempSpecialAttack = mTempSpecialAttack.incrementStage();
+				break;
+
+			case SpecialDefense:
+				mTempSpecialDefense = mTempSpecialDefense.incrementStage();
+				break;
+
+			case Speed:
+				mTempSpeed = mTempSpeed.incrementStage();
+				break;
+
+			default:
+				throw new IllegalArgumentException("Value \"stat\" was " + stat.toString() + " and is not a supported Temp stat.");
+		}
+	}
+
+	public void increaceTempStats(Stat[] stats)
+	{
+		for(Stat stat : stats)
+		{
+			increaseTempStat(stat);
+		}
+	}
+
+	public void decreaseTempStats(Stat[] stats)
+	{
+		for(Stat stat : stats)
+		{
+			decreaseTempStat(stat);
+		}
 	}
 
 	/*

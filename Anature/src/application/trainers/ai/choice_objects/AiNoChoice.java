@@ -1,7 +1,8 @@
 package application.trainers.ai.choice_objects;
 
-import application.anatures.moves.moves.Flail;
+import application.anatures.moves.MoveCollection;
 import application.enums.AiChoice;
+import application.enums.MoveIds;
 import application.interfaces.AiChoiceObject;
 import application.interfaces.IMove;
 
@@ -12,7 +13,7 @@ public class AiNoChoice extends AiFinalChoice implements AiChoiceObject<IMove>
 	public AiNoChoice()
 	{
 		super(AiChoice.No_Choice);
-		mMove = new Flail();
+		mMove = MoveCollection.getMoveContext(MoveIds.Flail);
 	}
 
 	@Override

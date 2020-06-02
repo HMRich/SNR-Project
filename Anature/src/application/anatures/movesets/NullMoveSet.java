@@ -1,6 +1,6 @@
 package application.anatures.movesets;
 
-import application.anatures.moves.moves.NullMove;
+import application.anatures.moves.MoveCollection;
 
 public class NullMoveSet extends MoveSet
 {
@@ -8,7 +8,7 @@ public class NullMoveSet extends MoveSet
 
 	public NullMoveSet()
 	{
-		super(new NullMove(), new NullMove(), new NullMove(), new NullMove());
+		super(MoveCollection.getNullMove(), MoveCollection.getNullMove(), MoveCollection.getNullMove(), MoveCollection.getNullMove());
 	}
 
 	public static MoveSet getNullMoveSet()

@@ -2,11 +2,11 @@ package test;
 
 import application.anatures.AnatureBuilder;
 import application.anatures.abillities.NullAbility;
-import application.anatures.moves.moves.Tackle;
 import application.anatures.movesets.MoveSet;
 import application.anatures.stats.StatsBuilder;
 import application.enums.AbilityIds;
 import application.enums.Gender;
+import application.enums.MoveIds;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
@@ -17,6 +17,7 @@ import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 import application.pools.AbilityPool;
+import application.pools.MovePool;
 
 public class TestObjects
 {
@@ -24,7 +25,7 @@ public class TestObjects
 	 * TEST OBJECT IMove
 	 */
 
-	private static IMove mTackle = new Tackle();
+	private static IMove mTackle = MovePool.getMove(MoveIds.Tackle);
 
 	public static IMove getDefaultTackle()
 	{
@@ -127,6 +128,7 @@ public class TestObjects
 	private static IAbility mDefaultAbility = new NullAbility();
 	private static StatusEffects mDefaultStatusEffect = StatusEffects.None;
 	private static int mDefaultIndexNumber = 20200529;
+	private static int mDefaultCatchRate = 255;
 
 	private static IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName())
 			.withOwnerName(getDefaultOwnerName())
@@ -140,6 +142,7 @@ public class TestObjects
 			.withStatus(getDefaultStatusEffect())
 			.withStats(getDefaultStats())
 			.withIndexNumber(getDefaultIndexNumber())
+			.withCatchRate(getDefaultCatchRate())
 			.create();
 
 	public static IAnature getAnature()
@@ -195,6 +198,11 @@ public class TestObjects
 	public static int getDefaultIndexNumber()
 	{
 		return mDefaultIndexNumber;
+	}
+
+	public static int getDefaultCatchRate()
+	{
+		return mDefaultCatchRate;
 	}
 
 }

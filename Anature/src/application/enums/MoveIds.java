@@ -2,26 +2,61 @@ package application.enums;
 
 public enum MoveIds
 {
-	NullMove, Tackle, Grumble, Flamethrower, Double_Punch, Skip_Turn, Pocket_Sand, Flail,
-	
+	NullMove,
+	Tackle,
+	Grumble,
+	Flamethrower,
+	Double_Punch,
+	Skip_Turn,
+	Pocket_Sand,
+	Flail,
+
 	// Water Type
-	Water_Toss, Hose_Down, Water_Fang, Water_Blast, Flood,
-	
+	Water_Toss,
+	Hose_Down,
+	Water_Fang,
+	Water_Blast,
+	Flood,
+
 	// Flying Type
-	Wing_Bash, Tornado,
-	
+	Wing_Bash,
+	Tornado,
+
 	// Normal Type
-	Coil, Body_Slam, Pounce, Sharpen_Up, Tail_Slap, Tail_Block, Disguise, Tail_Slam, Focus_Up,
-	
+	Coil,
+	Body_Slam,
+	Pounce,
+	Sharpen_Up,
+	Tail_Slap,
+	Tail_Block,
+	Disguise,
+	Tail_Slam,
+	Focus_Up,
+
 	// Poison Type
-	Acid_Spit, Poison_Bite, Poisonous_Slam,
-	
+	Acid_Spit,
+	Poison_Bite,
+	Poisonous_Slam,
+
 	// Electric Type
-	Zap, Shock_Blast, Wire_Smack, Upgrade, Factory_Reset, Thunder_Blast, Fiber_Optic, Wired_Mess, Voltage_Overload
+	Zap,
+	Shock_Blast,
+	Wire_Smack,
+	Upgrade,
+	Factory_Reset,
+	Thunder_Blast,
+	Fiber_Optic,
+	Wired_Mess,
+	Voltage_Overload,
+	
+	// Ice Type
 	Ice_Whip,
 	Freezing_Blast,
 	Ice_Layer,
 	Ice_Spike,
 	Deep_Freeze,
-	Forceful_Slam
+	
+	// Steel Type
+	Forceful_Slam,
+	Body_Bash
 }

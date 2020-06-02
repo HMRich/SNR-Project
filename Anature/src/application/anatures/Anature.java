@@ -218,11 +218,12 @@ class Anature implements IAnature
 
 	void setCatchRate(int catchRate)
 	{
-		if(catchRate < 1 || catchRate > 255)
+		if(catchRate < 1
+				|| catchRate > 255)
 		{
 			throw new IllegalArgumentException("Passed value \"catchRate\" was below 1 or above 255.");
 		}
-		
+
 		mCatchRate = catchRate;
 	}
 
@@ -380,7 +381,8 @@ class Anature implements IAnature
 				.withAbility(getAbility())
 				.withStatus(getStatus())
 				.withStats(getStats())
-				.withIndexNumber(getIndexNumber());
+				.withIndexNumber(getIndexNumber())
+				.withCatchRate(getCatchRate());
 	}
 
 	public Image getFrontSprite()
