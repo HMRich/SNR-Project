@@ -62,7 +62,9 @@ public class MoveCollection
 			case Double_Punch:
 			case Flamethrower:
 			case Flood:
+			case Forceful_Slam:
 			case Ice_Whip:
+			case Ice_Spike:
 			case Pounce:
 			case Poison_Bite:
 			case Poisonous_Slam:
@@ -80,10 +82,6 @@ public class MoveCollection
 			case Voltage_Overload:
 			case Zap:
 				return new Attack();
-
-			case Forceful_Slam:
-			case Ice_Spike:
-				return new SpecialAttack();
 
 			case Grumble:
 			case Hose_Down:
@@ -313,17 +311,7 @@ public class MoveCollection
 		@Override
 		public void activateMove(IAnature source, IAnature target)
 		{
-			target.takeDamage(calculateDamage(source, target, false));
-			applyUniqueEffects(getMoveId(), source, target);
-		}
-	}
-
-	private class SpecialAttack extends MoveWithId
-	{
-		@Override
-		public void activateMove(IAnature source, IAnature target)
-		{
-			target.takeDamage(calculateDamage(source, target, true));
+			target.takeDamage(calculateDamage(source, target, !isPhysicalAttack()));
 			applyUniqueEffects(getMoveId(), source, target);
 		}
 	}
