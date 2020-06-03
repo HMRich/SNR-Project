@@ -137,8 +137,7 @@ class Stats extends StatsBase implements IStats
 		int spDef = getTotalStat(Stat.SpecialDefense);
 		int spd = getTotalStat(Stat.Speed);
 
-		int[] stats =
-		{ hp, atk, def, spAtk, spDef, spd };
+		int[] stats = { hp, atk, def, spAtk, spDef, spd };
 		Arrays.sort(stats);
 
 		if(hp == stats[0])
@@ -238,15 +237,31 @@ class Stats extends StatsBase implements IStats
 
 	public StatsBuilder getClone()
 	{
-		return new StatsBuilder().atLevel(getLevel()).withLevlingSpeed(getLevelingSpeed()).withNature(getNature())
-				.withBaseExperience(getTotalExperiencePoints()).withBaseHitPoints(getBaseStat(Stat.HitPoints)).withBaseAttack(getBaseStat(Stat.Attack))
-				.withBaseDefense(getBaseStat(Stat.Defense)).withBaseSpecialAttack(getBaseStat(Stat.SpecialAttack))
-				.withBaseSpecialDefense(getBaseStat(Stat.SpecialDefense)).withBaseSpeed(getBaseStat(Stat.Speed)).withBaseAccuracy(getBaseStat(Stat.Accuracy))
-				.withBaseEvasion(getBaseStat(Stat.Evasion)).withIVAttack(getIvStat(Stat.Attack)).withIVDefense(getIvStat(Stat.Defense))
-				.withIVHitPoints(getIvStat(Stat.HitPoints)).withIVSpecialAttack(getIvStat(Stat.SpecialAttack))
-				.withIVSpecialDefense(getIvStat(Stat.SpecialDefense)).withIVSpeed(getIvStat(Stat.Speed)).withEVHitPoints(getEvStat(Stat.HitPoints))
-				.withEVAttack(getEvStat(Stat.Attack)).withEVDefense(getEvStat(Stat.Defense)).withEVSpecialAttack(getEvStat(Stat.SpecialAttack))
-				.withEVSpecialDefense(getEvStat(Stat.SpecialDefense)).withEVSpeed(getEvStat(Stat.Speed));
+		return new StatsBuilder()
+				.atLevel(getLevel())
+				.withLevlingSpeed(getLevelingSpeed())
+				.withNature(getNature())
+				.withBaseExperience(getBaseExperience())
+				.withBaseHitPoints(getBaseStat(Stat.HitPoints))
+				.withBaseAttack(getBaseStat(Stat.Attack))
+				.withBaseDefense(getBaseStat(Stat.Defense))
+				.withBaseSpecialAttack(getBaseStat(Stat.SpecialAttack))
+				.withBaseSpecialDefense(getBaseStat(Stat.SpecialDefense))
+				.withBaseSpeed(getBaseStat(Stat.Speed))
+				.withBaseAccuracy(getBaseStat(Stat.Accuracy))
+				.withBaseEvasion(getBaseStat(Stat.Evasion))
+				.withIVAttack(getIvStat(Stat.Attack))
+				.withIVDefense(getIvStat(Stat.Defense))
+				.withIVHitPoints(getIvStat(Stat.HitPoints))
+				.withIVSpecialAttack(getIvStat(Stat.SpecialAttack))
+				.withIVSpecialDefense(getIvStat(Stat.SpecialDefense))
+				.withIVSpeed(getIvStat(Stat.Speed))
+				.withEVHitPoints(getEvStat(Stat.HitPoints))
+				.withEVAttack(getEvStat(Stat.Attack))
+				.withEVDefense(getEvStat(Stat.Defense))
+				.withEVSpecialAttack(getEvStat(Stat.SpecialAttack))
+				.withEVSpecialDefense(getEvStat(Stat.SpecialDefense))
+				.withEVSpeed(getEvStat(Stat.Speed));
 	}
 
 	public boolean addEv(Stat statToAdd, int level)

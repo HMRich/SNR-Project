@@ -19,7 +19,7 @@ public class EvolutionManager
 		
 		try
 		{
-			Connection connect = DatabaseConnection.dbConnector(DatabaseType.AnatureDatabase);
+			Connection connect = DatabaseConnection.dbConnector(DatabaseType.AnatureEvolutionDatabase);
 
 			String query = "Select * from Evolution Where Anature=? AND Level<=?";
 			PreparedStatement pst = connect.prepareStatement(query);

@@ -26,4 +26,9 @@ public class BattleResult
 	{
 		return mEndMethod;
 	}
+
+	public HashMap<IAnature, Species> getAnaturesToEvolve()
+	{
+		return mAnaturesToEvolve;
+	}
 }

@@ -759,7 +759,7 @@ public class BattleController
 			mSwitchIndexSelected = mPlayer.getSelectedIndex();
 		});
 
-		createBindsImageView(mSwitchSelectedImg, scene, 2.889, 3.396, 5.638, 3.03, mShowSwitch);
+		createBindsImageView(mSwitchSelectedImg, scene, 2.889, 3.396, 5.638, 3.03, mShowSwitch); // TODO update Image
 
 		setUpSwitchPageOne(scene, fontProperty);
 		setUpSwitchPageTwo(scene, fontProperty);
@@ -820,7 +820,7 @@ public class BattleController
 		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, 100.0, false, StatusEffects.None);
 		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, 100.0, false, StatusEffects.None);
 
-		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0);
+		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0); // TODO update images and hp bars
 		createBindsAnatureslot(mSlotTwo, scene, 85, 3.157, 3.7, 15.1, 1);
 		createBindsAnatureslot(mSlotThree, scene, 85, 2.54, 3.7, 15.1, 2);
 		createBindsAnatureslot(mSlotFour, scene, 85, 2.114, 3.7, 15.1, 3);
@@ -2577,7 +2577,7 @@ public class BattleController
 		{
 			Species canEvolveInto = EvolutionManager.checkEvolution(toCheck);
 			
-			if(canEvolveInto == null)
+			if(canEvolveInto != null)
 			{
 				evolutions.put(toCheck, canEvolveInto);
 			}
