@@ -682,7 +682,6 @@ public class BattleController
 	private void setUpSwitchElements(Scene scene)
 	{
 		ObjectProperty<Font> fontProperty = getFontProperty(65, scene);
-		ObjectProperty<Font> pageFontProperty = getFontProperty(65, scene);
 
 		createBindsImageView(mSwitchSelection, scene, 1, 1, mShowSwitch);
 		createBindsImageView(mSwitchDialogue, scene, 1, 1, mShowSwitch);
@@ -754,7 +753,7 @@ public class BattleController
 		setUpSwitchPageOne(scene, fontProperty);
 		setUpSwitchPageTwo(scene, fontProperty);
 
-		createBindsTxt(mSwitchPageTxt, scene, 1.16, 5.4, pageFontProperty, mShowSwitch);
+		createBindsTxt(mSwitchPageTxt, scene, 1.16, 5.4, fontProperty, mShowSwitch);
 
 		createBindsImageView(mSwitchPageLeft, scene, 1.245, 6.99, 46.23, 18.46, mShowSwitch);
 		createBindsImageView(mSwitchPageRight, scene, 1.043, 6.99, 46.23, 18.46, mShowSwitch);
@@ -787,7 +786,7 @@ public class BattleController
 
 	private void setUpSwitchPageTwo(Scene scene, ObjectProperty<Font> fontTracking)
 	{
-		ObjectProperty<Font> abilityDescFontTracking = getFontProperty(85, scene);
+		ObjectProperty<Font> abilityDescFontTracking = getFontProperty(95, scene);
 
 		createBindsTxt(mSwitchSelectedHp, scene, 1.4, 3.7, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedAtk, scene, 1.4, 3, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
@@ -1167,7 +1166,6 @@ public class BattleController
 
 	private void updateSwitch(ArrayList<IAnature> party, int selectedIndex)
 	{
-		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 		boolean isSelected = false;
 
 		switch(party.size())
@@ -1180,7 +1178,7 @@ public class BattleController
 					isSelected = true;
 				}
 
-				updateSwitchSlot(party.get(5), anatureImg, mSwitchSlotSix, mSlotSix, isSelected);
+				updateSwitchSlot(party.get(5), party.get(5).getFrontSprite(), mSwitchSlotSix, mSlotSix, isSelected);
 
 			case 5:
 				isSelected = false;
@@ -1190,7 +1188,7 @@ public class BattleController
 					isSelected = true;
 				}
 
-				updateSwitchSlot(party.get(4), anatureImg, mSwitchSlotFive, mSlotFive, isSelected);
+				updateSwitchSlot(party.get(4), party.get(4).getFrontSprite(), mSwitchSlotFive, mSlotFive, isSelected);
 
 			case 4:
 				isSelected = false;
@@ -1200,7 +1198,7 @@ public class BattleController
 					isSelected = true;
 				}
 
-				updateSwitchSlot(party.get(3), anatureImg, mSwitchSlotFour, mSlotFour, isSelected);
+				updateSwitchSlot(party.get(3), party.get(3).getFrontSprite(), mSwitchSlotFour, mSlotFour, isSelected);
 
 			case 3:
 				isSelected = false;
@@ -1210,7 +1208,7 @@ public class BattleController
 					isSelected = true;
 				}
 
-				updateSwitchSlot(party.get(2), anatureImg, mSwitchSlotThree, mSlotThree, isSelected);
+				updateSwitchSlot(party.get(2), party.get(2).getFrontSprite(), mSwitchSlotThree, mSlotThree, isSelected);
 
 			case 2:
 				isSelected = false;
@@ -1220,7 +1218,7 @@ public class BattleController
 					isSelected = true;
 				}
 
-				updateSwitchSlot(party.get(1), anatureImg, mSwitchSlotTwo, mSlotTwo, isSelected);
+				updateSwitchSlot(party.get(1), party.get(1).getFrontSprite(), mSwitchSlotTwo, mSlotTwo, isSelected);
 
 			case 1:
 				isSelected = false;
@@ -1230,7 +1228,7 @@ public class BattleController
 					isSelected = true;
 				}
 
-				updateSwitchSlot(party.get(0), anatureImg, mSwitchSlotOne, mSlotOne, isSelected);
+				updateSwitchSlot(party.get(0), party.get(0).getFrontSprite(), mSwitchSlotOne, mSlotOne, isSelected);
 		}
 
 		updateSwitchSelected(mPlayer.getSelectedIndex());
@@ -1282,6 +1280,7 @@ public class BattleController
 		mSwitchSelectedOwner.setText(selected.getOwner());
 		mSwitchSelectedCurrXp.setText(selected.getStats().getExperienceProgression() + "");
 		mSwitchSelectedNextXp.setText(selected.getStats().getRequiredExperience() + "");
+		mSwitchSelectedImg.setImage(selected.getFrontSprite());
 
 		mSwitchSelectedHp.setText(selected.getStats().getTotalHitPoints() + "");
 		mSwitchSelectedAtk.setText(selected.getStats().getTotalAttack() + "");
