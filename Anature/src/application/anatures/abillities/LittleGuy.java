@@ -1,13 +1,17 @@
 package application.anatures.abillities;
 
+import java.io.Serializable;
+
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 
-public class LittleGuy implements IAbility
+public class LittleGuy implements IAbility, Serializable
 {
+	private static final long serialVersionUID = -332976440197763016L;
+
 	public static String activateAbility(IAnature userAnature)
 	{
 		if(userAnature == null)

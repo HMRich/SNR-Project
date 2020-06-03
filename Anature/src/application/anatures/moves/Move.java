@@ -1,5 +1,6 @@
 package application.anatures.moves;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import application.enums.MoveIds;
@@ -9,8 +10,10 @@ import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 
-public class Move implements IMove
+public class Move implements IMove, Serializable
 {
+	private static final long serialVersionUID = 257108755309428439L;
+
 	private static Random randomObject = new Random();
 	private String mName;
 	private MoveIds mMoveId;

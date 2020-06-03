@@ -1,12 +1,16 @@
 package application.anatures.stats;
 
+import java.io.Serializable;
+
 import application.enums.Stat;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.stats.IStats;
 
-class Stats extends StatsBase implements IStats
+class Stats extends StatsBase implements IStats, Serializable
 {
+	private static final long serialVersionUID = 7563828176824900882L;
+
 	private int mLevel;
 	private int mTotalExperiencePoints;
 	private int mCurrentHitPoints;

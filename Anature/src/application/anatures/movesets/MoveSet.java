@@ -1,5 +1,6 @@
 package application.anatures.movesets;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.controllers.LoggerController;
@@ -8,8 +9,10 @@ import application.enums.MoveIds;
 import application.interfaces.IMove;
 import application.pools.MovePool;
 
-public class MoveSet
+public class MoveSet implements Serializable
 {
+	private static final long serialVersionUID = -7228324117750518083L;
+	
 	private int mMove1MovePoints, mMove2MovePoints, mMove3MovePoints, mMove4MovePoints;
 	private IMove mMove1, mMove2, mMove3, mMove4;
 	private IMove mSkipTurn = MovePool.getMove(MoveIds.Skip_Turn);

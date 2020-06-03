@@ -12,10 +12,12 @@ import application.anatures.AnatureBuilder;
 import application.controllers.AnatureSummaryController;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.controllers.overworld_cells.AbstractController;
 import application.controllers.overworld_cells.GrassTownController;
 import application.controllers.overworld_cells.PathOneController;
 import application.controllers.overworld_cells.RestStationController;
 import application.controllers.overworld_cells.StarterTownController;
+import application.enums.Direction;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
@@ -70,6 +72,7 @@ public class Startup extends Application
 	private static RestStationController mRestStationGrassController;
 
 	private static AbstractCell mCurrentCell;
+	private static AbstractController mCurrentController;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -80,7 +83,8 @@ public class Startup extends Application
 			@Override
 			public void handle(KeyEvent event)
 			{
-				if(event.getText().compareTo("`") == 0)
+				if(event.getText()
+						.compareTo("`") == 0)
 				{
 					mLogger.toggleWindow();
 				}
@@ -88,7 +92,8 @@ public class Startup extends Application
 		};
 
 		mStage = primaryStage;
-		mStage.getIcons().add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
+		mStage.getIcons()
+				.add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
 		mStage.setTitle("Anature");
 
 		mStage.setMinWidth(640);
@@ -140,7 +145,8 @@ public class Startup extends Application
 					break;
 
 				case Anature_Summary:
-					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
+					if(mAnatureSummaryView == null
+							|| mAnatureSummaryController == null)
 					{
 						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
 						Parent summaryRoot = summaryLoader.load();
@@ -182,6 +188,7 @@ public class Startup extends Application
 
 					mStarterTownController.movePlayer(warpPoint);
 					mCurrentCell = mStarterTownView;
+					mCurrentController = mStarterTownController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Starter Town");
 					mStage.setScene(townScene);
@@ -212,6 +219,7 @@ public class Startup extends Application
 
 					mPathOneController.movePlayer(warpPoint);
 					mCurrentCell = mPathOneView;
+					mCurrentController = mPathOneController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Path 1");
 					mStage.setScene(pathOneScene);
@@ -241,6 +249,7 @@ public class Startup extends Application
 					Scene grassTownScene = mGrassTownView.getScene();
 					mGrassTownController.movePlayer(warpPoint);
 					mCurrentCell = mGrassTownView;
+					mCurrentController = mGrassTownController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Grass Town");
 					mStage.setScene(grassTownScene);
@@ -270,6 +279,7 @@ public class Startup extends Application
 					Scene restStationScene = mRestStationGrassView.getScene();
 					mRestStationGrassController.movePlayer(warpPoint);
 					mCurrentCell = mRestStationGrassView;
+					mCurrentController = mRestStationGrassController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Rest Station in Grass Town");
 					mStage.setScene(restStationScene);
@@ -329,21 +339,32 @@ public class Startup extends Application
 		IAnature first = AnatureBuilder.createAnature(Species.Null, 54);
 		first.updateName("Main Null");
 		mPlayer.addAnatures(first);
-		mPlayer.getAnatures().get(0).getStats().addExperience(14601);
+		mPlayer.getAnatures()
+				.get(0)
+				.getStats()
+				.addExperience(14601);
 
 		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
 
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
 
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
 
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 
@@ -354,62 +375,171 @@ public class Startup extends Application
 	{
 		return mPlayer.getName();
 	}
-	
-	public static boolean save() {
-		
+
+	/*
+	 * SAVING FUNCTIONALITY
+	 */
+
+	private interface SavableItem
+	{
+		public Object getItem();
+
+		public void setItem(Object object);
+	}
+
+	private enum SaveItem implements SavableItem
+	{
+		Player
+		{
+			public Object getItem()
+			{
+				return mPlayer;
+			}
+
+			public void setItem(Object object)
+			{
+				mPlayer = (Player) object;
+			}
+		},
+		StarterTownModel
+		{
+			public Object getItem()
+			{
+				return mStarterTownModel;
+			}
+
+			public void setItem(Object object)
+			{
+				mStarterTownModel = (StarterTownModel) object;
+			}
+		},
+		PathOneModel
+		{
+			public Object getItem()
+			{
+				return mPathOneModel;
+			}
+
+			public void setItem(Object object)
+			{
+				mPathOneModel = (PathOneModel) object;
+			}
+		},
+		CurrentSceneType
+		{
+			public Object getItem()
+			{
+				return mCurrSceneType;
+			}
+
+			public void setItem(Object object)
+			{
+				mCurrSceneType = (SceneType) object;
+				changeScene(mCurrSceneType, null);
+			}
+		},
+		CurrentPlayerDirection
+		{
+			public Object getItem()
+			{
+				return mCurrentCell.getPlayerFacing();
+			}
+
+			public void setItem(Object object)
+			{
+				mCurrentCell.setPlayerFacing((Direction) object);
+			}
+		},
+		CurrentPlayerXCoordinate
+		{
+			public Object getItem()
+			{
+				return mCurrentCell.getPlayer()
+						.getX();
+			}
+
+			public void setItem(Object object)
+			{
+				mCurrentCell.getPlayer()
+						.setX((double) object);
+			}
+		},
+		CurrentPlayerYCoordinate
+		{
+			public Object getItem()
+			{
+				return mCurrentCell.getPlayer()
+						.getY();
+			}
+
+			public void setItem(Object object)
+			{
+				mCurrentCell.getPlayer()
+						.setY((double) object);
+			}
+		}
+	}
+
+	public static boolean save()
+	{
+
 		ArrayList<Object> itemsToSave = new ArrayList<Object>();
-		
-		itemsToSave.add(mPlayer);
-		
+
+		for(SaveItem item : SaveItem.values())
+		{
+			itemsToSave.add(item.getItem());
+		}
+
 		try
-		{	
+		{
 			FileOutputStream fileOutputStream = new FileOutputStream(new File("./save.save"));
 			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-			
+
 			out.writeObject(itemsToSave);
 			out.close();
 			fileOutputStream.close();
 		}
-		
+
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
-		
+
+		mCurrentController.saveLoadUpdates();
+
 		return true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static boolean laod() {
-		
-		Object objRead = new Object();
+	public static boolean load()
+	{
+		ArrayList<Object> objRead = new ArrayList<Object>();
 		FileInputStream fileInStream;
 		ObjectInputStream in;
+
 		try
 		{
 			fileInStream = new FileInputStream(new File("./save.save"));
 			in = new ObjectInputStream(fileInStream);
 
-			objRead = in.readObject();
-			
-			for(Object item : (ArrayList<Object>) objRead )
+			objRead = (ArrayList<Object>) in.readObject();
+
+			for(SaveItem item : SaveItem.values())
 			{
-				if(item instanceof Player)
-				{
-					mPlayer = (Player) item;
-				}
+				item.setItem(objRead.remove(0));
 			}
-			
+
 			in.close();
 			fileInStream.close();
 		}
-		
+
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		
+
+		mCurrentController.saveLoadUpdates();
+
 		return true;
 	}
 }

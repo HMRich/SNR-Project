@@ -572,4 +572,17 @@ public abstract class AbstractController
 			}
 		}
 	}
+
+	public void saveLoadUpdates()
+	{
+		KeysPressed keys = mView.getKeysPressed();
+		keys.turnOffAll();
+		keys.setCanMove(true);
+		
+		updatePcSprite();
+		
+		mView.hideDialogue();
+		mView.hideShopMenu();
+		mView.hideSideMenu();
+	}
 }

@@ -1,5 +1,7 @@
 package application.anatures.abillities;
 
+import java.io.Serializable;
+
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -7,8 +9,10 @@ import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
-public class ToughSkin implements IAbility
+public class ToughSkin implements IAbility, Serializable
 {
+	private static final long serialVersionUID = 8267526863103538413L;
+
 	public static String activateAbility(IAnature userAnature, IMove moveThatAttacked, int userOldHp, boolean attackMissed)
 	{
 		if(userAnature == null)

@@ -1,5 +1,7 @@
 package application.anatures.abillities;
 
+import java.io.Serializable;
+
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -7,8 +9,10 @@ import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
-public class Determination implements IAbility
+public class Determination implements IAbility, Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	public static String activateAbility(IAnature userAnature, IMove move, double userOldHp)
 	{
 		if(hasNull(userAnature, move, userOldHp))

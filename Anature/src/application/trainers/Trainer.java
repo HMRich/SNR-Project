@@ -1,5 +1,6 @@
 package application.trainers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.enums.TrainerIds;
@@ -14,8 +15,10 @@ import application.trainers.ai.choice_objects.AiNoChoice;
 import application.trainers.ai.choice_objects.AiSwitchChoice;
 import javafx.scene.image.Image;
 
-class Trainer implements ITrainer
+class Trainer implements ITrainer, Serializable
 {
+	private static final long serialVersionUID = 5701627089126907149L;
+
 	private TrainerIds mId;
 	private String mName;
 	private int mRewardForDefeat;

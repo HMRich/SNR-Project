@@ -1,5 +1,7 @@
 package application.anatures.abillities;
 
+import java.io.Serializable;
+
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -8,8 +10,10 @@ import application.enums.Type;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 
-public class Toxic implements IAbility
+public class Toxic implements IAbility, Serializable
 {
+	private static final long serialVersionUID = -6475201304776311502L;
+
 	public static String activateAbility(IAnature source, IAnature target)
 	{
 		if(hasNull(source, target)) 

@@ -1,5 +1,7 @@
 package application.anatures.abillities;
 
+import java.io.Serializable;
+
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -10,8 +12,10 @@ import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 
-public class Overclocked implements IAbility
+public class Overclocked implements IAbility, Serializable
 {
+	private static final long serialVersionUID = -3207815575987072866L;
+
 	public static String activateAbility(IAnature source, IMove moveThatAttacked)
 	{
 		if(hasNull(source, moveThatAttacked)) 

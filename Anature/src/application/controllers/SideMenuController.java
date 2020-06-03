@@ -21,6 +21,8 @@ public class SideMenuController
 	@FXML ImageView mBg, mSelectImg;
 	@FXML Label mDexTxt, mAnatureTxt, mBackpackTxt, mSettingsTxt, mSaveTxt, mQuitTxt;
 	
+	private BooleanProperty mVisabilityProperty;
+	
 	public void updateBinds(Scene scene, ObjectProperty<Font> fontProperty, BooleanProperty visibilityProperty)
 	{
 		mBg.fitWidthProperty().bind(mPane.prefWidthProperty());
@@ -30,6 +32,8 @@ public class SideMenuController
 		mGrid.prefHeightProperty().bind(mBg.fitHeightProperty().divide(1.043));
 		mGrid.layoutXProperty().bind(mBg.fitWidthProperty().divide(22.857));
 		mGrid.layoutYProperty().bind(mBg.fitHeightProperty().divide(44.142));
+		
+		mVisabilityProperty = visibilityProperty;
 		
 		ChangeListener<Number> selectedImgSize = new ChangeListener<Number>()
 		{
@@ -93,8 +97,16 @@ public class SideMenuController
 		tabAttributes(mAnatureTxt, index++, () -> Startup.changeScene(SceneType.Anature_Summary, null));
 		tabAttributes(mBackpackTxt, index++, () -> System.out.println("Backpack"));
 		tabAttributes(mSettingsTxt, index++, () -> System.out.println("Settings"));
-		tabAttributes(mSaveTxt, index++, () -> System.out.println("Save"));
-		tabAttributes(mQuitTxt, index++, () -> System.out.println("Quit"));
+		tabAttributes(mSaveTxt, index++, () -> 
+		{
+			mVisabilityProperty.set(false);
+			Startup.save();
+		});
+		tabAttributes(mQuitTxt, index++, () -> 
+		{
+			mVisabilityProperty.set(false);
+			Startup.load();
+		});
 	}
 	
 	private void tabAttributes(Label txt, int index, Runnable onClick)

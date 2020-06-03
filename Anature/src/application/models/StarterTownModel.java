@@ -1,11 +1,15 @@
 package application.models;
 
+import java.io.Serializable;
+
 import application.enums.TrainerIds;
 import application.interfaces.ITrainer;
 import application.trainers.TrainerBuilder;
 
-public class StarterTownModel
+public class StarterTownModel implements Serializable
 {
+	private static final long serialVersionUID = 3041251606796975792L;
+
 	private ITrainer mKelly;
 
 	public StarterTownModel()

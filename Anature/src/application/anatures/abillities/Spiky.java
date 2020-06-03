@@ -1,5 +1,7 @@
 package application.anatures.abillities;
 
+import java.io.Serializable;
+
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -7,8 +9,10 @@ import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
-public class Spiky implements IAbility
+public class Spiky implements IAbility, Serializable
 {
+	private static final long serialVersionUID = -6679381514412927390L;
+
 	public static String activateAbility(IAnature source, IAnature target, IMove sourceMove, boolean isSourceAttacking, boolean attackMissed)
 	{
 		String result = "";
