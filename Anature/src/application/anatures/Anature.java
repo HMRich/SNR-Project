@@ -31,6 +31,7 @@ class Anature implements IAnature
 	private StatusEffects mStatus;
 	private IStats mStats;
 	private int mIndexNumber;
+	private int mCatchRate;
 
 	Anature()
 	{
@@ -46,6 +47,7 @@ class Anature implements IAnature
 		mStatus = StatusEffects.NotSet;
 		mStats = NullStats.getNullStats();
 		mIndexNumber = -1;
+		mCatchRate = -1;
 	}
 
 	/*
@@ -214,6 +216,16 @@ class Anature implements IAnature
 		mIndexNumber = indexNumber;
 	}
 
+	void setCatchRate(int catchRate)
+	{
+		if(catchRate < 1 || catchRate > 255)
+		{
+			throw new IllegalArgumentException("Passed value \"catchRate\" was below 1 or above 255.");
+		}
+		
+		mCatchRate = catchRate;
+	}
+
 	/*
 	 * PUBLIC GETS
 	 */
@@ -276,6 +288,11 @@ class Anature implements IAnature
 	public int getIndexNumber()
 	{
 		return mIndexNumber;
+	}
+
+	public int getCatchRate()
+	{
+		return mCatchRate;
 	}
 
 	/*
@@ -449,7 +466,11 @@ class Anature implements IAnature
 			throw new IllegalStateException("The \"indexNumber\" variable was never set during construction.");
 		}
 
+		if(getCatchRate() == -1)
+		{
+			throw new IllegalStateException("The \"catchRate\" variable was never set during construction.");
+		}
+
 		return true;
 	}
-
 }

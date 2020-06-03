@@ -22,7 +22,7 @@ public class DrySkin implements IAbility
 	@Override
 	public AbilityIds getAbilityId()
 	{
-		return AbilityIds.Dry_Skin;
+		return AbilityIds.DrySkin;
 	}
 
 	@Override
