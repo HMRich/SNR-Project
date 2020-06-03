@@ -103,8 +103,6 @@ class Stats extends StatsBase implements IStats
 		double value = getStatValue(stat);
 		double modifierValue = getNatureModifierValue(stat) * 1.0;
 
-//		modifierValue = modifierValue == 0 ? 1 : modifierValue;
-
 		return (int) ((value + modifierValue) * getTempStatModifier(stat));
 	}
 
