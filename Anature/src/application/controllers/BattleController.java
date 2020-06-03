@@ -132,6 +132,7 @@ public class BattleController
 	private BooleanProperty mSwitchSlotOne, mSwitchSlotTwo, mSwitchSlotThree, mSwitchSlotFour, mSwitchSlotFive, mSwitchSlotSix, mShowSwitchBackBtn;
 	private StringProperty mAttackNameOneTxt, mAttackMpOneTxt, mAttackNameTwoTxt, mAttackMpTwoTxt;
 	private StringProperty mAttackNameThreeTxt, mAttackMpThreeTxt, mAttackNameFourTxt, mAttackMpFourTxt;
+	private ObjectProperty<Font> m55FontProperty, m65FontProperty, m75FontProperty, m85FontProperty, m95FontProperty;
 
 	private FightManager mFightManager;
 	private ITrainer mEnemyTrainer;
@@ -274,6 +275,7 @@ public class BattleController
 
 	public void setUpBindingsAndElements(Scene scene)
 	{
+		setUpFontProperties(scene);
 		setUpBgImages(scene);
 		setUpAnatureImgs(scene);
 		setUpAnatureNames(scene);
@@ -345,16 +347,12 @@ public class BattleController
 
 	private void setUpAnatureNames(Scene scene)
 	{
-		ObjectProperty<Font> fontProperty = getFontProperty(55, scene);
-
-		createBindsTxt(mPlayerNameTxt, scene, 1.75, 2.08, fontProperty, mPlayerName);
-		createBindsTxt(mEnemyNameTxt, scene, 4.9, 9.7, fontProperty, mEnemyName);
+		createBindsTxt(mPlayerNameTxt, scene, 1.75, 2.08, m55FontProperty, mPlayerName);
+		createBindsTxt(mEnemyNameTxt, scene, 4.9, 9.7, m55FontProperty, mEnemyName);
 	}
 
 	private void setUpAnatureHpTxt(Scene scene)
 	{
-		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
-
 		StringProperty playerHpTxt = new SimpleStringProperty(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
 		ChangeListener<Number> player = (observable, oldValue, newValue) -> playerHpTxt
 				.set(mPlayerHp.getValue().intValue() + " / " + mPlayerHpTotal.getValue().intValue());
@@ -367,22 +365,20 @@ public class BattleController
 		mEnemyHp.addListener(enemy);
 		mEnemyHpTotal.addListener(enemy);
 
-		createBindsTxt(mPlayerHpTxt, scene, 1.41, 1.83, fontProperty, playerHpTxt);
-		createBindsTxt(mEnemyHpTxt, scene, 4.7, 5.8, fontProperty, enemyHpTxt);
+		createBindsTxt(mPlayerHpTxt, scene, 1.41, 1.83, m85FontProperty, playerHpTxt);
+		createBindsTxt(mEnemyHpTxt, scene, 4.7, 5.8, m85FontProperty, enemyHpTxt);
 	}
 
 	private void setUpAnatureLvlTxt(Scene scene)
 	{
-		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
-
 		StringProperty playerLvlTxt = new SimpleStringProperty("Lvl " + mPlayerLvl.get());
 		mPlayerLvl.addListener((observable, oldValue, newValue) -> playerLvlTxt.set("Lvl " + mPlayerLvl.get()));
 
 		StringProperty enemyLvlTxt = new SimpleStringProperty("Lvl " + mEnemyLvl.get());
 		mEnemyLvl.addListener((observable, oldValue, newValue) -> enemyLvlTxt.set("Lvl " + mEnemyLvl.get()));
 
-		createBindsTxt(mPlayerLvlTxt, scene, 1.71, 1.83, fontProperty, playerLvlTxt);
-		createBindsTxt(mEnemyLvlTxt, scene, 2.61, 5.8, fontProperty, enemyLvlTxt);
+		createBindsTxt(mPlayerLvlTxt, scene, 1.71, 1.83, m85FontProperty, playerLvlTxt);
+		createBindsTxt(mEnemyLvlTxt, scene, 2.61, 5.8, m85FontProperty, enemyLvlTxt);
 	}
 
 	private void setUpAnatureHpAndXpBars(Scene scene)
@@ -472,15 +468,13 @@ public class BattleController
 
 	private void setUpDialogue(Scene scene)
 	{
-		ObjectProperty<Font> fontProperty = getFontProperty(75, scene);
-
 		mDialogueTxtArea.textProperty().bind(mDialogueTxt);
 		mDialogueTxtArea.getStylesheets().add("/resources/css/BattleStyle.css");
 		mDialogueTxtArea.prefWidthProperty().bind(scene.widthProperty().divide(3.2));
 		mDialogueTxtArea.prefHeightProperty().bind(scene.heightProperty().divide(5));
 		mDialogueTxtArea.layoutYProperty().bind(scene.heightProperty().divide(1.32));
 		mDialogueTxtArea.layoutXProperty().bind(scene.widthProperty().divide(4.6));
-		mDialogueTxtArea.fontProperty().bind(fontProperty);
+		mDialogueTxtArea.fontProperty().bind(m75FontProperty);
 	}
 
 	private void onPlayerAnatureDeath()
@@ -681,8 +675,6 @@ public class BattleController
 
 	private void setUpSwitchElements(Scene scene)
 	{
-		ObjectProperty<Font> fontProperty = getFontProperty(65, scene);
-
 		createBindsImageView(mSwitchSelection, scene, 1, 1, mShowSwitch);
 		createBindsImageView(mSwitchDialogue, scene, 1, 1, mShowSwitch);
 
@@ -695,6 +687,7 @@ public class BattleController
 			{
 				activateTurn(BattleChoice.Switch);
 			}
+			
 			else
 			{
 				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getStats().getCurrentHitPoints() <= 0)
@@ -750,10 +743,10 @@ public class BattleController
 
 		createBindsImageView(mSwitchSelectedImg, scene, 2.889, 3.396, 5.638, 3.03, mShowSwitch);
 
-		setUpSwitchPageOne(scene, fontProperty);
-		setUpSwitchPageTwo(scene, fontProperty);
+		setUpSwitchPageOne(scene, m65FontProperty);
+		setUpSwitchPageTwo(scene, m65FontProperty);
 
-		createBindsTxt(mSwitchPageTxt, scene, 1.16, 5.4, fontProperty, mShowSwitch);
+		createBindsTxt(mSwitchPageTxt, scene, 1.16, 5.4, m65FontProperty, mShowSwitch);
 
 		createBindsImageView(mSwitchPageLeft, scene, 1.245, 6.99, 46.23, 18.46, mShowSwitch);
 		createBindsImageView(mSwitchPageRight, scene, 1.043, 6.99, 46.23, 18.46, mShowSwitch);
@@ -772,11 +765,9 @@ public class BattleController
 
 	private void setUpSwitchPageOne(Scene scene, ObjectProperty<Font> fontTracking)
 	{
-		ObjectProperty<Font> nameFontTracking = getFontProperty(75, scene);
-
 		createBindsTxt(mSwitchSelectedCatalogNum, scene, 1.2895, 3.7, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedName, scene, 1.2895, 2.8, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
-		createBindsTxt(mSwitchSelectedOwner, scene, 1.2895, 1.93, nameFontTracking, mShowSwitchPageOne.and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedOwner, scene, 1.2895, 1.93, m75FontProperty, mShowSwitchPageOne.and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedCurrXp, scene, 1.2895, 1.65, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedNextXp, scene, 1.2895, 1.45, fontTracking, mShowSwitchPageOne.and(mShowSwitch));
 
@@ -786,8 +777,6 @@ public class BattleController
 
 	private void setUpSwitchPageTwo(Scene scene, ObjectProperty<Font> fontTracking)
 	{
-		ObjectProperty<Font> abilityDescFontTracking = getFontProperty(95, scene);
-
 		createBindsTxt(mSwitchSelectedHp, scene, 1.4, 3.7, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedAtk, scene, 1.4, 3, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedSpAtk, scene, 1.4, 2.55, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
@@ -795,7 +784,7 @@ public class BattleController
 		createBindsTxt(mSwitchSelectedSpDef, scene, 1.4, 1.94, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedSpeed, scene, 1.4, 1.73, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedAbilityName, scene, 1.4, 1.57, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
-		createBindsTxt(mSwitchSelectedAbilityDesc, scene, 1.4, 1.48, 3.71, abilityDescFontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedAbilityDesc, scene, 1.4, 1.48, 3.71, m95FontProperty, mShowSwitchPageOne.not().and(mShowSwitch));
 	}
 
 	private void setUpAnatureTabs(Scene scene)
@@ -864,9 +853,7 @@ public class BattleController
 		mItemListBg.heightProperty().bind(scene.heightProperty().divide(5));
 		mItemListBg.visibleProperty().bind(mShowItemSelection);
 
-		ObjectProperty<Font> fontProperty = getFontProperty(85, scene);
-
-		createBindsTxt(mSelectedItemName, scene, 28.44, 4.0, 5.8479, fontProperty, mShowItemSelection);
+		createBindsTxt(mSelectedItemName, scene, 28.44, 4.0, 5.8479, m85FontProperty, mShowItemSelection);
 		mSelectedItemName.textProperty().bind(mSelectedItemTxt);
 
 		createBindsImageView(mSelectedItemImg, scene, 14.1, 4, 10, 5, mShowItemSelection);
@@ -887,12 +874,9 @@ public class BattleController
 		createBindsImageView(mAttackBackBtn, scene, 2.25, 1.16, 9, 11, mShowMoveSelection);
 		mAttackBackBtn.setOnMouseClicked(event -> onBackBtn());
 
-		ObjectProperty<Font> moveNameFontProperty = getFontProperty(85, scene);
-		ObjectProperty<Font> moveMpFontProperty = getFontProperty(95, scene);
-
 		createBindsImageView(mAttackImgOne, scene, 4.5, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveOne));
-		createBindsTxt(mAttackNameOne, scene, 4.39, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackNameOneTxt);
-		createBindsTxt(mAttackMpOne, scene, 4.39, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackMpOneTxt);
+		createBindsTxt(mAttackNameOne, scene, 4.39, 1.24, 9.36, m85FontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackNameOneTxt);
+		createBindsTxt(mAttackMpOne, scene, 4.39, 1.19, 9.36, m75FontProperty, mShowMoveSelection.and(mShowMoveOne), mAttackMpOneTxt);
 		mAttackImgOne.setOnMouseClicked(event ->
 		{
 			activateTurn(BattleChoice.Attack_1);
@@ -910,8 +894,8 @@ public class BattleController
 		});
 
 		createBindsImageView(mAttackImgTwo, scene, 4.5, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveTwo));
-		createBindsTxt(mAttackNameTwo, scene, 4.39, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackNameTwoTxt);
-		createBindsTxt(mAttackMpTwo, scene, 4.39, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackMpTwoTxt);
+		createBindsTxt(mAttackNameTwo, scene, 4.39, 1.103, 9.36, m85FontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackNameTwoTxt);
+		createBindsTxt(mAttackMpTwo, scene, 4.39, 1.063, 9.36, m75FontProperty, mShowMoveSelection.and(mShowMoveTwo), mAttackMpTwoTxt);
 		mAttackImgTwo.setOnMouseClicked(event ->
 		{
 			activateTurn(BattleChoice.Attack_2);
@@ -929,8 +913,8 @@ public class BattleController
 		});
 
 		createBindsImageView(mAttackImgThree, scene, 1.515, 1.31, 8.5, 11, mShowMoveSelection.and(mShowMoveThree));
-		createBindsTxt(mAttackNameThree, scene, 1.507, 1.24, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackNameThreeTxt);
-		createBindsTxt(mAttackMpThree, scene, 1.507, 1.19, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackMpThreeTxt);
+		createBindsTxt(mAttackNameThree, scene, 1.507, 1.24, 9.36, m85FontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackNameThreeTxt);
+		createBindsTxt(mAttackMpThree, scene, 1.507, 1.19, 9.36, m75FontProperty, mShowMoveSelection.and(mShowMoveThree), mAttackMpThreeTxt);
 		mAttackImgThree.setOnMouseClicked(event ->
 		{
 			activateTurn(BattleChoice.Attack_3);
@@ -948,8 +932,8 @@ public class BattleController
 		});
 
 		createBindsImageView(mAttackImgFour, scene, 1.515, 1.158, 8.5, 11, mShowMoveSelection.and(mShowMoveFour));
-		createBindsTxt(mAttackNameFour, scene, 1.507, 1.103, 9.36, moveNameFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackNameFourTxt);
-		createBindsTxt(mAttackMpFour, scene, 1.507, 1.063, 9.36, moveMpFontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackMpFourTxt);
+		createBindsTxt(mAttackNameFour, scene, 1.507, 1.103, 9.36, m85FontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackNameFourTxt);
+		createBindsTxt(mAttackMpFour, scene, 1.507, 1.063, 9.36, m75FontProperty, mShowMoveSelection.and(mShowMoveFour), mAttackMpFourTxt);
 		mAttackImgFour.setOnMouseClicked(event ->
 		{
 			activateTurn(BattleChoice.Attack_4);
@@ -965,6 +949,27 @@ public class BattleController
 			activateTurn(BattleChoice.Attack_4);
 			event.consume();
 		});
+	}
+	
+	private void setUpFontProperties(Scene scene)
+	{
+		m55FontProperty = createFontProperty(55);
+		m65FontProperty = createFontProperty(65);
+		m75FontProperty = createFontProperty(75);
+		m85FontProperty = createFontProperty(85);
+		m95FontProperty = createFontProperty(95);
+
+		ChangeListener<Number> fontListener = (observableValue, oldWidth, newWidth) -> 
+		{
+			m55FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 55));
+			m65FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 65));
+			m75FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 75));
+			m85FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85));
+			m95FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 95));
+		};
+		
+		scene.widthProperty().addListener(fontListener);
+		scene.heightProperty().addListener(fontListener);
 	}
 
 	private double getFontSize(Scene scene)
@@ -2547,23 +2552,15 @@ public class BattleController
 		mToEnd = true;
 	}
 
-	private ObjectProperty<Font> getFontProperty(int toDivideBy, Scene scene)
-	{
-		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), toDivideBy);
-		ObjectProperty<Font> fontProperty = new SimpleObjectProperty<Font>(font);
-
-		scene.widthProperty().addListener((observableValue, oldWidth, newWidth) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
-
-		scene.heightProperty().addListener((observableValue, oldHeight, newHeight) -> fontProperty
-				.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / toDivideBy)));
-
-		return fontProperty;
-	}
-
 	private Image getHighQualityImg(String url)
 	{
 		return new Image(url, 1000.0, 1000.0, false, false);
+	}
+	
+	private ObjectProperty<Font> createFontProperty(int toDivideBy)
+	{
+		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), toDivideBy);
+		return new SimpleObjectProperty<Font>(font);
 	}
 
 	private void createBindsImageView(ImageView img, Scene scene, double widthToDivide, double heightToDivide)
