@@ -127,6 +127,7 @@ public class TestObjects
 	private static IAbility mDefaultAbility = new NullAbility();
 	private static StatusEffects mDefaultStatusEffect = StatusEffects.None;
 	private static int mDefaultIndexNumber = 20200529;
+	private static int mDefaultCatchRate = 255;
 
 	private static IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName())
 			.withOwnerName(getDefaultOwnerName())
@@ -140,6 +141,7 @@ public class TestObjects
 			.withStatus(getDefaultStatusEffect())
 			.withStats(getDefaultStats())
 			.withIndexNumber(getDefaultIndexNumber())
+			.withCatchRate(mDefaultCatchRate)
 			.create();
 
 	public static IAnature getAnature()
