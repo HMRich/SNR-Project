@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import application.enums.Stat;
@@ -15,6 +17,111 @@ import test.TestObjects;
 
 public class StatsTests
 {
+	@Nested
+	@DisplayName("Getter Tests")
+	class GetterTests
+	{
+		@DisplayName("getLevel()")
+		@Test
+		void GetLevel_FromDefaultStats_ReturnsDefualtValue()
+		{
+			// act
+			IStats sut = TestObjects.getDefaultStats();
+
+			// assert
+			assertTrue(sut.getLevel() == TestObjects.getDefaultLevel());
+		}
+
+		@DisplayName("getTotalExperiencePoints()")
+		@Test
+		void GetTotalExperiencePoints_FromDefaultStats_ReturnsDefualtValue()
+		{
+			// act
+			IStats sut = TestObjects.getDefaultStats();
+
+			// assert
+			assertTrue(sut.getTotalExperiencePoints() == TestObjects.getDefaultBaseNonStat());
+		}
+
+		@DisplayName("getCurrentHitPoints()")
+		@Test
+		void GetCurrentHitPoints_FromDefaultStats_ReturnsDefualtValue()
+		{
+			// act
+			IStats sut = TestObjects.getDefaultStats();
+
+			// assert
+			assertTrue(sut.getCurrentHitPoints() == TestObjects.getDefaultBaseStat());
+		}
+
+		@DisplayName("getLevelingSpeed()")
+		@Test
+		void GetLevelingSpeed_FromDefaultStats_ReturnsDefualtValue()
+		{
+			// act
+			IStats sut = TestObjects.getDefaultStats();
+
+			// assert
+			assertTrue(sut.getLevelingSpeed() == TestObjects.getDefaultLevelingSpeed());
+		}
+
+		@DisplayName("getNature()")
+		@Test
+		void GetNature_FromDefaultStats_ReturnsDefualtValue()
+		{
+			// act
+			IStats sut = TestObjects.getDefaultStats();
+
+			// assert
+			assertTrue(sut.getNature() == TestObjects.getDefaultNature());
+		}
+
+		@DisplayName("getTotalStat()")
+		@ParameterizedTest(name = "\"{0}\" returns default base stat")
+		@EnumSource(Stat.class)
+		void GetTotalStat_FromDefaultStats_ReturnsDefualtValue(Stat testStat)
+		{
+			// act
+			IStats sut = TestObjects.getDefaultStats();
+
+			// assert
+			assertTrue(sut.getTotalStat(testStat) == TestObjects.getDefaultBaseStat());
+		}
+
+		@DisplayName("getNatureModifierValue()")
+		@Test
+		@EnumSource(Stat.class)
+		void GetNatureModifierValue_FromDefaultStats_ReturnsDefualtValue(Stat testStat)
+		{
+			// arrange
+			IStats sut = TestObjects.getDefaultStats();
+
+			int sutNatureModifierValue = sut.getNatureModifierValue(testStat);
+			int sutExpectedValue = (int) (TestObjects.getDefaultNature()
+					.getModifier() * TestObjects.getDefaultBaseStat());
+
+			// assert
+			assertTrue(sutNatureModifierValue == sutExpectedValue);
+		}
+
+		@DisplayName("getLargestStat()")
+		@Test
+		void GetLargestStat_FromDefaultStats_ReturnsDefualtValue()
+		{
+			// arrange
+			IStats sut = TestObjects.getDefaultStats()
+					.getClone()
+					.withBaseAccuracy(100)
+					.create();
+
+			// act
+			Stat sutStat = sut.getLargestStat();
+
+			// assert
+			assertTrue(sutStat.equals(Stat.Accuracy));
+		}
+	}
+
 	@Nested
 	@DisplayName("takeDamage()")
 	class takeDamage

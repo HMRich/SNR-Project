@@ -61,7 +61,7 @@ public class TestObjects
 	private static int mDefaultBaseStat = 50;
 	private static int mDefaultBaseNonStat = 0;
 	private static LevelingSpeed mDefaultLevelingSpeed = LevelingSpeed.Normal;
-	private static Natures mDefaultNaure = Natures.Adamant;
+	private static Natures mDefaultNaure = Natures.Hardy;
 
 	private static IStats mStats = new StatsBuilder().atLevel(getDefaultLevel())
 			.withLevlingSpeed(getDefaultLevelingSpeed())
