@@ -7,6 +7,7 @@ import application.anatures.movesets.MoveSet;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.enums.TypeEffectiveness;
 import application.interfaces.IAI;
 import application.interfaces.IAnature;
@@ -116,10 +117,8 @@ class AI implements IAI
 
 		for(IHealthPotion healthPotionBase : healthPotionBases)
 		{
-			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId())
-					.getHealAmount();
-			double healPercent = itemHealAmount / currentAnature.getStats()
-					.getTotalHitPoints();
+			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId()).getHealAmount();
+			double healPercent = itemHealAmount / currentAnature.getStats().getTotalStat(Stat.HitPoints);
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);

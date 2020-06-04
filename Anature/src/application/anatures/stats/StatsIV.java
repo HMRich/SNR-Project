@@ -1,5 +1,8 @@
 package application.anatures.stats;
 
+import application.controllers.LoggerController;
+import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.interfaces.stats.IStatsIV;
 
 class StatsIV extends StatsEV implements IStatsIV
@@ -24,35 +27,33 @@ class StatsIV extends StatsEV implements IStatsIV
 	/*
 	 * PUBLIC GETS
 	 */
-
-	public int getIVHitPoints()
+	
+	public int getIvStat(Stat stat)
 	{
-		return mIVHitPoints;
-	}
+		switch(stat)
+		{
+			case HitPoints:
+				return mIVHitPoints;
 
-	public int getIVAttack()
-	{
-		return mIVAttack;
-	}
+			case Attack:
+				return mIVAttack;
+				
+			case Defense:
+				return mIVDefense;
 
-	public int getIVDefense()
-	{
-		return mIVDefense;
-	}
-
-	public int getIVSpecialAttack()
-	{
-		return mIVSpecialAttack;
-	}
-
-	public int getIVSpecialDefense()
-	{
-		return mIVSpecialDefense;
-	}
-
-	public int getIVSpeed()
-	{
-		return mIVSpeed;
+			case SpecialAttack:
+				return mIVSpecialAttack;
+				
+			case SpecialDefense:
+				return mIVSpecialDefense;
+				
+			case Speed:
+				return mIVSpeed;
+				
+			default:
+				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Iv Stat with non applicable enum.");
+				return -1;
+		}
 	}
 
 	/*
@@ -125,32 +126,32 @@ class StatsIV extends StatsEV implements IStatsIV
 
 	boolean canCreateStatsIV()
 	{
-		if(getIVHitPoints() == -1)
+		if(getIvStat(Stat.HitPoints) == -1)
 		{
 			throw new IllegalStateException("The \"IVHitpoints\" variable was never set during construction.");
 		}
 
-		if(getIVAttack() == -1)
+		if(getIvStat(Stat.Attack) == -1)
 		{
 			throw new IllegalStateException("The \"IVAttack\" variable was never set during construction.");
 		}
 
-		if(getIVDefense() == -1)
+		if(getIvStat(Stat.Defense) == -1)
 		{
 			throw new IllegalStateException("The \"IVDefense\" variable was never set during construction.");
 		}
 
-		if(getIVSpecialAttack() == -1)
+		if(getIvStat(Stat.SpecialAttack) == -1)
 		{
 			throw new IllegalStateException("The \"IVSpecialAttack\" variable was never set during construction.");
 		}
 
-		if(getIVSpecialDefense() == -1)
+		if(getIvStat(Stat.SpecialDefense) == -1)
 		{
 			throw new IllegalStateException("The \"IVSpecialDefnese\" variable was never set during construction.");
 		}
 
-		if(getIVSpeed() == -1)
+		if(getIvStat(Stat.Speed) == -1)
 		{
 			throw new IllegalStateException("The \"IVSpeed\" variable was never set during construction.");
 		}

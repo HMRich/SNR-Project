@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import application.LoggerStartUp;
-import application.controllers.DialogueBoxController;
 import application.controllers.LoggerController;
-import application.controllers.ShoppingMenuController;
-import application.controllers.SideMenuController;
+import application.controllers.menus.DialogueBoxController;
+import application.controllers.menus.ShoppingMenuController;
+import application.controllers.menus.SideMenuController;
 import application.enums.Direction;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
