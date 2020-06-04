@@ -153,7 +153,7 @@ public class MovePool
 		
 		mMoves.put(MoveIds.Smog_Wave,
 				new MoveBuilder<SmogWave>(MoveIds.Smog_Wave).withName("Smog Wave")
-						.withType(Type.Normal)
+						.withType(Type.Poison)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
 						.withTotalMovePoints(10)
@@ -183,7 +183,7 @@ public class MovePool
 		
 		mMoves.put(MoveIds.Flame_Bout,
 				new MoveBuilder<FlameBout>(MoveIds.Flame_Bout).withName("Flame Bout")
-						.withType(Type.Normal)
+						.withType(Type.Fire)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
 						.withTotalMovePoints(5)
