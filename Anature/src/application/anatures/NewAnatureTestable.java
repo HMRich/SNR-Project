@@ -412,7 +412,8 @@ public class NewAnatureTestable
 					.withMoveSet(getMoveSet())
 					.withAbility(getAbility())
 					.withStatus(getStatus())
-					.withStats(getStats())
+					.withStats(getStats().getClone()
+							.create())
 					.withIndexNumber(getIndexNumber())
 					.withCatchRate(getCatchRate());
 		}
