@@ -1,8 +1,5 @@
 package application.animations;
 
-import java.io.Console;
-
-import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

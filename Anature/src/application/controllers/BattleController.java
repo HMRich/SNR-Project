@@ -2,8 +2,10 @@ package application.controllers;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
+import application.EvolutionManager;
 import application.FightManager;
 import application.Startup;
 import application.anatures.movesets.MoveSet;
@@ -18,15 +20,19 @@ import application.animations.ThreeFrameAnimation;
 import application.animations.XSlideAnimation;
 import application.animations.XpBarIncrease;
 import application.controllers.results.AbilityResult;
+import application.controllers.results.BattleResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
 import application.enums.AiChoice;
 import application.enums.AnacubeResults;
 import application.enums.BattleAnimationType;
 import application.enums.BattleChoice;
+import application.enums.BattleEndMethods;
 import application.enums.Gender;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
+import application.enums.Species;
+import application.enums.Stat;
 import application.enums.StatusEffects;
 import application.enums.TrainerIds;
 import application.enums.Type;
@@ -445,7 +451,7 @@ public class BattleController
 		grid.add(bagImage, 0, 1);
 
 		ResizableImage escapeImage = new ResizableImage(new Image(getClass().getResource("/resources/images/battle/Escape_Btn.png").toExternalForm()));
-		escapeImage.setOnAction(event -> Startup.changeScene(null, null)); // TODO for demo
+		escapeImage.setOnAction(event -> endBattle(BattleEndMethods.Escape)); // TODO for demo
 		grid.add(escapeImage, 1, 1);
 
 		grid.visibleProperty().bind(mShowBtns);
@@ -520,7 +526,7 @@ public class BattleController
 
 			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have no more Anatures!\nYou quickly run back to the nearest Rest Station!"), "Player Dead");
-			mClickQueue.enqueue(() -> Startup.changeScene(null, null), "To Overworld");
+			mClickQueue.enqueue(() -> endBattle(BattleEndMethods.Defeat), "To Overworld");
 
 			mCanClick.set(true);
 			mToEnd = true;
@@ -539,9 +545,11 @@ public class BattleController
 			}
 		}
 
+		addEvs();
+		
 		if(isThereAliveAnatureInParty)
 		{
-			evaluateAnatgureExperienceGain();
+			evaluateAnatureExperienceGain();
 
 			afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), () ->
 			{
@@ -555,7 +563,7 @@ public class BattleController
 		}
 	}
 
-	private void evaluateAnatgureExperienceGain()
+	private void evaluateAnatureExperienceGain()
 	{
 		ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
 		for(IAnature anature : mFightManager.getEnemyTeam())
@@ -741,7 +749,7 @@ public class BattleController
 			mSwitchIndexSelected = mPlayer.getSelectedIndex();
 		});
 
-		createBindsImageView(mSwitchSelectedImg, scene, 2.889, 3.396, 5.638, 3.03, mShowSwitch);
+		createBindsImageView(mSwitchSelectedImg, scene, 2.889, 3.396, 5.638, 3.03, mShowSwitch); // TODO update Image
 
 		setUpSwitchPageOne(scene, m65FontProperty);
 		setUpSwitchPageTwo(scene, m65FontProperty);
@@ -798,7 +806,7 @@ public class BattleController
 		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, 100.0, false, StatusEffects.None);
 		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, 100.0, false, StatusEffects.None);
 
-		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0);
+		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0); // TODO update images and hp bars
 		createBindsAnatureslot(mSlotTwo, scene, 85, 3.157, 3.7, 15.1, 1);
 		createBindsAnatureslot(mSlotThree, scene, 85, 2.54, 3.7, 15.1, 2);
 		createBindsAnatureslot(mSlotFour, scene, 85, 2.114, 3.7, 15.1, 3);
@@ -997,7 +1005,7 @@ public class BattleController
 		mEnemyName.set(enemyCurr.getName());
 
 		mEnemyHp.set(enemyCurr.getStats().getCurrentHitPoints());
-		mEnemyHpTotal.set(enemyCurr.getStats().getTotalHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getStats().getTotalStat(Stat.HitPoints));
 
 		mEnemyLvl.set(enemyCurr.getStats().getLevel());
 
@@ -1115,7 +1123,7 @@ public class BattleController
 		mPlayerName.set(playerCurr.getName());
 
 		mPlayerHp.set(playerCurr.getStats().getCurrentHitPoints());
-		mPlayerHpTotal.set(playerCurr.getStats().getTotalHitPoints());
+		mPlayerHpTotal.set(playerCurr.getStats().getTotalStat(Stat.HitPoints));
 
 		mPlayerXp.set(playerCurr.getStats().getExperienceProgression());
 		mPlayerXpTotal.set(playerCurr.getStats().getRequiredExperience());
@@ -1133,7 +1141,7 @@ public class BattleController
 		mEnemyName.set(enemyCurr.getName());
 
 		mEnemyHp.set(enemyCurr.getStats().getCurrentHitPoints());
-		mEnemyHpTotal.set(enemyCurr.getStats().getTotalHitPoints());
+		mEnemyHpTotal.set(enemyCurr.getStats().getTotalStat(Stat.HitPoints));
 
 		mEnemyLvl.set(enemyCurr.getStats().getLevel());
 
@@ -1287,12 +1295,12 @@ public class BattleController
 		mSwitchSelectedNextXp.setText(selected.getStats().getRequiredExperience() + "");
 		mSwitchSelectedImg.setImage(selected.getFrontSprite());
 
-		mSwitchSelectedHp.setText(selected.getStats().getTotalHitPoints() + "");
-		mSwitchSelectedAtk.setText(selected.getStats().getTotalAttack() + "");
-		mSwitchSelectedSpAtk.setText(selected.getStats().getTotalSpecialAttack() + "");
-		mSwitchSelectedDef.setText(selected.getStats().getTotalDefense() + "");
-		mSwitchSelectedSpDef.setText(selected.getStats().getTotalSpecialDefense() + "");
-		mSwitchSelectedSpeed.setText(selected.getStats().getTotalSpeed() + "");
+		mSwitchSelectedHp.setText(selected.getStats().getTotalStat(Stat.HitPoints) + "");
+		mSwitchSelectedAtk.setText(selected.getStats().getTotalStat(Stat.Attack) + "");
+		mSwitchSelectedSpAtk.setText(selected.getStats().getTotalStat(Stat.SpecialAttack) + "");
+		mSwitchSelectedDef.setText(selected.getStats().getTotalStat(Stat.Defense) + "");
+		mSwitchSelectedSpDef.setText(selected.getStats().getTotalStat(Stat.SpecialDefense) + "");
+		mSwitchSelectedSpeed.setText(selected.getStats().getTotalStat(Stat.Speed) + "");
 
 		mSwitchSelectedAbilityName.setText(selected.getAbility().toString());
 		mSwitchSelectedAbilityDesc.setText(selected.getAbility().getAbilityDescription());
@@ -1328,8 +1336,8 @@ public class BattleController
 	{
 		visibleProp.set(true);
 		slot.updateSlot(isSelected, anatureImg, curr.getGender(), curr.getName(), "Lvl " + curr.getStats().getLevel(),
-				curr.getStats().getCurrentHitPoints() + "/" + curr.getStats().getTotalHitPoints(), mShowSwitch.get(), visibleProp.get(),
-				curr.getStats().getCurrentHitPoints(), curr.getStats().getTotalHitPoints(), curr.getStatus());
+				curr.getStats().getCurrentHitPoints() + "/" + curr.getStats().getTotalStat(Stat.HitPoints), mShowSwitch.get(), visibleProp.get(),
+				curr.getStats().getCurrentHitPoints(), curr.getStats().getTotalStat(Stat.HitPoints), curr.getStatus());
 	}
 
 	private void updateBagMenu()
@@ -1574,7 +1582,7 @@ public class BattleController
 
 		AiChoiceObject<?> enemyTurn = mEnemyTrainer.useTurn(playerCurr);
 
-		int whoGoesFirst = playerCurr.getStats().getTotalSpeed() - enemyCurr.getStats().getTotalSpeed();
+		int whoGoesFirst = playerCurr.getStats().getTotalStat(Stat.Speed) - enemyCurr.getStats().getTotalStat(Stat.Speed);
 
 		if(whoGoesFirst == 0)
 		{
@@ -2399,8 +2407,8 @@ public class BattleController
 			case Burn:
 				mClickQueue.enqueue(() ->
 				{
-					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getStats().getTotalHitPoints() / 16, isPlayer, nextTurn);
-					mFightManager.applyDamage(isPlayer, 0, anature.getStats().getTotalHitPoints() / 16);
+					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getStats().getTotalStat(Stat.HitPoints) / 16, isPlayer, nextTurn);
+					mFightManager.applyDamage(isPlayer, 0, anature.getStats().getTotalStat(Stat.HitPoints) / 16);
 				}, "Burn After All Turns");
 
 				return true;
@@ -2482,7 +2490,7 @@ public class BattleController
 			mAttackMpOneTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
 		}
 	}
-
+	
 	private void dequeueClickTracker(Event event)
 	{
 		event.consume();
@@ -2516,6 +2524,17 @@ public class BattleController
 		}
 	}
 	
+	private void addEvs()
+	{
+		ArrayList<IAnature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
+		Stat evToAddTo = mFightManager.getEnemyAnature().getStats().getLargestStat();
+		
+		for(IAnature anature : participatingAnatures)
+		{
+			anature.getStats().addEv(evToAddTo, anature.getStats().getLevel());
+		}
+	}
+
 	private void playerWin(boolean enemyWasCaught)
 	{
 		if(!enemyWasCaught)
@@ -2529,7 +2548,7 @@ public class BattleController
 		}
 
 		mClickQueue.clear();
-		evaluateAnatgureExperienceGain();
+		evaluateAnatureExperienceGain();
 
 		if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
 		{
@@ -2540,16 +2559,33 @@ public class BattleController
 
 			mPlayer.addTokens(tokensToAdd);
 
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You earned " + tokensToAdd + " tokens!"), "Earning tokens.");
-			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + "!"), "Enemy Dead");
+			enqueueDialogue("You earned " + tokensToAdd + " tokens!", "Earning tokens");
+			enqueueDialogue("You have defeated " + mEnemyTrainer.getName() + "!", "Enemy Dead");
 		}
 
 		mShowBtns.set(false);
 		
-		mClickQueue.enqueue(() -> Startup.changeScene(null, null), "To Overworld");
+		mClickQueue.enqueue(() -> endBattle(BattleEndMethods.Victory), "To Overworld");
 
 		mCanClick.set(true);
 		mToEnd = true;
+	}
+	
+	private void endBattle(BattleEndMethods endMethod)
+	{
+		HashMap<IAnature, Species> evolutions = new HashMap<IAnature, Species>();
+		
+		for(IAnature toCheck : mPlayer.getAnatures())
+		{
+			Species canEvolveInto = EvolutionManager.checkEvolution(toCheck);
+			
+			if(canEvolveInto != null)
+			{
+				evolutions.put(toCheck, canEvolveInto);
+			}
+		}
+		
+		Startup.endBattle(new BattleResult(endMethod, evolutions));
 	}
 
 	private Image getHighQualityImg(String url)

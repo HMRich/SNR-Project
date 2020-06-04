@@ -6,6 +6,7 @@ import application.controllers.results.ItemResult;
 import application.enums.AnacubeResults;
 import application.enums.Gender;
 import application.enums.ItemIds;
+import application.enums.Stat;
 import application.interfaces.IAnature;
 
 public class Anacube extends ItemBase
@@ -25,7 +26,7 @@ public class Anacube extends ItemBase
 	@Override
 	public ItemResult useItem(IAnature target)
 	{
-		double maxHp = target.getStats().getTotalHitPoints();
+		double maxHp = target.getStats().getTotalStat(Stat.HitPoints);
 		double currHp = target.getStats().getCurrentHitPoints();
 		double catchRate = target.getCatchRate();
 		double statusBonus = getStatusBonus(target);

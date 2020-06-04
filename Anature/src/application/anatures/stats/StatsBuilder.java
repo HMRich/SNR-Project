@@ -1,5 +1,6 @@
 package application.anatures.stats;
 
+import application.enums.Stat;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.IBuilder;
@@ -171,12 +172,10 @@ public class StatsBuilder implements IBuilder<IStats>
 		if(mStats.canCreateStats())
 		{
 			mStats.levelUpStats();
-			
-			portEVValues();
 
 			IStats statsToReturn = mStats;
 			
-			statsToReturn.setCurrentHitPoints(statsToReturn.getTotalHitPoints());
+			statsToReturn.setCurrentHitPoints(statsToReturn.getTotalStat(Stat.HitPoints));
 
 			generateNewStatsCore();
 
@@ -193,15 +192,5 @@ public class StatsBuilder implements IBuilder<IStats>
 	private void generateNewStatsCore()
 	{
 		mStats = new Stats();
-	}
-	
-	private void portEVValues()
-	{
-		this.withEVHitPoints(mStats.getEVHitPoints())
-		.withEVAttack(mStats.getEVAttack())
-		.withEVDefense(mStats.getEVDefense())
-		.withEVSpecialAttack(mStats.getEVSpecialAttack())
-		.withEVSpecialDefense(mStats.getEVSpecialDefense())
-		.withEVSpeed(mStats.getEVSpeed());
 	}
 }
