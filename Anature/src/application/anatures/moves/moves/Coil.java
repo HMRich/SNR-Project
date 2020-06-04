@@ -7,7 +7,7 @@ public class Coil extends Move
 {
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.takeDamage(calculateDamage(source, target, false));
+		target.applyDamage(calculateDamage(source, target, false));
 		
 		if(Math.random() < 0.33)
 		{
