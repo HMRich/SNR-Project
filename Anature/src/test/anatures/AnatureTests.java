@@ -1,11 +1,15 @@
 package test.anatures;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,10 +20,13 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import application.anatures.AnatureTestable;
 import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.MoveSet;
+import application.anatures.movesets.MoveSetTestable;
 import application.anatures.movesets.NullMoveSet;
 import application.anatures.stats.NullStats;
+import application.anatures.stats.StatsTestable;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.StatusEffects;
@@ -33,6 +40,43 @@ import test.TestObjects;
 @DisplayName("Anature Tests")
 class AnatureTests
 {
+	/*
+	 * BUILDER TESTS
+	 */
+
+	@DisplayName("Move Builder Test")
+	@Test
+	@BeforeAll
+	static void MoveBuilderTest()
+	{
+		assertDoesNotThrow(() ->
+		{
+			TestObjects.getDefaultTackle();
+		}, "Move Builder threw an Exception");
+	}
+
+	@DisplayName("Move Builder Test")
+	@Test
+	@BeforeAll
+	static void StatBuilderTest()
+	{
+		assertDoesNotThrow(() ->
+		{
+			TestObjects.getDefaultStats();
+		}, "Stat Builder threw an Exception");
+	}
+
+	@DisplayName("Move Builder Test")
+	@Test
+	@BeforeAll
+	static void AnatureBuilderTest()
+	{
+		assertDoesNotThrow(() ->
+		{
+			TestObjects.getAnature();
+		}, "Anature Builder threw an Exception");
+	}
+
 	/*
 	 * SETTER TESTS
 	 */
@@ -615,6 +659,489 @@ class AnatureTests
 			// assert
 			assertTrue(TestObjects.getAnature()
 					.getIndexNumber() == TestObjects.getDefaultIndexNumber());
+		}
+
+		@DisplayName("getCatchRate()")
+		@Test
+		void GetCatchRate_FromDefaultAnature_ReturnsDefaultValue()
+		{
+			// assert
+			assertTrue(TestObjects.getAnature()
+					.getCatchRate() == TestObjects.getDefaultCatchRate());
+		}
+	}
+
+	@Nested
+	@DisplayName("Public Method Tests")
+	class PublicMethodTests
+	{
+		/*
+		 * MOCK OBJECTS
+		 */
+
+		private MockAnature mMockAnature;
+		private MockAnatureStats mMockAnatureStats;
+		private MockAnatureMoveSet mMockAnatureMoveSet;
+
+		MockAnature getMockAnature()
+		{
+			return mMockAnature;
+		}
+
+		MockAnatureStats getMockAnatureStats()
+		{
+			return mMockAnatureStats;
+		}
+
+		MockAnatureMoveSet getMockAnatureMoveSet()
+		{
+			return mMockAnatureMoveSet;
+		}
+
+		@BeforeEach
+		void BeforeEachTest()
+		{
+			mMockAnature = new MockAnature();
+			mMockAnatureStats = new MockAnatureStats();
+			mMockAnatureMoveSet = new MockAnatureMoveSet();
+		}
+
+		/*
+		 * MOCK CLASSES
+		 */
+
+		class MockAnature extends AnatureTestable
+		{
+			private boolean mGetStatsCalled;
+			private boolean mGetMoveSetCalled;
+
+			@Override
+			public IStats getStats()
+			{
+				mGetStatsCalled = true;
+				return getMockAnatureStats();
+			}
+
+			@Override
+			public MoveSet getMoveSet()
+			{
+				mGetMoveSetCalled = true;
+				return getMockAnatureMoveSet();
+			}
+
+			boolean getStatsWasCalled()
+			{
+				return mGetStatsCalled;
+			}
+
+			boolean getMoveSetWasCalled()
+			{
+				return mGetMoveSetCalled;
+			}
+		}
+
+		class MockAnatureStats extends StatsTestable
+		{
+
+		}
+
+		class MockAnatureMoveSet extends MoveSetTestable
+		{
+
+		}
+
+		/*
+		 * PUBLIC METHOD TESTS
+		 */
+
+		@DisplayName("updateName()")
+		@Test
+		void UpdateName_CallsSetNameMethod_UpdatesName()
+		{
+			// act
+			getMockAnature().updateName("<Test Name>");
+
+			// assert
+			assertTrue(getMockAnature().setNameWasCalled());
+		}
+
+		@DisplayName("updateStatus()")
+		@Test
+		void UpdateStatus_CallsSetStatusMethod_UpdatesStatus()
+		{
+			// act
+			getMockAnature().updateStatus(StatusEffects.NotSet);
+
+			// assert
+			assertTrue(getMockAnature().setStatusWasCalled());
+		}
+
+		@Nested
+		@DisplayName("getTypes()")
+		class getTypes
+		{
+			@DisplayName("with Types Fire, Fighting")
+			@Test
+			void GetTypes_CallsGetTypes_ReturnsAnatureTypes()
+			{
+				// arrange
+				IAnature sut = TestObjects.getAnature()
+						.getClone()
+						.withPrimaryType(Type.Fire)
+						.withSecondaryType(Type.Fighting)
+						.create();
+
+				ArrayList<Type> sutTypes = sut.getTypes();
+
+				// assert
+				assertTrue(sutTypes.contains(Type.Fire)
+						&& sutTypes.contains(Type.Fighting));
+			}
+
+			@DisplayName("with Types Water, NotSet")
+			@Test
+			void GetTypes_CallsGetTypes_ReturnsOnlyWater()
+			{
+				// arrange
+				IAnature sut = TestObjects.getAnature()
+						.getClone()
+						.withPrimaryType(Type.Water)
+						.withSecondaryType(Type.NotSet)
+						.create();
+
+				ArrayList<Type> sutTypes = sut.getTypes();
+
+				// assert
+				assertTrue(sutTypes.contains(Type.Water)
+						&& !sutTypes.contains(Type.NotSet));
+			}
+
+		}
+
+		@DisplayName("resetTempStats()")
+		@Test
+		void ResetTempStats_CallsMockAnatureStatsResetTempStatsMethod_True()
+		{
+			// act
+			getMockAnature().resetTempStats();
+
+			// assert
+			assertTrue(mMockAnatureStats.resetTempStatsWasCalled());
+		}
+
+		@DisplayName("applyDamage()")
+		@Test
+		void ApplyDamage_CallsMockStatsApplyDamage_True()
+		{
+			// act
+			getMockAnature().applyDamage(10);
+
+			// assert
+			assertTrue(mMockAnatureStats.applyDamageWasCalled());
+		}
+
+		@Nested
+		@DisplayName("applyHeal()")
+		class applyHeal
+		{
+			@DisplayName("calls stats applyHeal method")
+			@Test
+			void ApplyHeal_CallsMockStatsApplyHeal_True()
+			{
+				// act
+				getMockAnature().applyHeal(10);
+
+				// assert
+				assertTrue(mMockAnatureStats.applyHealWasCalled());
+			}
+
+			@DisplayName("calls anatures getName method")
+			@Test
+			void ApplyHeal_CallsMockAnaturesGetName_True()
+			{
+				// act
+				getMockAnature().applyHeal(10);
+
+				// assert
+				assertTrue(getMockAnature().getNameWasCalled());
+			}
+
+			@DisplayName("returns string object")
+			@Test
+			void ApplyHeal_ReturnsStringObject_True()
+			{
+				// act
+				String sut = getMockAnature().applyHeal(10);
+
+				// assert
+				assertTrue(sut instanceof String);
+			}
+		}
+
+		@DisplayName("restore()")
+		@Test
+		void Restore_CallsMockStatsApplyHealWithMaxIntegerValue_CalledMockStatsApplyHealWithMaxIntegerValue()
+		{
+			// act
+			getMockAnature().restore();
+
+			// assert
+			assertTrue(mMockAnatureStats.applyHealWasCalledWithMaxIntValue()
+					&& mMockAnatureMoveSet.refreshAllMovePointsWasCalled());
+		}
+
+		@DisplayName("getHitPointsPercent()")
+		@Test
+		void GetHitPointsPercent_CallsGetHitPointsPercent_ReturnsHitPointPerecnt()
+		{
+			// act
+			getMockAnature().getHitPointsPercent();
+
+			// assert
+			assertTrue(getMockAnatureStats().getHitPointsPercentWasCalled());
+		}
+
+		@Nested
+		@DisplayName("getClone()")
+		class getClone
+		{
+			@DisplayName("getName() was called")
+			@Test
+			void GetName_WasCalled_True()
+			{
+				// act
+				getMockAnature().getName();
+
+				// assert
+				assertTrue(getMockAnature().getNameWasCalled());
+			}
+
+			@DisplayName("getOwner() was called")
+			@Test
+			void GetOwner_WasCalled_True()
+			{
+				// act
+				getMockAnature().getName();
+
+				// assert
+				assertTrue(getMockAnature().getNameWasCalled());
+			}
+
+			@DisplayName("isShiny() was called")
+			@Test
+			void IsShiny_WasCalled_True()
+			{
+				// act
+				getMockAnature().isShiny();
+
+				// assert
+				assertTrue(getMockAnature().isShinyWasCalled());
+			}
+
+			@DisplayName("getSpecies() was called")
+			@Test
+			void GetSpecies_WasCalled_True()
+			{
+				// act
+				getMockAnature().getSpecies();
+
+				// assert
+				assertTrue(getMockAnature().getSpeciesWasCalled());
+			}
+
+			@DisplayName("getGender() was called")
+			@Test
+			void GetGender_WasCalled_True()
+			{
+				// act
+				getMockAnature().getGender();
+
+				// assert
+				assertTrue(getMockAnature().getGenderWasCaled());
+			}
+
+			@DisplayName("getPrimaryType() was called")
+			@Test
+			void GetPrimaryType_WasCalled_True()
+			{
+				// act
+				getMockAnature().getPrimaryType();
+
+				// assert
+				assertTrue(getMockAnature().getPrimaryTypeWasCalled());
+			}
+
+			@DisplayName("getSecondaryType() was called")
+			@Test
+			void GetSecondaryType_WasCalled_True()
+			{
+				// act
+				getMockAnature().getSecondaryType();
+
+				// assert
+				assertTrue(getMockAnature().getSecondaryTypeWasCalled());
+			}
+
+			@DisplayName("getMoveSet() was called")
+			@Test
+			void GetMoveSet_WasCalled_True()
+			{
+				// act
+				getMockAnature().getMoveSet();
+
+				// assert
+				assertTrue(getMockAnature().getMoveSetWasCalled());
+			}
+
+			@DisplayName("getAbility() was called")
+			@Test
+			void GetAbility_WasCalled_True()
+			{
+				// act
+				getMockAnature().getAbility();
+
+				// assert
+				assertTrue(getMockAnature().getAbilityWasCalled());
+			}
+
+			@DisplayName("getStatus() was called")
+			@Test
+			void GetStatus_WasCalled_True()
+			{
+				// act
+				getMockAnature().getStatus();
+
+				// assert
+				assertTrue(getMockAnature().getStatusWasCalled());
+			}
+
+			@DisplayName("getStats() was called")
+			@Test
+			void GetStats_WasCalled_True()
+			{
+				// act
+				getMockAnature().getStats();
+
+				// assert
+				assertTrue(getMockAnature().getStatsWasCalled());
+			}
+
+			@DisplayName("getIndexNumber() was called")
+			@Test
+			void GetIndexNumber_WasCalled_True()
+			{
+				// act
+				getMockAnature().getIndexNumber();
+
+				// assert
+				assertTrue(getMockAnature().getIndexNumberWasCalled());
+			}
+
+			@DisplayName("getCatchRate() was called")
+			@Test
+			void GetCatchRate_WasCalled_True()
+			{
+				// act
+				getMockAnature().getCatchRate();
+
+				// assert
+				assertTrue(getMockAnature().getCatchRateWasCalled());
+			}
+		}
+
+		@Nested
+		@DisplayName("getFrontSprite()")
+		class getFrontSprite
+		{
+//			@DisplayName("with Anature Species")
+//			@ParameterizedTest(name = "\"{0}\" does not throw Exception")
+//			@EnumSource(value = Species.class,
+//						names = { "NotSet" },
+//						mode = EnumSource.Mode.EXCLUDE)
+//			void GetFrontSprite_WithSpecies_DoesNotThrowException(Species species)
+//			{
+//				assertDoesNotThrow(() ->
+//				{
+//					// arrange
+//					IAnature sut = (IAnature) TestObjects.getAnature()
+//							.getClone()
+//							.withSpecies(species)
+//							.create();
+//
+//					// act
+//					sut.getFrontSprite();
+//				}, "when getting the front image for " + species.toString() + " an Excpetion was thrown.");
+//			}
+
+//			@DisplayName("with Anature Species")
+//			@ParameterizedTest(name = "\"{0}\" returns instance of Image")
+//			@EnumSource(value = Species.class,
+//			names = { "NotSet" },
+//			mode = EnumSource.Mode.EXCLUDE)
+//			void GetFrontSprite_WithSpecies_ReturnsInstanceOfImage(Species species)
+//			{
+//				// arrange
+//				IAnature sut = (IAnature) TestObjects.getAnature()
+//						.getClone()
+//						.withSpecies(species)
+//						.create();
+//
+//				// assert
+//				assertTrue(sut.getFrontSprite() instanceof Image);
+//			}
+		}
+
+		@Nested
+		@DisplayName("getBackSprite()")
+		class getBackSprite
+		{
+//			@DisplayName("with Anature Species")
+//			@ParameterizedTest(name = "\"{0}\" does not throw Exception")
+//			@EnumSource(value = Species.class,
+//						names = { "NotSet" },
+//						mode = EnumSource.Mode.EXCLUDE)
+//			void GetBackSprite_WithSpecies_DoesNotThrowException(Species species)
+//			{
+//				assertDoesNotThrow(() ->
+//				{
+//					// arrange
+//					IAnature sut = (IAnature) TestObjects.getAnature()
+//							.getClone()
+//							.withSpecies(species)
+//							.create();
+//
+//					// act
+//					sut.getFrontSprite();
+//				}, "when getting the front image for " + species.toString() + " an Excpetion was thrown.");
+//			}
+
+//			@DisplayName("with Anature Species")
+//			@ParameterizedTest(name = "\"{0}\" returns instance of Image")
+//			@EnumSource(value = Species.class,
+//			names = { "NotSet" },
+//			mode = EnumSource.Mode.EXCLUDE)
+//			void GetBackSprite_WithSpecies_ReturnsInstanceOfImage(Species species)
+//			{
+//				// arrange
+//				IAnature sut = (IAnature) TestObjects.getAnature()
+//						.getClone()
+//						.withSpecies(species)
+//						.create();
+//
+//				// assert
+//				assertTrue(sut.getFrontSprite() instanceof Image);
+//			}
+		}
+
+		@DisplayName("getMoveAnimationType()")
+		@Test
+		void GetMoveAnimationType_CallsMockAnautreMovesetsGetMoveAnimationType_True()
+		{
+			// act
+			getMockAnature().getMoveAnimationType(0);
+
+			// assert
+			assertTrue(getMockAnatureMoveSet().getMoveAnimationTypeWasCalled());
 		}
 	}
 }

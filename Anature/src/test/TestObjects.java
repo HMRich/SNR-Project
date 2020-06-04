@@ -199,4 +199,9 @@ public class TestObjects
 		return mDefaultIndexNumber;
 	}
 
+	public static int getDefaultCatchRate()
+	{
+		return mDefaultCatchRate;
+	}
+
 }

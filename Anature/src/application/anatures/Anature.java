@@ -13,7 +13,6 @@ import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
-import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 import javafx.scene.image.Image;
 
@@ -331,41 +330,25 @@ class Anature implements IAnature
 		getStats().resetTempStats();
 	}
 
-	public void takeDamage(int damage)
+	public void applyDamage(int damage)
 	{
-		int newCurrentHitPoints = getStats().getCurrentHitPoints() - damage;
-
-		if(newCurrentHitPoints > 0)
-		{
-			getStats().setCurrentHitPoints(newCurrentHitPoints);
-		}
-
-		else
-		{
-			getStats().setCurrentHitPoints(0);
-		}
+		getStats().applyDamage(damage);
 	}
 
-	public String healAnature(int healAmount)
+	public String applyHeal(int healAmount)
 	{
-		int hitPointsAfterHeal = getStats().healAnature(healAmount);
-		if(hitPointsAfterHeal == getStats().getTotalHitPoints())
-		{
-			return getName() + " was healed completely!";
-		}
-
-		return getName() + " was healed " + healAmount + " hp.";
+		return getName() + getStats().applyHeal(healAmount);
 	}
 
 	public void restore()
 	{
-		healAnature(Integer.MAX_VALUE);
-		mMoveSet.refreshAllMovePoints();
+		getStats().applyHeal(Integer.MAX_VALUE);
+		getMoveSet().refreshAllMovePoints();
 	}
 
 	public double getHitPointsPercent()
 	{
-		return ((double) getStats().getCurrentHitPoints()) / ((double) getStats().getTotalHitPoints());
+		return getStats().getHitPointsPercent();
 	}
 
 	public AnatureBuilder getClone()
@@ -399,17 +382,7 @@ class Anature implements IAnature
 
 	public BattleAnimationType getMoveAnimationType(int moveIndex)
 	{
-		IMove move = getMoveSet().getMove(moveIndex);
-		if(move.isPhysicalAttack())
-		{
-			return BattleAnimationType.Physical;
-		}
-
-		else
-		{
-			return BattleAnimationType.Special;
-		}
-
+		return getMoveSet().getMoveAnimationType(moveIndex);
 	}
 
 	/*

@@ -27,7 +27,7 @@ public class DamageAndStatus extends Move
 		Type primary = target.getPrimaryType();
 		Type secondary = target.getSecondaryType();
 		
-		target.takeDamage(calculateDamage(source, target, false));
+		target.applyDamage(calculateDamage(source, target, false));
 
 		if(Math.random() > mThreshold && target.getStatus() == StatusEffects.None)
 		{

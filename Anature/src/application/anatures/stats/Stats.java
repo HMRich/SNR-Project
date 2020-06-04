@@ -138,20 +138,19 @@ class Stats extends StatsBase implements IStats
 	public int getTotalStat(Stat stat)
 	{
 		double value = getStatValue(stat);
-		double modifierValue = getNatureModifierValue(stat) + 1.0;
-
-		modifierValue = modifierValue == 0 ? 1 : modifierValue;
+		double modifierValue = getNatureModifierValue(stat) * 1.0;
 
 		return (int) ((value + modifierValue) * getTempStatModifier(stat));
 	}
 
 	public int getNatureModifierValue(Stat stat)
 	{
-		if(getNature().getIncreasedStat() == null || getNature().getDecreasedStat() == null)
+		if(getNature().getIncreasedStat() == null
+				|| getNature().getDecreasedStat() == null)
 		{
 			return 0;
 		}
-		
+
 		if(getNature().getIncreasedStat()
 				.equals(stat))
 		{
@@ -189,7 +188,8 @@ class Stats extends StatsBase implements IStats
 	public int healAnature(int healAmount)
 	{
 		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
-		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getTotalHitPoints())
+		if(healAmount == Integer.MAX_VALUE
+				|| hitPointsAfterHeal > getTotalHitPoints())
 		{
 			setCurrentHitPoints(getTotalHitPoints());
 		}
@@ -233,6 +233,47 @@ class Stats extends StatsBase implements IStats
 	{
 		return requiredExperienceForLevel(getLevel() + 1) - requiredExperienceForLevel(getLevel());
 	}
+	
+	public double getHitPointsPercent()
+	{
+		return ((double) getCurrentHitPoints()) / ((double) getTotalStat(Stat.HitPoints));
+	}
+	
+	public void applyDamage(int damage)
+	{
+		if(damage <= 0)
+		{
+			throw new IllegalArgumentException("Passed value \"damage\" was equal to or below 0.");
+		}
+
+		int newCurrentHitPoints = getCurrentHitPoints() - damage;
+
+		if(newCurrentHitPoints > 0)
+		{
+			setCurrentHitPoints(newCurrentHitPoints);
+		}
+
+		else
+		{
+			setCurrentHitPoints(0);
+		}
+	}
+	
+	public String applyHeal(int healAmount)
+	{
+		if(healAmount <= 0)
+		{
+			throw new IllegalArgumentException("Passed value \"healAmount\" was equal to or below 0.");
+		}
+
+		int hitPointsAfterHeal = healAnature(healAmount);
+		if(hitPointsAfterHeal == getTotalHitPoints())
+		{
+			return " was healed completely!";
+		}
+
+		return " was healed " + healAmount + " hp.";
+	}
 
 	public StatsBuilder getClone()
 	{
@@ -262,7 +303,7 @@ class Stats extends StatsBase implements IStats
 
 	void levelUpStats()
 	{
-		for(int statLevel = 0; statLevel != getLevel(); statLevel++)
+		for(int statLevel = 1; statLevel != getLevel(); statLevel++)
 		{
 			levelStats();
 		}
