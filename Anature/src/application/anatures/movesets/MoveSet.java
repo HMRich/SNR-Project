@@ -190,6 +190,31 @@ public class MoveSet
 		}
 	}
 
+	public int getMoveIndex(IMove move)
+	{
+		if(mMove1.getName().compareTo(move.getName()) == 0)
+		{
+			return 1;
+		}
+
+		else if(mMove2.getName().compareTo(move.getName()) == 0)
+		{
+			return 2;
+		}
+
+		else if(mMove3.getName().compareTo(move.getName()) == 0)
+		{
+			return 3;
+		}
+
+		else if(mMove4.getName().compareTo(move.getName()) == 0)
+		{
+			return 4;
+		}
+
+		return -1;
+	}
+
 	private boolean validPointValue(int moveNumber, int movePoints)
 	{
 		if(hasMove(moveNumber))

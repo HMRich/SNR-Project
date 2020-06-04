@@ -49,6 +49,12 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		mTrainer.setTrainerName(name);
 		return this;
 	}
+	
+	public TrainerBuilder withRewardAmount(int rewardAmount)
+	{
+		mTrainer.setRewardForDefeat(rewardAmount);
+		return this;
+	}
 
 	public TrainerBuilder withAnatureParty(ArrayList<IAnature> anatureParty)
 	{
@@ -101,6 +107,7 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		// TODO Fully implement the column moveThreshold in the database
 
 		String trainerName = "";
+		String rewardAmountString = "";
 		String partyList = "";
 		String itemsList = "";
 		String aiHealthThreshold = "";
@@ -119,6 +126,7 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 			if(results.next())
 			{
 				trainerName = results.getString("Name");
+				rewardAmountString = results.getString("RewardAmount");
 				partyList = results.getString("Anatures");
 				itemsList = results.getString("ItemList");
 				aiHealthThreshold = results.getString("HealthThreshold");
@@ -136,12 +144,14 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 			return null;
 		}
 
+		int rewardAmount = Integer.parseInt(rewardAmountString);
 		ArrayList<IAnature> party = parsePartyList(partyList, anatureCount, minLevel, maxLevel);
 		ArrayList<IHealthPotion> potions = parsePotionList(itemsList);
 		IAI ai = parseAi(aiHealthThreshold, aiSwitchThreshold, aiMoveThreshold);
 
 		return new TrainerBuilder().withTrainerId(id)
 				.withTrainerName(trainerName)
+				.withRewardAmount(rewardAmount)
 				.withAnatureParty(party)
 				.withHealthPotions(potions)
 				.withCurrentAnature(party.get(0))
@@ -207,14 +217,19 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		ArrayList<IAnature> party = new ArrayList<IAnature>();
 
 		ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyString.split(",")));
-		Random levelGen = new Random();
+		Random rng = new Random();
 
 		for(String anatureStr : partyStrAra)
 		{
-			int level = levelGen.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
+			int level = rng.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
 			party.add(AnatureBuilder.createAnature(Species.valueOf(anatureStr), level));
 		}
 
+		while(party.size() > anatureCount)
+		{
+			party.remove(rng.nextInt(party.size()));
+		}
+		
 		return party;
 	}
 

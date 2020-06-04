@@ -1,6 +1,8 @@
 package application.views.elements;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 
@@ -15,7 +17,19 @@ public class XpBar extends ProgressBar
 		mTotalValue = totalValue;
 		mScene = sceneToBindTo;
 
-		progressProperty().bind(mCurrValue.divide(mTotalValue));
+		ChangeListener<Number> xpChange = new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+			{
+				double progress = mCurrValue.getValue() / mTotalValue.getValue();
+				setProgress(progress);
+			}
+		};
+		
+		mCurrValue.addListener(xpChange);
+		mTotalValue.addListener(xpChange);
+		
 		prefWidthProperty().bind(mScene.widthProperty().divide(5.4));
 		prefHeightProperty().bind(mScene.heightProperty().divide(65));
 

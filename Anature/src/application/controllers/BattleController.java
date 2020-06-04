@@ -14,6 +14,7 @@ import application.animations.ProgressBarDecrease;
 import application.animations.ProgressBarIncrease;
 import application.animations.ThreeFrameAnimation;
 import application.animations.XSlideAnimation;
+import application.animations.XpBarIncrease;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
 import application.controllers.results.MoveResult;
@@ -527,6 +528,8 @@ public class BattleController
 
 		if(isThereAliveAnatureInParty)
 		{
+			evaluateAnatgureExperienceGain();
+			
 			afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), () ->
 			{
 				System.out.println("Choosing enemy anature yet to be implemented!"); // TODO
@@ -537,15 +540,132 @@ public class BattleController
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
 
+			mClickQueue.clear();
+			evaluateAnatgureExperienceGain();
+			
+			if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
+			{
+				int randomCalculation = new Random().nextInt(21) - 10;
+				double percentonvertion =  ((double) randomCalculation)  / 100.0;
+				double adjustmentPercent =  1.0 + percentonvertion;
+				int tokensToAdd = (int) (((double) mEnemyTrainer.getRewardForDefeat()) * adjustmentPercent);
+				
+				mPlayer.addTokens(tokensToAdd);
+				
+				mClickQueue.enqueue(() -> mDialogueTxt.set("You earned " + tokensToAdd + " tokens!"), "Earning tokens.");
+			}
+			
 			mShowBtns.set(false);
 
-			mClickQueue.clear();
 			mClickQueue.enqueue(() -> mDialogueTxt.set("You have defeated " + mEnemyTrainer.getName() + "!"), "Enemy Dead");
 			mClickQueue.enqueue(() -> Startup.changeScene(null, null), "To Overworld");
 
 			mCanClick.set(true);
 			mToEnd = true;
 		}
+	}
+	
+	private void evaluateAnatgureExperienceGain()
+	{
+		ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
+		for(IAnature anature : mFightManager.getEnemyTeam())
+		{
+			if(anature.getStats().getCurrentHitPoints() == 0)
+			{
+				defeatedAnatures.add(anature);
+			}
+		}
+		
+		ArrayList<IAnature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
+		// TODO we need to gather the Exp gains here or somewhere else
+		// TODO there is more to do for Exp share but we don't have it
+		double isTrainerCalculation = mEnemyTrainer.getId().equals(TrainerIds.Wild) ? 1.0 : 1.5;
+		
+		for(IAnature playerAnature : participatingAnatures)
+		{
+			double playerAnatureLevel = playerAnature.getStats().getLevel();
+			
+			for(IAnature enemyAnature : defeatedAnatures)
+			{
+				double enemyAnatureLevel = enemyAnature.getStats().getLevel();
+				
+				double calculationA = (enemyAnatureLevel * 2) + 10;
+				double calculationB = enemyAnatureLevel + playerAnatureLevel + 10;
+				double calculationC = ( (double) (enemyAnatureLevel * playerAnatureLevel) ) / 5.0  * isTrainerCalculation ;
+				
+				double finalCalculation = calculationC *
+						(Math.floor(Math.pow(calculationA, 2.5)) /
+						Math.floor(Math.pow(calculationB, 2.5)));
+				
+				int result = ( (int) finalCalculation ) + 1;
+				
+				int lvlsGained = playerAnature.getStats().addExperience(result);
+				updateXp(playerAnature, result, lvlsGained);
+			}
+		}
+	}
+
+	private void updateXp(IAnature anature, int xpGained, int lvlsGained)
+	{
+		mClickQueue.enqueue(() ->
+		{
+			String toDisplay = anature.getName() + " gained " + xpGained + " xp!";
+			
+			if(lvlsGained > 0)
+			{
+				toDisplay += "\nAnd also leveled up!";
+			}
+			
+			mDialogueTxt.set(toDisplay);
+			
+			if(mFightManager.getPlayerAnature().equals(anature))
+			{
+				mCanClick.set(false);
+				animateXpBar(xpGained, lvlsGained);
+			}
+			
+		}, "Xp display for currently showing Anature");
+	}
+	
+	private void animateXpBar(int xpGained, int lvlsGained)
+	{
+		double newCurrXp = mPlayerXp.get() + xpGained;
+		
+		if(newCurrXp > mPlayerXpTotal.doubleValue())
+		{
+			newCurrXp = mPlayerXpTotal.doubleValue() - mPlayerXp.doubleValue();		
+		}
+		
+		XpBarIncrease animation = new XpBarIncrease(mPlayerXp, Duration.seconds(1), mPlayerXp.get() + newCurrXp, lvlsGained);
+		animation.setOnFinished(event -> 
+		{
+			IAnature curr =  mFightManager.getPlayerAnature();
+			
+			if(animation.getLvlsGained() > 0)
+			{
+				mPlayerLvl.set(mPlayerLvl.get() + 1);
+			}
+			
+			if(animation.getLvlsGained() - 1 > 0)
+			{
+				mPlayerXp.set(0);
+				mPlayerXpTotal.set(100);
+				animateXpBar(100, animation.getLvlsGained() - 1);
+			}
+			
+			else if(animation.getLvlsGained() - 1 == 0)
+			{
+				mPlayerXp.set(0);
+				mPlayerXpTotal.set(curr.getStats().getRequiredExperience());
+				animateXpBar(curr.getStats().getExperienceProgression(), -1);
+			}
+			
+			else
+			{
+				mCanClick.set(true);
+			}
+		});
+		animation.play();
 	}
 
 	private void setUpClickTracker(Scene scene)
@@ -1363,15 +1483,14 @@ public class BattleController
 
 		int whoGoesFirst = playerCurr.getStats().getTotalSpeed() - enemyCurr.getStats().getTotalSpeed();
 
-		if(whoGoesFirst == 0) // Will either add 0 or 1 to the total
+		if(whoGoesFirst == 0)
 		{
-			Random r = new Random();
-			whoGoesFirst += r.nextInt(2);
+			whoGoesFirst += Math.random() > 0.5 ? -1 : 1;
 		}
 
 		if(choice == BattleChoice.Switch || choice == BattleChoice.Item)
 		{
-			whoGoesFirst = 0;
+			whoGoesFirst = 1;
 		}
 
 		Runnable resetGui = new Runnable()
@@ -1412,7 +1531,7 @@ public class BattleController
 
 		mCanClick.set(false);
 
-		if(whoGoesFirst == 0) // Player goes first
+		if(whoGoesFirst > 0) // Player goes first
 		{
 			activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice,
 					() -> activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn, afterTurns));
