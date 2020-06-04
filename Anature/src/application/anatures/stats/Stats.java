@@ -108,17 +108,20 @@ class Stats extends StatsBase implements IStats
 
 	public int getNatureModifierValue(Stat stat)
 	{
-		if(getNature().getIncreasedStat() == null || getNature().getDecreasedStat() == null)
+		if(getNature().getIncreasedStat() == null
+				|| getNature().getDecreasedStat() == null)
 		{
 			return 0;
 		}
 
-		if(getNature().getIncreasedStat().equals(stat))
+		if(getNature().getIncreasedStat()
+				.equals(stat))
 		{
 			return (int) (getStatValue(stat) * getNature().getModifier());
 		}
 
-		if(getNature().getDecreasedStat().equals(stat))
+		if(getNature().getDecreasedStat()
+				.equals(stat))
 		{
 			return (int) (getStatValue(stat) * -getNature().getModifier());
 		}
@@ -188,7 +191,8 @@ class Stats extends StatsBase implements IStats
 	public int healAnature(int healAmount)
 	{
 		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
-		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getTotalStat(Stat.HitPoints))
+		if(healAmount == Integer.MAX_VALUE
+				|| hitPointsAfterHeal > getTotalStat(Stat.HitPoints))
 		{
 			setCurrentHitPoints(getTotalStat(Stat.HitPoints));
 		}
@@ -232,12 +236,12 @@ class Stats extends StatsBase implements IStats
 	{
 		return requiredExperienceForLevel(getLevel() + 1) - requiredExperienceForLevel(getLevel());
 	}
-	
+
 	public double getHitPointsPercent()
 	{
 		return ((double) getCurrentHitPoints()) / ((double) getTotalStat(Stat.HitPoints));
 	}
-	
+
 	public void applyDamage(int damage)
 	{
 		if(damage <= 0)
@@ -257,7 +261,7 @@ class Stats extends StatsBase implements IStats
 			setCurrentHitPoints(0);
 		}
 	}
-	
+
 	public String applyHeal(int healAmount)
 	{
 		if(healAmount <= 0)
@@ -266,7 +270,7 @@ class Stats extends StatsBase implements IStats
 		}
 
 		int hitPointsAfterHeal = healAnature(healAmount);
-		if(hitPointsAfterHeal == getTotalHitPoints())
+		if(hitPointsAfterHeal == getTotalStat(Stat.HitPoints))
 		{
 			return " was healed completely!";
 		}
@@ -276,8 +280,7 @@ class Stats extends StatsBase implements IStats
 
 	public StatsBuilder getClone()
 	{
-		return new StatsBuilder()
-				.atLevel(getLevel())
+		return new StatsBuilder().atLevel(getLevel())
 				.withLevlingSpeed(getLevelingSpeed())
 				.withNature(getNature())
 				.withBaseExperience(getBaseExperience())
