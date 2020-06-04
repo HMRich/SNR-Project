@@ -24,9 +24,9 @@ public class TestObjects
 	 * TEST OBJECT IMove
 	 */
 
-	private static IMove mTackle = new Tackle();
+	private static final IMove mTackle = new Tackle();
 
-	public static IMove getDefaultTackle()
+	public static final IMove getDefaultTackle()
 	{
 		return mTackle;
 	}
@@ -35,9 +35,9 @@ public class TestObjects
 	 * TEST OBJECT MoveSet
 	 */
 
-	private static MoveSet mMoveSet = new MoveSet(getDefaultTackle(), null, null, null);
+	private static final MoveSet mMoveSet = new MoveSet(getDefaultTackle(), null, null, null);
 
-	public static MoveSet getDefaultMoveSet()
+	public static final MoveSet getDefaultMoveSet()
 	{
 		return mMoveSet;
 	}
@@ -46,9 +46,9 @@ public class TestObjects
 	 * TEST OBJECT IAbility
 	 */
 
-	private static IAbility mSpiky = AbilityPool.getAbility(AbilityIds.Spiky);
+	private static final IAbility mSpiky = AbilityPool.getAbility(AbilityIds.Spiky);
 
-	public static IAbility getDefaultSpiky()
+	public static final IAbility getDefaultSpiky()
 	{
 		return mSpiky;
 	}
@@ -57,13 +57,13 @@ public class TestObjects
 	 * TEST OBJECT IStats
 	 */
 
-	private static int mDefaultLevel = 1;
-	private static int mDefaultBaseStat = 50;
-	private static int mDefaultBaseNonStat = 0;
-	private static LevelingSpeed mDefaultLevelingSpeed = LevelingSpeed.Normal;
-	private static Natures mDefaultNaure = Natures.Adamant;
+	private static final int mDefaultLevel = 1;
+	private static final int mDefaultBaseStat = 50;
+	private static final int mDefaultBaseNonStat = 0;
+	private static final LevelingSpeed mDefaultLevelingSpeed = LevelingSpeed.Normal;
+	private static final Natures mDefaultNaure = Natures.Adamant;
 
-	private static IStats mStats = new StatsBuilder().atLevel(getDefaultLevel())
+	private static final IStats mStats = new StatsBuilder().atLevel(getDefaultLevel())
 			.withLevlingSpeed(getDefaultLevelingSpeed())
 			.withNature(getDefaultNature())
 			.withBaseExperience(getDefaultBaseNonStat())
@@ -83,32 +83,32 @@ public class TestObjects
 			.withIVSpeed(getDefaultBaseNonStat())
 			.create();
 
-	public static IStats getDefaultStats()
+	public static final IStats getDefaultStats()
 	{
 		return mStats;
 	}
 
-	public static int getDefaultLevel()
+	public static final int getDefaultLevel()
 	{
 		return mDefaultLevel;
 	}
 
-	public static int getDefaultBaseStat()
+	public static final int getDefaultBaseStat()
 	{
 		return mDefaultBaseStat;
 	}
 
-	public static int getDefaultBaseNonStat()
+	public static final int getDefaultBaseNonStat()
 	{
 		return mDefaultBaseNonStat;
 	}
 
-	public static LevelingSpeed getDefaultLevelingSpeed()
+	public static final LevelingSpeed getDefaultLevelingSpeed()
 	{
 		return mDefaultLevelingSpeed;
 	}
 
-	public static Natures getDefaultNature()
+	public static final Natures getDefaultNature()
 	{
 		return mDefaultNaure;
 	}
@@ -117,19 +117,19 @@ public class TestObjects
 	 * TEST OBJECT IAnature
 	 */
 
-	private static String mDefaultAnatureName = "Test Anature";
-	private static String mDefaultOwnerName = "Test Owner";
-	private static boolean mDefaultShinyValue = false;
-	private static Species mDefaultSpecies = Species.Null;
-	private static Gender mDefaultGender = Gender.Trans;
-	private static Type mDefaultPrimaryType = Type.Normal;
-	private static Type mDefaultSecondaryType = Type.NotSet;
-	private static IAbility mDefaultAbility = new NullAbility();
-	private static StatusEffects mDefaultStatusEffect = StatusEffects.None;
-	private static int mDefaultIndexNumber = 20200529;
-	private static int mDefaultCatchRate = 255;
+	private static final String mDefaultAnatureName = "Test Anature";
+	private static final String mDefaultOwnerName = "Test Owner";
+	private static final boolean mDefaultShinyValue = false;
+	private static final Species mDefaultSpecies = Species.Null;
+	private static final Gender mDefaultGender = Gender.Trans;
+	private static final Type mDefaultPrimaryType = Type.Normal;
+	private static final Type mDefaultSecondaryType = Type.NotSet;
+	private static final IAbility mDefaultAbility = new NullAbility();
+	private static final StatusEffects mDefaultStatusEffect = StatusEffects.None;
+	private static final int mDefaultIndexNumber = 20200529;
+	private static final int mDefaultCatchRate = 255;
 
-	private static IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName())
+	private static final IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName())
 			.withOwnerName(getDefaultOwnerName())
 			.isShiny(getDefaultShinyValue())
 			.withSpecies(getDefaultSpecies())
@@ -144,62 +144,62 @@ public class TestObjects
 			.withCatchRate(mDefaultCatchRate)
 			.create();
 
-	public static IAnature getAnature()
+	public static final IAnature getAnature()
 	{
 		return mAnature;
 	}
 
-	public static String getDefaultAnatureName()
+	public static final String getDefaultAnatureName()
 	{
 		return mDefaultAnatureName;
 	}
 
-	public static String getDefaultOwnerName()
+	public static final String getDefaultOwnerName()
 	{
 		return mDefaultOwnerName;
 	}
 
-	public static boolean getDefaultShinyValue()
+	public static final boolean getDefaultShinyValue()
 	{
 		return mDefaultShinyValue;
 	}
 
-	public static Species getDefaultSpecies()
+	public static final Species getDefaultSpecies()
 	{
 		return mDefaultSpecies;
 	}
 
-	public static Gender getDefaultGender()
+	public static final Gender getDefaultGender()
 	{
 		return mDefaultGender;
 	}
 
-	public static Type getDefaultPrimaryType()
+	public static final Type getDefaultPrimaryType()
 	{
 		return mDefaultPrimaryType;
 	}
 
-	public static Type getDefaultSecondaryType()
+	public static final Type getDefaultSecondaryType()
 	{
 		return mDefaultSecondaryType;
 	}
 
-	public static IAbility getDefaultAbility()
+	public static final IAbility getDefaultAbility()
 	{
 		return mDefaultAbility;
 	}
 
-	public static StatusEffects getDefaultStatusEffect()
+	public static final StatusEffects getDefaultStatusEffect()
 	{
 		return mDefaultStatusEffect;
 	}
 
-	public static int getDefaultIndexNumber()
+	public static final int getDefaultIndexNumber()
 	{
 		return mDefaultIndexNumber;
 	}
 
-	public static int getDefaultCatchRate()
+	public static final int getDefaultCatchRate()
 	{
 		return mDefaultCatchRate;
 	}
