@@ -16,9 +16,11 @@ import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
 import javafx.scene.image.Image;
 
-public class NewAnatureTestable
+public class AnatureClass
 {
-	public class AnatureVariables
+	public static AnatureClass Classes = new AnatureClass();
+
+	public abstract class AnatureVariables
 	{
 		public String anatureName = "";
 		public String anatureOwnerName = "";
@@ -34,11 +36,10 @@ public class NewAnatureTestable
 		public int anatureIndexNumber = -1;
 		public int anatureCatchRate = -1;
 
-		public void getContext()
-		{};
+		public abstract void getContext();
 	}
 
-	class NewAnature implements IAnature
+	class Anature implements IAnature
 	{
 		private String mName;
 		private String mOwnerName;
@@ -58,7 +59,7 @@ public class NewAnatureTestable
 		 * CONSTRUCTOR
 		 */
 
-		NewAnature(AnatureVariables anatureVariables)
+		Anature(AnatureVariables anatureVariables)
 		{
 			anatureVariables.getContext();
 
@@ -348,16 +349,6 @@ public class NewAnatureTestable
 		 * PUBLIC METHODS
 		 */
 
-		public void updateName(String name)
-		{
-			setName(name);
-		}
-
-		public void updateStatus(StatusEffects status)
-		{
-			setStatus(status);
-		}
-
 		public ArrayList<Type> getTypes()
 		{
 			ArrayList<Type> types = new ArrayList<Type>();
@@ -400,22 +391,29 @@ public class NewAnatureTestable
 			return getStats().getHitPointsPercent();
 		}
 
-		public AnatureBuilder getClone()
+		public IAnature getClone()
 		{
-			return new AnatureBuilder().withName(getName())
-					.withOwnerName(getOwner())
-					.isShiny(isShiny())
-					.withSpecies(getSpecies())
-					.withGender(getGender())
-					.withPrimaryType(getPrimaryType())
-					.withSecondaryType(getSecondaryType())
-					.withMoveSet(getMoveSet())
-					.withAbility(getAbility())
-					.withStatus(getStatus())
-					.withStats(getStats().getClone()
-							.create())
-					.withIndexNumber(getIndexNumber())
-					.withCatchRate(getCatchRate());
+			return new Anature(new AnatureVariables()
+			{
+				@Override
+				public void getContext()
+				{
+					anatureName = getName();
+					anatureOwnerName = getOwner();
+					anatureIsShiny = isShiny();
+					anatureSpecies = getSpecies();
+					anatureGender = getGender();
+					anaturePrimaryType = getPrimaryType();
+					anatureSecondaryType = getSecondaryType();
+					anatureMoveSet = getMoveSet().getClone();
+					anatureAbility = getAbility();
+					anatureStatus = getStatus();
+					anatureStats = getStats().getClone()
+							.create();
+					anatureIndexNumber = getIndexNumber();
+					anatureCatchRate = getCatchRate();
+				}
+			});
 		}
 
 		public Image getFrontSprite()
@@ -436,11 +434,11 @@ public class NewAnatureTestable
 		}
 	}
 
-	public class NewAnatureExport extends NewAnature
+	public class AnatureExport extends Anature
 	{
-		public NewAnatureExport(AnatureVariables context)
+		public AnatureExport(AnatureVariables anatureVariables)
 		{
-			super(context);
+			Classes.super(anatureVariables);
 		}
 	}
 }

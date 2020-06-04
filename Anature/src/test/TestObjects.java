@@ -1,6 +1,7 @@
 package test;
 
-import application.anatures.AnatureBuilder;
+import application.anatures.AnatureClass;
+import application.anatures.AnatureClass.AnatureVariables;
 import application.anatures.abillities.NullAbility;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.movesets.MoveSet;
@@ -35,7 +36,7 @@ public class TestObjects
 	 * TEST OBJECT MoveSet
 	 */
 
-	private static final MoveSet mMoveSet = new MoveSet(getDefaultTackle(), null, null, null);
+	private static final MoveSet mMoveSet = new MoveSet(getDefaultTackle(), getDefaultTackle(), getDefaultTackle(), getDefaultTackle());
 
 	public static final MoveSet getDefaultMoveSet()
 	{
@@ -61,7 +62,7 @@ public class TestObjects
 	private static final int mDefaultBaseStat = 50;
 	private static final int mDefaultBaseNonStat = 0;
 	private static final LevelingSpeed mDefaultLevelingSpeed = LevelingSpeed.Normal;
-	private static final Natures mDefaultNaure = Natures.Adamant;
+	private static final Natures mDefaultNaure = Natures.Hardy;
 
 	private static final IStats mStats = new StatsBuilder().atLevel(getDefaultLevel())
 			.withLevlingSpeed(getDefaultLevelingSpeed())
@@ -85,7 +86,8 @@ public class TestObjects
 
 	public static final IStats getDefaultStats()
 	{
-		return mStats;
+		return mStats.getClone()
+				.create();
 	}
 
 	public static final int getDefaultLevel()
@@ -129,24 +131,34 @@ public class TestObjects
 	private static final int mDefaultIndexNumber = 20200529;
 	private static final int mDefaultCatchRate = 255;
 
-	private static final IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName())
-			.withOwnerName(getDefaultOwnerName())
-			.isShiny(getDefaultShinyValue())
-			.withSpecies(getDefaultSpecies())
-			.withGender(getDefaultGender())
-			.withPrimaryType(getDefaultPrimaryType())
-			.withSecondaryType(getDefaultSecondaryType())
-			.withMoveSet(getDefaultMoveSet())
-			.withAbility(getDefaultAbility())
-			.withStatus(getDefaultStatusEffect())
-			.withStats(getDefaultStats())
-			.withIndexNumber(getDefaultIndexNumber())
-			.withCatchRate(mDefaultCatchRate)
-			.create();
+	public static AnatureVariables getDefaultAnatureVariables()
+	{
+		return AnatureClass.Classes.new AnatureVariables()
+		{
+			@Override
+			public void getContext()
+			{
+				anatureName = getDefaultAnatureName();
+				anatureOwnerName = getDefaultOwnerName();
+				anatureIsShiny = getDefaultShinyValue();
+				anatureSpecies = getDefaultSpecies();
+				anatureGender = getDefaultGender();
+				anaturePrimaryType = getDefaultPrimaryType();
+				anatureSecondaryType = getDefaultSecondaryType();
+				anatureMoveSet = getDefaultMoveSet().getClone();
+				anatureAbility = getDefaultAbility();
+				anatureStatus = getDefaultStatusEffect();
+				anatureStats = getDefaultStats().getClone()
+						.create();
+				anatureIndexNumber = getDefaultIndexNumber();
+				anatureCatchRate = getDefaultCatchRate();
+			}
+		};
+	}
 
 	public static final IAnature getAnature()
 	{
-		return mAnature;
+		return AnatureClass.Classes.new AnatureExport(getDefaultAnatureVariables());
 	}
 
 	public static final String getDefaultAnatureName()
@@ -203,5 +215,4 @@ public class TestObjects
 	{
 		return mDefaultCatchRate;
 	}
-
 }

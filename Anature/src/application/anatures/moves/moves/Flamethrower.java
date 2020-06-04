@@ -10,6 +10,6 @@ public class Flamethrower extends Move
 	public void activateMove(IAnature source, IAnature target)
 	{
 		target.applyDamage(calculateDamage(source, target, false));
-		target.updateStatus(StatusEffects.Burn);
+		target.setStatus(StatusEffects.Burn);
 	}
 }

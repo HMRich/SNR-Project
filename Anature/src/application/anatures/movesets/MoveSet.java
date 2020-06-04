@@ -193,22 +193,26 @@ public class MoveSet
 
 	public int getMoveIndex(IMove move)
 	{
-		if(mMove1.getName().compareTo(move.getName()) == 0)
+		if(mMove1.getName()
+				.compareTo(move.getName()) == 0)
 		{
 			return 1;
 		}
 
-		else if(mMove2.getName().compareTo(move.getName()) == 0)
+		else if(mMove2.getName()
+				.compareTo(move.getName()) == 0)
 		{
 			return 2;
 		}
 
-		else if(mMove3.getName().compareTo(move.getName()) == 0)
+		else if(mMove3.getName()
+				.compareTo(move.getName()) == 0)
 		{
 			return 3;
 		}
 
-		else if(mMove4.getName().compareTo(move.getName()) == 0)
+		else if(mMove4.getName()
+				.compareTo(move.getName()) == 0)
 		{
 			return 4;
 		}
@@ -258,7 +262,7 @@ public class MoveSet
 
 		return setMovePoints(moveNumber, movePoints--);
 	}
-	
+
 	public MoveSet getClone()
 	{
 		return new MoveSet(getMove(1), getMove(2), getMove(3), getMove(4));
@@ -271,7 +275,7 @@ public class MoveSet
 		mMove3MovePoints = mMove3 != null ? mMove3.getTotalMovePoints() : 0;
 		mMove4MovePoints = mMove4 != null ? mMove4.getTotalMovePoints() : 0;
 	}
-	
+
 	public BattleAnimationType getMoveAnimationType(int moveIndex)
 	{
 		IMove move = getMove(moveIndex);
@@ -284,6 +288,18 @@ public class MoveSet
 		{
 			return BattleAnimationType.Special;
 		}
+	}
+
+	public boolean deepEquals(MoveSet moveSet)
+	{
+		for(int index = 1; index != 5; index++)
+		{
+			if(!this.getMove(index)
+					.equals(moveSet.getMove(index)))
+				return false;
+		}
+
+		return true;
 	}
 
 }

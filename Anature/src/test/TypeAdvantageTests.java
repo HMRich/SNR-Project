@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +15,6 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
-import application.anatures.AnatureBuilder;
-import application.anatures.abillities.NullAbility;
-import application.anatures.movesets.NullMoveSet;
-import application.anatures.stats.StatsBuilder;
-import application.enums.Gender;
-import application.enums.Species;
-import application.enums.StatusEffects;
 import application.enums.Type;
 import application.enums.TypeEffectiveness;
 import application.interfaces.IAnature;
@@ -35,42 +27,8 @@ class TypeAdvantageTests
 	private IAnature setAnatureTypes(Type[] types)
 	{
 		return baseAnature.getClone()
-				.withPrimaryType(types[0])
-				.withSecondaryType(types[1])
-				.create();
-	}
-
-	@BeforeAll
-	void generateBaseAnature()
-	{
-		baseAnature = new AnatureBuilder().withName("<Test Creature>")
-				.withOwnerName("<Test Owner>")
-				.isShiny(false)
-				.withSpecies(Species.Null)
-				.withGender(Gender.Trans)
-				.withPrimaryType(Type.Normal)
-				.withSecondaryType(Type.NotSet)
-				.withMoveSet(NullMoveSet.getNullMoveSet())
-				.withAbility(NullAbility.getNullAbility())
-				.withStatus(StatusEffects.None)
-				.withIndexNumber(Integer.MAX_VALUE)
-				.withStats(new StatsBuilder().withBaseExperience(100)
-						.withBaseHitPoints(100)
-						.withBaseAttack(100)
-						.withBaseDefense(100)
-						.withBaseSpecialAttack(100)
-						.withBaseSpecialDefense(100)
-						.withBaseSpeed(100)
-						.withBaseAccuracy(100)
-						.withBaseEvasion(100)
-						.withIVHitPoints(0)
-						.withIVAttack(0)
-						.withIVDefense(0)
-						.withIVSpecialAttack(0)
-						.withIVSpecialDefense(0)
-						.withIVSpeed(0)
-						.create())
-				.create();
+				.setPrimaryType(types[0])
+				.setSecondaryType(types[1]);
 	}
 
 	@TestTemplate

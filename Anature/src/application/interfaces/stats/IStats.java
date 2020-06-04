@@ -48,10 +48,12 @@ public interface IStats extends IStatsBase
 	public double getHitPointsPercent();
 	
 	public void applyDamage(int damage);
-	
+
 	public String applyHeal(int healAmount);
 
 	public StatsBuilder getClone();
 	
 	public boolean addEv(Stat statToAdd, int level);
+	
+	public boolean deepEquals(IStats stats);
 }

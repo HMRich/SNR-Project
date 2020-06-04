@@ -2,7 +2,6 @@ package application.interfaces;
 
 import java.util.ArrayList;
 
-import application.anatures.AnatureBuilder;
 import application.anatures.movesets.MoveSet;
 import application.enums.BattleAnimationType;
 import application.enums.Gender;
@@ -14,6 +13,36 @@ import javafx.scene.image.Image;
 
 public interface IAnature
 {
+	/*
+	 * PUBLIC SETS
+	 */
+
+	public IAnature setName(String name);
+
+	public IAnature setOwnerName(String ownerName);
+
+	public IAnature setIsShiny(boolean isShiny);
+
+	public IAnature setSpecies(Species species);
+
+	public IAnature setGender(Gender gender);
+
+	public IAnature setPrimaryType(Type primaryType);
+
+	public IAnature setSecondaryType(Type secondaryType);
+
+	public IAnature setMoveSet(MoveSet moveSet);
+
+	public IAnature setAbility(IAbility iAbility);
+
+	public IAnature setStatus(StatusEffects statusEffect);
+
+	public IAnature setStats(IStats stats);
+
+	public IAnature setIndexNumber(int indexNumber);
+
+	public IAnature setCatchRate(int catchRate);
+
 	/*
 	 * PUBLIC GETS
 	 */
@@ -41,18 +70,12 @@ public interface IAnature
 	public IStats getStats();
 
 	public int getIndexNumber();
-	
+
 	public int getCatchRate();
 
 	/*
 	 * PUBLIC METHODS
 	 */
-
-	public void updateName(String name);
-
-	public void updateStatus(StatusEffects status);
-
-	// public void updateCurrentHitPoints(int hitPoints);
 
 	public ArrayList<Type> getTypes();
 
@@ -66,7 +89,7 @@ public interface IAnature
 
 	public double getHitPointsPercent();
 
-	public AnatureBuilder getClone();
+	public IAnature getClone();
 
 	public Image getFrontSprite();
 

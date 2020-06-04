@@ -46,7 +46,7 @@ public class DamageAndStatus extends Move
 				return;
 			}
 
-			target.updateStatus(mStatus);
+			target.setStatus(mStatus);
 		}
 	}
 }

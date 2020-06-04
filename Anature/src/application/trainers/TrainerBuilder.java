@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 import application.DatabaseConnection;
-import application.anatures.AnatureBuilder;
+import application.Startup;
+import application.anatures.NewAnatureBuilder;
 import application.controllers.LoggerController;
 import application.enums.DatabaseType;
 import application.enums.ItemIds;
@@ -49,7 +50,7 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		mTrainer.setTrainerName(name);
 		return this;
 	}
-	
+
 	public TrainerBuilder withRewardAmount(int rewardAmount)
 	{
 		mTrainer.setRewardForDefeat(rewardAmount);
@@ -222,14 +223,14 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		for(String anatureStr : partyStrAra)
 		{
 			int level = rng.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
-			party.add(AnatureBuilder.createAnature(Species.valueOf(anatureStr), level));
+			party.add(NewAnatureBuilder.createAnature(Startup.getPlayerName(), Species.valueOf(anatureStr), level));
 		}
 
 		while(party.size() > anatureCount)
 		{
 			party.remove(rng.nextInt(party.size()));
 		}
-		
+
 		return party;
 	}
 

@@ -1,14 +1,23 @@
-package application.anatures;
+package test.testableObjects;
 
+import application.anatures.AnatureClass;
+import application.anatures.AnatureClass.AnatureExport;
+import application.anatures.AnatureClass.AnatureVariables;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
+import application.interfaces.IAnature;
 import test.TestObjects;
 
-public class AnatureTestable extends Anature
+public class AnatureTestable extends AnatureExport
 {
+	public AnatureTestable(AnatureVariables context)
+	{
+		AnatureClass.Classes.super(context);
+	}
+
 	private boolean mGetNameWasCalled;
 	private boolean mGetOwnerWasCalled;
 	private boolean mIsShinyWasCalled;
@@ -110,15 +119,17 @@ public class AnatureTestable extends Anature
 	 */
 
 	@Override
-	void setName(String name)
+	public IAnature setName(String name)
 	{
 		mSetNameWasCalled = true;
+		return this;
 	}
 
 	@Override
-	void setStatus(StatusEffects statusEffect)
+	public IAnature setStatus(StatusEffects statusEffect)
 	{
 		mSetStatusWasCalled = true;
+		return this;
 	}
 
 	/*

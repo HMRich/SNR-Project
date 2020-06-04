@@ -29,12 +29,11 @@ public class StatsTests
 
 			IAnature sut = TestObjects.getAnature()
 					.getClone()
-					.withStats(TestObjects.getDefaultStats()
+					.setStats(TestObjects.getDefaultStats()
 							.getClone()
 							.atLevel(1)
 							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+							.create());
 
 			IStats sutStats = sut.getStats();
 
@@ -55,12 +54,11 @@ public class StatsTests
 
 			IAnature sut = TestObjects.getAnature()
 					.getClone()
-					.withStats(TestObjects.getDefaultStats()
+					.setStats(TestObjects.getDefaultStats()
 							.getClone()
 							.atLevel(1)
 							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+							.create());
 
 			IStats sutStats = sut.getStats();
 
@@ -83,12 +81,11 @@ public class StatsTests
 
 				IAnature sut = TestObjects.getAnature()
 						.getClone()
-						.withStats(TestObjects.getDefaultStats()
+						.setStats(TestObjects.getDefaultStats()
 								.getClone()
 								.atLevel(1)
 								.withBaseHitPoints(baseHitPoints)
-								.create())
-						.create();
+								.create());
 
 				// act
 				sut.applyDamage(damage);
@@ -110,12 +107,11 @@ public class StatsTests
 
 			IAnature sut = TestObjects.getAnature()
 					.getClone()
-					.withStats(TestObjects.getDefaultStats()
+					.setStats(TestObjects.getDefaultStats()
 							.getClone()
 							.atLevel(1)
 							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+							.create());
 
 			IStats sutStats = sut.getStats();
 			sutStats.setCurrentHitPoints(0);
@@ -137,12 +133,11 @@ public class StatsTests
 
 			IAnature sut = TestObjects.getAnature()
 					.getClone()
-					.withStats(TestObjects.getDefaultStats()
+					.setStats(TestObjects.getDefaultStats()
 							.getClone()
 							.atLevel(1)
 							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+							.create());
 
 			IStats sutStats = sut.getStats();
 			sutStats.setCurrentHitPoints(0);
@@ -166,12 +161,11 @@ public class StatsTests
 
 				IAnature sut = TestObjects.getAnature()
 						.getClone()
-						.withStats(TestObjects.getDefaultStats()
+						.setStats(TestObjects.getDefaultStats()
 								.getClone()
 								.atLevel(1)
 								.withBaseHitPoints(baseHitPoints)
-								.create())
-						.create();
+								.create());
 
 				// act
 				sut.applyHeal(healAmount);

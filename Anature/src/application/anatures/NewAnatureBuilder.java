@@ -27,12 +27,11 @@ import application.pools.MovePool;
 
 public class NewAnatureBuilder
 {
-	private static NewAnatureTestable mAnatureInstance = new NewAnatureTestable();
 	private static Random randomObject = new Random();
 
-	public static IAnature createInnerAnature(String playerName, Species species, int level)
+	public static IAnature createAnature(String playerName, Species species, int level)
 	{
-		return mAnatureInstance.new NewAnature(mAnatureInstance.new AnatureVariables()
+		return AnatureClass.Classes.new Anature(AnatureClass.Classes.new AnatureVariables()
 		{
 			@Override
 			public void getContext()
@@ -97,9 +96,9 @@ public class NewAnatureBuilder
 		});
 	}
 
-	public static IAnature createInnerAnature(IAnature toEvolve, Species evolveInto)
+	public static IAnature createEvolvedAnature(IAnature toEvolve, Species evolveInto)
 	{
-		return mAnatureInstance.new NewAnature(mAnatureInstance.new AnatureVariables()
+		return AnatureClass.Classes.new Anature(AnatureClass.Classes.new AnatureVariables()
 		{
 			@Override
 			public void getContext()

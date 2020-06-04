@@ -9,6 +9,6 @@ public class FactoryReset extends Move
 	public void activateMove(IAnature source, IAnature target)
 	{
 		source.getStats().resetTempStats();
-		source.updateStatus(StatusEffects.None);
+		source.setStatus(StatusEffects.None);
 	}
 }

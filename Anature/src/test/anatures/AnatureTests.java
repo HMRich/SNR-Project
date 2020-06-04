@@ -20,7 +20,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import application.anatures.AnatureTestable;
+import application.anatures.AnatureClass.AnatureVariables;
 import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.MoveSet;
 import application.anatures.movesets.MoveSetTestable;
@@ -36,6 +36,7 @@ import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
 import application.pools.AbilityPool;
 import test.TestObjects;
+import test.testableObjects.AnatureTestable;
 
 @DisplayName("Anature Tests")
 class AnatureTests
@@ -100,7 +101,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withName(testString);
+							.setName(testString);
 				});
 			}
 
@@ -112,8 +113,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withName(testString)
-						.create();
+						.setName(testString);
 
 				// assert
 				assertTrue(sut.getName()
@@ -136,7 +136,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withOwnerName(testString);
+							.setOwnerName(testString);
 				});
 			}
 
@@ -148,8 +148,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withOwnerName(testString)
-						.create();
+						.setOwnerName(testString);
 
 				// assert
 				assertTrue(sut.getOwner()
@@ -169,8 +168,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.isShiny(testBoolean)
-						.create();
+						.setIsShiny(testBoolean);
 
 				// assert
 				assertTrue(sut.isShiny() == testBoolean);
@@ -194,7 +192,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withSpecies(testSpecies);
+							.setSpecies(testSpecies);
 				});
 			}
 
@@ -212,8 +210,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withSpecies(testSpecies)
-						.create();
+						.setSpecies(testSpecies);
 
 				// assert
 				assertTrue(sut.getSpecies()
@@ -239,7 +236,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withGender(testGender);
+							.setGender(testGender);
 				});
 			}
 
@@ -257,8 +254,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withGender(testGender)
-						.create();
+						.setGender(testGender);
 
 				// assert
 				assertTrue(sut.getGender()
@@ -283,7 +279,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withPrimaryType(testType);
+							.setPrimaryType(testType);
 				});
 			}
 
@@ -301,8 +297,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withPrimaryType(testType)
-						.create();
+						.setPrimaryType(testType);
 
 				// assert
 				assertTrue(sut.getPrimaryType()
@@ -323,7 +318,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withSecondaryType(null);
+							.setSecondaryType(null);
 				});
 			}
 
@@ -335,8 +330,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withSecondaryType(testType)
-						.create();
+						.setSecondaryType(testType);
 
 				// assert
 				assertTrue(sut.getSecondaryType()
@@ -359,7 +353,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withMoveSet(null);
+							.setMoveSet(null);
 				});
 			}
 
@@ -375,8 +369,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withMoveSet(realMoveSet)
-						.create();
+						.setMoveSet(realMoveSet);
 
 				// assert
 				assertTrue(sut.getMoveSet()
@@ -399,7 +392,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withAbility(testAbility);
+							.setAbility(testAbility);
 				});
 			}
 
@@ -411,8 +404,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withAbility(testAbility)
-						.create();
+						.setAbility(testAbility);
 
 				// assert
 				assertTrue(sut.getAbility()
@@ -434,7 +426,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withStatus(testStatusEffect);
+							.setStatus(testStatusEffect);
 				});
 			}
 
@@ -446,8 +438,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withStatus(testStatus)
-						.create();
+						.setStatus(testStatus);
 
 				// assert
 				assertTrue(sut.getStatus()
@@ -470,7 +461,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withStats(testStats);
+							.setStats(testStats);
 				});
 			}
 
@@ -486,8 +477,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withStats(newStats)
-						.create();
+						.setStats(newStats);
 
 				// assert
 				assertTrue(sut.getStats()
@@ -509,7 +499,7 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withIndexNumber(testNumber);
+							.setIndexNumber(testNumber);
 				});
 			}
 
@@ -521,8 +511,7 @@ class AnatureTests
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
-						.withIndexNumber(testNumber)
-						.create();
+						.setIndexNumber(testNumber);
 
 				// assert
 				assertTrue(sut.getIndexNumber() == testNumber);
@@ -610,7 +599,7 @@ class AnatureTests
 			// assert
 			assertTrue(TestObjects.getAnature()
 					.getMoveSet()
-					.equals(TestObjects.getDefaultMoveSet()));
+					.deepEquals(TestObjects.getDefaultMoveSet()));
 		}
 
 		@DisplayName("getAbility()")
@@ -640,7 +629,7 @@ class AnatureTests
 			// assert
 			assertTrue(TestObjects.getAnature()
 					.getStats()
-					.equals(TestObjects.getDefaultStats()));
+					.deepEquals(TestObjects.getDefaultStats()));
 		}
 
 		@DisplayName("getIndexNumber()")
@@ -692,7 +681,7 @@ class AnatureTests
 		@BeforeEach
 		void BeforeEachTest()
 		{
-			mMockAnature = new MockAnature();
+			mMockAnature = new MockAnature(TestObjects.getDefaultAnatureVariables());
 			mMockAnatureStats = new MockAnatureStats();
 			mMockAnatureMoveSet = new MockAnatureMoveSet();
 		}
@@ -703,6 +692,11 @@ class AnatureTests
 
 		class MockAnature extends AnatureTestable
 		{
+			public MockAnature(AnatureVariables context)
+			{
+				super(context);
+			}
+
 			private boolean mGetStatsCalled;
 			private boolean mGetMoveSetCalled;
 
@@ -745,23 +739,23 @@ class AnatureTests
 		 * PUBLIC METHOD TESTS
 		 */
 
-		@DisplayName("updateName()")
+		@DisplayName("setName()")
 		@Test
 		void UpdateName_CallsSetNameMethod_UpdatesName()
 		{
 			// act
-			getMockAnature().updateName("<Test Name>");
+			getMockAnature().setName("<Test Name>");
 
 			// assert
 			assertTrue(getMockAnature().setNameWasCalled());
 		}
 
-		@DisplayName("updateStatus()")
+		@DisplayName("setStatus()")
 		@Test
 		void UpdateStatus_CallsSetStatusMethod_UpdatesStatus()
 		{
 			// act
-			getMockAnature().updateStatus(StatusEffects.None);
+			getMockAnature().setStatus(StatusEffects.None);
 
 			// assert
 			assertTrue(getMockAnature().setStatusWasCalled());
@@ -778,9 +772,8 @@ class AnatureTests
 				// arrange
 				IAnature sut = TestObjects.getAnature()
 						.getClone()
-						.withPrimaryType(Type.Fire)
-						.withSecondaryType(Type.Fighting)
-						.create();
+						.setPrimaryType(Type.Fire)
+						.setSecondaryType(Type.Fighting);
 
 				ArrayList<Type> sutTypes = sut.getTypes();
 
@@ -796,9 +789,8 @@ class AnatureTests
 				// arrange
 				IAnature sut = TestObjects.getAnature()
 						.getClone()
-						.withPrimaryType(Type.Water)
-						.withSecondaryType(Type.NotSet)
-						.create();
+						.setPrimaryType(Type.Water)
+						.setSecondaryType(Type.NotSet);
 
 				ArrayList<Type> sutTypes = sut.getTypes();
 
@@ -1056,7 +1048,7 @@ class AnatureTests
 //					// arrange
 //					IAnature sut = (IAnature) TestObjects.getAnature()
 //							.getClone()
-//							.withSpecies(species)
+//							.setSpecies(species)
 //							.create();
 //
 //					// act
@@ -1074,7 +1066,7 @@ class AnatureTests
 //				// arrange
 //				IAnature sut = (IAnature) TestObjects.getAnature()
 //						.getClone()
-//						.withSpecies(species)
+//						.setSpecies(species)
 //						.create();
 //
 //				// assert
@@ -1098,7 +1090,7 @@ class AnatureTests
 //					// arrange
 //					IAnature sut = (IAnature) TestObjects.getAnature()
 //							.getClone()
-//							.withSpecies(species)
+//							.setSpecies(species)
 //							.create();
 //
 //					// act
@@ -1116,7 +1108,7 @@ class AnatureTests
 //				// arrange
 //				IAnature sut = (IAnature) TestObjects.getAnature()
 //						.getClone()
-//						.withSpecies(species)
+//						.setSpecies(species)
 //						.create();
 //
 //				// assert

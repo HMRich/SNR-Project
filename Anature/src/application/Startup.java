@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import application.anatures.AnatureBuilder;
+import application.anatures.NewAnatureBuilder;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.menus.AnatureSummaryController;
@@ -84,7 +84,8 @@ public class Startup extends Application
 			@Override
 			public void handle(KeyEvent event)
 			{
-				if(event.getText().compareTo("`") == 0)
+				if(event.getText()
+						.compareTo("`") == 0)
 				{
 					mLogger.toggleWindow();
 				}
@@ -92,7 +93,8 @@ public class Startup extends Application
 		};
 
 		mStage = primaryStage;
-		mStage.getIcons().add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
+		mStage.getIcons()
+				.add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
 		mStage.setTitle("Anature");
 
 		mStage.setMinWidth(640);
@@ -145,7 +147,8 @@ public class Startup extends Application
 					break;
 
 				case Anature_Summary:
-					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
+					if(mAnatureSummaryView == null
+							|| mAnatureSummaryController == null)
 					{
 						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
 						Parent summaryRoot = summaryLoader.load();
@@ -347,8 +350,9 @@ public class Startup extends Application
 		if(result.hasEvolutions())
 		{
 			HashMap<IAnature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
-			
-			Iterator<Entry<IAnature, Species>> evolveIterator = anaturesToEvolve.entrySet().iterator();
+
+			Iterator<Entry<IAnature, Species>> evolveIterator = anaturesToEvolve.entrySet()
+					.iterator();
 			while(evolveIterator.hasNext())
 			{
 				Entry<IAnature, Species> evolveEntry = evolveIterator.next();
@@ -357,25 +361,25 @@ public class Startup extends Application
 				{
 					mSceneStack.push(SceneType.Evolution);
 				}
-				
+
 				changeScene(SceneType.Evolution, null);
 				mEvolutionController.startEvolution(mPlayer.getAnatures(), evolveEntry.getKey(), evolveEntry.getValue(), () -> nextScene());
 			}
 		}
-		
+
 		else
 		{
 			changeScene(null, null);
 		}
 	}
-	
+
 	private static void nextScene()
 	{
 		if(mSceneStack.size() < 1)
 		{
 			changeScene(null, null);
 		}
-		
+
 		else
 		{
 			changeScene(mSceneStack.pop(), null);
@@ -384,28 +388,42 @@ public class Startup extends Application
 
 	public static void createDemo()
 	{
-		IAnature first = AnatureBuilder.createAnature(Species.Null, 54);
-		first.updateName("Main Null");
+		IAnature first = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 54);
+		first.setName("Main Null");
 		mPlayer.addAnatures(first);
-		mPlayer.getAnatures().get(0).getStats().addExperience(14601);
+		mPlayer.getAnatures()
+				.get(0)
+				.getStats()
+				.addExperience(14601);
 
-		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
-		second.updateName("Other Null");
+		IAnature second = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 12);
+		second.setName("Other Null");
 		mPlayer.addAnatures(second);
-		
-		IAnature third = AnatureBuilder.createAnature(Species.Sardino, 14);
+
+		IAnature third = NewAnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 14);
 		mPlayer.addAnatures(third);
-		mPlayer.getAnatures().get(2).getStats().addExperience(630);
+		mPlayer.getAnatures()
+				.get(2)
+				.getStats()
+				.addExperience(630);
 
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
-		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
+		mPlayer.getBackpack()
+				.addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
 
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
-		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
+		mPlayer.getBackpack()
+				.addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
 
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 
