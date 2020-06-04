@@ -4,32 +4,23 @@ import java.util.HashMap;
 
 import application.anatures.moves.MoveBuilder;
 import application.anatures.moves.moves.AntlerShot;
-import application.anatures.moves.moves.Cinder;
-import application.anatures.moves.moves.Clop;
 import application.anatures.moves.moves.Coil;
+import application.anatures.moves.moves.DamageAndStatus;
 import application.anatures.moves.moves.DoublePunch;
-import application.anatures.moves.moves.ElectroSonic;
 import application.anatures.moves.moves.Electrocution;
-import application.anatures.moves.moves.FireCell;
-import application.anatures.moves.moves.FireTorture;
 import application.anatures.moves.moves.Flail;
-import application.anatures.moves.moves.FlameBout;
 import application.anatures.moves.moves.Flamethrower;
 import application.anatures.moves.moves.ForgottenAwakening;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HealingWinds;
 import application.anatures.moves.moves.Holler;
 import application.anatures.moves.moves.LightMissile;
-import application.anatures.moves.moves.Lightning;
-import application.anatures.moves.moves.MagicalSpice;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
 import application.anatures.moves.moves.PocketSand;
 import application.anatures.moves.moves.ScaryFace;
 import application.anatures.moves.moves.SkipTurn;
-import application.anatures.moves.moves.Smash;
 import application.anatures.moves.moves.SmogWave;
-import application.anatures.moves.moves.StormyBreeze;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.moves.moves.WaterToss;
 import application.enums.MoveIds;
@@ -126,7 +117,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Cinder,
-				new MoveBuilder<Cinder>(MoveIds.Cinder).withName("Cinder")
+				new MoveBuilder<DamageAndStatus>(MoveIds.Cinder).withName("Cinder")
 						.withType(Type.Fire)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -136,7 +127,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Smash,
-				new MoveBuilder<Smash>(MoveIds.Smash).withName("Smash")
+				new MoveBuilder<JustDamageDealing>(MoveIds.Smash).withName("Smash")
 						.withType(Type.Fire)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -146,7 +137,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Fire_Torture,
-				new MoveBuilder<FireTorture>(MoveIds.Fire_Torture).withName("Fire Torture")
+				new MoveBuilder<DamageAndStatus>(MoveIds.Fire_Torture).withName("Fire Torture")
 						.withType(Type.Fire)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -166,7 +157,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Fire_Cell,
-				new MoveBuilder<FireCell>(MoveIds.Fire_Cell).withName("Fire Cell")
+				new MoveBuilder<DamageAndStatus>(MoveIds.Fire_Cell).withName("Fire Cell")
 						.withType(Type.Fire)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -186,7 +177,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Flame_Bout,
-				new MoveBuilder<FlameBout>(MoveIds.Flame_Bout).withName("Flame Bout")
+				new MoveBuilder<DamageAndStatus>(MoveIds.Flame_Bout).withName("Flame Bout")
 						.withType(Type.Fire)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
@@ -196,7 +187,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Clop,
-				new MoveBuilder<Clop>(MoveIds.Clop).withName("Clop")
+				new MoveBuilder<JustDamageDealing>(MoveIds.Clop).withName("Clop")
 						.withType(Type.Normal)
 						.doesDamage(false)
 						.isPhysicalAttack(false)
@@ -216,7 +207,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Electro_Sonic,
-				new MoveBuilder<ElectroSonic>(MoveIds.Electro_Sonic).withName("Electro Sonic")
+				new MoveBuilder<DamageAndStatus>(MoveIds.Electro_Sonic).withName("Electro Sonic")
 						.withType(Type.Electric)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -226,7 +217,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Stormy_Breeze,
-				new MoveBuilder<StormyBreeze>(MoveIds.Stormy_Breeze).withName("Stormy Breeze")
+				new MoveBuilder<JustDamageDealing>(MoveIds.Stormy_Breeze).withName("Stormy Breeze")
 						.withType(Type.Electric)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -256,7 +247,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Lightning,
-				new MoveBuilder<Lightning>(MoveIds.Lightning).withName("Lightning")
+				new MoveBuilder<DamageAndStatus>(MoveIds.Lightning).withName("Lightning")
 						.withType(Type.Electric)
 						.doesDamage(true)
 						.isPhysicalAttack(true)
@@ -276,7 +267,7 @@ public class MovePool
 						.create());
 		
 		mMoves.put(MoveIds.Magical_Spice,
-				new MoveBuilder<MagicalSpice>(MoveIds.Magical_Spice).withName("Magical Spice")
+				new MoveBuilder<JustDamageDealing>(MoveIds.Magical_Spice).withName("Magical Spice")
 						.withType(Type.Psychic)
 						.doesDamage(true)
 						.isPhysicalAttack(true)

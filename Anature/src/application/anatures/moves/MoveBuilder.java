@@ -27,24 +27,14 @@ import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IBuilder;
 import application.anatures.moves.moves.AntlerShot;
-import application.anatures.moves.moves.Cinder;
-import application.anatures.moves.moves.Clop;
 import application.anatures.moves.moves.Electrocution;
-import application.anatures.moves.moves.ElectroSonic;
-import application.anatures.moves.moves.FireCell;
-import application.anatures.moves.moves.FireTorture;
-import application.anatures.moves.moves.FlameBout;
 import application.anatures.moves.moves.ForgottenAwakening;
 import application.anatures.moves.moves.HealingWinds;
 import application.anatures.moves.moves.Holler;
 import application.anatures.moves.moves.Leen;
 import application.anatures.moves.moves.LightMissile;
-import application.anatures.moves.moves.Lightning;
-import application.anatures.moves.moves.MagicalSpice;
 import application.anatures.moves.moves.ScaryFace;
-import application.anatures.moves.moves.Smash;
 import application.anatures.moves.moves.SmogWave;
-import application.anatures.moves.moves.StormyBreeze;
 
 
 
@@ -184,11 +174,11 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 				
 			case Cinder:
-				mMove = (M) new Cinder();
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.90);
 				break;
 				
 			case Clop:
-				mMove = (M) new Clop();
+				mMove = (M) new JustDamageDealing();
 				break;
 				
 			case Electrocution:
@@ -196,19 +186,19 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 				
 			case Electro_Sonic:
-				mMove = (M) new ElectroSonic();
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.90);
 				break;
 				
 			case Fire_Cell:
-				mMove = (M) new FireCell();
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.01);
 				break;
 				
 			case Fire_Torture:
-				mMove = (M) new FireTorture();
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.80);
 				break;
 				
 			case Flame_Bout:
-				mMove = (M) new FlameBout();
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.70);
 				break;
 				
 			case Forgotten_Awakening:
@@ -216,7 +206,7 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 				
 			case Healing_Winds:
-				mMove = (M) new HealingWinds();
+				mMove = (M) new JustDamageDealing();
 				break;
 				
 			case Holler:
@@ -225,6 +215,18 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				
 			case Leen:
 				mMove = (M) new Leen();
+				break;
+				
+			case Lightning:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.70);
+				break;
+				
+			case Smash:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Stormy_Breeze:
+				mMove = (M) new JustDamageDealing();
 				break;
 
 			case NullMove:
