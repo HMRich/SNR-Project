@@ -9,7 +9,6 @@ import application.anatures.stats.NullStats;
 import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Species;
-import application.enums.Stat;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
@@ -44,7 +43,7 @@ class Anature implements IAnature
 		mSecondaryType = Type.NotSet;
 		mMoveSet = NullMoveSet.getNullMoveSet();
 		mAbility = NullAbility.getNullAbility();
-		mStatus = StatusEffects.NotSet;
+		mStatus = StatusEffects.None;
 		mStats = NullStats.getNullStats();
 		mIndexNumber = -1;
 		mCatchRate = -1;
@@ -181,11 +180,6 @@ class Anature implements IAnature
 		if(statusEffect == null)
 		{
 			throw new IllegalArgumentException("Passed value \"statusEffect\" was null.");
-		}
-
-		if(statusEffect.equals(StatusEffects.NotSet))
-		{
-			throw new IllegalArgumentException("Passed value \"statusEffect\" was equal to " + statusEffect.toString() + ".");
 		}
 
 		mStatus = statusEffect;
@@ -425,11 +419,6 @@ class Anature implements IAnature
 		if(getAbility().equals(NullAbility.getNullAbility()))
 		{
 			throw new IllegalStateException("The \"ability\" variable was never set during construction.");
-		}
-
-		if(getStatus().equals(StatusEffects.NotSet))
-		{
-			throw new IllegalStateException("The \"status\" variable was never set during construction.");
 		}
 
 		if(getStats().equals(NullStats.getNullStats()))

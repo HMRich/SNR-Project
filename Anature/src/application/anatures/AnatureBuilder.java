@@ -163,8 +163,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 		String name = species.toString()
 				.replaceAll("_", " ");
 		String ownerName = Startup.getPlayerName();
-		Type[] types = new Type[]
-		{ Type.NotSet, Type.NotSet };
+		Type[] types = new Type[] { Type.NotSet, Type.NotSet };
 
 		String possibleAbilitiesString = "";
 		String typesString = "";
@@ -267,7 +266,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 				.withIndexNumber(indexNumber)
 				.create();
 	}
-	
+
 	public static Anature createEvolvedAnature(IAnature toEvolve, Species evolveInto)
 	{
 		Type[] types = { Type.NotSet, Type.NotSet };
@@ -339,10 +338,13 @@ public class AnatureBuilder implements IBuilder<Anature>
 		int baseAccuracy = Integer.parseInt(baseAccuracyString);
 		int baseEvasion = Integer.parseInt(baseEvasionString);
 		int catchRate = Integer.parseInt(catchRateString);
-		
-		String name = toEvolve.getName().compareTo(toEvolve.getSpecies().toString()) == 0 ? evolveInto.toString() : toEvolve.getName();
-		
-		IStats stats = toEvolve.getStats().getClone()
+
+		String name = toEvolve.getName()
+				.compareTo(toEvolve.getSpecies()
+						.toString()) == 0 ? evolveInto.toString() : toEvolve.getName();
+
+		IStats stats = toEvolve.getStats()
+				.getClone()
 				.withLevlingSpeed(generateLevelingSpeed(levelingSpeedString))
 				.withBaseExperience(baseExperience)
 				.withBaseHitPoints(baseHitPoints)
@@ -366,7 +368,9 @@ public class AnatureBuilder implements IBuilder<Anature>
 				.withStats(stats)
 				.create();
 
-		evolvedAnature.getStats().addExperience(toEvolve.getStats().getExperienceProgression());
+		evolvedAnature.getStats()
+				.addExperience(toEvolve.getStats()
+						.getExperienceProgression());
 		return evolvedAnature;
 	}
 
@@ -454,7 +458,9 @@ public class AnatureBuilder implements IBuilder<Anature>
 		Random r = new Random();
 		toGenerate = r.nextInt(max);
 
-		while(toGenerate == otherIndex1 || toGenerate == otherIndex2 || toGenerate == otherIndex3)
+		while(toGenerate == otherIndex1
+				|| toGenerate == otherIndex2
+				|| toGenerate == otherIndex3)
 		{
 			toGenerate = r.nextInt(max);
 		}
@@ -484,7 +490,8 @@ public class AnatureBuilder implements IBuilder<Anature>
 		Random r = new Random();
 
 		ArrayList<String> abilities = new ArrayList<String>(Arrays.asList(possilbeAbilities.split(",")));
-		String abilityStr = abilities.get(r.nextInt(abilities.size())).replace(" ", "");
+		String abilityStr = abilities.get(r.nextInt(abilities.size()))
+				.replace(" ", "");
 		AbilityIds chosenAbility = AbilityIds.valueOf(abilityStr);
 
 		return AbilityPool.getAbility(chosenAbility);
@@ -494,7 +501,8 @@ public class AnatureBuilder implements IBuilder<Anature>
 	{
 		String[] typesStringArray = typesString.split(",");
 
-		for(int i = 0; i < typesStringArray.length && i < 2; i++)
+		for(int i = 0; i < typesStringArray.length
+				&& i < 2; i++)
 		{
 			types[i] = Type.valueOf(typesStringArray[i]);
 		}
