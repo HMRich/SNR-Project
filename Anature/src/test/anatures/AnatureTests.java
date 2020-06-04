@@ -427,9 +427,6 @@ class AnatureTests
 			@DisplayName("with Null or Null equivalent value")
 			@ParameterizedTest(name = "value \"{0}\" throws IllegalArgumentException")
 			@NullSource
-			@EnumSource(value = StatusEffects.class,
-						names = { "NotSet" },
-						mode = EnumSource.Mode.INCLUDE)
 			void SetStatus_WithNotSet_ThrowsIllegalArgumentException(StatusEffects testStatusEffect)
 			{
 				// assert
@@ -437,21 +434,15 @@ class AnatureTests
 				{
 					TestObjects.getAnature()
 							.getClone()
-							.withStatus(StatusEffects.NotSet);
+							.withStatus(testStatusEffect);
 				});
 			}
 
 			@DisplayName("with StatusEffect Values")
 			@ParameterizedTest(name = "sets StatusEffect to \"{0}\"")
-			@EnumSource(value = StatusEffects.class,
-						names = { "NotSet" },
-						mode = EnumSource.Mode.EXCLUDE)
+			@EnumSource(StatusEffects.class)
 			void SetStatus_WithEachStatus_SetsEachStatus(StatusEffects testStatus)
 			{
-				// exclude check
-				if(testStatus.equals(StatusEffects.NotSet))
-					Assert.fail("Null equivalent StatusEffect value was not excluded from test.");
-
 				// act
 				IAnature sut = (IAnature) TestObjects.getAnature()
 						.getClone()
@@ -770,7 +761,7 @@ class AnatureTests
 		void UpdateStatus_CallsSetStatusMethod_UpdatesStatus()
 		{
 			// act
-			getMockAnature().updateStatus(StatusEffects.NotSet);
+			getMockAnature().updateStatus(StatusEffects.None);
 
 			// assert
 			assertTrue(getMockAnature().setStatusWasCalled());
