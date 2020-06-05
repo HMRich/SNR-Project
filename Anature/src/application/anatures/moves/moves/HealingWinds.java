@@ -9,11 +9,11 @@ public class HealingWinds extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		int currentHealthPoints = source.getStats().getCurrentHitPoints(); 
-		int healthToBeRestored = currentHealthPoints + currentHealthPoints/2;
-		
-		source.healAnature(healthToBeRestored);
-		
+		int currentHealthPoints = source.getStats().getCurrentHitPoints();
+		int healthToBeRestored = currentHealthPoints + currentHealthPoints / 2;
+
+		source.applyHeal(healthToBeRestored);
+
 	}
 
 }
