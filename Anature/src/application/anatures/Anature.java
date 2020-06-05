@@ -9,6 +9,7 @@ import application.anatures.stats.NullStats;
 import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Species;
+import application.enums.Stat;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;

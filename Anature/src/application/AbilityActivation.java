@@ -1,4 +1,4 @@
-package application.controllers.results;
+package application;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,7 @@ import application.anatures.abillities.Spiky;
 import application.anatures.abillities.ToughSkin;
 import application.anatures.abillities.Toxic;
 import application.anatures.abillities.Tyrannize;
+import application.controllers.results.AbilityResult;
 import application.enums.AbilityIds;
 import application.enums.Type;
 import application.interfaces.IAnature;

@@ -1,6 +1,7 @@
 package application.anatures.moves.moves;
 
 import application.anatures.moves.Move;
+import application.enums.Stat;
 import application.interfaces.IAnature;
 
 public class Flail extends Move
