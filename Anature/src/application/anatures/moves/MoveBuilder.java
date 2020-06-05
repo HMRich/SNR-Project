@@ -26,6 +26,17 @@ import application.enums.MoveIds;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IBuilder;
+import application.anatures.moves.moves.AntlerShot;
+import application.anatures.moves.moves.Electrocution;
+import application.anatures.moves.moves.ForgottenAwakening;
+import application.anatures.moves.moves.HealingWinds;
+import application.anatures.moves.moves.Holler;
+import application.anatures.moves.moves.Leen;
+import application.anatures.moves.moves.LightMissile;
+import application.anatures.moves.moves.ScaryFace;
+import application.anatures.moves.moves.SmogWave;
+
+
 
 public class MoveBuilder<M extends Move> implements IBuilder<M>
 {
@@ -156,6 +167,70 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 
 			case Tackle:
 				mMove = (M) new Tackle();
+				break;
+				
+			case Antler_Shot:
+				mMove = (M) new AntlerShot();
+				break;
+				
+			case Cinder:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.90);
+				break;
+				
+			case Clop:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Electrocution:
+				mMove = (M) new Electrocution();
+				break;
+				
+			case Electro_Sonic:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.90);
+				break;
+				
+			case Fire_Cell:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.01);
+				break;
+				
+			case Fire_Torture:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.80);
+				break;
+				
+			case Flame_Bout:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.70);
+				break;
+				
+			case Magical_Spice:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Forgotten_Awakening:
+				mMove = (M) new ForgottenAwakening();
+				break;
+				
+			case Healing_Winds:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Holler:
+				mMove = (M) new Holler();
+				break;
+				
+			case Leen:
+				mMove = (M) new Leen();
+				break;
+				
+			case Lightning:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.70);
+				break;
+				
+			case Smash:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Stormy_Breeze:
+				mMove = (M) new JustDamageDealing();
 				break;
 
 			case NullMove:
