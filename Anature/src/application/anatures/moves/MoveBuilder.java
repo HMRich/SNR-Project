@@ -400,7 +400,7 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 				
 			case Tremor:
-				mMove = (M) new Tremor();
+				mMove = (M) new JustDamageDealing();
 				break;
 
 			case Sludge_Missile:
@@ -412,15 +412,15 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 					
 			case Leaf_Storm:
-				mMove = (M) new Leaf_Storm();
+				mMove = (M) new JustDamageDealing();
 				break;
 				
 			case Leaf_Sword:
-				mMove = (M) new Leaf_Sword();
+				mMove = (M) new JustDamageDealing();
 				break;
 				
 			case Grass_Whip:
-				mMove = (M) new Grass_Whip();
+				mMove = (M) new JustDamageDealing();
 				break;
 				
 			case Slow_Spore:
