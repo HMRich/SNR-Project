@@ -15,7 +15,7 @@ public enum MoveIds
 	Smog_Wave,
 	
 	//Electric 
-	Light_Missle, Lightning, Electrocution, Electro_Sonic, Stormy_Breeze,
+	Light_Missle, Lightning, Electrocution, Electro_Sonic, Stormy_Breeze, Zap, Shock_Blast, Wire_Smack, Upgrade, Factory_Reset, Thunder_Blast, Fiber_Optic, Wired_Mess, Voltage_Overload, 
 	
 	//Rock
 	Forgotten_Awakening,
@@ -35,12 +35,8 @@ public enum MoveIds
 	// Poison Type
 	Acid_Spit, Poison_Bite, Poisonous_Slam,
 	
-	// Electric Type
-	Zap, Shock_Blast, Wire_Smack, Upgrade, Factory_Reset, Thunder_Blast, Fiber_Optic, Wired_Mess, Voltage_Overload,
-	
 	// Psychic  
-	Nimbleness, Miss_Direction, Zen, Slumber, Channel, Restore, Focused_Heatbutt, Mystic_Power
-	Zap, Shock_Blast, Wire_Smack, Upgrade, Factory_Reset, Thunder_Blast, Fiber_Optic, Wired_Mess, Voltage_Overload, 
+	Nimbleness, Miss_Direction, Zen, Slumber, Channel, Restore, Focused_Heatbutt, Mystic_Power,
 	
 	// Ground Type
 	Knock_Down, Tremor, Sludge_Missile, Sludge_Slap,

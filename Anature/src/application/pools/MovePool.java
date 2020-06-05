@@ -18,8 +18,6 @@ import application.anatures.moves.moves.LightMissile;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
 import application.anatures.moves.moves.Knock_Down;
-import application.anatures.moves.moves.Leaf_Storm;
-import application.anatures.moves.moves.Leaf_Sword;
 import application.anatures.moves.moves.Mystic_Power;
 import application.anatures.moves.moves.Nimbleness;
 import application.anatures.moves.moves.PocketSand;
