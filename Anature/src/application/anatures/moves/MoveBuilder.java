@@ -221,6 +221,18 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 			case Healing_Winds:
 				mMove = (M) new JustDamageDealing();
 				break;
+			
+			case Scary_Face:
+				mMove = (M)new ScaryFace();
+				break; 
+			
+			case Smog_Wave:
+                mMove = (M) new SmogWave();
+                break;
+                
+			case Light_Missle:
+                mMove = (M) new LightMissile();
+                break;
 				
 			case Holler:
 				mMove = (M) new Holler();
