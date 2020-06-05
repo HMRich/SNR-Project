@@ -201,6 +201,10 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.70);
 				break;
 				
+			case Magical_Spice:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
 			case Forgotten_Awakening:
 				mMove = (M) new ForgottenAwakening();
 				break;
