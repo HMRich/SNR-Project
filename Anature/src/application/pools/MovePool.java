@@ -3,7 +3,6 @@ package application.pools;
 import java.util.HashMap;
 
 import application.anatures.moves.MoveBuilder;
-import application.anatures.moves.moves.Channel;
 import application.anatures.moves.moves.AntlerShot;
 import application.anatures.moves.moves.Coil;
 import application.anatures.moves.moves.DamageAndStatus;
@@ -11,7 +10,6 @@ import application.anatures.moves.moves.DoublePunch;
 import application.anatures.moves.moves.Electrocution;
 import application.anatures.moves.moves.Flail;
 import application.anatures.moves.moves.Flamethrower;
-import application.anatures.moves.moves.Focused_Heatbutt;
 import application.anatures.moves.moves.ForgottenAwakening;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HealingWinds;
@@ -19,7 +17,6 @@ import application.anatures.moves.moves.Holler;
 import application.anatures.moves.moves.LightMissile;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
-import application.anatures.moves.moves.Miss_Direction;
 import application.anatures.moves.moves.Mystic_Power;
 import application.anatures.moves.moves.Nimbleness;
 import application.anatures.moves.moves.PocketSand;
@@ -543,7 +540,7 @@ public class MovePool
 				
 			);
 				
-		mMoves.put(MoveIds.Miss_Direction, new MoveBuilder<Miss_Direction>(MoveIds.Miss_Direction).withName("Miss Direction")
+		mMoves.put(MoveIds.Miss_Direction, new MoveBuilder<JustDamageDealing>(MoveIds.Miss_Direction).withName("Miss Direction")
 				.withType(Type.Psychic)
 				.doesDamage(true)
 				.isPhysicalAttack(false)
@@ -576,7 +573,7 @@ public class MovePool
 				
 			);
 		
-		mMoves.put(MoveIds.Channel, new MoveBuilder<Channel>(MoveIds.Channel).withName("Channel")
+		mMoves.put(MoveIds.Channel, new MoveBuilder<JustDamageDealing>(MoveIds.Channel).withName("Channel")
 				.withType(Type.Psychic)
 				.doesDamage(true)
 				.isPhysicalAttack(false)
@@ -598,7 +595,7 @@ public class MovePool
 				
 			);
 		
-		mMoves.put(MoveIds.Focused_Heatbutt, new MoveBuilder<Focused_Heatbutt>(MoveIds.Focused_Heatbutt).withName("Focused Heatbutt")
+		mMoves.put(MoveIds.Focused_Heatbutt, new MoveBuilder<JustDamageDealing>(MoveIds.Focused_Heatbutt).withName("Focused Heatbutt")
 				.withType(Type.Psychic)
 				.doesDamage(true)
 				.isPhysicalAttack(true)

@@ -1,6 +1,5 @@
 package application.anatures.moves;
 
-import application.anatures.moves.moves.Channel;
 import application.anatures.moves.moves.Coil;
 import application.anatures.moves.moves.DamageAndStatus;
 import application.anatures.moves.moves.Disguise;
@@ -13,7 +12,6 @@ import application.anatures.moves.moves.FocusUp;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
-import application.anatures.moves.moves.Miss_Direction;
 import application.anatures.moves.moves.Mystic_Power;
 import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.PocketSand;
