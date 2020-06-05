@@ -227,12 +227,12 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break; 
 			
 			case Smog_Wave:
-                mMove = (M) new SmogWave();
-                break;
+               			mMove = (M) new SmogWave();
+                		break;
                 
 			case Light_Missle:
-                mMove = (M) new LightMissile();
-                break;
+                		mMove = (M) new LightMissile();
+                		break;
 				
 			case Holler:
 				mMove = (M) new Holler();
