@@ -219,19 +219,19 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 			case Healing_Winds:
 				mMove = (M) new JustDamageDealing();
 				break;
-			
+
 			case Scary_Face:
-				mMove = (M)new ScaryFace();
-				break; 
-			
+				mMove = (M) new ScaryFace();
+				break;
+
 			case Smog_Wave:
-               			mMove = (M) new SmogWave();
-                		break;
-                
+				mMove = (M) new SmogWave();
+				break;
+
 			case Light_Missle:
-                		mMove = (M) new LightMissile();
-                		break;
-				
+				mMove = (M) new LightMissile();
+				break;
+
 			case Holler:
 				mMove = (M) new Holler();
 				break;
@@ -430,18 +430,6 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 
 			case Slow_Spore:
 				mMove = (M) new Slow_Spore();
-				break;
-
-			case Smog_Wave:
-				mMove = (M) new SmogWave();
-				break;
-
-			case Scary_Face:
-				mMove = (M) new ScaryFace();
-				break;
-
-			case Light_Missle:
-				mMove = (M) new LightMissile();
 				break;
 
 			default:
