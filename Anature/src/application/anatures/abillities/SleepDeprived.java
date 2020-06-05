@@ -1,15 +1,15 @@
 package application.anatures.abillities;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 
 public class SleepDeprived implements IAbility
 {
-	public static String activateAbility(IAnature userAnature)
+	public static String activateAbility(Anature userAnature)
 	{
 		if(userAnature == null)
 		{

@@ -20,7 +20,6 @@ import application.enums.Type;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.pools.AbilityPool;
 import application.pools.MovePool;
@@ -29,12 +28,12 @@ public class NewAnatureBuilder
 {
 	private static Random randomObject = new Random();
 
-	public static IAnature createAnature(String playerName, Species species, int level)
+	public static Anature createAnature(String playerName, Species species, int level)
 	{
-		return AnatureClass.Classes.new Anature(AnatureClass.Classes.new AnatureVariables()
+		return new Anature(new AnatureVariables()
 		{
 			@Override
-			public void getContext()
+			public void getVariables()
 			{
 				anatureName = anatureSpecies.toString();
 				anatureOwnerName = playerName;
@@ -96,12 +95,12 @@ public class NewAnatureBuilder
 		});
 	}
 
-	public static IAnature createEvolvedAnature(IAnature toEvolve, Species evolveInto)
+	public static Anature createEvolvedAnature(Anature toEvolve, Species evolveInto)
 	{
-		return AnatureClass.Classes.new Anature(AnatureClass.Classes.new AnatureVariables()
+		return new Anature(new AnatureVariables()
 		{
 			@Override
-			public void getContext()
+			public void getVariables()
 			{
 				String name = toEvolve.getName()
 						.compareTo(toEvolve.getSpecies()

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import application.anatures.Anature;
 import application.anatures.NewAnatureBuilder;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
@@ -22,7 +23,6 @@ import application.enums.LoggingTypes;
 import application.enums.SceneType;
 import application.enums.Species;
 import application.enums.WarpPoints;
-import application.interfaces.IAnature;
 import application.interfaces.ITrainer;
 import application.items.Anacube;
 import application.models.PathOneModel;
@@ -349,13 +349,13 @@ public class Startup extends Application
 	{
 		if(result.hasEvolutions())
 		{
-			HashMap<IAnature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
+			HashMap<Anature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
 
-			Iterator<Entry<IAnature, Species>> evolveIterator = anaturesToEvolve.entrySet()
+			Iterator<Entry<Anature, Species>> evolveIterator = anaturesToEvolve.entrySet()
 					.iterator();
 			while(evolveIterator.hasNext())
 			{
-				Entry<IAnature, Species> evolveEntry = evolveIterator.next();
+				Entry<Anature, Species> evolveEntry = evolveIterator.next();
 
 				if(evolveIterator.hasNext())
 				{
@@ -388,7 +388,7 @@ public class Startup extends Application
 
 	public static void createDemo()
 	{
-		IAnature first = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 54);
+		Anature first = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 54);
 		first.setName("Main Null");
 		mPlayer.addAnatures(first);
 		mPlayer.getAnatures()
@@ -396,11 +396,11 @@ public class Startup extends Application
 				.getStats()
 				.addExperience(14601);
 
-		IAnature second = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 12);
+		Anature second = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 12);
 		second.setName("Other Null");
 		mPlayer.addAnatures(second);
 
-		IAnature third = NewAnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 14);
+		Anature third = NewAnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 14);
 		mPlayer.addAnatures(third);
 		mPlayer.getAnatures()
 				.get(2)

@@ -1,15 +1,15 @@
 package application.anatures.abillities;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
 public class ToughSkin implements IAbility
 {
-	public static String activateAbility(IAnature userAnature, IMove moveThatAttacked, int userOldHp, boolean attackMissed)
+	public static String activateAbility(Anature userAnature, IMove moveThatAttacked, int userOldHp, boolean attackMissed)
 	{
 		if(userAnature == null)
 		{

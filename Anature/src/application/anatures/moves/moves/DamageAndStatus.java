@@ -1,9 +1,9 @@
 package application.anatures.moves.moves;
 
+import application.anatures.Anature;
 import application.anatures.moves.Move;
 import application.enums.StatusEffects;
 import application.enums.Type;
-import application.interfaces.IAnature;
 
 public class DamageAndStatus extends Move
 {
@@ -22,7 +22,7 @@ public class DamageAndStatus extends Move
 	}
 
 	@Override
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		Type primary = target.getPrimaryType();
 		Type secondary = target.getSecondaryType();

@@ -1,7 +1,7 @@
 package test;
 
-import application.anatures.AnatureClass;
-import application.anatures.AnatureClass.AnatureVariables;
+import application.anatures.Anature;
+import application.anatures.AnatureVariables;
 import application.anatures.abillities.NullAbility;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.movesets.MoveSet;
@@ -14,7 +14,6 @@ import application.enums.Type;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 import application.pools.AbilityPool;
@@ -116,7 +115,7 @@ public class TestObjects
 	}
 
 	/*
-	 * TEST OBJECT IAnature
+	 * TEST OBJECT Anature
 	 */
 
 	private static final String mDefaultAnatureName = "Test Anature";
@@ -133,10 +132,10 @@ public class TestObjects
 
 	public static AnatureVariables getDefaultAnatureVariables()
 	{
-		return AnatureClass.Classes.new AnatureVariables()
+		return new AnatureVariables()
 		{
 			@Override
-			public void getContext()
+			public void getVariables()
 			{
 				anatureName = getDefaultAnatureName();
 				anatureOwnerName = getDefaultOwnerName();
@@ -148,17 +147,16 @@ public class TestObjects
 				anatureMoveSet = getDefaultMoveSet().getClone();
 				anatureAbility = getDefaultAbility();
 				anatureStatus = getDefaultStatusEffect();
-				anatureStats = getDefaultStats().getClone()
-						.create();
+				anatureStats = getDefaultStats().getClone().create();
 				anatureIndexNumber = getDefaultIndexNumber();
 				anatureCatchRate = getDefaultCatchRate();
 			}
 		};
 	}
 
-	public static final IAnature getAnature()
+	public static final Anature getAnature()
 	{
-		return AnatureClass.Classes.new AnatureExport(getDefaultAnatureVariables());
+		return new Anature(getDefaultAnatureVariables());
 	}
 
 	public static final String getDefaultAnatureName()

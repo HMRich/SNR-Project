@@ -1,16 +1,16 @@
 package application.anatures.abillities;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.enums.Stat;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
 public class Determination implements IAbility
 {
-	public static String activateAbility(IAnature userAnature, IMove move, double userOldHp)
+	public static String activateAbility(Anature userAnature, IMove move, double userOldHp)
 	{
 		if(hasNull(userAnature, move, userOldHp))
 		{
@@ -26,7 +26,7 @@ public class Determination implements IAbility
 		return "";
 	}
 
-	private static boolean hasNull(IAnature userAnature, IMove move, double userOldHp)
+	private static boolean hasNull(Anature userAnature, IMove move, double userOldHp)
 	{
 		if(userAnature == null)
 		{

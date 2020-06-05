@@ -1,18 +1,18 @@
 package application.anatures.abillities;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.enums.TempStatsStages;
 import application.enums.Type;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 
 public class Overclocked implements IAbility
 {
-	public static String activateAbility(IAnature source, IMove moveThatAttacked)
+	public static String activateAbility(Anature source, IMove moveThatAttacked)
 	{
 		if(hasNull(source, moveThatAttacked)) 
 		{
@@ -38,7 +38,7 @@ public class Overclocked implements IAbility
 		return "";
 	}
 	
-	private static boolean hasNull(IAnature source, IMove moveThatAttacked)
+	private static boolean hasNull(Anature source, IMove moveThatAttacked)
 	{
 		if(source == null)
 		{

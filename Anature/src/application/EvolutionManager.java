@@ -5,15 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.DatabaseType;
 import application.enums.LoggingTypes;
 import application.enums.Species;
-import application.interfaces.IAnature;
 
 public class EvolutionManager
 {
-	public static Species checkEvolution(IAnature anature)
+	public static Species checkEvolution(Anature anature)
 	{
 		Species toEvolveInto = null;
 		

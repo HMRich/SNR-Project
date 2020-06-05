@@ -1,22 +1,22 @@
 package application.trainers.ai.choice_objects;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
 import application.enums.LoggingTypes;
 import application.interfaces.AiChoiceObject;
-import application.interfaces.IAnature;
 
-public class AiSwitchChoice extends AiFinalChoice implements AiChoiceObject<IAnature>
+public class AiSwitchChoice extends AiFinalChoice implements AiChoiceObject<Anature>
 {
-	private IAnature mAnature;
+	private Anature mAnature;
 
-	public AiSwitchChoice(IAnature anatureBase)
+	public AiSwitchChoice(Anature anatureBase)
 	{
 		super(AiChoice.Item_Consumed);
 		setAnature(anatureBase);
 	}
 
-	private void setAnature(IAnature anatureBase)
+	private void setAnature(Anature anatureBase)
 	{
 		if(anatureBase != null)
 		{
@@ -30,13 +30,13 @@ public class AiSwitchChoice extends AiFinalChoice implements AiChoiceObject<IAna
 		}
 	}
 
-	private IAnature getAnature()
+	private Anature getAnature()
 	{
 		return mAnature;
 	}
 
 	@Override
-	public IAnature getChoiceObject()
+	public Anature getChoiceObject()
 	{
 		return getAnature();
 	}

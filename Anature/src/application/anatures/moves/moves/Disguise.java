@@ -1,11 +1,11 @@
 package application.anatures.moves.moves;
 
+import application.anatures.Anature;
 import application.anatures.moves.Move;
-import application.interfaces.IAnature;
 
 public class Disguise extends Move
 {
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		source.getStats().increaseTempEvasion();
 	}

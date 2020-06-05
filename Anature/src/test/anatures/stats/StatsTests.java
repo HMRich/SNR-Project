@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import application.anatures.Anature;
 import application.enums.Stat;
-import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
 import test.TestObjects;
 
@@ -27,7 +27,7 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
+			Anature sut = TestObjects.getAnature()
 					.getClone()
 					.setStats(TestObjects.getDefaultStats()
 							.getClone()
@@ -52,7 +52,7 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
+			Anature sut = TestObjects.getAnature()
 					.getClone()
 					.setStats(TestObjects.getDefaultStats()
 							.getClone()
@@ -79,7 +79,7 @@ public class StatsTests
 				// arrange
 				int baseHitPoints = 250;
 
-				IAnature sut = TestObjects.getAnature()
+				Anature sut = TestObjects.getAnature()
 						.getClone()
 						.setStats(TestObjects.getDefaultStats()
 								.getClone()
@@ -105,7 +105,7 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
+			Anature sut = TestObjects.getAnature()
 					.getClone()
 					.setStats(TestObjects.getDefaultStats()
 							.getClone()
@@ -131,7 +131,7 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
+			Anature sut = TestObjects.getAnature()
 					.getClone()
 					.setStats(TestObjects.getDefaultStats()
 							.getClone()
@@ -159,7 +159,7 @@ public class StatsTests
 				// arrange
 				int baseHitPoints = 250;
 
-				IAnature sut = TestObjects.getAnature()
+				Anature sut = TestObjects.getAnature()
 						.getClone()
 						.setStats(TestObjects.getDefaultStats()
 								.getClone()

@@ -3,12 +3,12 @@ package application.controllers.menus;
 import java.util.ArrayList;
 
 import application.Startup;
+import application.anatures.Anature;
 import application.anatures.movesets.MoveSet;
 import application.controllers.LoggerController;
 import application.enums.LoggingTypes;
 import application.enums.Stat;
 import application.enums.Type;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 import javafx.beans.property.ObjectProperty;
@@ -64,8 +64,8 @@ public class AnatureSummaryController
 	private int mCurrPageNum, mSelectedMoveIndex;
 	private ObjectProperty<Font> mMediumFontProperty;
 	private Scene mScene;
-	private ArrayList<IAnature> mParty;
-	private IAnature mCurrAnature;
+	private ArrayList<Anature> mParty;
+	private Anature mCurrAnature;
 
 	public void initialize()
 	{
@@ -92,7 +92,7 @@ public class AnatureSummaryController
 		mFemaleImg = new Image(getClass().getResource("/resources/images/battle/Female_Symbol.png").toExternalForm());
 	}
 
-	public void displayParty(ArrayList<IAnature> party)
+	public void displayParty(ArrayList<Anature> party)
 	{
 		if(party == null)
 		{
@@ -111,7 +111,7 @@ public class AnatureSummaryController
 		displayAnature(mCurrAnature);
 	}
 
-	private void displayAnature(IAnature anature)
+	private void displayAnature(Anature anature)
 	{
 		if(anature == null)
 		{
@@ -133,7 +133,7 @@ public class AnatureSummaryController
 		displayPageThreeInfo(anature, stats);
 	}
 
-	private void displayLeftSideInfo(IAnature anature, IStats stats)
+	private void displayLeftSideInfo(Anature anature, IStats stats)
 	{
 		mLvlTxt.setText("Lvl. " + stats.getLevel());
 		mNameTxt.setText(anature.getName());
@@ -150,7 +150,7 @@ public class AnatureSummaryController
 		}
 	}
 
-	private void displayPageOneInfo(IAnature anature, IStats stats)
+	private void displayPageOneInfo(Anature anature, IStats stats)
 	{
 		mDetailNameTxt.setText("   " + anature.getName());
 		mDetailTypeOneImg.setImage(new Image(getClass().getResource("/resources/images/types/" + anature.getPrimaryType() + "_Type.png").toExternalForm()));
@@ -172,7 +172,7 @@ public class AnatureSummaryController
 		mDetailXpTxt.setText(stats.getExperienceProgression() + " / " + stats.getRequiredExperience());
 	}
 
-	private void displayPageTwoInfo(IAnature anature, IStats stats)
+	private void displayPageTwoInfo(Anature anature, IStats stats)
 	{
 		String hp = generateStatString(Stat.HitPoints, stats);
 		String atk = generateStatString(Stat.Attack, stats);
@@ -192,7 +192,7 @@ public class AnatureSummaryController
 		mDetailAbilityDescTxt.setText("   " + anature.getAbility().getAbilityDescription());
 	}
 
-	private void displayPageThreeInfo(IAnature anature, IStats stats)
+	private void displayPageThreeInfo(Anature anature, IStats stats)
 	{
 		MoveSet moveset = anature.getMoveSet();
 		displayMoveRow(moveset.getMove(1), moveset, mMoveNameOneTxt, mMoveTypeOneImg, mMoveMpOneTxt, 1);
@@ -246,7 +246,7 @@ public class AnatureSummaryController
 		int lvl = stats.getLevelStat(statToGenerate);
 		int nature = stats.getNatureModifierValue(statToGenerate);
 		int total = stats.getTotalStat(statToGenerate);
-		
+
 		String str = String.format("   %s + %s + %s + %s", base, iv, ev, lvl);
 
 		if(nature != 0)
@@ -352,7 +352,7 @@ public class AnatureSummaryController
 	}
 
 	@SuppressWarnings("static-access")
-	private void setUpTabs(int col, IAnature anature)
+	private void setUpTabs(int col, Anature anature)
 	{
 		ImageView bg = new ImageView(new Image(getClass().getResource("/resources/images/menus/summary/Anature_Summary_Upper_Tab.png").toExternalForm()));
 		bg.setPreserveRatio(false);

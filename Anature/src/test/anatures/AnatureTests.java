@@ -20,7 +20,8 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import application.anatures.AnatureClass.AnatureVariables;
+import application.anatures.Anature;
+import application.anatures.AnatureVariables;
 import application.anatures.abillities.NullAbility;
 import application.anatures.movesets.MoveSet;
 import application.anatures.movesets.MoveSetTestable;
@@ -32,7 +33,6 @@ import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
 import application.pools.AbilityPool;
 import test.TestObjects;
@@ -111,7 +111,7 @@ class AnatureTests
 			void SetName_WithRealName_SetsTheName(String testString)
 			{
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setName(testString);
 
@@ -146,7 +146,7 @@ class AnatureTests
 			void SetOwnerName_WithRealName_SetsTheOwnerName(String testString)
 			{
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setOwnerName(testString);
 
@@ -166,7 +166,7 @@ class AnatureTests
 			void SetIsShiny_WithTrueOrFalse_SetsIsShinyValue(boolean testBoolean)
 			{
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setIsShiny(testBoolean);
 
@@ -208,7 +208,7 @@ class AnatureTests
 					Assert.fail("Null equivalent Species value was not excluded from test.");
 
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setSpecies(testSpecies);
 
@@ -252,7 +252,7 @@ class AnatureTests
 					Assert.fail("Null equivalent Gender value was not excluded from test.");
 
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setGender(testGender);
 
@@ -295,7 +295,7 @@ class AnatureTests
 					Assert.fail("Null equivalent Type value was not excluded from test.");
 
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setPrimaryType(testType);
 
@@ -328,7 +328,7 @@ class AnatureTests
 			void SetSecondaryType_WithEachType_SetsEachType(Type testType)
 			{
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setSecondaryType(testType);
 
@@ -367,7 +367,7 @@ class AnatureTests
 				realMoveSet.setMove(1, TestObjects.getDefaultTackle());
 
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setMoveSet(realMoveSet);
 
@@ -402,7 +402,7 @@ class AnatureTests
 			void SetAbility_WithRealAbility_SetsAbility(IAbility testAbility)
 			{
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setAbility(testAbility);
 
@@ -436,7 +436,7 @@ class AnatureTests
 			void SetStatus_WithEachStatus_SetsEachStatus(StatusEffects testStatus)
 			{
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setStatus(testStatus);
 
@@ -475,7 +475,7 @@ class AnatureTests
 						.create();
 
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setStats(newStats);
 
@@ -509,7 +509,7 @@ class AnatureTests
 			void SetIndexNumber_WithValueEqualToOrGreaterThanZero_SetsIndexNumber(int testNumber)
 			{
 				// act
-				IAnature sut = (IAnature) TestObjects.getAnature()
+				Anature sut = (Anature) TestObjects.getAnature()
 						.getClone()
 						.setIndexNumber(testNumber);
 
@@ -770,7 +770,7 @@ class AnatureTests
 			void GetTypes_CallsGetTypes_ReturnsAnatureTypes()
 			{
 				// arrange
-				IAnature sut = TestObjects.getAnature()
+				Anature sut = TestObjects.getAnature()
 						.getClone()
 						.setPrimaryType(Type.Fire)
 						.setSecondaryType(Type.Fighting);
@@ -787,7 +787,7 @@ class AnatureTests
 			void GetTypes_CallsGetTypes_ReturnsOnlyWater()
 			{
 				// arrange
-				IAnature sut = TestObjects.getAnature()
+				Anature sut = TestObjects.getAnature()
 						.getClone()
 						.setPrimaryType(Type.Water)
 						.setSecondaryType(Type.NotSet);
@@ -1046,7 +1046,7 @@ class AnatureTests
 //				assertDoesNotThrow(() ->
 //				{
 //					// arrange
-//					IAnature sut = (IAnature) TestObjects.getAnature()
+//					Anature sut = (Anature) TestObjects.getAnature()
 //							.getClone()
 //							.setSpecies(species)
 //							.create();
@@ -1064,7 +1064,7 @@ class AnatureTests
 //			void GetFrontSprite_WithSpecies_ReturnsInstanceOfImage(Species species)
 //			{
 //				// arrange
-//				IAnature sut = (IAnature) TestObjects.getAnature()
+//				Anature sut = (Anature) TestObjects.getAnature()
 //						.getClone()
 //						.setSpecies(species)
 //						.create();
@@ -1088,7 +1088,7 @@ class AnatureTests
 //				assertDoesNotThrow(() ->
 //				{
 //					// arrange
-//					IAnature sut = (IAnature) TestObjects.getAnature()
+//					Anature sut = (Anature) TestObjects.getAnature()
 //							.getClone()
 //							.setSpecies(species)
 //							.create();
@@ -1106,7 +1106,7 @@ class AnatureTests
 //			void GetBackSprite_WithSpecies_ReturnsInstanceOfImage(Species species)
 //			{
 //				// arrange
-//				IAnature sut = (IAnature) TestObjects.getAnature()
+//				Anature sut = (Anature) TestObjects.getAnature()
 //						.getClone()
 //						.setSpecies(species)
 //						.create();

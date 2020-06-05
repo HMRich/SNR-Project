@@ -1,16 +1,16 @@
 package application.anatures.abillities;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 
 public class Toxic implements IAbility
 {
-	public static String activateAbility(IAnature source, IAnature target)
+	public static String activateAbility(Anature source, Anature target)
 	{
 		if(hasNull(source, target)) 
 		{
@@ -25,7 +25,7 @@ public class Toxic implements IAbility
 		return "";
 	}
 	
-	private static boolean hasNull(IAnature source, IAnature target)
+	private static boolean hasNull(Anature source, Anature target)
 	{
 		if(source == null)
 		{

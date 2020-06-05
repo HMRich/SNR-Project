@@ -1,21 +1,18 @@
 package test.testableObjects;
 
-import application.anatures.AnatureClass;
-import application.anatures.AnatureClass.AnatureExport;
-import application.anatures.AnatureClass.AnatureVariables;
+import application.anatures.Anature;
+import application.anatures.AnatureVariables;
 import application.enums.Gender;
 import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
-import test.TestObjects;
 
-public class AnatureTestable extends AnatureExport
+public class AnatureTestable extends Anature
 {
 	public AnatureTestable(AnatureVariables context)
 	{
-		AnatureClass.Classes.super(context);
+		super(context);
 	}
 
 	private boolean mGetNameWasCalled;
@@ -41,77 +38,77 @@ public class AnatureTestable extends AnatureExport
 	public String getName()
 	{
 		mGetNameWasCalled = true;
-		return TestObjects.getDefaultAnatureName();
+		return super.getName();
 	}
 
 	@Override
 	public String getOwner()
 	{
 		mGetNameWasCalled = true;
-		return TestObjects.getDefaultOwnerName();
+		return super.getOwner();
 	}
 
 	@Override
 	public boolean isShiny()
 	{
 		mIsShinyWasCalled = true;
-		return TestObjects.getDefaultShinyValue();
+		return super.isShiny();
 	}
 
 	@Override
 	public Species getSpecies()
 	{
 		mGetSpeciesWasCalled = true;
-		return TestObjects.getDefaultSpecies();
+		return super.getSpecies();
 	}
 
 	@Override
 	public Gender getGender()
 	{
 		mGetGenderWasCalled = true;
-		return TestObjects.getDefaultGender();
+		return super.getGender();
 	}
 
 	@Override
 	public Type getPrimaryType()
 	{
 		mGetPrimaryTypeWasCalled = true;
-		return TestObjects.getDefaultPrimaryType();
+		return super.getPrimaryType();
 	}
 
 	@Override
 	public Type getSecondaryType()
 	{
 		mGetSecondaryTypeWasCalled = true;
-		return TestObjects.getDefaultSecondaryType();
+		return super.getSecondaryType();
 	}
 
 	@Override
 	public IAbility getAbility()
 	{
 		mGetAbilityWasCalled = true;
-		return TestObjects.getDefaultAbility();
+		return super.getAbility();
 	}
 
 	@Override
 	public StatusEffects getStatus()
 	{
 		mGetStatusWasCalled = true;
-		return TestObjects.getDefaultStatusEffect();
+		return super.getStatus();
 	}
 
 	@Override
 	public int getIndexNumber()
 	{
 		mGetIndexNumberWasCalled = true;
-		return TestObjects.getDefaultIndexNumber();
+		return super.getIndexNumber();
 	}
 
 	@Override
 	public int getCatchRate()
 	{
 		mGetCatchRateWasCalled = true;
-		return TestObjects.getDefaultCatchRate();
+		return super.getCatchRate();
 	}
 
 	/*
@@ -119,14 +116,14 @@ public class AnatureTestable extends AnatureExport
 	 */
 
 	@Override
-	public IAnature setName(String name)
+	public Anature setName(String name)
 	{
 		mSetNameWasCalled = true;
 		return this;
 	}
 
 	@Override
-	public IAnature setStatus(StatusEffects statusEffect)
+	public Anature setStatus(StatusEffects statusEffect)
 	{
 		mSetStatusWasCalled = true;
 		return this;

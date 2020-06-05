@@ -15,16 +15,16 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
+import application.anatures.Anature;
 import application.enums.Type;
 import application.enums.TypeEffectiveness;
-import application.interfaces.IAnature;
 
 @DisplayName("Type Advantage Tests")
 class TypeAdvantageTests
 {
-	private IAnature baseAnature;
+	private Anature baseAnature;
 
-	private IAnature setAnatureTypes(Type[] types)
+	private Anature setAnatureTypes(Type[] types)
 	{
 		return baseAnature.getClone()
 				.setPrimaryType(types[0])
@@ -42,8 +42,8 @@ class TypeAdvantageTests
 	{
 		private TypeEffectivenessTestCase createTestCase(Type[] sourceTypes, Type[] targetTypes, TypeEffectiveness expectedResult)
 		{
-			IAnature sourceAnature = setAnatureTypes(sourceTypes);
-			IAnature targetAnature = setAnatureTypes(targetTypes);
+			Anature sourceAnature = setAnatureTypes(sourceTypes);
+			Anature targetAnature = setAnatureTypes(targetTypes);
 			return new TypeEffectivenessTestCase(sourceAnature, targetAnature, expectedResult);
 		}
 

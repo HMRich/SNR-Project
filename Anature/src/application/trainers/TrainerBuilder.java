@@ -10,6 +10,7 @@ import java.util.Random;
 
 import application.DatabaseConnection;
 import application.Startup;
+import application.anatures.Anature;
 import application.anatures.NewAnatureBuilder;
 import application.controllers.LoggerController;
 import application.enums.DatabaseType;
@@ -19,7 +20,6 @@ import application.enums.Species;
 import application.enums.TrainerIds;
 import application.enums.TypeEffectiveness;
 import application.interfaces.IAI;
-import application.interfaces.IAnature;
 import application.interfaces.IBuilder;
 import application.interfaces.IHealthPotion;
 import application.interfaces.ITrainer;
@@ -57,7 +57,7 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		return this;
 	}
 
-	public TrainerBuilder withAnatureParty(ArrayList<IAnature> anatureParty)
+	public TrainerBuilder withAnatureParty(ArrayList<Anature> anatureParty)
 	{
 		mTrainer.setAnatureParty(anatureParty);
 		return this;
@@ -69,7 +69,7 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		return this;
 	}
 
-	public TrainerBuilder withCurrentAnature(IAnature currentAnature)
+	public TrainerBuilder withCurrentAnature(Anature currentAnature)
 	{
 		mTrainer.setCurrentAnature(currentAnature);
 		return this;
@@ -146,7 +146,7 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		}
 
 		int rewardAmount = Integer.parseInt(rewardAmountString);
-		ArrayList<IAnature> party = parsePartyList(partyList, anatureCount, minLevel, maxLevel);
+		ArrayList<Anature> party = parsePartyList(partyList, anatureCount, minLevel, maxLevel);
 		ArrayList<IHealthPotion> potions = parsePotionList(itemsList);
 		IAI ai = parseAi(aiHealthThreshold, aiSwitchThreshold, aiMoveThreshold);
 
@@ -213,9 +213,9 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		return items;
 	}
 
-	private static ArrayList<IAnature> parsePartyList(String partyString, int anatureCount, int anatureMinLevel, int anatureMaxLevel)
+	private static ArrayList<Anature> parsePartyList(String partyString, int anatureCount, int anatureMinLevel, int anatureMaxLevel)
 	{
-		ArrayList<IAnature> party = new ArrayList<IAnature>();
+		ArrayList<Anature> party = new ArrayList<Anature>();
 
 		ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyString.split(",")));
 		Random rng = new Random();

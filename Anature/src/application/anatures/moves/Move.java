@@ -2,11 +2,11 @@ package application.anatures.moves;
 
 import java.util.Random;
 
+import application.anatures.Anature;
 import application.enums.MoveIds;
 import application.enums.Stat;
 import application.enums.Type;
 import application.enums.TypeEffectiveness;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 
@@ -172,7 +172,7 @@ public class Move implements IMove
 	 * PROTECTED METHODS
 	 */
 
-	protected int calculateDamage(IAnature source, IAnature target, boolean isSpecialMove)
+	protected int calculateDamage(Anature source, Anature target, boolean isSpecialMove)
 	{
 		IStats sourceStats = source.getStats();
 		IStats targetStats = target.getStats();
@@ -180,13 +180,14 @@ public class Move implements IMove
 		double levelCalculation = ((2.0 * (double) sourceStats.getLevel()) / 5.0) + 2.0;
 		double movePower = (double) getMovePower();
 		double attackStat = isSpecialMove ? sourceStats.getTotalStat(Stat.SpecialAttack) : sourceStats.getTotalStat(Stat.Attack);
-		double defenseStat = isSpecialMove ?(double) targetStats.getTotalStat(Stat.SpecialDefense) : (double) targetStats.getTotalStat(Stat.Defense);
+		double defenseStat = isSpecialMove ? (double) targetStats.getTotalStat(Stat.SpecialDefense) : (double) targetStats.getTotalStat(Stat.Defense);
 		double typeMatchCalculation = source.getTypes()
 				.contains(getType()) ? 1.5 : 1.0;
-		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectivenes();
+		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target)
+				.getEffectivenes();
 		double randomNumberCalculation = randomObject.nextInt(16) + 85;
 
-		return (int) ( (((levelCalculation * movePower * attackStat / defenseStat) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation
+		return (int) ((((levelCalculation * movePower * attackStat / defenseStat) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation
 				* randomNumberCalculation / 100.0);
 	}
 
@@ -232,7 +233,7 @@ public class Move implements IMove
 	 * PUBLIC METHODS
 	 */
 
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		throw new IllegalStateException("This method should not be called.");
 	}

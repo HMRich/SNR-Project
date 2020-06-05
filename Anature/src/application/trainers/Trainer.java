@@ -2,10 +2,10 @@ package application.trainers;
 
 import java.util.ArrayList;
 
+import application.anatures.Anature;
 import application.enums.TrainerIds;
 import application.interfaces.AiChoiceObject;
 import application.interfaces.IAI;
-import application.interfaces.IAnature;
 import application.interfaces.IHealthPotion;
 import application.interfaces.ITrainer;
 import application.trainers.ai.choice_objects.AiHealthPotionChoice;
@@ -19,9 +19,9 @@ class Trainer implements ITrainer
 	private TrainerIds mId;
 	private String mName;
 	private int mRewardForDefeat;
-	private ArrayList<IAnature> mAnatures;
+	private ArrayList<Anature> mAnatures;
 	private ArrayList<IHealthPotion> mHealthPotions;
-	private IAnature mCurrentAnature;
+	private Anature mCurrentAnature;
 	private IAI mAI;
 
 	Trainer()
@@ -73,7 +73,7 @@ class Trainer implements ITrainer
 		mRewardForDefeat = rewardAmount;
 	}
 
-	void setAnatureParty(ArrayList<IAnature> anatureBases)
+	void setAnatureParty(ArrayList<Anature> anatureBases)
 	{
 		// TODO talk with team about if we should allow the trainer anatures variable to
 		// be empty
@@ -93,7 +93,7 @@ class Trainer implements ITrainer
 		mHealthPotions = healthPotionBases;
 	}
 
-	void setCurrentAnature(IAnature currentAnature)
+	void setCurrentAnature(Anature currentAnature)
 	{
 		if(currentAnature == null)
 		{
@@ -124,13 +124,13 @@ class Trainer implements ITrainer
 	{
 		return mName;
 	}
-	
+
 	public int getRewardForDefeat()
 	{
 		return mRewardForDefeat;
 	}
 
-	public ArrayList<IAnature> getAnatureParty()
+	public ArrayList<Anature> getAnatureParty()
 	{
 		return mAnatures;
 	}
@@ -140,15 +140,15 @@ class Trainer implements ITrainer
 		return mHealthPotions;
 	}
 
-	public IAnature getCurrentAnature()
+	public Anature getCurrentAnature()
 	{
 		return mCurrentAnature;
 	}
-	
+
 	/*
 	 * PRIVATE GETS
 	 */
-	
+
 	private IAI getTrainerAI()
 	{
 		return mAI;
@@ -180,10 +180,10 @@ class Trainer implements ITrainer
 	}
 
 	// TODO We need to move this method. It most likely does not belong here
-	public int getAnatureIndex(IAnature anatureBase)
+	public int getAnatureIndex(Anature anatureBase)
 	{
 		int index = 0;
-		for(IAnature currentAnature : mAnatures)
+		for(Anature currentAnature : mAnatures)
 		{
 			if(currentAnature.equals(anatureBase))
 			{
@@ -202,7 +202,7 @@ class Trainer implements ITrainer
 		}
 
 		boolean result = false;
-		for(IAnature anatureBase : mAnatures)
+		for(Anature anatureBase : mAnatures)
 		{
 			if(anatureBase.getStats()
 					.getCurrentHitPoints() == 0)
@@ -215,7 +215,7 @@ class Trainer implements ITrainer
 		return !result;
 	}
 
-	public AiChoiceObject<?> useTurn(IAnature playerAnature)
+	public AiChoiceObject<?> useTurn(Anature playerAnature)
 	{
 		boolean willUseHealthPotion = mAI.willUseHealthPotion(mHealthPotions, mCurrentAnature);
 
@@ -289,14 +289,14 @@ class Trainer implements ITrainer
 		return healthPotionChoice;
 	}
 
-	private AiSwitchChoice chooseAnature(IAnature playerAnature)
+	private AiSwitchChoice chooseAnature(Anature playerAnature)
 	{
-		IAnature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
+		Anature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
 		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
 		return switchChoice;
 	}
 
-	private AiMoveChoice chooseMove(IAnature playerAnature)
+	private AiMoveChoice chooseMove(Anature playerAnature)
 	{
 		AiMoveChoice moveChoice = mAI.chooseMove(mCurrentAnature, playerAnature);
 		return moveChoice;

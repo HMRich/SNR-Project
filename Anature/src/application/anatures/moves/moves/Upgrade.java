@@ -1,12 +1,12 @@
 package application.anatures.moves.moves;
 
+import application.anatures.Anature;
 import application.anatures.moves.Move;
-import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
 
 public class Upgrade extends Move
 {
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		IStats stats = source.getStats();
 		double maxStageValue = calculateMaxStageValue(stats);

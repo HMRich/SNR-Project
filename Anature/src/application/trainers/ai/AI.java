@@ -3,6 +3,7 @@ package application.trainers.ai;
 import java.util.ArrayList;
 import java.util.Random;
 
+import application.anatures.Anature;
 import application.anatures.movesets.MoveSet;
 import application.controllers.LoggerController;
 import application.enums.AiChoice;
@@ -10,7 +11,6 @@ import application.enums.LoggingTypes;
 import application.enums.Stat;
 import application.enums.TypeEffectiveness;
 import application.interfaces.IAI;
-import application.interfaces.IAnature;
 import application.interfaces.IHealthPotion;
 import application.interfaces.IMove;
 import application.pools.ItemPool;
@@ -35,7 +35,8 @@ class AI implements IAI
 
 	void setHealthThreshold(double healthThreshold)
 	{
-		if(healthThreshold < 0 || healthThreshold > 1)
+		if(healthThreshold < 0
+				|| healthThreshold > 1)
 		{
 			throw new IllegalArgumentException("Passed value \"healthThreshold\" needs to be a value between 0 and 1.");
 		}
@@ -74,7 +75,7 @@ class AI implements IAI
 	 * PUBLIC METHODS
 	 */
 
-	public boolean willUseHealthPotion(ArrayList<IHealthPotion> healthPotionBases, IAnature currentAnature)
+	public boolean willUseHealthPotion(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
 	{
 		if(healthPotionBases == null)
 		{
@@ -93,10 +94,11 @@ class AI implements IAI
 		boolean currentAnatureAtThreshold = anatureHpPercent <= mHealthThreshold;
 		boolean trainerHasHealthPotion = !healthPotionBases.isEmpty();
 
-		return trainerHasHealthPotion && currentAnatureAtThreshold;
+		return trainerHasHealthPotion
+				&& currentAnatureAtThreshold;
 	}
 
-	public IHealthPotion healthPotionToUse(ArrayList<IHealthPotion> healthPotionBases, IAnature currentAnature)
+	public IHealthPotion healthPotionToUse(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
 	{
 		if(healthPotionBases == null)
 		{
@@ -117,8 +119,10 @@ class AI implements IAI
 
 		for(IHealthPotion healthPotionBase : healthPotionBases)
 		{
-			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId()).getHealAmount();
-			double healPercent = itemHealAmount / currentAnature.getStats().getTotalStat(Stat.HitPoints);
+			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId())
+					.getHealAmount();
+			double healPercent = itemHealAmount / currentAnature.getStats()
+					.getTotalStat(Stat.HitPoints);
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);
@@ -126,7 +130,9 @@ class AI implements IAI
 			// TODO there is some logic here that allows trainers to use master potion even
 			// if there may be a better option that allows for less over healing.
 
-			if(anaturePercentAfterItemUse == 0 || anatureHpPercentIfItemUsed > anaturePercentAfterItemUse && !willOverheal)
+			if(anaturePercentAfterItemUse == 0
+					|| anatureHpPercentIfItemUsed > anaturePercentAfterItemUse
+							&& !willOverheal)
 			{
 				anaturePercentAfterItemUse = anatureHpPercentIfItemUsed;
 				healthPotionToUse = healthPotionBase;
@@ -142,7 +148,7 @@ class AI implements IAI
 		return healthPotionToUse;
 	}
 
-	public boolean willSwitchAnature(ArrayList<IAnature> anatureBases, IAnature enemyAnature, IAnature currentAnature)
+	public boolean willSwitchAnature(ArrayList<Anature> anatureBases, Anature enemyAnature, Anature currentAnature)
 	{
 		if(anatureBases == null)
 		{
@@ -166,10 +172,12 @@ class AI implements IAI
 		boolean currentAnatureNotAtThreshold = !isAnatureAtThreshold(currentAnature, enemyAnature);
 		boolean hasAnatureAtThreshold = hasAnAnatureAtThreshold(anatureBases, currentAnature, enemyAnature);
 
-		return hasAnotherAnature && currentAnatureNotAtThreshold && hasAnatureAtThreshold;
+		return hasAnotherAnature
+				&& currentAnatureNotAtThreshold
+				&& hasAnatureAtThreshold;
 	}
 
-	public AiMoveChoice chooseMove(IAnature source, IAnature target)
+	public AiMoveChoice chooseMove(Anature source, Anature target)
 	{
 		if(source == null)
 		{
@@ -195,11 +203,11 @@ class AI implements IAI
 		return randomAiMoveChoice;
 	}
 
-	public IAnature chooseNewAnature(ArrayList<IAnature> anatureBases, IAnature currentAnature, IAnature enemyAnature)
+	public Anature chooseNewAnature(ArrayList<Anature> anatureBases, Anature currentAnature, Anature enemyAnature)
 	{
-		IAnature anatureToReturn = currentAnature;
+		Anature anatureToReturn = currentAnature;
 
-		for(IAnature anatureBase : anatureBases)
+		for(Anature anatureBase : anatureBases)
 		{
 			if(isAnatureAtThreshold(anatureBase, enemyAnature))
 			{
@@ -216,7 +224,9 @@ class AI implements IAI
 
 	boolean canCreate()
 	{
-		return mHealthThreshold != -1 && !mSwitchThreshold.equals(TypeEffectiveness.NotSet) && !mMoveThreshold.equals(TypeEffectiveness.NotSet);
+		return mHealthThreshold != -1
+				&& !mSwitchThreshold.equals(TypeEffectiveness.NotSet)
+				&& !mMoveThreshold.equals(TypeEffectiveness.NotSet);
 	}
 
 	/*
@@ -228,21 +238,21 @@ class AI implements IAI
 		return hpPercentAfterHeal > 1;
 	}
 
-	private boolean isAnatureAtThreshold(IAnature currentAnature, IAnature enemyAnature)
+	private boolean isAnatureAtThreshold(Anature currentAnature, Anature enemyAnature)
 	{
 		TypeEffectiveness anatureEffectiveness = TypeEffectiveness.typeEffectiveness(currentAnature, enemyAnature);
 		return anatureEffectiveness.isAtOrAboveThreshold(mSwitchThreshold);
 	}
 
-	private boolean moveIsAtThreshold(IMove move, IAnature target)
+	private boolean moveIsAtThreshold(IMove move, Anature target)
 	{
 		TypeEffectiveness moveEffectiveness = TypeEffectiveness.typeEffectiveness(move, target);
 		return moveEffectiveness.isAtOrAboveThreshold(mMoveThreshold);
 	}
 
-	private boolean hasAnAnatureAtThreshold(ArrayList<IAnature> anatureParty, IAnature currentAnature, IAnature enemyAnature)
+	private boolean hasAnAnatureAtThreshold(ArrayList<Anature> anatureParty, Anature currentAnature, Anature enemyAnature)
 	{
-		for(IAnature anatureBase : anatureParty)
+		for(Anature anatureBase : anatureParty)
 		{
 			if(isAnatureAtThreshold(anatureBase, enemyAnature))
 			{
@@ -252,47 +262,53 @@ class AI implements IAI
 		return false;
 	}
 
-	private ArrayList<AiMoveChoice> moveChoiceList(IAnature source, IAnature target)
+	private ArrayList<AiMoveChoice> moveChoiceList(Anature source, Anature target)
 	{
 		ArrayList<AiMoveChoice> choices = new ArrayList<AiMoveChoice>();
 		TypeEffectiveness moveThreshold = mMoveThreshold;
 		do
 		{
 			choices = moveChoiceListAtThreshold(source, target, moveThreshold);
-			if(choices == null || choices.isEmpty())
+			if(choices == null
+					|| choices.isEmpty())
 			{
 				moveThreshold = TypeEffectiveness.decrementEffectiveness(moveThreshold);
 			}
-		} while(!moveThreshold.equals(TypeEffectiveness.NoEffect) && choices.isEmpty());
+		} while(!moveThreshold.equals(TypeEffectiveness.NoEffect)
+				&& choices.isEmpty());
 
 		return choices;
 	}
 
-	private ArrayList<AiMoveChoice> moveChoiceListAtThreshold(IAnature source, IAnature target, TypeEffectiveness threshold)
+	private ArrayList<AiMoveChoice> moveChoiceListAtThreshold(Anature source, Anature target, TypeEffectiveness threshold)
 	{
 		ArrayList<AiMoveChoice> choices = new ArrayList<AiMoveChoice>();
 
 		MoveSet moveSet = source.getMoveSet();
 
-		if(moveSet.hasMove(1) && moveIsAtThreshold(moveSet.getMove(1), target))
+		if(moveSet.hasMove(1)
+				&& moveIsAtThreshold(moveSet.getMove(1), target))
 		{
 			AiMoveChoice moveChoice1 = new AiMoveChoice(AiChoice.Move1, moveSet.getMove(1));
 			choices.add(moveChoice1);
 		}
 
-		if(moveSet.hasMove(2) && moveIsAtThreshold(moveSet.getMove(2), target))
+		if(moveSet.hasMove(2)
+				&& moveIsAtThreshold(moveSet.getMove(2), target))
 		{
 			AiMoveChoice moveChoice2 = new AiMoveChoice(AiChoice.Move2, moveSet.getMove(2));
 			choices.add(moveChoice2);
 		}
 
-		if(moveSet.hasMove(3) && moveIsAtThreshold(moveSet.getMove(3), target))
+		if(moveSet.hasMove(3)
+				&& moveIsAtThreshold(moveSet.getMove(3), target))
 		{
 			AiMoveChoice moveChoice3 = new AiMoveChoice(AiChoice.Move3, moveSet.getMove(3));
 			choices.add(moveChoice3);
 		}
 
-		if(moveSet.hasMove(4) && moveIsAtThreshold(moveSet.getMove(4), target))
+		if(moveSet.hasMove(4)
+				&& moveIsAtThreshold(moveSet.getMove(4), target))
 		{
 			AiMoveChoice moveChoice4 = new AiMoveChoice(AiChoice.Move4, moveSet.getMove(4));
 			choices.add(moveChoice4);

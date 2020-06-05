@@ -2,6 +2,7 @@ package application.interfaces;
 
 import java.util.ArrayList;
 
+import application.anatures.Anature;
 import application.enums.TrainerIds;
 import javafx.scene.image.Image;
 
@@ -14,14 +15,14 @@ public interface ITrainer
 	public TrainerIds getId();
 
 	public String getName();
-	
+
 	public int getRewardForDefeat();
 
-	public ArrayList<IAnature> getAnatureParty();
+	public ArrayList<Anature> getAnatureParty();
 
 	public ArrayList<IHealthPotion> getHealthPotions();
 
-	public IAnature getCurrentAnature();
+	public Anature getCurrentAnature();
 
 	/*
 	 * PUBLIC METHODS
@@ -31,9 +32,9 @@ public interface ITrainer
 
 	public int getNextAnature(int index);
 
-	public int getAnatureIndex(IAnature anatureBase);
+	public int getAnatureIndex(Anature anatureBase);
 
 	public boolean canBattle();
 
-	public AiChoiceObject<?> useTurn(IAnature playerAnature);
+	public AiChoiceObject<?> useTurn(Anature playerAnature);
 }

@@ -2,16 +2,16 @@ package application.controllers.results;
 
 import java.util.HashMap;
 
+import application.anatures.Anature;
 import application.enums.BattleEndMethods;
 import application.enums.Species;
-import application.interfaces.IAnature;
 
 public class BattleResult
 {
 	private BattleEndMethods mEndMethod;
-	private HashMap<IAnature, Species> mAnaturesToEvolve;
+	private HashMap<Anature, Species> mAnaturesToEvolve;
 	
-	public BattleResult(BattleEndMethods endMethod, HashMap<IAnature, Species> anaturesToEvolve)
+	public BattleResult(BattleEndMethods endMethod, HashMap<Anature, Species> anaturesToEvolve)
 	{
 		mEndMethod = endMethod;
 		mAnaturesToEvolve = anaturesToEvolve;
@@ -27,7 +27,7 @@ public class BattleResult
 		return mEndMethod;
 	}
 
-	public HashMap<IAnature, Species> getAnaturesToEvolve()
+	public HashMap<Anature, Species> getAnaturesToEvolve()
 	{
 		return mAnaturesToEvolve;
 	}

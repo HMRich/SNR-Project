@@ -2,12 +2,12 @@ package application.items;
 
 import java.util.Random;
 
+import application.anatures.Anature;
 import application.controllers.results.ItemResult;
 import application.enums.AnacubeResults;
 import application.enums.Gender;
 import application.enums.ItemIds;
 import application.enums.Stat;
-import application.interfaces.IAnature;
 
 public class Anacube extends ItemBase
 {
@@ -24,7 +24,7 @@ public class Anacube extends ItemBase
 	}
 
 	@Override
-	public ItemResult useItem(IAnature target)
+	public ItemResult useItem(Anature target)
 	{
 		double maxHp = target.getStats().getTotalStat(Stat.HitPoints);
 		double currHp = target.getStats().getCurrentHitPoints();
@@ -136,7 +136,7 @@ public class Anacube extends ItemBase
 		return bool ? 1 : 0;
 	}
 
-	private double getStatusBonus(IAnature target)
+	private double getStatusBonus(Anature target)
 	{
 		switch(target.getStatus())
 		{

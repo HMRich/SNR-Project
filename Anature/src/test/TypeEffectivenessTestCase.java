@@ -1,15 +1,15 @@
 package test;
 
+import application.anatures.Anature;
 import application.enums.TypeEffectiveness;
-import application.interfaces.IAnature;
 
 class TypeEffectivenessTestCase
 {
-	IAnature attacker;
-	IAnature defender;
+	Anature attacker;
+	Anature defender;
 	TypeEffectiveness expectedEffectiveness;
 
-	public TypeEffectivenessTestCase(IAnature attacker, IAnature defender, TypeEffectiveness expectedEffectiveness)
+	public TypeEffectivenessTestCase(Anature attacker, Anature defender, TypeEffectiveness expectedEffectiveness)
 	{
 		this.attacker = attacker;
 		this.defender = defender;
@@ -21,7 +21,7 @@ class TypeEffectivenessTestCase
 		return "EffectivenessValue_" + testCaseTypesToString(attacker) + "To" + testCaseTypesToString(defender) + "_Returns" + expectedEffectiveness.toString();
 	}
 
-	private String testCaseTypesToString(IAnature anatureBase)
+	private String testCaseTypesToString(Anature anatureBase)
 	{
 		String types = "";
 		if(anatureBase.getPrimaryType() != null)

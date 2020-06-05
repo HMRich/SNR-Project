@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.Random;
 
+import application.anatures.Anature;
 import application.anatures.movesets.MoveSet;
 import application.controllers.results.AbilityResult;
 import application.controllers.results.ItemResult;
@@ -10,24 +11,23 @@ import application.controllers.results.MoveResult;
 import application.enums.AbilityIds;
 import application.enums.MoveIds;
 import application.enums.Stat;
-import application.interfaces.IAnature;
 import application.interfaces.IItem;
 import application.interfaces.IMove;
 import application.pools.MovePool;
 
 public class FightManager
 {
-	private ArrayList<IAnature> mPlayerTeam, mEnemyTeam, mPlayerParticipatingAnatures;
+	private ArrayList<Anature> mPlayerTeam, mEnemyTeam, mPlayerParticipatingAnatures;
 	private int mPlayerIndex, mEnemyIndex, mTurnCount;
 
-	public FightManager(ArrayList<IAnature> playerTeam, ArrayList<IAnature> enemyTeam)
+	public FightManager(ArrayList<Anature> playerTeam, ArrayList<Anature> enemyTeam)
 	{
 		if(playerTeam == null || enemyTeam == null)
 			throw new IllegalArgumentException("Passed in parameter was null.");
 
 		mPlayerTeam = playerTeam;
 		mEnemyTeam = enemyTeam;
-		mPlayerParticipatingAnatures = new ArrayList<IAnature>();
+		mPlayerParticipatingAnatures = new ArrayList<Anature>();
 
 		mPlayerIndex = 0;
 		addPlayerAnatureParticipant(0);
@@ -37,7 +37,7 @@ public class FightManager
 
 	public void applyDamage(boolean isPlayer, int index, int damage)
 	{
-		ArrayList<IAnature> team = null;
+		ArrayList<Anature> team = null;
 
 		if(isPlayer)
 		{
@@ -49,7 +49,7 @@ public class FightManager
 			team = mEnemyTeam;
 		}
 
-		IAnature selected = team.get(index);
+		Anature selected = team.get(index);
 		selected.applyDamage(damage);
 	}
 
@@ -60,8 +60,8 @@ public class FightManager
 
 	public MoveResult attack(boolean isPlayerAttacking, int indexOfMove)
 	{
-		IAnature userAnature = null;
-		IAnature targetAnature = null;
+		Anature userAnature = null;
+		Anature targetAnature = null;
 
 		if(isPlayerAttacking)
 		{
@@ -136,7 +136,7 @@ public class FightManager
 		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, move);
 	}
 
-	private boolean landedAttack(IAnature userAnature, IMove move)
+	private boolean landedAttack(Anature userAnature, IMove move)
 	{
 		Random rng = new Random();
 		double anatureAccuracy = userAnature.getStats().getTotalStat(Stat.Accuracy);
@@ -152,7 +152,7 @@ public class FightManager
 	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, IItem item)
 	{
 		mTurnCount++;
-		IAnature target;
+		Anature target;
 
 		if(isPlayer)
 		{
@@ -169,8 +169,8 @@ public class FightManager
 
 	public AbilityResult activateEntryAbility(boolean isPlayer)
 	{
-		IAnature player = getPlayerAnature();
-		IAnature enemy = getEnemyAnature();
+		Anature player = getPlayerAnature();
+		Anature enemy = getEnemyAnature();
 
 		if(isPlayer)
 		{
@@ -182,22 +182,22 @@ public class FightManager
 				.getAbilityId(), enemy, player);
 	}
 
-	public ArrayList<IAnature> getPlayerTeam()
+	public ArrayList<Anature> getPlayerTeam()
 	{
 		return mPlayerTeam;
 	}
 
-	public IAnature getPlayerAnature()
+	public Anature getPlayerAnature()
 	{
 		return mPlayerTeam.get(mPlayerIndex);
 	}
 
-	public ArrayList<IAnature> getEnemyTeam()
+	public ArrayList<Anature> getEnemyTeam()
 	{
 		return mEnemyTeam;
 	}
 
-	public IAnature getEnemyAnature()
+	public Anature getEnemyAnature()
 	{
 		return mEnemyTeam.get(mEnemyIndex);
 	}
@@ -212,7 +212,7 @@ public class FightManager
 		mTurnCount++;
 	}
 
-	private void checkNulls(ArrayList<IAnature> team, int indexOfMove)
+	private void checkNulls(ArrayList<Anature> team, int indexOfMove)
 	{
 		if(mPlayerTeam.get(0) == null)
 		{
@@ -263,9 +263,9 @@ public class FightManager
 		return mPlayerIndex;
 	}
 	
-	public ArrayList<IAnature> getPlayerParticipantingAnatures()
+	public ArrayList<Anature> getPlayerParticipantingAnatures()
 	{
-		return new ArrayList<IAnature>(mPlayerParticipatingAnatures);
+		return new ArrayList<Anature>(mPlayerParticipatingAnatures);
 	}
 	
 	private void addPlayerAnatureParticipant(int index)

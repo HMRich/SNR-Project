@@ -1,9 +1,9 @@
 package application.controllers.overworld_cells;
 
 import application.LoggerStartUp;
+import application.anatures.Anature;
 import application.enums.Direction;
 import application.enums.WarpPoints;
-import application.interfaces.IAnature;
 import application.models.KeysPressed;
 import application.player.Player;
 import application.views.overworld_cells.RestStationCell;
@@ -41,7 +41,7 @@ public class RestStationController extends AbstractController
 				{
 					mView.showDialogue("I'll heal your Anatures!");
 
-					for(IAnature anature : mPlayerModel.getAnatures())
+					for(Anature anature : mPlayerModel.getAnatures())
 					{
 						anature.restore();
 					}

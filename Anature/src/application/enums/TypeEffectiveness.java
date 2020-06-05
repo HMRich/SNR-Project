@@ -1,7 +1,7 @@
 package application.enums;
 
+import application.anatures.Anature;
 import application.controllers.LoggerController;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
 public enum TypeEffectiveness
@@ -46,7 +46,7 @@ public enum TypeEffectiveness
 	 * PUBLIC METHDOS
 	 */
 
-	public static TypeEffectiveness typeEffectiveness(IAnature source, IAnature target)
+	public static TypeEffectiveness typeEffectiveness(Anature source, Anature target)
 	{
 		if(source.getPrimaryType() == Type.NotSet)
 		{
@@ -68,7 +68,7 @@ public enum TypeEffectiveness
 		return meshEffectiveness(targetPrimaryResult, targetSecondaryResult);
 	}
 
-	public static TypeEffectiveness typeEffectiveness(IMove source, IAnature target)
+	public static TypeEffectiveness typeEffectiveness(IMove source, Anature target)
 	{
 		if(source.getType() == Type.NotSet)
 		{
