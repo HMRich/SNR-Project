@@ -11,7 +11,6 @@ import application.anatures.moves.moves.Electrocution;
 import application.anatures.moves.moves.Flail;
 import application.anatures.moves.moves.Flamethrower;
 import application.anatures.moves.moves.ForgottenAwakening;
-import application.anatures.moves.moves.Grass_Whip;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HealingWinds;
 import application.anatures.moves.moves.Holler;
@@ -33,7 +32,6 @@ import application.anatures.moves.moves.Slow_Spore;
 import application.anatures.moves.moves.Sludge_Missile;
 import application.anatures.moves.moves.Sludge_Slap;
 import application.anatures.moves.moves.Tackle;
-import application.anatures.moves.moves.Tremor;
 import application.anatures.moves.moves.WaterToss;
 import application.anatures.moves.moves.Zen;
 import application.enums.MoveIds;
@@ -550,7 +548,7 @@ public class MovePool
 				);
 		
 		mMoves.put(MoveIds.Tremor,
-				new MoveBuilder<Tremor>(MoveIds.Tremor)
+				new MoveBuilder<JustDamageDealing>(MoveIds.Tremor)
 					.withName("Tremor")
 					.withType(Type.Ground)
 					.doesDamage(true)
@@ -586,7 +584,7 @@ public class MovePool
 				);
 		
 		mMoves.put(MoveIds.Leaf_Storm,
-				new MoveBuilder<Leaf_Storm>(MoveIds.Leaf_Storm)
+				new MoveBuilder<JustDamageDealing>(MoveIds.Leaf_Storm)
 					.withName("Leaf Storm")
 					.withType(Type.Grass)
 					.doesDamage(true)
@@ -598,7 +596,7 @@ public class MovePool
 				);
 		
 		mMoves.put(MoveIds.Leaf_Sword,
-				new MoveBuilder<Leaf_Sword>(MoveIds.Leaf_Sword)
+				new MoveBuilder<JustDamageDealing>(MoveIds.Leaf_Sword)
 					.withName("Leaf Sword")
 					.withType(Type.Grass)
 					.doesDamage(true)
@@ -610,7 +608,7 @@ public class MovePool
 				);
 		
 		mMoves.put(MoveIds.Grass_Whip,
-				new MoveBuilder<Grass_Whip>(MoveIds.Grass_Whip)
+				new MoveBuilder<JustDamageDealing>(MoveIds.Grass_Whip)
 					.withName("Grass Whip")
 					.withType(Type.Grass)
 					.doesDamage(true)
