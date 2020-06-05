@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
@@ -93,8 +93,7 @@ public class Startup extends Application
 			@Override
 			public void handle(KeyEvent event)
 			{
-				if(event.getText()
-						.compareTo("`") == 0)
+				if(event.getText().compareTo("`") == 0)
 				{
 					mLogger.toggleWindow();
 				}
@@ -102,8 +101,7 @@ public class Startup extends Application
 		};
 
 		mStage = primaryStage;
-		mStage.getIcons()
-				.add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
+		mStage.getIcons().add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
 		mStage.setTitle("Anature");
 
 		mStage.setMinWidth(640);
@@ -363,7 +361,7 @@ public class Startup extends Application
 		if(result.hasEvolutions())
 		{
 			HashMap<IAnature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
-			
+
 			Iterator<Entry<IAnature, Species>> evolveIterator = anaturesToEvolve.entrySet().iterator();
 			while(evolveIterator.hasNext())
 			{
@@ -373,25 +371,25 @@ public class Startup extends Application
 				{
 					mSceneStack.push(SceneType.Evolution);
 				}
-				
+
 				changeScene(SceneType.Evolution, null);
 				mEvolutionController.startEvolution(mPlayer.getAnatures(), evolveEntry.getKey(), evolveEntry.getValue(), () -> nextScene());
 			}
 		}
-		
+
 		else
 		{
 			changeScene(null, null);
 		}
 	}
-	
+
 	private static void nextScene()
 	{
 		if(mSceneStack.size() < 1)
 		{
 			changeScene(null, null);
 		}
-		
+
 		else
 		{
 			changeScene(mSceneStack.pop(), null);
@@ -403,36 +401,25 @@ public class Startup extends Application
 		IAnature first = AnatureBuilder.createAnature(Species.Null, 54);
 		first.updateName("Main Null");
 		mPlayer.addAnatures(first);
-		mPlayer.getAnatures()
-				.get(0)
-				.getStats()
-				.addExperience(14601);
+		mPlayer.getAnatures().get(0).getStats().addExperience(14601);
 
 		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
-		
+
 		IAnature third = AnatureBuilder.createAnature(Species.Sardino, 14);
 		mPlayer.addAnatures(third);
 		mPlayer.getAnatures().get(2).getStats().addExperience(630);
 
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Potion));
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
 
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
 
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 
@@ -459,11 +446,13 @@ public class Startup extends Application
 	{
 		Player
 		{
+			@Override
 			public Object getItem()
 			{
 				return mPlayer;
 			}
 
+			@Override
 			public void setItem(Object object)
 			{
 				mPlayer = (Player) object;
@@ -471,11 +460,13 @@ public class Startup extends Application
 		},
 		StarterTownModel
 		{
+			@Override
 			public Object getItem()
 			{
 				return mStarterTownModel;
 			}
 
+			@Override
 			public void setItem(Object object)
 			{
 				mStarterTownModel = (StarterTownModel) object;
@@ -483,11 +474,13 @@ public class Startup extends Application
 		},
 		PathOneModel
 		{
+			@Override
 			public Object getItem()
 			{
 				return mPathOneModel;
 			}
 
+			@Override
 			public void setItem(Object object)
 			{
 				mPathOneModel = (PathOneModel) object;
@@ -495,11 +488,13 @@ public class Startup extends Application
 		},
 		CurrentSceneType
 		{
+			@Override
 			public Object getItem()
 			{
 				return mCurrSceneType;
 			}
 
+			@Override
 			public void setItem(Object object)
 			{
 				mCurrSceneType = (SceneType) object;
@@ -508,11 +503,13 @@ public class Startup extends Application
 		},
 		CurrentPlayerDirection
 		{
+			@Override
 			public Object getItem()
 			{
 				return mCurrentCell.getPlayerFacing();
 			}
 
+			@Override
 			public void setItem(Object object)
 			{
 				mCurrentCell.setPlayerFacing((Direction) object);
@@ -520,30 +517,30 @@ public class Startup extends Application
 		},
 		CurrentPlayerXCoordinate
 		{
+			@Override
 			public Object getItem()
 			{
-				return mCurrentCell.getPlayer()
-						.getX();
+				return mCurrentCell.getPlayer().getX();
 			}
 
+			@Override
 			public void setItem(Object object)
 			{
-				mCurrentCell.getPlayer()
-						.setX((double) object);
+				mCurrentCell.getPlayer().setX((double) object);
 			}
 		},
 		CurrentPlayerYCoordinate
 		{
+			@Override
 			public Object getItem()
 			{
-				return mCurrentCell.getPlayer()
-						.getY();
+				return mCurrentCell.getPlayer().getY();
 			}
 
+			@Override
 			public void setItem(Object object)
 			{
-				mCurrentCell.getPlayer()
-						.setY((double) object);
+				mCurrentCell.getPlayer().setY((double) object);
 			}
 		}
 	}
@@ -584,6 +581,11 @@ public class Startup extends Application
 		ArrayList<Object> objRead = new ArrayList<Object>();
 		FileInputStream fileInStream;
 		ObjectInputStream in;
+
+		if(mCurrentController != null)
+		{
+			mCurrentController.saveLoadUpdates();
+		}
 
 		try
 		{

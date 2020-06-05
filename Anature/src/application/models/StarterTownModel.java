@@ -14,7 +14,10 @@ public class StarterTownModel implements Serializable
 
 	public StarterTownModel()
 	{
-		mKelly = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
+		if(mKelly == null)
+		{
+			mKelly = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
+		}
 	}
 
 	public ITrainer getKelly()

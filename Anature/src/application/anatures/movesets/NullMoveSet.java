@@ -8,7 +8,7 @@ public class NullMoveSet extends MoveSet implements Serializable
 {
 	private static final long serialVersionUID = -5479053677379093858L;
 
-	private static MoveSet mNullMoveSet = new NullMoveSet();
+	private static MoveSet mNullMoveSet;
 
 	public NullMoveSet()
 	{
@@ -17,9 +17,15 @@ public class NullMoveSet extends MoveSet implements Serializable
 
 	public static MoveSet getNullMoveSet()
 	{
+		if(mNullMoveSet == null)
+		{
+			mNullMoveSet = new NullMoveSet();
+		}
+
 		return mNullMoveSet;
 	}
 
+	@Override
 	public String toString()
 	{
 		return "Null MoveSet";

@@ -1,12 +1,11 @@
 package application.anatures.moves.moves;
 
-import org.omg.PortableInterceptor.USER_EXCEPTION;
-
 import application.anatures.moves.Move;
 import application.interfaces.IAnature;
 
 public class AntlerShot extends Move
 {
+	private static final long serialVersionUID = -7429832239175947913L;
 
 	@Override
 	public void activateMove(IAnature source, IAnature target)
@@ -14,7 +13,7 @@ public class AntlerShot extends Move
 		target.getStats().decreaseTempDefense();
 		source.getStats().increaseTempAttack();
 		target.takeDamage(calculateDamage(source, target, false));
-		
+
 	}
 
 }

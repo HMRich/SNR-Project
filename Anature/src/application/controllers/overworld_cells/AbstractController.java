@@ -121,9 +121,12 @@ public abstract class AbstractController
 
 		for(Rectangle toCheck : mView.getCollisions())
 		{
-			boolean check = right.intersects(toCheck.getBoundsInParent()) || upRight.intersects(toCheck.getBoundsInParent())
-					|| botRight.intersects(toCheck.getBoundsInParent()) || left.intersects(toCheck.getBoundsInParent())
-					|| upLeft.intersects(toCheck.getBoundsInParent()) || botLeft.intersects(toCheck.getBoundsInParent());
+			boolean check = right.intersects(toCheck.getBoundsInParent())
+					|| upRight.intersects(toCheck.getBoundsInParent())
+					|| botRight.intersects(toCheck.getBoundsInParent())
+					|| left.intersects(toCheck.getBoundsInParent())
+					|| upLeft.intersects(toCheck.getBoundsInParent())
+					|| botLeft.intersects(toCheck.getBoundsInParent());
 
 			if(check)
 			{
@@ -146,9 +149,12 @@ public abstract class AbstractController
 
 		for(Rectangle toCheck : mView.getCollisions())
 		{
-			boolean check = top.intersects(toCheck.getBoundsInParent()) || upLeft.intersects(toCheck.getBoundsInParent())
-					|| upRight.intersects(toCheck.getBoundsInParent()) || bot.intersects(toCheck.getBoundsInParent())
-					|| botLeft.intersects(toCheck.getBoundsInParent()) || botRight.intersects(toCheck.getBoundsInParent());
+			boolean check = top.intersects(toCheck.getBoundsInParent())
+					|| upLeft.intersects(toCheck.getBoundsInParent())
+					|| upRight.intersects(toCheck.getBoundsInParent())
+					|| bot.intersects(toCheck.getBoundsInParent())
+					|| botLeft.intersects(toCheck.getBoundsInParent())
+					|| botRight.intersects(toCheck.getBoundsInParent());
 
 			if(check)
 			{
@@ -166,13 +172,15 @@ public abstract class AbstractController
 			int trainerIndex = trainer.getIndex(mView.getBackground());
 			int playerIndex = mPlayerView.getIndex(mView.getBackground());
 
-			if(mPlayerView.getBoxY() > trainer.getCollisionY() && playerIndex < trainerIndex)
+			if(mPlayerView.getBoxY() > trainer.getCollisionY()
+					&& playerIndex < trainerIndex)
 			{
 				mPlayerView.removeFromContainer(mView.getBackground());
 				mPlayerView.addToContainer(mView.getBackground(), trainerIndex + 1);
 			}
 
-			else if(mPlayerView.getBoxY() <= trainer.getCollisionY() && playerIndex > trainerIndex)
+			else if(mPlayerView.getBoxY() <= trainer.getCollisionY()
+					&& playerIndex > trainerIndex)
 			{
 				mPlayerView.removeFromContainer(mView.getBackground());
 				mPlayerView.addToContainer(mView.getBackground(), trainerIndex);
@@ -272,7 +280,10 @@ public abstract class AbstractController
 						double currX = mPlayerView.getX();
 						double currY = mPlayerView.getY();
 
-						if(currX > mLastWildX + 100 || currX < mLastWildX - 100 || currY > mLastWildY + 100 || currY < mLastWildY - 100)
+						if(currX > mLastWildX + 100
+								|| currX < mLastWildX - 100
+								|| currY > mLastWildY + 100
+								|| currY < mLastWildY - 100)
 						{
 							mLastWildX = mPlayerView.getX();
 							mLastWildY = mPlayerView.getY();
@@ -358,10 +369,10 @@ public abstract class AbstractController
 				if(on)
 				{
 					boolean result = mView.toggleSideMenu();
-					
+
 					keys.setCanMove(!result);
 					mCanTalkToTrainer = !result;
-					
+
 					if(result)
 					{
 						keys.turnOffAll();
@@ -369,14 +380,15 @@ public abstract class AbstractController
 					}
 				}
 				break;
-				
+
 			default:
 				break;
 		}
 
 		keys.setSprint(event.isShiftDown());
 
-		if(event.getCode() == KeyCode.BACK_QUOTE && !on)
+		if(event.getCode() == KeyCode.BACK_QUOTE
+				&& !on)
 		{
 			mLogger.toggleWindow();
 		}
@@ -398,13 +410,14 @@ public abstract class AbstractController
 		{
 			return;
 		}
-		
+
 		boolean interactingWithTrainer = false;
 		KeysPressed keys = mView.getKeysPressed();
 
 		for(TrainerSprite trainer : mView.getTrainerSprites())
 		{
-			if(trainer.interact(mPlayerView, mView.getPlayerFacing()) && mClickQueue.isEmpty())
+			if(trainer.interact(mPlayerView, mView.getPlayerFacing())
+					&& mClickQueue.isEmpty())
 			{
 				interactingWithTrainer = true;
 
@@ -422,7 +435,9 @@ public abstract class AbstractController
 						mClickQueue.enqueue(() -> mView.showDialogue(toDisplay), "Show Dialogue");
 					}
 
-					if(mPlayerModel.canBattle() && trainer.getTrainerModel() != null && trainer.getTrainerModel().canBattle())
+					if(mPlayerModel.canBattle()
+							&& trainer.getTrainerModel() != null
+							&& trainer.getTrainerModel().canBattle())
 					{
 						mClickQueue.enqueue(() ->
 						{
@@ -471,7 +486,10 @@ public abstract class AbstractController
 	{
 		KeysPressed keys = mView.getKeysPressed();
 
-		if(keys.isUp() && keys.isDown() && keys.isLeft() && keys.isRight())
+		if(keys.isUp()
+				&& keys.isDown()
+				&& keys.isLeft()
+				&& keys.isRight())
 		{
 			if(mPlayerView.getImage().equals(mStandDownImg))
 				return;
@@ -480,7 +498,9 @@ public abstract class AbstractController
 			mView.setPlayerFacing(Direction.Down);
 		}
 
-		else if(keys.isRight() && keys.isLeft() && keys.isUp())
+		else if(keys.isRight()
+				&& keys.isLeft()
+				&& keys.isUp())
 		{
 			if(mPlayerView.getImage().equals(mWalkUpImg))
 				return;
@@ -489,7 +509,9 @@ public abstract class AbstractController
 			mView.setPlayerFacing(Direction.Up);
 		}
 
-		else if(keys.isRight() && keys.isLeft() && keys.isDown())
+		else if(keys.isRight()
+				&& keys.isLeft()
+				&& keys.isDown())
 		{
 			if(mPlayerView.getImage().equals(mWalkDownImg))
 				return;
@@ -498,7 +520,9 @@ public abstract class AbstractController
 			mView.setPlayerFacing(Direction.Down);
 		}
 
-		else if(keys.isUp() && keys.isDown() && keys.isRight())
+		else if(keys.isUp()
+				&& keys.isDown()
+				&& keys.isRight())
 		{
 			if(mPlayerView.getImage().equals(mWalkRightImg))
 				return;
@@ -507,7 +531,9 @@ public abstract class AbstractController
 			mView.setPlayerFacing(Direction.Right);
 		}
 
-		else if(keys.isUp() && keys.isDown() && keys.isLeft())
+		else if(keys.isUp()
+				&& keys.isDown()
+				&& keys.isLeft())
 		{
 			if(mPlayerView.getImage().equals(mWalkLeftImg))
 				return;
@@ -516,37 +542,51 @@ public abstract class AbstractController
 			mView.setPlayerFacing(Direction.Left);
 		}
 
-		else if((keys.isUp() && keys.isDown()) || (keys.isRight() && keys.isLeft()))
+		else if((keys.isUp()
+				&& keys.isDown())
+				|| (keys.isRight()
+						&& keys.isLeft()))
 		{
 			mPlayerView.setImage(mStandDownImg);
 			mView.setPlayerFacing(Direction.Down);
 		}
 
-		else if(keys.isRight() && !mPlayerView.getImage().equals(mWalkRightImg))
+		else if(keys.isRight()
+				&& !mPlayerView.getImage().equals(mWalkRightImg))
 		{
 			mPlayerView.setImage(mWalkRightImg);
 			mView.setPlayerFacing(Direction.Right);
 		}
 
-		else if(keys.isLeft() && !mPlayerView.getImage().equals(mWalkLeftImg))
+		else if(keys.isLeft()
+				&& !mPlayerView.getImage().equals(mWalkLeftImg))
 		{
 			mPlayerView.setImage(mWalkLeftImg);
 			mView.setPlayerFacing(Direction.Left);
 		}
 
-		else if(keys.isDown() && !mPlayerView.getImage().equals(mWalkDownImg) && !keys.isLeft() && !keys.isRight())
+		else if(keys.isDown()
+				&& !mPlayerView.getImage().equals(mWalkDownImg)
+				&& !keys.isLeft()
+				&& !keys.isRight())
 		{
 			mPlayerView.setImage(mWalkDownImg);
 			mView.setPlayerFacing(Direction.Down);
 		}
 
-		else if(keys.isUp() && !mPlayerView.getImage().equals(mWalkUpImg) && !keys.isLeft() && !keys.isRight())
+		else if(keys.isUp()
+				&& !mPlayerView.getImage().equals(mWalkUpImg)
+				&& !keys.isLeft()
+				&& !keys.isRight())
 		{
 			mPlayerView.setImage(mWalkUpImg);
 			mView.setPlayerFacing(Direction.Up);
 		}
 
-		else if(!keys.isUp() && !keys.isDown() && !keys.isRight() && !keys.isLeft())
+		else if(!keys.isUp()
+				&& !keys.isDown()
+				&& !keys.isRight()
+				&& !keys.isLeft())
 		{
 			switch(mView.getPlayerFacing())
 			{
@@ -578,11 +618,13 @@ public abstract class AbstractController
 		KeysPressed keys = mView.getKeysPressed();
 		keys.turnOffAll();
 		keys.setCanMove(true);
-		
+
 		updatePcSprite();
-		
+
 		mView.hideDialogue();
 		mView.hideShopMenu();
 		mView.hideSideMenu();
+
+		mCanTalkToTrainer = true;
 	}
 }

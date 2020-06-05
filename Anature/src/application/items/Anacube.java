@@ -157,11 +157,13 @@ public class Anacube extends ItemBase implements Serializable
 		}
 	}
 
+	@Override
 	public void setItemId(ItemIds id)
 	{
 		super.setItemId(id);
 	}
 
+	@Override
 	public void setItemName(String name)
 	{
 		super.setItemName(name);

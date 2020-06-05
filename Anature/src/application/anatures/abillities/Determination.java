@@ -1,7 +1,5 @@
 package application.anatures.abillities;
 
-import java.io.Serializable;
-
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -10,7 +8,7 @@ import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
-public class Determination implements IAbility, Serializable
+public class Determination implements IAbility
 {
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +19,8 @@ public class Determination implements IAbility, Serializable
 			return "";
 		}
 
-		if(move.doesDamage() && (userOldHp == userAnature.getStats().getTotalStat(Stat.HitPoints)))
+		if(move.doesDamage()
+				&& (userOldHp == userAnature.getStats().getTotalStat(Stat.HitPoints)))
 		{
 			userAnature.getStats().setCurrentHitPoints(1);
 			return userAnature.getName() + " survived on 1 hp thanks to their Determination!";
@@ -47,21 +46,25 @@ public class Determination implements IAbility, Serializable
 		return false;
 	}
 
+	@Override
 	public AbilityIds getAbilityId()
 	{
 		return AbilityIds.Determination;
 	}
 
+	@Override
 	public String toString()
 	{
 		return "Determination";
 	}
 
+	@Override
 	public String getAbilityDescription()
 	{
 		return "Makes the Anature unable to be defeated in a single attack.";
 	}
 
+	@Override
 	public boolean happensEveryTurn()
 	{
 		return false;

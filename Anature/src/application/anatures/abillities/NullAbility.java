@@ -1,18 +1,21 @@
 package application.anatures.abillities;
 
-import java.io.Serializable;
-
 import application.enums.AbilityIds;
 import application.interfaces.IAbility;
 
-public class NullAbility implements IAbility, Serializable
+public class NullAbility implements IAbility
 {
 	private static final long serialVersionUID = 6894102485855851274L;
 
-	private static IAbility mNullAbility = new NullAbility();
+	private static IAbility mNullAbility;
 
 	public static IAbility getNullAbility()
 	{
+		if(mNullAbility == null)
+		{
+			mNullAbility = new NullAbility();
+		}
+
 		return mNullAbility;
 	}
 

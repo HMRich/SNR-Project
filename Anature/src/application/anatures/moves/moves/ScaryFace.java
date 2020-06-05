@@ -5,6 +5,7 @@ import application.interfaces.IAnature;
 
 public class ScaryFace extends Move
 {
+	private static final long serialVersionUID = 996073700717004373L;
 
 	@Override
 	public void activateMove(IAnature source, IAnature target)

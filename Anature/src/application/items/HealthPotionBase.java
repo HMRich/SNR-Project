@@ -35,6 +35,7 @@ public class HealthPotionBase extends ItemBase implements IHealthPotion, Seriali
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public ItemResult useItem(IAnature target)
 	{
 		double oldHp = target.getStats().getCurrentHitPoints();
@@ -44,6 +45,7 @@ public class HealthPotionBase extends ItemBase implements IHealthPotion, Seriali
 		return new ItemResult(dialogue, newHp - oldHp);
 	}
 
+	@Override
 	public int getHealAmount()
 	{
 		return mHealAmount;

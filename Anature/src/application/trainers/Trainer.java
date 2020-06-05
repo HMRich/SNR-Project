@@ -48,6 +48,7 @@ class Trainer implements ITrainer, Serializable
 		{
 			throw new IllegalArgumentException("Passed value \"trainerId\" was null.");
 		}
+
 		mId = trainerId;
 	}
 
@@ -58,11 +59,11 @@ class Trainer implements ITrainer, Serializable
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim()
-				.isEmpty())
+		if(name.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
+
 		mName = name;
 	}
 
@@ -84,6 +85,7 @@ class Trainer implements ITrainer, Serializable
 		{
 			throw new IllegalArgumentException("Passed value \"anatures\" was null.");
 		}
+
 		mAnatures = anatureBases;
 	}
 
@@ -93,6 +95,7 @@ class Trainer implements ITrainer, Serializable
 		{
 			throw new IllegalArgumentException("Passed value \"potions\" was null.");
 		}
+
 		mHealthPotions = healthPotionBases;
 	}
 
@@ -102,6 +105,7 @@ class Trainer implements ITrainer, Serializable
 		{
 			throw new IllegalArgumentException("Passed value \"anature\" was null.");
 		}
+
 		mCurrentAnature = currentAnature;
 	}
 
@@ -111,6 +115,7 @@ class Trainer implements ITrainer, Serializable
 		{
 			throw new IllegalArgumentException("Passed value \"ai\" was null.");
 		}
+
 		mAI = ai;
 	}
 
@@ -118,40 +123,46 @@ class Trainer implements ITrainer, Serializable
 	 * PUBLIC GETS
 	 */
 
+	@Override
 	public TrainerIds getId()
 	{
 		return mId;
 	}
 
+	@Override
 	public String getName()
 	{
 		return mName;
 	}
-	
+
+	@Override
 	public int getRewardForDefeat()
 	{
 		return mRewardForDefeat;
 	}
 
+	@Override
 	public ArrayList<IAnature> getAnatureParty()
 	{
 		return mAnatures;
 	}
 
+	@Override
 	public ArrayList<IHealthPotion> getHealthPotions()
 	{
 		return mHealthPotions;
 	}
 
+	@Override
 	public IAnature getCurrentAnature()
 	{
 		return mCurrentAnature;
 	}
-	
+
 	/*
 	 * PRIVATE GETS
 	 */
-	
+
 	private IAI getTrainerAI()
 	{
 		return mAI;
@@ -161,17 +172,18 @@ class Trainer implements ITrainer, Serializable
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public Image getBattleSprite()
 	{
 		if(mId == TrainerIds.Wild)
 			return null;
 
-		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString()
-				.toLowerCase() + "/" + mId.toString() + ".png")
-				.toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + "/" + mId.toString() + ".png").toExternalForm(),
+				1000.0, 1000.0, true, false);
 	}
 
 	// TODO We need to get rid of this method
+	@Override
 	public int getNextAnature(int index)
 	{
 		index++;
@@ -183,6 +195,7 @@ class Trainer implements ITrainer, Serializable
 	}
 
 	// TODO We need to move this method. It most likely does not belong here
+	@Override
 	public int getAnatureIndex(IAnature anatureBase)
 	{
 		int index = 0;
@@ -197,6 +210,7 @@ class Trainer implements ITrainer, Serializable
 		return -1;
 	}
 
+	@Override
 	public boolean canBattle()
 	{
 		if(mAnatures.size() == 0)
@@ -207,8 +221,7 @@ class Trainer implements ITrainer, Serializable
 		boolean result = false;
 		for(IAnature anatureBase : mAnatures)
 		{
-			if(anatureBase.getStats()
-					.getCurrentHitPoints() == 0)
+			if(anatureBase.getStats().getCurrentHitPoints() == 0)
 			{
 				result = true;
 				break;
@@ -218,6 +231,7 @@ class Trainer implements ITrainer, Serializable
 		return !result;
 	}
 
+	@Override
 	public AiChoiceObject<?> useTurn(IAnature playerAnature)
 	{
 		boolean willUseHealthPotion = mAI.willUseHealthPotion(mHealthPotions, mCurrentAnature);

@@ -1,7 +1,5 @@
 package application.anatures.abillities;
 
-import java.io.Serializable;
-
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -10,7 +8,7 @@ import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
 
-public class Spiky implements IAbility, Serializable
+public class Spiky implements IAbility
 {
 	private static final long serialVersionUID = -6679381514412927390L;
 
@@ -18,7 +16,10 @@ public class Spiky implements IAbility, Serializable
 	{
 		String result = "";
 
-		if(!hasNull(source, target, sourceMove) && sourceMove.isPhysicalAttack() && !isSourceAttacking && !attackMissed)
+		if(!hasNull(source, target, sourceMove)
+				&& sourceMove.isPhysicalAttack()
+				&& !isSourceAttacking
+				&& !attackMissed)
 		{
 			int newHp = target.getStats().getCurrentHitPoints() - (target.getStats().getTotalStat(Stat.HitPoints) / 8);
 
@@ -57,21 +58,25 @@ public class Spiky implements IAbility, Serializable
 		return false;
 	}
 
+	@Override
 	public AbilityIds getAbilityId()
 	{
 		return AbilityIds.Spiky;
 	}
 
+	@Override
 	public String toString()
 	{
 		return "Spiky";
 	}
 
+	@Override
 	public String getAbilityDescription()
 	{
 		return "The opposing Anature takes damage whenever they come into physical contact with this Anature.";
 	}
 
+	@Override
 	public boolean happensEveryTurn()
 	{
 		return true;

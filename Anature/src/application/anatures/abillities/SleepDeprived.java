@@ -1,7 +1,5 @@
 package application.anatures.abillities;
 
-import java.io.Serializable;
-
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
@@ -9,7 +7,7 @@ import application.enums.StatusEffects;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 
-public class SleepDeprived implements IAbility, Serializable
+public class SleepDeprived implements IAbility
 {
 	private static final long serialVersionUID = 6256924311685034417L;
 

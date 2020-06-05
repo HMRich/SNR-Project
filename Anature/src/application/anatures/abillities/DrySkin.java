@@ -1,14 +1,12 @@
 package application.anatures.abillities;
 
-import java.io.Serializable;
-
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 
-public class DrySkin implements IAbility, Serializable
+public class DrySkin implements IAbility
 {
 	private static final long serialVersionUID = -8094396331629552627L;
 
@@ -19,7 +17,7 @@ public class DrySkin implements IAbility, Serializable
 			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in DrySkin was null.");
 			return "";
 		}
-		
+
 		return userAnature.getName() + " nullified the move with its Dry Skin ability!";
 	}
 
