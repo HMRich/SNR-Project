@@ -14,6 +14,7 @@ import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
 import application.anatures.moves.moves.Miss_Direction;
+import application.anatures.moves.moves.Mystic_Power;
 import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.PocketSand;
 import application.anatures.moves.moves.Restore;
@@ -360,7 +361,7 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 				
 			case Miss_Direction:
-				mMove = (M) new Miss_Direction();
+				mMove = (M) new JustDamageDealing();
 				break;
 				
 			case Zen:
@@ -372,14 +373,20 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 				
 			case Channel:
-				mMove = (M) new Channel();
+				mMove = (M) new JustDamageDealing();
 				break;
 			
 			case Restore:
 				mMove = (M) new Restore();
 				break;
 				
+			case Mystic_Power:
+				mMove = (M) new Mystic_Power();
+				break;
 				
+			case Focused_Heatbutt:
+				mMove = (M) new JustDamageDealing();
+				break;
 			
 			default:
 				throw new IllegalStateException("The variable \"moveId\" was not found. Please add it to the list.");
