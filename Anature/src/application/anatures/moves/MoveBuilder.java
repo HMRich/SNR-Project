@@ -12,20 +12,40 @@ import application.anatures.moves.moves.FocusUp;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
+import application.anatures.moves.moves.Mystic_Power;
+import application.anatures.moves.moves.Knock_Down;
 import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.PocketSand;
+import application.anatures.moves.moves.Restore;
 import application.anatures.moves.moves.SharpenUp;
 import application.anatures.moves.moves.SkipTurn;
+import application.anatures.moves.moves.Slumber;
+import application.anatures.moves.moves.Slow_Spore;
+import application.anatures.moves.moves.Sludge_Missile;
+import application.anatures.moves.moves.Sludge_Slap;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.moves.moves.TailBlock;
 import application.anatures.moves.moves.Tornado;
 import application.anatures.moves.moves.Upgrade;
 import application.anatures.moves.moves.WaterToss;
 import application.anatures.moves.moves.WiredMess;
+import application.anatures.moves.moves.Zen;
 import application.enums.MoveIds;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IBuilder;
+import application.anatures.moves.moves.AntlerShot;
+import application.anatures.moves.moves.Electrocution;
+import application.anatures.moves.moves.ForgottenAwakening;
+import application.anatures.moves.moves.HealingWinds;
+import application.anatures.moves.moves.Holler;
+import application.anatures.moves.moves.Leen;
+import application.anatures.moves.moves.LightMissile;
+import application.anatures.moves.moves.ScaryFace;
+import application.anatures.moves.moves.SmogWave;
+import application.anatures.moves.moves.Nimbleness;
+
+
 
 public class MoveBuilder<M extends Move> implements IBuilder<M>
 {
@@ -157,6 +177,70 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 			case Tackle:
 				mMove = (M) new Tackle();
 				break;
+				
+			case Antler_Shot:
+				mMove = (M) new AntlerShot();
+				break;
+				
+			case Cinder:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.90);
+				break;
+				
+			case Clop:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Electrocution:
+				mMove = (M) new Electrocution();
+				break;
+				
+			case Electro_Sonic:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.90);
+				break;
+				
+			case Fire_Cell:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.01);
+				break;
+				
+			case Fire_Torture:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.80);
+				break;
+				
+			case Flame_Bout:
+				mMove = (M) new DamageAndStatus(StatusEffects.Burn, 0.70);
+				break;
+				
+			case Magical_Spice:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Forgotten_Awakening:
+				mMove = (M) new ForgottenAwakening();
+				break;
+				
+			case Healing_Winds:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Holler:
+				mMove = (M) new Holler();
+				break;
+				
+			case Leen:
+				mMove = (M) new Leen();
+				break;
+				
+			case Lightning:
+				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.70);
+				break;
+				
+			case Smash:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Stormy_Breeze:
+				mMove = (M) new JustDamageDealing();
+				break;
 
 			case NullMove:
 				mMove = (M) new NullMove();
@@ -273,7 +357,72 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 			case Voltage_Overload:
 				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.6);
 				break;
+				
+			case Nimbleness:
+				mMove = (M) new Nimbleness();
+				break;
+				
+			case Miss_Direction:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Zen:
+				mMove = (M) new Zen();
+				break;
+			
+			case Slumber:
+				mMove = (M) new Slumber();
+				break;
+				
+			case Channel:
+				mMove = (M) new JustDamageDealing();
+				break;
+			
+			case Restore:
+				mMove = (M) new Restore();
+				break;
+				
+			case Mystic_Power:
+				mMove = (M) new Mystic_Power();
+				break;
+				
+			case Focused_Heatbutt:
+				mMove = (M) new JustDamageDealing();
+				break;
+			
+				
+			case Knock_Down:
+				mMove = (M) new Knock_Down();
+				break;
+				
+			case Tremor:
+				mMove = (M) new JustDamageDealing();
+				break;
 
+			case Sludge_Missile:
+				mMove = (M) new Sludge_Missile();
+				break;
+				
+			case Sludge_Slap:
+				mMove = (M) new Sludge_Slap();
+				break;
+					
+			case Leaf_Storm:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Leaf_Sword:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Grass_Whip:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Slow_Spore:
+				mMove = (M) new Slow_Spore();
+				break;
+			
 			default:
 				throw new IllegalStateException("The variable \"moveId\" was not found. Please add it to the list.");
 		}

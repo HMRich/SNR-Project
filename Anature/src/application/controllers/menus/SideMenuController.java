@@ -1,4 +1,4 @@
-package application.controllers;
+package application.controllers.menus;
 
 import application.Startup;
 import application.enums.SceneType;

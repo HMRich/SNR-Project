@@ -4,19 +4,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import application.anatures.AnatureBuilder;
-import application.controllers.AnatureSummaryController;
 import application.controllers.BattleController;
 import application.controllers.LoggerController;
+import application.controllers.menus.AnatureSummaryController;
+import application.controllers.menus.EvolutionController;
 import application.controllers.overworld_cells.AbstractController;
 import application.controllers.overworld_cells.GrassTownController;
 import application.controllers.overworld_cells.PathOneController;
 import application.controllers.overworld_cells.RestStationController;
 import application.controllers.overworld_cells.StarterTownController;
+import application.controllers.results.BattleResult;
 import application.enums.Direction;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
@@ -51,9 +58,12 @@ public class Startup extends Application
 	private static Player mPlayer;
 	private static EventHandler<KeyEvent> mKeyListener;
 	private static SceneType mLastSceneType, mCurrSceneType;
+	private static Deque<SceneType> mSceneStack;
 
 	private static Scene mAnatureSummaryView;
 	private static AnatureSummaryController mAnatureSummaryController;
+
+	private static EvolutionController mEvolutionController;
 
 	private static StarterTownModel mStarterTownModel;
 	private static StarterTownCell mStarterTownView;
@@ -111,6 +121,7 @@ public class Startup extends Application
 
 		mLastSceneType = SceneType.Intro;
 		mCurrSceneType = SceneType.Intro;
+		mSceneStack = new ArrayDeque<SceneType>();
 		changeScene(SceneType.Intro, null);
 		mStage.show();
 	}
@@ -161,6 +172,19 @@ public class Startup extends Application
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Anature Summary");
 					mStage.setScene(mAnatureSummaryView);
+					break;
+
+				case Evolution:
+					FXMLLoader evolutionLoader = new FXMLLoader(Startup.class.getResource("/application/views/EvolutionView.fxml"));
+					Parent evolutionRoot = evolutionLoader.load();
+					Scene evolutionView = new Scene(evolutionRoot);
+					evolutionView.setOnKeyReleased(mKeyListener);
+
+					mEvolutionController = evolutionLoader.getController();
+					mEvolutionController.updateBinds(evolutionView);
+
+					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Evolution Page");
+					mStage.setScene(evolutionView);
 					break;
 
 				case Starter_Town:
@@ -334,6 +358,46 @@ public class Startup extends Application
 		}
 	}
 
+	public static void endBattle(BattleResult result)
+	{
+		if(result.hasEvolutions())
+		{
+			HashMap<IAnature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
+			
+			Iterator<Entry<IAnature, Species>> evolveIterator = anaturesToEvolve.entrySet().iterator();
+			while(evolveIterator.hasNext())
+			{
+				Entry<IAnature, Species> evolveEntry = evolveIterator.next();
+
+				if(evolveIterator.hasNext())
+				{
+					mSceneStack.push(SceneType.Evolution);
+				}
+				
+				changeScene(SceneType.Evolution, null);
+				mEvolutionController.startEvolution(mPlayer.getAnatures(), evolveEntry.getKey(), evolveEntry.getValue(), () -> nextScene());
+			}
+		}
+		
+		else
+		{
+			changeScene(null, null);
+		}
+	}
+	
+	private static void nextScene()
+	{
+		if(mSceneStack.size() < 1)
+		{
+			changeScene(null, null);
+		}
+		
+		else
+		{
+			changeScene(mSceneStack.pop(), null);
+		}
+	}
+
 	public static void createDemo()
 	{
 		IAnature first = AnatureBuilder.createAnature(Species.Null, 54);
@@ -347,6 +411,10 @@ public class Startup extends Application
 		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
+		
+		IAnature third = AnatureBuilder.createAnature(Species.Sardino, 14);
+		mPlayer.addAnatures(third);
+		mPlayer.getAnatures().get(2).getStats().addExperience(630);
 
 		mPlayer.getBackpack()
 				.addItem(ItemPool.getHealthPotion(ItemIds.Potion));

@@ -10,6 +10,7 @@ import application.anatures.stats.NullStats;
 import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Species;
+import application.enums.Stat;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
@@ -352,7 +353,7 @@ class Anature implements IAnature, Serializable
 	public String healAnature(int healAmount)
 	{
 		int hitPointsAfterHeal = getStats().healAnature(healAmount);
-		if(hitPointsAfterHeal == getStats().getTotalHitPoints())
+		if(hitPointsAfterHeal == getStats().getTotalStat(Stat.HitPoints))
 		{
 			return getName() + " was healed completely!";
 		}
@@ -368,7 +369,7 @@ class Anature implements IAnature, Serializable
 
 	public double getHitPointsPercent()
 	{
-		return ((double) getStats().getCurrentHitPoints()) / ((double) getStats().getTotalHitPoints());
+		return ((double) getStats().getCurrentHitPoints()) / ((double) getStats().getTotalStat(Stat.HitPoints));
 	}
 
 	public AnatureBuilder getClone()

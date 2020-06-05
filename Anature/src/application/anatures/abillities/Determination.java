@@ -5,6 +5,7 @@ import java.io.Serializable;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
@@ -20,7 +21,7 @@ public class Determination implements IAbility, Serializable
 			return "";
 		}
 
-		if(move.doesDamage() && (userOldHp == userAnature.getStats().getTotalHitPoints()))
+		if(move.doesDamage() && (userOldHp == userAnature.getStats().getTotalStat(Stat.HitPoints)))
 		{
 			userAnature.getStats().setCurrentHitPoints(1);
 			return userAnature.getName() + " survived on 1 hp thanks to their Determination!";

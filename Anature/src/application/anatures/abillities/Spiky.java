@@ -5,6 +5,7 @@ import java.io.Serializable;
 import application.controllers.LoggerController;
 import application.enums.AbilityIds;
 import application.enums.LoggingTypes;
+import application.enums.Stat;
 import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.IMove;
@@ -19,7 +20,7 @@ public class Spiky implements IAbility, Serializable
 
 		if(!hasNull(source, target, sourceMove) && sourceMove.isPhysicalAttack() && !isSourceAttacking && !attackMissed)
 		{
-			int newHp = target.getStats().getCurrentHitPoints() - (target.getStats().getTotalHitPoints() / 8);
+			int newHp = target.getStats().getCurrentHitPoints() - (target.getStats().getTotalStat(Stat.HitPoints) / 8);
 
 			if(newHp < 0)
 			{
