@@ -17,6 +17,7 @@ import application.anatures.moves.moves.Holler;
 import application.anatures.moves.moves.LightMissile;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
+import application.anatures.moves.moves.Knock_Down;
 import application.anatures.moves.moves.Mystic_Power;
 import application.anatures.moves.moves.Nimbleness;
 import application.anatures.moves.moves.PocketSand;
@@ -25,6 +26,9 @@ import application.anatures.moves.moves.ScaryFace;
 import application.anatures.moves.moves.SkipTurn;
 import application.anatures.moves.moves.Slumber;
 import application.anatures.moves.moves.SmogWave;
+import application.anatures.moves.moves.Slow_Spore;
+import application.anatures.moves.moves.Sludge_Missile;
+import application.anatures.moves.moves.Sludge_Slap;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.moves.moves.WaterToss;
 import application.anatures.moves.moves.Zen;
@@ -526,6 +530,102 @@ public class MovePool
 					.withTotalMovePoints(5)
 					.withMovePower(110)
 					.withAccuracy(85)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Knock_Down,
+				new MoveBuilder<Knock_Down>(MoveIds.Knock_Down)
+					.withName("Knock Down")
+					.withType(Type.Ground)
+					.doesDamage(true)
+					.isPhysicalAttack(true)
+					.withTotalMovePoints(20)
+					.withMovePower(60)
+					.withAccuracy(100)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Tremor,
+				new MoveBuilder<JustDamageDealing>(MoveIds.Tremor)
+					.withName("Tremor")
+					.withType(Type.Ground)
+					.doesDamage(true)
+					.isPhysicalAttack(true)
+					.withTotalMovePoints(10)
+					.withMovePower(100)
+					.withAccuracy(100)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Sludge_Missile,
+				new MoveBuilder<Sludge_Missile>(MoveIds.Sludge_Missile)
+					.withName("Sludge Missile")
+					.withType(Type.Ground)
+					.doesDamage(true)
+					.isPhysicalAttack(false)
+					.withTotalMovePoints(10)
+					.withMovePower(65)
+					.withAccuracy(85)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Sludge_Slap,
+				new MoveBuilder<Sludge_Slap>(MoveIds.Sludge_Slap)
+					.withName("Sludge Slap")
+					.withType(Type.Ground)
+					.doesDamage(true)
+					.isPhysicalAttack(false)
+					.withTotalMovePoints(10)
+					.withMovePower(20)
+					.withAccuracy(100)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Leaf_Storm,
+				new MoveBuilder<JustDamageDealing>(MoveIds.Leaf_Storm)
+					.withName("Leaf Storm")
+					.withType(Type.Grass)
+					.doesDamage(true)
+					.isPhysicalAttack(true)
+					.withTotalMovePoints(15)
+					.withMovePower(90)
+					.withAccuracy(100)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Leaf_Sword,
+				new MoveBuilder<JustDamageDealing>(MoveIds.Leaf_Sword)
+					.withName("Leaf Sword")
+					.withType(Type.Grass)
+					.doesDamage(true)
+					.isPhysicalAttack(true)
+					.withTotalMovePoints(25)
+					.withMovePower(55)
+					.withAccuracy(95)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Grass_Whip,
+				new MoveBuilder<JustDamageDealing>(MoveIds.Grass_Whip)
+					.withName("Grass Whip")
+					.withType(Type.Grass)
+					.doesDamage(true)
+					.isPhysicalAttack(true)
+					.withTotalMovePoints(25)
+					.withMovePower(45)
+					.withAccuracy(100)
+					.create()
+				);
+		
+		mMoves.put(MoveIds.Slow_Spore,
+				new MoveBuilder<Slow_Spore>(MoveIds.Slow_Spore)
+					.withName("Slow Spore")
+					.withType(Type.Grass)
+					.doesDamage(false)
+					.isPhysicalAttack(false)
+					.withTotalMovePoints(40)
+					.withMovePower(0)
+					.withAccuracy(100)
 					.create()
 				);
 		
