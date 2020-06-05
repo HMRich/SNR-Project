@@ -12,16 +12,20 @@ import application.anatures.moves.moves.FocusUp;
 import application.anatures.moves.moves.Grumble;
 import application.anatures.moves.moves.HoseDown;
 import application.anatures.moves.moves.JustDamageDealing;
+import application.anatures.moves.moves.Mystic_Power;
 import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.PocketSand;
+import application.anatures.moves.moves.Restore;
 import application.anatures.moves.moves.SharpenUp;
 import application.anatures.moves.moves.SkipTurn;
+import application.anatures.moves.moves.Slumber;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.moves.moves.TailBlock;
 import application.anatures.moves.moves.Tornado;
 import application.anatures.moves.moves.Upgrade;
 import application.anatures.moves.moves.WaterToss;
 import application.anatures.moves.moves.WiredMess;
+import application.anatures.moves.moves.Zen;
 import application.enums.MoveIds;
 import application.enums.StatusEffects;
 import application.enums.Type;
@@ -35,6 +39,7 @@ import application.anatures.moves.moves.Leen;
 import application.anatures.moves.moves.LightMissile;
 import application.anatures.moves.moves.ScaryFace;
 import application.anatures.moves.moves.SmogWave;
+import application.anatures.moves.moves.Nimbleness;
 
 
 
@@ -348,7 +353,39 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 			case Voltage_Overload:
 				mMove = (M) new DamageAndStatus(StatusEffects.Paralysis, 0.6);
 				break;
-
+				
+			case Nimbleness:
+				mMove = (M) new Nimbleness();
+				break;
+				
+			case Miss_Direction:
+				mMove = (M) new JustDamageDealing();
+				break;
+				
+			case Zen:
+				mMove = (M) new Zen();
+				break;
+			
+			case Slumber:
+				mMove = (M) new Slumber();
+				break;
+				
+			case Channel:
+				mMove = (M) new JustDamageDealing();
+				break;
+			
+			case Restore:
+				mMove = (M) new Restore();
+				break;
+				
+			case Mystic_Power:
+				mMove = (M) new Mystic_Power();
+				break;
+				
+			case Focused_Heatbutt:
+				mMove = (M) new JustDamageDealing();
+				break;
+			
 			default:
 				throw new IllegalStateException("The variable \"moveId\" was not found. Please add it to the list.");
 		}
