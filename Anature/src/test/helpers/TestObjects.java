@@ -24,10 +24,15 @@ public class TestObjects
 	 * TEST OBJECT IMove
 	 */
 
-	private static IMove mTackle = new Tackle();
+	private static IMove mTackle;
 
 	public static IMove getDefaultTackle()
 	{
+		if(mTackle == null)
+		{
+			mTackle = new Tackle();
+		}
+
 		return mTackle;
 	}
 
@@ -35,10 +40,15 @@ public class TestObjects
 	 * TEST OBJECT MoveSet
 	 */
 
-	private static MoveSet mMoveSet = new MoveSet(getDefaultTackle(), null, null, null);
+	private static MoveSet mMoveSet;
 
 	public static MoveSet getDefaultMoveSet()
 	{
+		if(mMoveSet == null)
+		{
+			mMoveSet = new MoveSet(getDefaultTackle(), null, null, null);
+		}
+
 		return mMoveSet;
 	}
 
@@ -46,10 +56,15 @@ public class TestObjects
 	 * TEST OBJECT IAbility
 	 */
 
-	private static IAbility mSpiky = AbilityPool.getAbility(AbilityIds.Spiky);
+	private static IAbility mSpiky;
 
 	public static IAbility getDefaultSpiky()
 	{
+		if(mSpiky == null)
+		{
+			mSpiky = AbilityPool.getAbility(AbilityIds.Spiky);
+		}
+
 		return mSpiky;
 	}
 
@@ -63,25 +78,12 @@ public class TestObjects
 	private static LevelingSpeed mDefaultLevelingSpeed = LevelingSpeed.Normal;
 	private static Natures mDefaultNaure = Natures.Adamant;
 
-	private static IStats mStats = new StatsBuilder().atLevel(getDefaultLevel())
-			.withLevlingSpeed(getDefaultLevelingSpeed())
-			.withNature(getDefaultNature())
-			.withBaseExperience(getDefaultBaseNonStat())
-			.withBaseHitPoints(getDefaultBaseStat())
-			.withBaseAttack(getDefaultBaseStat())
-			.withBaseDefense(getDefaultBaseStat())
-			.withBaseSpecialAttack(getDefaultBaseStat())
-			.withBaseSpecialDefense(getDefaultBaseStat())
-			.withBaseSpeed(getDefaultBaseStat())
-			.withBaseAccuracy(getDefaultBaseStat())
-			.withBaseEvasion(getDefaultBaseStat())
-			.withIVAttack(getDefaultBaseNonStat())
-			.withIVDefense(getDefaultBaseNonStat())
-			.withIVHitPoints(getDefaultBaseNonStat())
-			.withIVSpecialAttack(getDefaultBaseNonStat())
-			.withIVSpecialDefense(getDefaultBaseNonStat())
-			.withIVSpeed(getDefaultBaseNonStat())
-			.create();
+	private static IStats mStats = new StatsBuilder().atLevel(getDefaultLevel()).withLevlingSpeed(getDefaultLevelingSpeed()).withNature(getDefaultNature())
+			.withBaseExperience(getDefaultBaseNonStat()).withBaseHitPoints(getDefaultBaseStat()).withBaseAttack(getDefaultBaseStat())
+			.withBaseDefense(getDefaultBaseStat()).withBaseSpecialAttack(getDefaultBaseStat()).withBaseSpecialDefense(getDefaultBaseStat())
+			.withBaseSpeed(getDefaultBaseStat()).withBaseAccuracy(getDefaultBaseStat()).withBaseEvasion(getDefaultBaseStat())
+			.withIVAttack(getDefaultBaseNonStat()).withIVDefense(getDefaultBaseNonStat()).withIVHitPoints(getDefaultBaseNonStat())
+			.withIVSpecialAttack(getDefaultBaseNonStat()).withIVSpecialDefense(getDefaultBaseNonStat()).withIVSpeed(getDefaultBaseNonStat()).create();
 
 	public static IStats getDefaultStats()
 	{
@@ -124,25 +126,15 @@ public class TestObjects
 	private static Gender mDefaultGender = Gender.Trans;
 	private static Type mDefaultPrimaryType = Type.Normal;
 	private static Type mDefaultSecondaryType = Type.NotSet;
-	private static IAbility mDefaultAbility = new NullAbility();
+	private static IAbility mDefaultAbility;
 	private static StatusEffects mDefaultStatusEffect = StatusEffects.None;
 	private static int mDefaultIndexNumber = 20200529;
 	private static int mDefaultCatchRate = 255;
 
-	private static IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName())
-			.withOwnerName(getDefaultOwnerName())
-			.isShiny(getDefaultShinyValue())
-			.withSpecies(getDefaultSpecies())
-			.withGender(getDefaultGender())
-			.withPrimaryType(getDefaultPrimaryType())
-			.withSecondaryType(getDefaultSecondaryType())
-			.withMoveSet(getDefaultMoveSet())
-			.withAbility(getDefaultAbility())
-			.withStatus(getDefaultStatusEffect())
-			.withStats(getDefaultStats())
-			.withIndexNumber(getDefaultIndexNumber())
-			.withCatchRate(mDefaultCatchRate)
-			.create();
+	private static IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName()).withOwnerName(getDefaultOwnerName())
+			.isShiny(getDefaultShinyValue()).withSpecies(getDefaultSpecies()).withGender(getDefaultGender()).withPrimaryType(getDefaultPrimaryType())
+			.withSecondaryType(getDefaultSecondaryType()).withMoveSet(getDefaultMoveSet()).withAbility(getDefaultAbility()).withStatus(getDefaultStatusEffect())
+			.withStats(getDefaultStats()).withIndexNumber(getDefaultIndexNumber()).withCatchRate(getDefaultCatchRate()).create();
 
 	public static IAnature getAnature()
 	{
@@ -186,6 +178,11 @@ public class TestObjects
 
 	public static IAbility getDefaultAbility()
 	{
+		if(mDefaultAbility == null)
+		{
+			mDefaultAbility = new NullAbility();
+		}
+
 		return mDefaultAbility;
 	}
 

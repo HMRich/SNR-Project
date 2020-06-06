@@ -36,8 +36,8 @@ import application.interfaces.IAbility;
 import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
 import application.pools.AbilityPool;
-import test.helpers.TestTags;
 import test.helpers.TestObjects;
+import test.helpers.TestTags;
 
 @DisplayName("Anature Tests")
 @Tag(TestTags.UnitTest)
@@ -621,6 +621,8 @@ public class AnatureTests
 
 		class MockAnature extends AnatureTestable
 		{
+			private static final long serialVersionUID = 5562999580260106159L;
+
 			private boolean mGetStatsCalled;
 			private boolean mGetMoveSetCalled;
 
@@ -651,12 +653,12 @@ public class AnatureTests
 
 		class MockAnatureStats extends StatsTestable
 		{
-
+			private static final long serialVersionUID = 5562999524345627159L;
 		}
 
 		class MockAnatureMoveSet extends MoveSetTestable
 		{
-
+			private static final long serialVersionUID = 5562923452627706159L;
 		}
 
 		/*
