@@ -10,6 +10,8 @@ import application.interfaces.stats.IStats;
 
 class Stats extends StatsBase implements IStats
 {
+	private static final long serialVersionUID = 8358817858029495206L;
+
 	private int mLevel;
 	private int mTotalExperiencePoints;
 	private int mCurrentHitPoints;

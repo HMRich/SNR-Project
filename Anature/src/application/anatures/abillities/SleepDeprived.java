@@ -9,6 +9,8 @@ import application.interfaces.IAnature;
 
 public class SleepDeprived implements IAbility
 {
+	private static final long serialVersionUID = 6256924311685034417L;
+
 	public static String activateAbility(IAnature userAnature)
 	{
 		if(userAnature == null)

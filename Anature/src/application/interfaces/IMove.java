@@ -1,9 +1,11 @@
 package application.interfaces;
 
+import java.io.Serializable;
+
 import application.enums.MoveIds;
 import application.enums.Type;
 
-public interface IMove
+public interface IMove extends Serializable
 {
 	public void activateMove(IAnature source, IAnature target);
 	public String getName();

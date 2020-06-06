@@ -5,6 +5,8 @@ import application.interfaces.IAnature;
 
 public class Sludge_Missile extends Move
 {
+	private static final long serialVersionUID = 8733187858023697858L;
+
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{

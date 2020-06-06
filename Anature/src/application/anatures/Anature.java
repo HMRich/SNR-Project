@@ -1,5 +1,6 @@
 package application.anatures;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.anatures.abillities.NullAbility;
@@ -16,8 +17,10 @@ import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
 import javafx.scene.image.Image;
 
-class Anature implements IAnature
+class Anature implements IAnature, Serializable
 {
+	private static final long serialVersionUID = -3387008989524977841L;
+
 	private String mName;
 	private String mOwnerName;
 	private boolean mIsShiny;

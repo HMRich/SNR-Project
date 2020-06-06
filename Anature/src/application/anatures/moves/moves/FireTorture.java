@@ -6,6 +6,7 @@ import application.interfaces.IAnature;
 
 public class FireTorture extends Move
 {
+	private static final long serialVersionUID = -5745909725599391439L;
 
 	@Override
 	public void activateMove(IAnature source, IAnature target)

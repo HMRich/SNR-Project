@@ -7,6 +7,8 @@ import application.interfaces.stats.IStatsIV;
 
 class StatsIV extends StatsEV implements IStatsIV
 {
+	private static final long serialVersionUID = -3556023284775856239L;
+
 	private int mIVHitPoints;
 	private int mIVAttack;
 	private int mIVDefense;
@@ -27,7 +29,7 @@ class StatsIV extends StatsEV implements IStatsIV
 	/*
 	 * PUBLIC GETS
 	 */
-	
+
 	public int getIvStat(Stat stat)
 	{
 		switch(stat)
@@ -37,19 +39,19 @@ class StatsIV extends StatsEV implements IStatsIV
 
 			case Attack:
 				return mIVAttack;
-				
+
 			case Defense:
 				return mIVDefense;
 
 			case SpecialAttack:
 				return mIVSpecialAttack;
-				
+
 			case SpecialDefense:
 				return mIVSpecialDefense;
-				
+
 			case Speed:
 				return mIVSpeed;
-				
+
 			default:
 				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Iv Stat with non applicable enum.");
 				return -1;

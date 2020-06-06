@@ -8,6 +8,8 @@ import application.interfaces.IAnature;
 
 public class DrySkin implements IAbility
 {
+	private static final long serialVersionUID = -8094396331629552627L;
+
 	public static String activateAbility(IAnature userAnature)
 	{
 		if(userAnature == null)
@@ -15,7 +17,7 @@ public class DrySkin implements IAbility
 			LoggerController.logEvent(LoggingTypes.Error, "userAnature parameter in DrySkin was null.");
 			return "";
 		}
-		
+
 		return userAnature.getName() + " nullified the move with its Dry Skin ability!";
 	}
 

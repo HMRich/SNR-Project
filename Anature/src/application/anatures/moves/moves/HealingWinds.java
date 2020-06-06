@@ -5,6 +5,7 @@ import application.interfaces.IAnature;
 
 public class HealingWinds extends Move
 {
+	private static final long serialVersionUID = -2433512935797299902L;
 
 	@Override
 	public void activateMove(IAnature source, IAnature target)

@@ -433,7 +433,7 @@ public class MoveBuilder<M extends Move> implements IBuilder<M>
 				break;
 
 			default:
-				throw new IllegalStateException("The variable \"moveId\" was not found. Please add it to the list.");
+				throw new IllegalStateException("The variable " + mMoveId.toString() + " was not found. Please add it to the list.");
 		}
 
 		mMove.setMoveId(mMoveId);
