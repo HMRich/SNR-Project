@@ -12,9 +12,11 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
+import application.controllers.IntroController;
 import application.controllers.LoggerController;
 import application.controllers.menus.AnatureSummaryController;
 import application.controllers.menus.EvolutionController;
@@ -47,8 +49,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class Startup extends Application
@@ -147,15 +154,16 @@ public class Startup extends Application
 					FXMLLoader introLoader = new FXMLLoader(Startup.class.getResource("/application/views/IntroView.fxml"));
 					Parent introRoot = introLoader.load();
 					Scene intro = new Scene(introRoot);
-					intro.setOnKeyReleased(mKeyListener);
+
+					IntroController introController = introLoader.getController();
+					introController.updateBinds(intro, mKeyListener);
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Intro");
 					mStage.setScene(intro);
 					break;
 
 				case Anature_Summary:
-					if(mAnatureSummaryView == null
-							|| mAnatureSummaryController == null)
+					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
 					{
 						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
 						Parent summaryRoot = summaryLoader.load();
@@ -547,7 +555,20 @@ public class Startup extends Application
 
 	public static boolean save()
 	{
-
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Save Game File");
+		chooser.getExtensionFilters().addAll
+		(
+			new ExtensionFilter("Save Files", "*.save")
+		);
+		
+		File saveFile = chooser.showSaveDialog(mStage);
+		
+		if(saveFile == null)
+		{
+			return false;
+		}
+		
 		ArrayList<Object> itemsToSave = new ArrayList<Object>();
 
 		for(SaveItem item : SaveItem.values())
@@ -557,7 +578,7 @@ public class Startup extends Application
 
 		try
 		{
-			FileOutputStream fileOutputStream = new FileOutputStream(new File("./save.save"));
+			FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
 			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
 
 			out.writeObject(itemsToSave);
@@ -576,8 +597,20 @@ public class Startup extends Application
 	}
 
 	@SuppressWarnings("unchecked")
-	public static boolean load()
+	public static boolean load(boolean showConfirmation)
 	{
+		if(showConfirmation && !showLoadConfirmation())
+		{
+			return false;
+		}
+
+		File saveFile = selectFileToLoad();
+
+		if(saveFile == null)
+		{
+			return false;
+		}
+
 		ArrayList<Object> objRead = new ArrayList<Object>();
 		FileInputStream fileInStream;
 		ObjectInputStream in;
@@ -589,7 +622,7 @@ public class Startup extends Application
 
 		try
 		{
-			fileInStream = new FileInputStream(new File("./save.save"));
+			fileInStream = new FileInputStream(saveFile);
 			in = new ObjectInputStream(fileInStream);
 
 			objRead = (ArrayList<Object>) in.readObject();
@@ -611,5 +644,34 @@ public class Startup extends Application
 		mCurrentController.saveLoadUpdates();
 
 		return true;
+	}
+
+	private static boolean showLoadConfirmation()
+	{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Current progress not saved");
+		alert.setHeaderText("Would you like to save the current progress first?");
+
+		ButtonType buttonTypeYes = new ButtonType("Yes");
+		ButtonType buttonTypeNo = new ButtonType("No");
+
+		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() == buttonTypeYes)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	private static File selectFileToLoad()
+	{
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Open Save File");
+		chooser.getExtensionFilters().addAll(new ExtensionFilter("Save Files", "*.save"));
+
+		return chooser.showOpenDialog(mStage);
 	}
 }

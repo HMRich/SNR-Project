@@ -97,16 +97,8 @@ public class SideMenuController
 		tabAttributes(mAnatureTxt, index++, () -> Startup.changeScene(SceneType.Anature_Summary, null));
 		tabAttributes(mBackpackTxt, index++, () -> System.out.println("Backpack"));
 		tabAttributes(mSettingsTxt, index++, () -> System.out.println("Settings"));
-		tabAttributes(mSaveTxt, index++, () -> 
-		{
-			mVisabilityProperty.set(false);
-			Startup.save();
-		});
-		tabAttributes(mQuitTxt, index++, () -> 
-		{
-			mVisabilityProperty.set(false);
-			Startup.load();
-		});
+		tabAttributes(mSaveTxt, index++, () -> onSave());
+		tabAttributes(mQuitTxt, index++, () -> onLoad());
 	}
 	
 	private void tabAttributes(Label txt, int index, Runnable onClick)
@@ -125,5 +117,17 @@ public class SideMenuController
 		txt.setOnMouseClicked(value -> onClick.run());
 		
 		txt.minWidthProperty().bind(mBg.fitWidthProperty().divide(1.4285));
+	}
+	
+	private void onSave()
+	{
+		mVisabilityProperty.set(false);
+		Startup.save();
+	}
+	
+	private void onLoad()
+	{
+		mVisabilityProperty.set(false);
+		Startup.load(true);
 	}
 }
