@@ -10,6 +10,8 @@ import application.interfaces.stats.IStats;
 
 class Stats extends StatsBase implements IStats
 {
+	private static final long serialVersionUID = 8358817858029495206L;
+
 	private int mLevel;
 	private int mTotalExperiencePoints;
 	private int mCurrentHitPoints;
@@ -108,7 +110,8 @@ class Stats extends StatsBase implements IStats
 
 	public int getNatureModifierValue(Stat stat)
 	{
-		if(getNature().getIncreasedStat() == null || getNature().getDecreasedStat() == null)
+		if(getNature().getIncreasedStat() == null
+				|| getNature().getDecreasedStat() == null)
 		{
 			return 0;
 		}
@@ -188,7 +191,8 @@ class Stats extends StatsBase implements IStats
 	public int healAnature(int healAmount)
 	{
 		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
-		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getTotalStat(Stat.HitPoints))
+		if(healAmount == Integer.MAX_VALUE
+				|| hitPointsAfterHeal > getTotalStat(Stat.HitPoints))
 		{
 			setCurrentHitPoints(getTotalStat(Stat.HitPoints));
 		}
@@ -235,31 +239,14 @@ class Stats extends StatsBase implements IStats
 
 	public StatsBuilder getClone()
 	{
-		return new StatsBuilder()
-				.atLevel(getLevel())
-				.withLevlingSpeed(getLevelingSpeed())
-				.withNature(getNature())
-				.withBaseExperience(getBaseExperience())
-				.withBaseHitPoints(getBaseStat(Stat.HitPoints))
-				.withBaseAttack(getBaseStat(Stat.Attack))
-				.withBaseDefense(getBaseStat(Stat.Defense))
-				.withBaseSpecialAttack(getBaseStat(Stat.SpecialAttack))
-				.withBaseSpecialDefense(getBaseStat(Stat.SpecialDefense))
-				.withBaseSpeed(getBaseStat(Stat.Speed))
-				.withBaseAccuracy(getBaseStat(Stat.Accuracy))
-				.withBaseEvasion(getBaseStat(Stat.Evasion))
-				.withIVAttack(getIvStat(Stat.Attack))
-				.withIVDefense(getIvStat(Stat.Defense))
-				.withIVHitPoints(getIvStat(Stat.HitPoints))
-				.withIVSpecialAttack(getIvStat(Stat.SpecialAttack))
-				.withIVSpecialDefense(getIvStat(Stat.SpecialDefense))
-				.withIVSpeed(getIvStat(Stat.Speed))
-				.withEVHitPoints(getEvStat(Stat.HitPoints))
-				.withEVAttack(getEvStat(Stat.Attack))
-				.withEVDefense(getEvStat(Stat.Defense))
-				.withEVSpecialAttack(getEvStat(Stat.SpecialAttack))
-				.withEVSpecialDefense(getEvStat(Stat.SpecialDefense))
-				.withEVSpeed(getEvStat(Stat.Speed));
+		return new StatsBuilder().atLevel(getLevel()).withLevlingSpeed(getLevelingSpeed()).withNature(getNature()).withBaseExperience(getBaseExperience())
+				.withBaseHitPoints(getBaseStat(Stat.HitPoints)).withBaseAttack(getBaseStat(Stat.Attack)).withBaseDefense(getBaseStat(Stat.Defense))
+				.withBaseSpecialAttack(getBaseStat(Stat.SpecialAttack)).withBaseSpecialDefense(getBaseStat(Stat.SpecialDefense))
+				.withBaseSpeed(getBaseStat(Stat.Speed)).withBaseAccuracy(getBaseStat(Stat.Accuracy)).withBaseEvasion(getBaseStat(Stat.Evasion))
+				.withIVAttack(getIvStat(Stat.Attack)).withIVDefense(getIvStat(Stat.Defense)).withIVHitPoints(getIvStat(Stat.HitPoints))
+				.withIVSpecialAttack(getIvStat(Stat.SpecialAttack)).withIVSpecialDefense(getIvStat(Stat.SpecialDefense)).withIVSpeed(getIvStat(Stat.Speed))
+				.withEVHitPoints(getEvStat(Stat.HitPoints)).withEVAttack(getEvStat(Stat.Attack)).withEVDefense(getEvStat(Stat.Defense))
+				.withEVSpecialAttack(getEvStat(Stat.SpecialAttack)).withEVSpecialDefense(getEvStat(Stat.SpecialDefense)).withEVSpeed(getEvStat(Stat.Speed));
 	}
 
 	public boolean addEv(Stat statToAdd, int level)

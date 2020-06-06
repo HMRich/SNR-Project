@@ -7,6 +7,8 @@ import application.interfaces.stats.IStatsBase;
 
 class StatsBase extends StatsIV implements IStatsBase
 {
+	private static final long serialVersionUID = 2705402880181321706L;
+
 	private int mBaseExperience;
 	private int mBaseHitPoints;
 	private int mBaseAttack;
@@ -33,12 +35,12 @@ class StatsBase extends StatsIV implements IStatsBase
 	/*
 	 * PUBLIC GETS
 	 */
-	
+
 	public int getBaseExperience()
 	{
 		return mBaseExperience;
 	}
-	
+
 	public int getBaseStat(Stat stat)
 	{
 		switch(stat)
@@ -48,25 +50,25 @@ class StatsBase extends StatsIV implements IStatsBase
 
 			case Attack:
 				return mBaseAttack;
-				
+
 			case Defense:
 				return mBaseDefense;
 
 			case SpecialAttack:
 				return mBaseSpecialAttack;
-				
+
 			case SpecialDefense:
 				return mBaseSpecialDefense;
-				
+
 			case Speed:
 				return mBaseSpeed;
-				
+
 			case Accuracy:
 				return mBaseAccuracy;
-				
+
 			case Evasion:
 				return mBaseEvasion;
-				
+
 			default:
 				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Base Stat with non applicable enum.");
 				return -1;
@@ -76,19 +78,19 @@ class StatsBase extends StatsIV implements IStatsBase
 	/*
 	 * PACKAGE SETS
 	 */
-	
+
 	void setBaseExperience(int baseExperience)
 	{
 		if(baseExperience < 0)
 		{
 			throw new IllegalArgumentException("Passed value \"baseExperience\" was below 0.");
 		}
-		
+
 		if(baseExperience > 255)
 		{
 			throw new IllegalArgumentException("Passed value \"baseExperience\" was above 255.");
 		}
-		
+
 		mBaseExperience = baseExperience;
 	}
 
@@ -103,7 +105,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseHitPoints\" was above 255.");
 		}
-		
+
 		mBaseHitPoints = baseHitPoints;
 	}
 
@@ -118,7 +120,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseAttack\" was above 255.");
 		}
-		
+
 		mBaseAttack = baseAttack;
 	}
 
@@ -133,7 +135,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseDefense\" was above 255.");
 		}
-		
+
 		mBaseDefense = baseDefense;
 	}
 
@@ -148,7 +150,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseSpecialAttack\" was above 255.");
 		}
-		
+
 		mBaseSpecialAttack = baseSpecialAttack;
 	}
 
@@ -163,7 +165,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseSpecialDefense\" was above 255.");
 		}
-		
+
 		mBaseSpecialDefense = baseSpecialDefense;
 	}
 
@@ -178,7 +180,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseSpeed\" was above 255.");
 		}
-		
+
 		mBaseSpeed = baseSpeed;
 	}
 
@@ -193,7 +195,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseAccuracy\" was above 100.");
 		}
-		
+
 		mBaseAccuracy = baseAccuracy;
 	}
 
@@ -208,7 +210,7 @@ class StatsBase extends StatsIV implements IStatsBase
 		{
 			throw new IllegalArgumentException("Passed value \"baseEvasion\" was above 100.");
 		}
-		
+
 		mBaseEvasion = baseEvasion;
 	}
 

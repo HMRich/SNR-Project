@@ -6,6 +6,7 @@ import application.interfaces.IAnature;
 
 public class Electrocution extends Move
 {
+	private static final long serialVersionUID = 5030180131481086156L;
 
 	@Override
 	public void activateMove(IAnature source, IAnature target)
@@ -14,5 +15,5 @@ public class Electrocution extends Move
 		target.updateStatus(StatusEffects.Paralysis);
 		target.getStats().decreaseTempDefense();
 	}
-	
+
 }

@@ -6,6 +6,6 @@ public class IntroController
 {
 	public void startBattle()
 	{
-		Startup.createDemo();
+		Startup.load();
 	}
 }

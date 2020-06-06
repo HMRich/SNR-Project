@@ -1,12 +1,16 @@
 package application.items;
 
+import java.io.Serializable;
+
 import application.controllers.results.ItemResult;
 import application.enums.ItemIds;
 import application.interfaces.IAnature;
 import application.interfaces.IHealthPotion;
 
-public class HealthPotionBase extends ItemBase implements IHealthPotion
+public class HealthPotionBase extends ItemBase implements IHealthPotion, Serializable
 {
+	private static final long serialVersionUID = 287737002500225848L;
+
 	private int mHealAmount;
 
 	HealthPotionBase()
@@ -31,6 +35,7 @@ public class HealthPotionBase extends ItemBase implements IHealthPotion
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public ItemResult useItem(IAnature target)
 	{
 		double oldHp = target.getStats().getCurrentHitPoints();
@@ -40,6 +45,7 @@ public class HealthPotionBase extends ItemBase implements IHealthPotion
 		return new ItemResult(dialogue, newHp - oldHp);
 	}
 
+	@Override
 	public int getHealAmount()
 	{
 		return mHealAmount;

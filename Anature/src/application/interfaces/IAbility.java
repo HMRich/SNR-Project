@@ -1,8 +1,10 @@
 package application.interfaces;
 
+import java.io.Serializable;
+
 import application.enums.AbilityIds;
 
-public interface IAbility
+public interface IAbility extends Serializable
 {
 	public AbilityIds getAbilityId();
 

@@ -1,10 +1,14 @@
 package application.items;
 
+import java.io.Serializable;
+
 import application.enums.ItemIds;
 import application.interfaces.IItem;
 
-public abstract class ItemBase implements IItem
+public abstract class ItemBase implements IItem, Serializable
 {
+	private static final long serialVersionUID = -8921793567635067569L;
+
 	private ItemIds mItemId;
 	private String mItemName;
 

@@ -7,6 +7,8 @@ import application.interfaces.IAnature;
 
 public class DamageAndStatus extends Move
 {
+	private static final long serialVersionUID = 3724356003537500882L;
+
 	private double mThreshold;
 	private StatusEffects mStatus;
 
@@ -26,22 +28,29 @@ public class DamageAndStatus extends Move
 	{
 		Type primary = target.getPrimaryType();
 		Type secondary = target.getSecondaryType();
-		
+
 		target.takeDamage(calculateDamage(source, target, false));
 
-		if(Math.random() > mThreshold && target.getStatus() == StatusEffects.None)
+		if(Math.random() > mThreshold
+				&& target.getStatus() == StatusEffects.None)
 		{
-			if(mStatus == StatusEffects.Burn && (primary == Type.Fire || secondary == Type.Fire))
+			if(mStatus == StatusEffects.Burn
+					&& (primary == Type.Fire
+							|| secondary == Type.Fire))
 			{
 				return;
 			}
 
-			else if(mStatus == StatusEffects.Poison && (primary == Type.Poison || secondary == Type.Poison))
+			else if(mStatus == StatusEffects.Poison
+					&& (primary == Type.Poison
+							|| secondary == Type.Poison))
 			{
 				return;
 			}
 
-			else if(mStatus == StatusEffects.Paralysis && (primary == Type.Electric || secondary == Type.Electric))
+			else if(mStatus == StatusEffects.Paralysis
+					&& (primary == Type.Electric
+							|| secondary == Type.Electric))
 			{
 				return;
 			}

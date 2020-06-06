@@ -5,6 +5,7 @@ import application.interfaces.IAnature;
 
 public class ForgottenAwakening extends Move
 {
+	private static final long serialVersionUID = 7987668078562046069L;
 
 	@Override
 	public void activateMove(IAnature source, IAnature target)
