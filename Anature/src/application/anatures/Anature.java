@@ -9,7 +9,6 @@ import application.anatures.stats.NullStats;
 import application.enums.BattleAnimationType;
 import application.enums.Gender;
 import application.enums.Species;
-import application.enums.Stat;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
@@ -61,8 +60,7 @@ class Anature implements IAnature
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim()
-				.isEmpty())
+		if(name.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
@@ -77,8 +75,7 @@ class Anature implements IAnature
 			throw new IllegalArgumentException("Passed value \"ownerName\" was null.");
 		}
 
-		if(ownerName.trim()
-				.isEmpty())
+		if(ownerName.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"ownerName\" was an empty string.");
 		}
@@ -231,66 +228,79 @@ class Anature implements IAnature
 	 * PUBLIC GETS
 	 */
 
+	@Override
 	public String getName()
 	{
 		return mName;
 	}
 
+	@Override
 	public String getOwner()
 	{
 		return mOwnerName;
 	}
 
+	@Override
 	public boolean isShiny()
 	{
 		return mIsShiny;
 	}
 
+	@Override
 	public Species getSpecies()
 	{
 		return mSpecies;
 	}
 
+	@Override
 	public Gender getGender()
 	{
 		return mGender;
 	}
 
+	@Override
 	public Type getPrimaryType()
 	{
 		return mPrimaryType;
 	}
 
+	@Override
 	public Type getSecondaryType()
 	{
 		return mSecondaryType;
 	}
 
+	@Override
 	public MoveSet getMoveSet()
 	{
 		return mMoveSet;
 	}
 
+	@Override
 	public IAbility getAbility()
 	{
 		return mAbility;
 	}
 
+	@Override
 	public StatusEffects getStatus()
 	{
 		return mStatus;
 	}
 
+	@Override
 	public IStats getStats()
 	{
 		return mStats;
 	}
 
+	@Override
 	public int getIndexNumber()
 	{
 		return mIndexNumber;
 	}
 
+	@Override
 	public int getCatchRate()
 	{
 		return mCatchRate;
@@ -300,16 +310,19 @@ class Anature implements IAnature
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public void updateName(String name)
 	{
 		setName(name);
 	}
 
+	@Override
 	public void updateStatus(StatusEffects status)
 	{
 		setStatus(status);
 	}
 
+	@Override
 	public ArrayList<Type> getTypes()
 	{
 		ArrayList<Type> types = new ArrayList<Type>();
@@ -326,64 +339,76 @@ class Anature implements IAnature
 		return types;
 	}
 
+	@Override
 	public void resetTempStats()
 	{
 		getStats().resetTempStats();
 	}
 
+	@Override
 	public void applyDamage(int damage)
 	{
 		getStats().applyDamage(damage);
 	}
 
+	@Override
 	public String applyHeal(int healAmount)
 	{
 		return getName() + getStats().applyHeal(healAmount);
 	}
 
+	@Override
 	public void restore()
 	{
 		getStats().applyHeal(Integer.MAX_VALUE);
 		getMoveSet().refreshAllMovePoints();
 	}
 
+	@Override
 	public double getHitPointsPercent()
 	{
 		return getStats().getHitPointsPercent();
 	}
 
+	@Override
 	public AnatureBuilder getClone()
 	{
-		return new AnatureBuilder().withName(getName())
-				.withOwnerName(getOwner())
-				.isShiny(isShiny())
-				.withSpecies(getSpecies())
-				.withGender(getGender())
-				.withPrimaryType(getPrimaryType())
-				.withSecondaryType(getSecondaryType())
-				.withMoveSet(getMoveSet())
-				.withAbility(getAbility())
-				.withStatus(getStatus())
-				.withStats(getStats())
-				.withIndexNumber(getIndexNumber())
-				.withCatchRate(getCatchRate());
+		return new AnatureBuilder().withName(getName()).withOwnerName(getOwner()).isShiny(isShiny()).withSpecies(getSpecies()).withGender(getGender())
+				.withPrimaryType(getPrimaryType()).withSecondaryType(getSecondaryType()).withMoveSet(getMoveSet()).withAbility(getAbility())
+				.withStatus(getStatus()).withStats(getStats()).withIndexNumber(getIndexNumber()).withCatchRate(getCatchRate());
 	}
 
+	@Override
 	public Image getFrontSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + getSpecies().toString() + "_Front.png")
-				.toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + getSpecies().toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true,
+				false);
 	}
 
+	@Override
 	public Image getBackSprite()
 	{
-		return new Image(getClass().getResource("/resources/images/anatures/" + getSpecies().toString() + "_Back.png")
-				.toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/anatures/" + getSpecies().toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true,
+				false);
 	}
 
+	@Override
 	public BattleAnimationType getMoveAnimationType(int moveIndex)
 	{
 		return getMoveSet().getMoveAnimationType(moveIndex);
+	}
+
+	@Override
+	public String toString()
+	{
+		String testName = this.getPrimaryType().toString();
+
+		if(this.getSecondaryType() != Type.NotSet)
+		{
+			testName = testName + ", " + this.getSecondaryType().toString();
+		}
+
+		return testName;
 	}
 
 	/*

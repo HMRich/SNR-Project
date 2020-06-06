@@ -1,4 +1,4 @@
-package test;
+package test.helpers;
 
 import application.anatures.AnatureBuilder;
 import application.anatures.abillities.NullAbility;

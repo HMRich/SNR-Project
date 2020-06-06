@@ -5,7 +5,7 @@ import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
-import test.TestObjects;
+import test.helpers.TestObjects;
 
 public class AnatureTestable extends Anature
 {

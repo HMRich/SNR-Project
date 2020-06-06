@@ -2,7 +2,7 @@ package application.anatures.movesets;
 
 import application.enums.BattleAnimationType;
 import application.interfaces.IMove;
-import test.TestObjects;
+import test.helpers.TestObjects;
 
 public class MoveSetTestable extends MoveSet
 {

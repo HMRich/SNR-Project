@@ -1,5 +1,7 @@
 package application.enums;
 
+import java.util.ArrayList;
+
 public enum Type
 {
 	NotSet,
@@ -20,5 +22,17 @@ public enum Type
 	Dragon,
 	Dark,
 	Steel,
-	Fairy
+	Fairy;
+
+	public static ArrayList<Type> getTypes()
+	{
+		ArrayList<Type> typeList = new ArrayList<Type>();
+
+		for(Type type : Type.values())
+		{
+			typeList.add(type);
+		}
+
+		return typeList;
+	}
 }
