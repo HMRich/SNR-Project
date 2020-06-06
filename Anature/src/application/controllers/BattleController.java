@@ -1686,6 +1686,16 @@ public class BattleController
 			afterTurnStatusCheck(false, mFightManager.getEnemyAnature());
 
 			nextTurn.run();
+			
+			try
+			{
+				Thread.sleep(100);
+			}
+			
+			catch(InterruptedException e)
+			{
+				LoggerController.logEvent(LoggingTypes.Error, "Sleep after turn was interrupted.");
+			}
 
 			if(mClickQueue.size() != 0 && mClickQueue.upNextName().compareTo("Reset GUI") != 0)
 			{
