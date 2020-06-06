@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.controllers.LoggerController;
+import application.enums.BattleAnimationType;
 import application.enums.LoggingTypes;
 import application.enums.MoveIds;
 import application.interfaces.IMove;
@@ -272,6 +273,20 @@ public class MoveSet implements Serializable
 		mMove2MovePoints = mMove2 != null ? mMove2.getTotalMovePoints() : 0;
 		mMove3MovePoints = mMove3 != null ? mMove3.getTotalMovePoints() : 0;
 		mMove4MovePoints = mMove4 != null ? mMove4.getTotalMovePoints() : 0;
+	}
+	
+	public BattleAnimationType getMoveAnimationType(int moveIndex)
+	{
+		IMove move = getMove(moveIndex);
+		if(move.isPhysicalAttack())
+		{
+			return BattleAnimationType.Physical;
+		}
+
+		else
+		{
+			return BattleAnimationType.Special;
+		}
 	}
 
 }

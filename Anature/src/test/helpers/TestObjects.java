@@ -1,4 +1,4 @@
-package test;
+package test.helpers;
 
 import application.anatures.AnatureBuilder;
 import application.anatures.abillities.NullAbility;
@@ -129,11 +129,12 @@ public class TestObjects
 	private static IAbility mDefaultAbility;
 	private static StatusEffects mDefaultStatusEffect = StatusEffects.None;
 	private static int mDefaultIndexNumber = 20200529;
+	private static int mDefaultCatchRate = 255;
 
 	private static IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName()).withOwnerName(getDefaultOwnerName())
 			.isShiny(getDefaultShinyValue()).withSpecies(getDefaultSpecies()).withGender(getDefaultGender()).withPrimaryType(getDefaultPrimaryType())
 			.withSecondaryType(getDefaultSecondaryType()).withMoveSet(getDefaultMoveSet()).withAbility(getDefaultAbility()).withStatus(getDefaultStatusEffect())
-			.withStats(getDefaultStats()).withIndexNumber(getDefaultIndexNumber()).create();
+			.withStats(getDefaultStats()).withIndexNumber(getDefaultIndexNumber()).withCatchRate(getDefaultCatchRate()).create();
 
 	public static IAnature getAnature()
 	{
@@ -193,6 +194,11 @@ public class TestObjects
 	public static int getDefaultIndexNumber()
 	{
 		return mDefaultIndexNumber;
+	}
+
+	public static int getDefaultCatchRate()
+	{
+		return mDefaultCatchRate;
 	}
 
 }

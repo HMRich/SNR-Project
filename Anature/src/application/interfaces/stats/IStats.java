@@ -44,6 +44,12 @@ public interface IStats extends IStatsBase
 	public int getExperienceProgression();
 
 	public int getRequiredExperience();
+	
+	public double getHitPointsPercent();
+	
+	public void applyDamage(int damage);
+	
+	public String applyHeal(int healAmount);
 
 	public StatsBuilder getClone();
 	

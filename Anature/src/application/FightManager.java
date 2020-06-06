@@ -50,7 +50,7 @@ public class FightManager
 		}
 
 		IAnature selected = team.get(index);
-		selected.takeDamage(damage);
+		selected.applyDamage(damage);
 	}
 
 	public void useStruggle(boolean isPlayerAttacking)

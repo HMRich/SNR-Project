@@ -58,9 +58,9 @@ public interface IAnature
 
 	public void resetTempStats();
 
-	public void takeDamage(int damage);
+	public void applyDamage(int damage);
 
-	public String healAnature(int healAmount);
+	public String applyHeal(int healAmount);
 
 	public void restore();
 

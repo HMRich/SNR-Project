@@ -114,7 +114,7 @@ public class AnatureBuilder implements IBuilder<Anature>
 		return this;
 	}
 
-	private AnatureBuilder withCatchRate(int catchRate)
+	public AnatureBuilder withCatchRate(int catchRate)
 	{
 		mAnature.setCatchRate(catchRate);
 		return this;

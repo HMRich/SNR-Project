@@ -10,7 +10,7 @@ public class Sludge_Slap extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.takeDamage(calculateDamage(source, target, true));
+		target.applyDamage(calculateDamage(source, target, true));
 		target.getStats().decreaseTempAccuracy();
 		target.getStats().decreaseTempAccuracy();
 	}

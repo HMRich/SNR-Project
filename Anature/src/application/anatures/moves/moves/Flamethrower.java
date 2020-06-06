@@ -11,7 +11,7 @@ public class Flamethrower extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.takeDamage(calculateDamage(source, target, false));
+		target.applyDamage(calculateDamage(source, target, false));
 		target.updateStatus(StatusEffects.Burn);
 	}
 }

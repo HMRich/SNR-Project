@@ -186,7 +186,7 @@ public class Move implements IMove, Serializable
 		double defenseStat = isSpecialMove ?(double) targetStats.getTotalStat(Stat.SpecialDefense) : (double) targetStats.getTotalStat(Stat.Defense);
 		double typeMatchCalculation = source.getTypes()
 				.contains(getType()) ? 1.5 : 1.0;
-		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectivenes();
+		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectiveness();
 		double randomNumberCalculation = randomObject.nextInt(16) + 85;
 
 		return (int) ( (((levelCalculation * movePower * attackStat / defenseStat) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation

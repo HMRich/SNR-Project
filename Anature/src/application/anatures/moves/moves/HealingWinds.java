@@ -13,7 +13,7 @@ public class HealingWinds extends Move
 		int currentHealthPoints = source.getStats().getCurrentHitPoints();
 		int healthToBeRestored = currentHealthPoints + currentHealthPoints / 2;
 
-		source.healAnature(healthToBeRestored);
+		source.applyHeal(healthToBeRestored);
 
 	}
 

@@ -10,7 +10,7 @@ public class Tornado extends Move
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{
-		target.takeDamage(calculateDamage(source, target, false));
+		target.applyDamage(calculateDamage(source, target, false));
 		target.getStats().decreaseTempAccuracy();
 	}
 }

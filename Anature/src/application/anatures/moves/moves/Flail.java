@@ -12,7 +12,7 @@ public class Flail extends Move
 	public void activateMove(IAnature source, IAnature target)
 	{
 		int selfDamage = source.getStats().getTotalStat(Stat.HitPoints) / 4;
-		source.takeDamage(selfDamage);
-		target.takeDamage(calculateDamage(source, target, false));
+		source.applyDamage(selfDamage);
+		target.applyDamage(calculateDamage(source, target, false));
 	}
 }

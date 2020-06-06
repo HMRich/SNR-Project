@@ -12,7 +12,7 @@ public class AntlerShot extends Move
 	{
 		target.getStats().decreaseTempDefense();
 		source.getStats().increaseTempAttack();
-		target.takeDamage(calculateDamage(source, target, false));
+		target.applyDamage(calculateDamage(source, target, false));
 
 	}
 
