@@ -5,10 +5,12 @@ import application.enums.Species;
 import application.enums.StatusEffects;
 import application.enums.Type;
 import application.interfaces.IAbility;
-import test.TestObjects;
+import test.helpers.TestObjects;
 
 public class AnatureTestable extends Anature
 {
+	private static final long serialVersionUID = 5807920390296823480L;
+
 	private boolean mGetNameWasCalled;
 	private boolean mGetOwnerWasCalled;
 	private boolean mIsShinyWasCalled;

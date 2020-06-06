@@ -28,6 +28,11 @@ public class AbilityPool
 
 	public static Collection<IAbility> getAbilities()
 	{
+		if(mAbilities == null)
+		{
+			generateAbilities();
+		}
+
 		return mAbilities.values();
 	}
 

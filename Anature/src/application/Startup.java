@@ -1,7 +1,13 @@
 package application;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,11 +18,13 @@ import application.controllers.BattleController;
 import application.controllers.LoggerController;
 import application.controllers.menus.AnatureSummaryController;
 import application.controllers.menus.EvolutionController;
+import application.controllers.overworld_cells.AbstractController;
 import application.controllers.overworld_cells.GrassTownController;
 import application.controllers.overworld_cells.PathOneController;
 import application.controllers.overworld_cells.RestStationController;
 import application.controllers.overworld_cells.StarterTownController;
 import application.controllers.results.BattleResult;
+import application.enums.Direction;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.SceneType;
@@ -74,6 +82,7 @@ public class Startup extends Application
 	private static RestStationController mRestStationGrassController;
 
 	private static AbstractCell mCurrentCell;
+	private static AbstractController mCurrentController;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -145,7 +154,8 @@ public class Startup extends Application
 					break;
 
 				case Anature_Summary:
-					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
+					if(mAnatureSummaryView == null
+							|| mAnatureSummaryController == null)
 					{
 						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
 						Parent summaryRoot = summaryLoader.load();
@@ -200,6 +210,7 @@ public class Startup extends Application
 
 					mStarterTownController.movePlayer(warpPoint);
 					mCurrentCell = mStarterTownView;
+					mCurrentController = mStarterTownController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Starter Town");
 					mStage.setScene(townScene);
@@ -230,6 +241,7 @@ public class Startup extends Application
 
 					mPathOneController.movePlayer(warpPoint);
 					mCurrentCell = mPathOneView;
+					mCurrentController = mPathOneController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Path 1");
 					mStage.setScene(pathOneScene);
@@ -259,6 +271,7 @@ public class Startup extends Application
 					Scene grassTownScene = mGrassTownView.getScene();
 					mGrassTownController.movePlayer(warpPoint);
 					mCurrentCell = mGrassTownView;
+					mCurrentController = mGrassTownController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Grass Town");
 					mStage.setScene(grassTownScene);
@@ -288,6 +301,7 @@ public class Startup extends Application
 					Scene restStationScene = mRestStationGrassView.getScene();
 					mRestStationGrassController.movePlayer(warpPoint);
 					mCurrentCell = mRestStationGrassView;
+					mCurrentController = mRestStationGrassController;
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Rest Station in Grass Town");
 					mStage.setScene(restStationScene);
@@ -347,7 +361,7 @@ public class Startup extends Application
 		if(result.hasEvolutions())
 		{
 			HashMap<IAnature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
-			
+
 			Iterator<Entry<IAnature, Species>> evolveIterator = anaturesToEvolve.entrySet().iterator();
 			while(evolveIterator.hasNext())
 			{
@@ -357,25 +371,25 @@ public class Startup extends Application
 				{
 					mSceneStack.push(SceneType.Evolution);
 				}
-				
+
 				changeScene(SceneType.Evolution, null);
 				mEvolutionController.startEvolution(mPlayer.getAnatures(), evolveEntry.getKey(), evolveEntry.getValue(), () -> nextScene());
 			}
 		}
-		
+
 		else
 		{
 			changeScene(null, null);
 		}
 	}
-	
+
 	private static void nextScene()
 	{
 		if(mSceneStack.size() < 1)
 		{
 			changeScene(null, null);
 		}
-		
+
 		else
 		{
 			changeScene(mSceneStack.pop(), null);
@@ -392,7 +406,7 @@ public class Startup extends Application
 		IAnature second = AnatureBuilder.createAnature(Species.Null, 12);
 		second.updateName("Other Null");
 		mPlayer.addAnatures(second);
-		
+
 		IAnature third = AnatureBuilder.createAnature(Species.Sardino, 14);
 		mPlayer.addAnatures(third);
 		mPlayer.getAnatures().get(2).getStats().addExperience(630);
@@ -415,5 +429,187 @@ public class Startup extends Application
 	public static String getPlayerName()
 	{
 		return mPlayer.getName();
+	}
+
+	/*
+	 * SAVING FUNCTIONALITY
+	 */
+
+	private interface SavableItem
+	{
+		public Object getItem();
+
+		public void setItem(Object object);
+	}
+
+	private enum SaveItem implements SavableItem
+	{
+		Player
+		{
+			@Override
+			public Object getItem()
+			{
+				return mPlayer;
+			}
+
+			@Override
+			public void setItem(Object object)
+			{
+				mPlayer = (Player) object;
+			}
+		},
+		StarterTownModel
+		{
+			@Override
+			public Object getItem()
+			{
+				return mStarterTownModel;
+			}
+
+			@Override
+			public void setItem(Object object)
+			{
+				mStarterTownModel = (StarterTownModel) object;
+			}
+		},
+		PathOneModel
+		{
+			@Override
+			public Object getItem()
+			{
+				return mPathOneModel;
+			}
+
+			@Override
+			public void setItem(Object object)
+			{
+				mPathOneModel = (PathOneModel) object;
+			}
+		},
+		CurrentSceneType
+		{
+			@Override
+			public Object getItem()
+			{
+				return mCurrSceneType;
+			}
+
+			@Override
+			public void setItem(Object object)
+			{
+				mCurrSceneType = (SceneType) object;
+				changeScene(mCurrSceneType, null);
+			}
+		},
+		CurrentPlayerDirection
+		{
+			@Override
+			public Object getItem()
+			{
+				return mCurrentCell.getPlayerFacing();
+			}
+
+			@Override
+			public void setItem(Object object)
+			{
+				mCurrentCell.setPlayerFacing((Direction) object);
+			}
+		},
+		CurrentPlayerXCoordinate
+		{
+			@Override
+			public Object getItem()
+			{
+				return mCurrentCell.getPlayer().getX();
+			}
+
+			@Override
+			public void setItem(Object object)
+			{
+				mCurrentCell.getPlayer().setX((double) object);
+			}
+		},
+		CurrentPlayerYCoordinate
+		{
+			@Override
+			public Object getItem()
+			{
+				return mCurrentCell.getPlayer().getY();
+			}
+
+			@Override
+			public void setItem(Object object)
+			{
+				mCurrentCell.getPlayer().setY((double) object);
+			}
+		}
+	}
+
+	public static boolean save()
+	{
+
+		ArrayList<Object> itemsToSave = new ArrayList<Object>();
+
+		for(SaveItem item : SaveItem.values())
+		{
+			itemsToSave.add(item.getItem());
+		}
+
+		try
+		{
+			FileOutputStream fileOutputStream = new FileOutputStream(new File("./save.save"));
+			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+
+			out.writeObject(itemsToSave);
+			out.close();
+			fileOutputStream.close();
+		}
+
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		mCurrentController.saveLoadUpdates();
+
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static boolean load()
+	{
+		ArrayList<Object> objRead = new ArrayList<Object>();
+		FileInputStream fileInStream;
+		ObjectInputStream in;
+
+		if(mCurrentController != null)
+		{
+			mCurrentController.saveLoadUpdates();
+		}
+
+		try
+		{
+			fileInStream = new FileInputStream(new File("./save.save"));
+			in = new ObjectInputStream(fileInStream);
+
+			objRead = (ArrayList<Object>) in.readObject();
+
+			for(SaveItem item : SaveItem.values())
+			{
+				item.setItem(objRead.remove(0));
+			}
+
+			in.close();
+			fileInStream.close();
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		mCurrentController.saveLoadUpdates();
+
+		return true;
 	}
 }

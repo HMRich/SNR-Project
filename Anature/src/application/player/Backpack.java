@@ -1,5 +1,6 @@
 package application.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.controllers.LoggerController;
@@ -8,8 +9,10 @@ import application.enums.LoggingTypes;
 import application.interfaces.IHealthPotion;
 import application.items.Anacube;
 
-public class Backpack
+public class Backpack implements Serializable
 {
+	private static final long serialVersionUID = -2177964342378481427L;
+
 	private ArrayList<IHealthPotion> mPotionBag;
 	private ArrayList<Anacube> mAnacubeBag;
 
@@ -29,7 +32,7 @@ public class Backpack
 
 		mPotionBag.add(toAdd);
 	}
-	
+
 	public void addItem(Anacube toAdd)
 	{
 		if(toAdd == null)
@@ -37,7 +40,7 @@ public class Backpack
 			LoggerController.logEvent(LoggingTypes.Error, "Null Anacube cannot be added.");
 			throw new IllegalArgumentException("Null Anacube cannot be added.");
 		}
-		
+
 		mAnacubeBag.add(toAdd);
 	}
 
@@ -53,7 +56,7 @@ public class Backpack
 				return true;
 			}
 		}
-		
+
 		for(int i = 0; i < mAnacubeBag.size(); i++)
 		{
 			Anacube iItem = mAnacubeBag.get(i);
@@ -92,7 +95,7 @@ public class Backpack
 	{
 		return calculateCount(mPotionBag, ItemIds.Master_Potion);
 	}
-	
+
 	public int getAnacubeCount(ItemIds toCount)
 	{
 		return calculateAnacubeCount(mAnacubeBag, toCount);
@@ -110,11 +113,11 @@ public class Backpack
 
 		return count;
 	}
-	
+
 	private int calculateAnacubeCount(ArrayList<Anacube> bag, ItemIds toCount)
 	{
 		int count = 0;
-		
+
 		for(Anacube anacube : bag)
 		{
 			if(anacube.getItemId() == toCount)
@@ -122,7 +125,7 @@ public class Backpack
 				count++;
 			}
 		}
-		
+
 		return count;
 	}
 }

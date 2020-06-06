@@ -1,11 +1,15 @@
 package application.anatures.stats;
 
+import java.io.Serializable;
+
 import application.enums.Stat;
 import application.enums.TempStatsStages;
 import application.interfaces.stats.IStatsTemp;
 
-class StatsTemp implements IStatsTemp
+class StatsTemp implements IStatsTemp, Serializable
 {
+	private static final long serialVersionUID = 7563828176824900882L;
+
 	private TempStatsStages mTempAttack;
 	private TempStatsStages mTempDefense;
 	private TempStatsStages mTempSpecialAttack;

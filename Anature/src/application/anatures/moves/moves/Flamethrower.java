@@ -6,6 +6,8 @@ import application.interfaces.IAnature;
 
 public class Flamethrower extends Move
 {
+	private static final long serialVersionUID = 1699431073094715789L;
+
 	@Override
 	public void activateMove(IAnature source, IAnature target)
 	{

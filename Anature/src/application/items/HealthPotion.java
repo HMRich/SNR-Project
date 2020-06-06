@@ -1,10 +1,14 @@
 package application.items;
 
+import java.io.Serializable;
+
 import application.enums.ItemIds;
 import application.interfaces.IBuilder;
 
-public class HealthPotion implements IBuilder<HealthPotionBase>
+public class HealthPotion implements IBuilder<HealthPotionBase>, Serializable
 {
+	private static final long serialVersionUID = 6072895812011028431L;
+
 	private HealthPotionBase mHealthPotion;
 
 	public HealthPotion()
@@ -38,6 +42,7 @@ public class HealthPotion implements IBuilder<HealthPotionBase>
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public HealthPotionBase create()
 	{
 		if(buildIsComplete())

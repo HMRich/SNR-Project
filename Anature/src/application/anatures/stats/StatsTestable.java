@@ -2,6 +2,8 @@ package application.anatures.stats;
 
 public class StatsTestable extends Stats
 {
+	private static final long serialVersionUID = -3973885491828426036L;
+
 	private boolean mResetTempStatsWasCalled;
 	private boolean mGetHitPointsPercentWasCalled;
 	private boolean mApplyHealWasCalledWithMaxIntValue;

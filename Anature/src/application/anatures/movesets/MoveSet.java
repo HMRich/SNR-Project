@@ -1,5 +1,6 @@
 package application.anatures.movesets;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.controllers.LoggerController;
@@ -9,8 +10,10 @@ import application.enums.MoveIds;
 import application.interfaces.IMove;
 import application.pools.MovePool;
 
-public class MoveSet
+public class MoveSet implements Serializable
 {
+	private static final long serialVersionUID = -7228324117750518083L;
+
 	private int mMove1MovePoints, mMove2MovePoints, mMove3MovePoints, mMove4MovePoints;
 	private IMove mMove1, mMove2, mMove3, mMove4;
 	private IMove mSkipTurn = MovePool.getMove(MoveIds.Skip_Turn);
@@ -256,9 +259,9 @@ public class MoveSet
 		if(movePoints <= 0)
 			return false;
 
-		return setMovePoints(moveNumber, movePoints--);
+		return setMovePoints(moveNumber, --movePoints);
 	}
-	
+
 	public MoveSet getClone()
 	{
 		return new MoveSet(getMove(1), getMove(2), getMove(3), getMove(4));
@@ -271,7 +274,7 @@ public class MoveSet
 		mMove3MovePoints = mMove3 != null ? mMove3.getTotalMovePoints() : 0;
 		mMove4MovePoints = mMove4 != null ? mMove4.getTotalMovePoints() : 0;
 	}
-	
+
 	public BattleAnimationType getMoveAnimationType(int moveIndex)
 	{
 		IMove move = getMove(moveIndex);

@@ -1,5 +1,6 @@
 package application.anatures.moves;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import application.enums.MoveIds;
@@ -10,8 +11,10 @@ import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 
-public class Move implements IMove
+public class Move implements IMove, Serializable
 {
+	private static final long serialVersionUID = 257108755309428439L;
+
 	private static Random randomObject = new Random();
 	private String mName;
 	private MoveIds mMoveId;
@@ -183,7 +186,7 @@ public class Move implements IMove
 		double defenseStat = isSpecialMove ?(double) targetStats.getTotalStat(Stat.SpecialDefense) : (double) targetStats.getTotalStat(Stat.Defense);
 		double typeMatchCalculation = source.getTypes()
 				.contains(getType()) ? 1.5 : 1.0;
-		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectivenes();
+		double typeAdvantageCalculation = TypeEffectiveness.typeEffectiveness(this, target).getEffectiveness();
 		double randomNumberCalculation = randomObject.nextInt(16) + 85;
 
 		return (int) ( (((levelCalculation * movePower * attackStat / defenseStat) / 50.0) + 2.0) * typeMatchCalculation * typeAdvantageCalculation

@@ -10,6 +10,8 @@ import application.interfaces.stats.IStats;
 
 class Stats extends StatsBase implements IStats
 {
+	private static final long serialVersionUID = 8358817858029495206L;
+
 	private int mLevel;
 	private int mTotalExperiencePoints;
 	private int mCurrentHitPoints;
@@ -73,31 +75,37 @@ class Stats extends StatsBase implements IStats
 	 * PUBLIC GETS
 	 */
 
+	@Override
 	public int getLevel()
 	{
 		return mLevel;
 	}
 
+	@Override
 	public int getTotalExperiencePoints()
 	{
 		return mTotalExperiencePoints;
 	}
 
+	@Override
 	public int getCurrentHitPoints()
 	{
 		return mCurrentHitPoints;
 	}
 
+	@Override
 	public LevelingSpeed getLevelingSpeed()
 	{
 		return mLevelingSpeed;
 	}
 
+	@Override
 	public Natures getNature()
 	{
 		return mNature;
 	}
 
+	@Override
 	public int getTotalStat(Stat stat)
 	{
 		double value = getStatValue(stat);
@@ -106,6 +114,7 @@ class Stats extends StatsBase implements IStats
 		return (int) ((value + modifierValue) * getTempStatModifier(stat));
 	}
 
+	@Override
 	public int getNatureModifierValue(Stat stat)
 	{
 		if(getNature().getIncreasedStat() == null
@@ -129,6 +138,7 @@ class Stats extends StatsBase implements IStats
 		return 0;
 	}
 
+	@Override
 	public Stat getLargestStat()
 	{
 		int hp = getTotalStat(Stat.HitPoints);
@@ -173,6 +183,7 @@ class Stats extends StatsBase implements IStats
 	 * PUBLIC SETS
 	 */
 
+	@Override
 	public void setCurrentHitPoints(int hitPoints)
 	{
 		if(hitPoints < 0)
@@ -188,6 +199,7 @@ class Stats extends StatsBase implements IStats
 		mCurrentHitPoints = hitPoints;
 	}
 
+	@Override
 	public int healAnature(int healAmount)
 	{
 		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
@@ -209,6 +221,7 @@ class Stats extends StatsBase implements IStats
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public int addExperience(int expeienceGain)
 	{
 		if(expeienceGain < 0)
@@ -227,21 +240,25 @@ class Stats extends StatsBase implements IStats
 		return levelsGained;
 	}
 
+	@Override
 	public int getExperienceProgression()
 	{
 		return getTotalExperiencePoints() - requiredExperienceForLevel(getLevel());
 	}
 
+	@Override
 	public int getRequiredExperience()
 	{
 		return requiredExperienceForLevel(getLevel() + 1) - requiredExperienceForLevel(getLevel());
 	}
 
+	@Override
 	public double getHitPointsPercent()
 	{
 		return ((double) getCurrentHitPoints()) / ((double) getTotalStat(Stat.HitPoints));
 	}
 
+	@Override
 	public void applyDamage(int damage)
 	{
 		if(damage <= 0)
@@ -262,6 +279,7 @@ class Stats extends StatsBase implements IStats
 		}
 	}
 
+	@Override
 	public String applyHeal(int healAmount)
 	{
 		if(healAmount <= 0)
@@ -278,6 +296,7 @@ class Stats extends StatsBase implements IStats
 		return " was healed " + healAmount + " hp.";
 	}
 
+	@Override
 	public StatsBuilder getClone()
 	{
 		return new StatsBuilder().atLevel(getLevel())
@@ -306,6 +325,7 @@ class Stats extends StatsBase implements IStats
 				.withEVSpeed(getEvStat(Stat.Speed));
 	}
 
+	@Override
 	public boolean addEv(Stat statToAdd, int level)
 	{
 		switch(statToAdd)
@@ -389,32 +409,31 @@ class Stats extends StatsBase implements IStats
 	{
 		checkEvRoadmap();
 
-		int hitPointsIncrease = (int) ((0.01 * (double) getBaseStat(Stat.HitPoints))
+		int hitPointsIncrease = (int) ((0.01 * getBaseStat(Stat.HitPoints))
 				+ (0.02 * ((double) getIvStat(Stat.HitPoints) + (double) getEvStat(Stat.HitPoints))));
 		hitPointsIncrease = hitPointsIncrease == 0 ? 1 : hitPointsIncrease;
 		addLevelHitPoints(hitPointsIncrease);
 		maintainHitPointPercentage(hitPointsIncrease);
 
-		int attackIncrease = (int) ((0.01 * (double) getBaseStat(Stat.Attack)) + (0.02 * ((double) getIvStat(Stat.Attack) + (double) getEvStat(Stat.Attack))));
+		int attackIncrease = (int) ((0.01 * getBaseStat(Stat.Attack)) + (0.02 * ((double) getIvStat(Stat.Attack) + (double) getEvStat(Stat.Attack))));
 		attackIncrease = attackIncrease == 0 ? 1 : attackIncrease;
 		addLevelAttack(attackIncrease);
 
-		int defenseIncrease = (int) ((0.01 * (double) getBaseStat(Stat.Defense))
-				+ (0.02 * ((double) getIvStat(Stat.Defense) + (double) getEvStat(Stat.Defense))));
+		int defenseIncrease = (int) ((0.01 * getBaseStat(Stat.Defense)) + (0.02 * ((double) getIvStat(Stat.Defense) + (double) getEvStat(Stat.Defense))));
 		defenseIncrease = defenseIncrease == 0 ? 1 : defenseIncrease;
 		addLevelDefnse(defenseIncrease);
 
-		int specialAttackIncrease = (int) ((0.01 * (double) getBaseStat(Stat.SpecialAttack))
+		int specialAttackIncrease = (int) ((0.01 * getBaseStat(Stat.SpecialAttack))
 				+ (0.02 * ((double) getIvStat(Stat.SpecialAttack) + (double) getEvStat(Stat.SpecialAttack))));
 		specialAttackIncrease = specialAttackIncrease == 0 ? 1 : specialAttackIncrease;
 		addLevelSpecialAttack(specialAttackIncrease);
 
-		int specialDefenseIncrease = (int) ((0.01 * (double) getBaseStat(Stat.SpecialDefense))
+		int specialDefenseIncrease = (int) ((0.01 * getBaseStat(Stat.SpecialDefense))
 				+ (0.02 * ((double) getIvStat(Stat.SpecialDefense) + (double) getEvStat(Stat.SpecialDefense))));
 		specialDefenseIncrease = specialDefenseIncrease == 0 ? 1 : specialDefenseIncrease;
 		addLevelSpecialDefense(specialDefenseIncrease);
 
-		int speedIncrease = (int) ((0.01 * (double) getBaseStat(Stat.Speed)) + (0.02 * ((double) getIvStat(Stat.Speed) + (double) getEvStat(Stat.Speed))));
+		int speedIncrease = (int) ((0.01 * getBaseStat(Stat.Speed)) + (0.02 * ((double) getIvStat(Stat.Speed) + (double) getEvStat(Stat.Speed))));
 		speedIncrease = speedIncrease == 0 ? 1 : speedIncrease;
 		addLevelSpeed(speedIncrease);
 
@@ -483,7 +502,7 @@ class Stats extends StatsBase implements IStats
 
 		double getHitPointsPercent = (double) currentHitPoints / (double) previousTotalHitPoints;
 
-		int setHitPointsValue = (int) Math.ceil((((double) getTotalStat(Stat.HitPoints)) * getHitPointsPercent));
+		int setHitPointsValue = (int) Math.ceil(((getTotalStat(Stat.HitPoints)) * getHitPointsPercent));
 		setCurrentHitPoints(setHitPointsValue);
 	}
 

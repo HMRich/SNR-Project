@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -13,8 +13,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 import application.enums.Stat;
 import application.interfaces.IAnature;
 import application.interfaces.stats.IStats;
-import test.TestObjects;
+import test.helpers.TestTags;
+import test.helpers.TestObjects;
 
+@DisplayName("Stats Tests")
+@Tag(TestTags.UnitTest)
 public class StatsTests
 {
 	@Nested
@@ -134,14 +137,8 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
-					.getClone()
-					.withStats(TestObjects.getDefaultStats()
-							.getClone()
-							.atLevel(1)
-							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+			IAnature sut = TestObjects.getAnature().getClone()
+					.withStats(TestObjects.getDefaultStats().getClone().atLevel(1).withBaseHitPoints(baseHitPoints).create()).create();
 
 			IStats sutStats = sut.getStats();
 
@@ -160,14 +157,8 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
-					.getClone()
-					.withStats(TestObjects.getDefaultStats()
-							.getClone()
-							.atLevel(1)
-							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+			IAnature sut = TestObjects.getAnature().getClone()
+					.withStats(TestObjects.getDefaultStats().getClone().atLevel(1).withBaseHitPoints(baseHitPoints).create()).create();
 
 			IStats sutStats = sut.getStats();
 
@@ -188,14 +179,8 @@ public class StatsTests
 				// arrange
 				int baseHitPoints = 250;
 
-				IAnature sut = TestObjects.getAnature()
-						.getClone()
-						.withStats(TestObjects.getDefaultStats()
-								.getClone()
-								.atLevel(1)
-								.withBaseHitPoints(baseHitPoints)
-								.create())
-						.create();
+				IAnature sut = TestObjects.getAnature().getClone()
+						.withStats(TestObjects.getDefaultStats().getClone().atLevel(1).withBaseHitPoints(baseHitPoints).create()).create();
 
 				// act
 				sut.applyDamage(damage);
@@ -215,14 +200,8 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
-					.getClone()
-					.withStats(TestObjects.getDefaultStats()
-							.getClone()
-							.atLevel(1)
-							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+			IAnature sut = TestObjects.getAnature().getClone()
+					.withStats(TestObjects.getDefaultStats().getClone().atLevel(1).withBaseHitPoints(baseHitPoints).create()).create();
 
 			IStats sutStats = sut.getStats();
 			sutStats.setCurrentHitPoints(0);
@@ -242,14 +221,8 @@ public class StatsTests
 			// arrange
 			int baseHitPoints = 250;
 
-			IAnature sut = TestObjects.getAnature()
-					.getClone()
-					.withStats(TestObjects.getDefaultStats()
-							.getClone()
-							.atLevel(1)
-							.withBaseHitPoints(baseHitPoints)
-							.create())
-					.create();
+			IAnature sut = TestObjects.getAnature().getClone()
+					.withStats(TestObjects.getDefaultStats().getClone().atLevel(1).withBaseHitPoints(baseHitPoints).create()).create();
 
 			IStats sutStats = sut.getStats();
 			sutStats.setCurrentHitPoints(0);
@@ -271,14 +244,8 @@ public class StatsTests
 				// arrange
 				int baseHitPoints = 250;
 
-				IAnature sut = TestObjects.getAnature()
-						.getClone()
-						.withStats(TestObjects.getDefaultStats()
-								.getClone()
-								.atLevel(1)
-								.withBaseHitPoints(baseHitPoints)
-								.create())
-						.create();
+				IAnature sut = TestObjects.getAnature().getClone()
+						.withStats(TestObjects.getDefaultStats().getClone().atLevel(1).withBaseHitPoints(baseHitPoints).create()).create();
 
 				// act
 				sut.applyHeal(healAmount);
