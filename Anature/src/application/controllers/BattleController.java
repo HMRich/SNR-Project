@@ -546,7 +546,7 @@ public class BattleController
 		}
 
 		addEvs();
-		
+
 		if(isThereAliveAnatureInParty)
 		{
 			evaluateAnatureExperienceGain();
@@ -589,7 +589,7 @@ public class BattleController
 
 				double calculationA = (enemyAnatureLevel * 2) + 10;
 				double calculationB = enemyAnatureLevel + playerAnatureLevel + 10;
-				double calculationC = ((double) (enemyAnatureLevel * playerAnatureLevel)) / 5.0 * isTrainerCalculation;
+				double calculationC = (enemyAnatureLevel * playerAnatureLevel) / 5.0 * isTrainerCalculation;
 
 				double finalCalculation = calculationC * (Math.floor(Math.pow(calculationA, 2.5)) / Math.floor(Math.pow(calculationB, 2.5)));
 
@@ -695,7 +695,7 @@ public class BattleController
 			{
 				activateTurn(BattleChoice.Switch);
 			}
-			
+
 			else
 			{
 				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getStats().getCurrentHitPoints() <= 0)
@@ -958,7 +958,7 @@ public class BattleController
 			event.consume();
 		});
 	}
-	
+
 	private void setUpFontProperties(Scene scene)
 	{
 		m55FontProperty = createFontProperty(55);
@@ -967,7 +967,7 @@ public class BattleController
 		m85FontProperty = createFontProperty(85);
 		m95FontProperty = createFontProperty(95);
 
-		ChangeListener<Number> fontListener = (observableValue, oldWidth, newWidth) -> 
+		ChangeListener<Number> fontListener = (observableValue, oldWidth, newWidth) ->
 		{
 			m55FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 55));
 			m65FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 65));
@@ -975,7 +975,7 @@ public class BattleController
 			m85FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85));
 			m95FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 95));
 		};
-		
+
 		scene.widthProperty().addListener(fontListener);
 		scene.heightProperty().addListener(fontListener);
 	}
@@ -1546,7 +1546,7 @@ public class BattleController
 		{
 			mShowPotionTab = isPotion;
 		}
-		
+
 		else
 		{
 			mShowPotionTab = true;
@@ -1686,12 +1686,12 @@ public class BattleController
 			afterTurnStatusCheck(false, mFightManager.getEnemyAnature());
 
 			nextTurn.run();
-			
+
 			try
 			{
 				Thread.sleep(100);
 			}
-			
+
 			catch(InterruptedException e)
 			{
 				LoggerController.logEvent(LoggingTypes.Error, "Sleep after turn was interrupted.");
@@ -1748,7 +1748,7 @@ public class BattleController
 
 			case Item: // TODO Change it so u can use items on other anatures
 				String id = mItemList.getSelectionModel().getSelectedItem();
-				
+
 				IItem selectedItem = ItemPool.getItem(id);
 				if(id.contains("Anacube"))
 				{
@@ -2173,7 +2173,7 @@ public class BattleController
 		increase.setOnFinished(event -> mCanClick.set(true));
 		increase.play();
 	}
-	
+
 	private void onAnacubeUse(IItem selectedItem, Runnable nextTurn)
 	{
 		mClickQueue.enqueue(() ->
@@ -2185,7 +2185,7 @@ public class BattleController
 
 			mPlayer.getBackpack().removeItem(selectedItem.getItemId());
 			updateBagMenu();
-			
+
 			AnacubeThrow animation = new AnacubeThrow(mThrownAnacubeImg, Duration.seconds(2));
 			animation.setOnFinished(value ->
 			{
@@ -2221,7 +2221,7 @@ public class BattleController
 						ColorAdjust darken = new ColorAdjust();
 						darken.setBrightness(-0.75);
 						mThrownAnacubeImg.setEffect(darken);
-						
+
 						playerWin(true);
 					}
 
@@ -2231,7 +2231,7 @@ public class BattleController
 						mAnatureFront.setVisible(true);
 						activateAfterTurn(nextTurn);
 					}
-					
+
 					mCanClick.set(true);
 				});
 				bounceAnaimation.play();
@@ -2240,7 +2240,7 @@ public class BattleController
 			animation.play();
 		}, "Player using Anacube");
 	}
-	
+
 	private boolean canCapture()
 	{
 		return mEnemyTrainer.getId() == TrainerIds.Wild && mPlayer.getAnatures().size() < 6;
@@ -2249,21 +2249,21 @@ public class BattleController
 	private void showAnacube(IItem selectedItem)
 	{
 		mThrownAnacubeImg.setVisible(true);
-		
+
 		switch(selectedItem.getItemId())
 		{
 			case Super_Anacube:
 				mThrownAnacubeImg.setImage(mItemSuperAnacube);
 				break;
-				
+
 			case Hyper_Anacube:
 				mThrownAnacubeImg.setImage(mItemHyperAnacube);
 				break;
-				
+
 			case Max_Anacube:
 				mThrownAnacubeImg.setImage(mItemMaxAnacube);
 				break;
-				
+
 			default:
 				mThrownAnacubeImg.setImage(mItemAnacube);
 				break;
@@ -2487,20 +2487,20 @@ public class BattleController
 
 		if(moveSet.hasMove(2))
 		{
-			mAttackMpOneTxt.set(moveSet.getMovePoints(2) + " / " + moveSet.getMove(2).getTotalMovePoints());
+			mAttackMpTwoTxt.set(moveSet.getMovePoints(2) + " / " + moveSet.getMove(2).getTotalMovePoints());
 		}
 
 		if(moveSet.hasMove(3))
 		{
-			mAttackMpOneTxt.set(moveSet.getMovePoints(3) + " / " + moveSet.getMove(3).getTotalMovePoints());
+			mAttackMpThreeTxt.set(moveSet.getMovePoints(3) + " / " + moveSet.getMove(3).getTotalMovePoints());
 		}
 
 		if(moveSet.hasMove(4))
 		{
-			mAttackMpOneTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
+			mAttackMpFourTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
 		}
 	}
-	
+
 	private void dequeueClickTracker(Event event)
 	{
 		event.consume();
@@ -2533,12 +2533,12 @@ public class BattleController
 			}
 		}
 	}
-	
+
 	private void addEvs()
 	{
 		ArrayList<IAnature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
 		Stat evToAddTo = mFightManager.getEnemyAnature().getStats().getLargestStat();
-		
+
 		for(IAnature anature : participatingAnatures)
 		{
 			anature.getStats().addEv(evToAddTo, anature.getStats().getLevel());
@@ -2551,7 +2551,7 @@ public class BattleController
 		{
 			mDialogueTxt.set(mFightManager.getEnemyTeam().get(0).getName() + " has been defeated!");
 		}
-		
+
 		else if(mPlayer.getAnatures().size() < 6)
 		{
 			mPlayer.getAnatures().add(mFightManager.getEnemyAnature());
@@ -2563,9 +2563,9 @@ public class BattleController
 		if(!mEnemyTrainer.getId().equals(TrainerIds.Wild))
 		{
 			int randomCalculation = new Random().nextInt(21) - 10;
-			double percentonvertion = ((double) randomCalculation) / 100.0;
+			double percentonvertion = (randomCalculation) / 100.0;
 			double adjustmentPercent = 1.0 + percentonvertion;
-			int tokensToAdd = (int) (((double) mEnemyTrainer.getRewardForDefeat()) * adjustmentPercent);
+			int tokensToAdd = (int) ((mEnemyTrainer.getRewardForDefeat()) * adjustmentPercent);
 
 			mPlayer.addTokens(tokensToAdd);
 
@@ -2574,27 +2574,27 @@ public class BattleController
 		}
 
 		mShowBtns.set(false);
-		
+
 		mClickQueue.enqueue(() -> endBattle(BattleEndMethods.Victory), "To Overworld");
 
 		mCanClick.set(true);
 		mToEnd = true;
 	}
-	
+
 	private void endBattle(BattleEndMethods endMethod)
 	{
 		HashMap<IAnature, Species> evolutions = new HashMap<IAnature, Species>();
-		
+
 		for(IAnature toCheck : mPlayer.getAnatures())
 		{
 			Species canEvolveInto = EvolutionManager.checkEvolution(toCheck);
-			
+
 			if(canEvolveInto != null)
 			{
 				evolutions.put(toCheck, canEvolveInto);
 			}
 		}
-		
+
 		Startup.endBattle(new BattleResult(endMethod, evolutions));
 	}
 
@@ -2602,7 +2602,7 @@ public class BattleController
 	{
 		return new Image(url, 1000.0, 1000.0, false, false);
 	}
-	
+
 	private ObjectProperty<Font> createFontProperty(int toDivideBy)
 	{
 		Font font = Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), toDivideBy);
