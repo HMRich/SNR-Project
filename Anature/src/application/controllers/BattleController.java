@@ -2487,17 +2487,17 @@ public class BattleController
 
 		if(moveSet.hasMove(2))
 		{
-			mAttackMpOneTxt.set(moveSet.getMovePoints(2) + " / " + moveSet.getMove(2).getTotalMovePoints());
+			mAttackMpTwoTxt.set(moveSet.getMovePoints(2) + " / " + moveSet.getMove(2).getTotalMovePoints());
 		}
 
 		if(moveSet.hasMove(3))
 		{
-			mAttackMpOneTxt.set(moveSet.getMovePoints(3) + " / " + moveSet.getMove(3).getTotalMovePoints());
+			mAttackMpThreeTxt.set(moveSet.getMovePoints(3) + " / " + moveSet.getMove(3).getTotalMovePoints());
 		}
 
 		if(moveSet.hasMove(4))
 		{
-			mAttackMpOneTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
+			mAttackMpFourTxt.set(moveSet.getMovePoints(4) + " / " + moveSet.getMove(4).getTotalMovePoints());
 		}
 	}
 
