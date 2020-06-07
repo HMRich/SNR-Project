@@ -1,5 +1,8 @@
 package application.anatures.stats;
 
+import java.util.HashMap;
+
+import application.anatures.stats.StatsEV.EvChanged;
 import application.enums.Stat;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
@@ -30,6 +33,13 @@ public class StatsBuilder implements IBuilder<IStats>
 		mStats.setNature(nature);
 		return this;
 	}
+
+	// TODO Talk about a way to preserve Anature XP
+//	public StatsBuilder withTotalExperience(int totalExperience)
+//	{
+//		mStats
+//		return this;
+//	}
 
 	public StatsBuilder withBaseExperience(int baseExperience)
 	{
@@ -84,40 +94,10 @@ public class StatsBuilder implements IBuilder<IStats>
 		mStats.setBaseEvasion(baseEvasion);
 		return this;
 	}
-	
-	public StatsBuilder withEVHitPoints(int EVHitpoints)
-	{
-		mStats.setIVHitPoints(EVHitpoints);
-		return this;
-	}
 
-	public StatsBuilder withEVAttack(int EVAttack)
+	public StatsBuilder withEvRoadMap(HashMap<Integer, EvChanged> eVRoadMap)
 	{
-		mStats.setIVAttack(EVAttack);
-		return this;
-	}
-
-	public StatsBuilder withEVDefense(int EVDefense)
-	{
-		mStats.setIVDefense(EVDefense);
-		return this;
-	}
-
-	public StatsBuilder withEVSpecialAttack(int EVSpecialAttack)
-	{
-		mStats.setIVSpecialAttack(EVSpecialAttack);
-		return this;
-	}
-
-	public StatsBuilder withEVSpecialDefense(int EVSpecialDefnese)
-	{
-		mStats.setIVSpecialDefense(EVSpecialDefnese);
-		return this;
-	}
-
-	public StatsBuilder withEVSpeed(int EVSpeed)
-	{
-		mStats.setIVSpeed(EVSpeed);
+		mStats.setEvRoadMap(eVRoadMap);
 		return this;
 	}
 
@@ -167,6 +147,7 @@ public class StatsBuilder implements IBuilder<IStats>
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public IStats create()
 	{
 		if(mStats.canCreateStats())
@@ -174,7 +155,7 @@ public class StatsBuilder implements IBuilder<IStats>
 			mStats.levelUpStats();
 
 			IStats statsToReturn = mStats;
-			
+
 			statsToReturn.setCurrentHitPoints(statsToReturn.getTotalStat(Stat.HitPoints));
 
 			generateNewStatsCore();

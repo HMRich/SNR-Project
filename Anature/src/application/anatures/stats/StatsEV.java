@@ -227,6 +227,42 @@ class StatsEV extends StatsLevel implements IStatsEV
 		mEVSpeed = EVSpeed;
 	}
 
+	void setEvRoadMap(HashMap<Integer, EvChanged> eVRoadMap)
+	{
+		mEvRoadmap = new HashMap<Integer, EvChanged>(eVRoadMap);
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
+	public boolean addEv(Stat statToAdd, int level)
+	{
+		switch(statToAdd)
+		{
+			case HitPoints:
+				return addEVHitPoint(level);
+
+			case Attack:
+				return addEVAttack(level);
+
+			case Defense:
+				return addEVDefense(level);
+
+			case SpecialAttack:
+				return addEVSpecialAttack(level);
+
+			case SpecialDefense:
+				return addEVSpecialDefense(level);
+
+			case Speed:
+				return addEVSpeed(level);
+
+			default:
+				return false;
+		}
+	}
+
 	/*
 	 * PACKAGE METHODS
 	 */

@@ -117,22 +117,19 @@ class Stats extends StatsBase implements IStats
 	@Override
 	public int getNatureModifierValue(Stat stat)
 	{
-		if(getNature().getIncreasedStat() == null
-				|| getNature().getDecreasedStat() == null)
+		if(getNature().getIncreasedStat() == null || getNature().getDecreasedStat() == null)
 		{
 			return 0;
 		}
 
-		if(getNature().getIncreasedStat()
-				.equals(stat))
+		if(getNature().getIncreasedStat().equals(stat))
 		{
-			return (int) (getStatValue(stat) * getNature().getModifier());
+			return (int) (getStatValue(stat) * Natures.modifier());
 		}
 
-		if(getNature().getDecreasedStat()
-				.equals(stat))
+		if(getNature().getDecreasedStat().equals(stat))
 		{
-			return (int) (getStatValue(stat) * -getNature().getModifier());
+			return (int) (getStatValue(stat) * -Natures.modifier());
 		}
 
 		return 0;
@@ -151,27 +148,29 @@ class Stats extends StatsBase implements IStats
 		int[] stats = { hp, atk, def, spAtk, spDef, spd };
 		Arrays.sort(stats);
 
-		if(hp == stats[0])
+		int lastIndex = stats.length - 1;
+
+		if(hp == stats[lastIndex])
 		{
 			return Stat.HitPoints;
 		}
 
-		else if(atk == stats[0])
+		else if(atk == stats[lastIndex])
 		{
 			return Stat.Attack;
 		}
 
-		else if(def == stats[0])
+		else if(def == stats[lastIndex])
 		{
 			return Stat.Defense;
 		}
 
-		else if(spAtk == stats[0])
+		else if(spAtk == stats[lastIndex])
 		{
 			return Stat.SpecialAttack;
 		}
 
-		else if(spDef == stats[0])
+		else if(spDef == stats[lastIndex])
 		{
 			return Stat.SpecialDefense;
 		}
@@ -199,12 +198,15 @@ class Stats extends StatsBase implements IStats
 		mCurrentHitPoints = hitPoints;
 	}
 
+	/*
+	 * PUBLIC METHODS
+	 */
+
 	@Override
 	public int healAnature(int healAmount)
 	{
 		int hitPointsAfterHeal = getCurrentHitPoints() + healAmount;
-		if(healAmount == Integer.MAX_VALUE
-				|| hitPointsAfterHeal > getTotalStat(Stat.HitPoints))
+		if(healAmount == Integer.MAX_VALUE || hitPointsAfterHeal > getTotalStat(Stat.HitPoints))
 		{
 			setCurrentHitPoints(getTotalStat(Stat.HitPoints));
 		}
@@ -216,10 +218,6 @@ class Stats extends StatsBase implements IStats
 
 		return getCurrentHitPoints();
 	}
-
-	/*
-	 * PUBLIC METHODS
-	 */
 
 	@Override
 	public int addExperience(int expeienceGain)
@@ -299,58 +297,25 @@ class Stats extends StatsBase implements IStats
 	@Override
 	public StatsBuilder getClone()
 	{
-		return new StatsBuilder().atLevel(getLevel())
-				.withLevlingSpeed(getLevelingSpeed())
-				.withNature(getNature())
-				.withBaseExperience(getBaseExperience())
-				.withBaseHitPoints(getBaseStat(Stat.HitPoints))
-				.withBaseAttack(getBaseStat(Stat.Attack))
-				.withBaseDefense(getBaseStat(Stat.Defense))
-				.withBaseSpecialAttack(getBaseStat(Stat.SpecialAttack))
-				.withBaseSpecialDefense(getBaseStat(Stat.SpecialDefense))
-				.withBaseSpeed(getBaseStat(Stat.Speed))
-				.withBaseAccuracy(getBaseStat(Stat.Accuracy))
-				.withBaseEvasion(getBaseStat(Stat.Evasion))
-				.withIVAttack(getIvStat(Stat.Attack))
-				.withIVDefense(getIvStat(Stat.Defense))
-				.withIVHitPoints(getIvStat(Stat.HitPoints))
-				.withIVSpecialAttack(getIvStat(Stat.SpecialAttack))
-				.withIVSpecialDefense(getIvStat(Stat.SpecialDefense))
-				.withIVSpeed(getIvStat(Stat.Speed))
-				.withEVHitPoints(getEvStat(Stat.HitPoints))
-				.withEVAttack(getEvStat(Stat.Attack))
-				.withEVDefense(getEvStat(Stat.Defense))
-				.withEVSpecialAttack(getEvStat(Stat.SpecialAttack))
-				.withEVSpecialDefense(getEvStat(Stat.SpecialDefense))
-				.withEVSpeed(getEvStat(Stat.Speed));
-	}
-
-	@Override
-	public boolean addEv(Stat statToAdd, int level)
-	{
-		switch(statToAdd)
-		{
-			case HitPoints:
-				return addEVHitPoint(level);
-
-			case Attack:
-				return addEVAttack(level);
-
-			case Defense:
-				return addEVDefense(level);
-
-			case SpecialAttack:
-				return addEVSpecialAttack(level);
-
-			case SpecialDefense:
-				return addEVSpecialDefense(level);
-
-			case Speed:
-				return addEVSpeed(level);
-
-			default:
-				return false;
-		}
+		return new StatsBuilder().atLevel(getLevel()) //
+				.withLevlingSpeed(getLevelingSpeed()) //
+				.withNature(getNature()) //
+				.withEvRoadMap(getEvRoadMap()) //
+				.withBaseExperience(getBaseExperience()) //
+				.withBaseHitPoints(getBaseStat(Stat.HitPoints)) //
+				.withBaseAttack(getBaseStat(Stat.Attack)) //
+				.withBaseDefense(getBaseStat(Stat.Defense)) //
+				.withBaseSpecialAttack(getBaseStat(Stat.SpecialAttack)) //
+				.withBaseSpecialDefense(getBaseStat(Stat.SpecialDefense)) //
+				.withBaseSpeed(getBaseStat(Stat.Speed)) //
+				.withBaseAccuracy(getBaseStat(Stat.Accuracy)) //
+				.withBaseEvasion(getBaseStat(Stat.Evasion)) //
+				.withIVAttack(getIvStat(Stat.Attack)) //
+				.withIVDefense(getIvStat(Stat.Defense)) //
+				.withIVHitPoints(getIvStat(Stat.HitPoints)) //
+				.withIVSpecialAttack(getIvStat(Stat.SpecialAttack)) //
+				.withIVSpecialDefense(getIvStat(Stat.SpecialDefense)) //
+				.withIVSpeed(getIvStat(Stat.Speed));
 	}
 
 	/*

@@ -154,8 +154,7 @@ public class Startup extends Application
 					break;
 
 				case Anature_Summary:
-					if(mAnatureSummaryView == null
-							|| mAnatureSummaryController == null)
+					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
 					{
 						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
 						Parent summaryRoot = summaryLoader.load();
