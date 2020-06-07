@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -23,10 +24,25 @@
             <Image url="@../../resources/images/Icon.png" />
          </image>
       </ImageView>
-      <Label fx:id="mStartTxt" alignment="CENTER" focusTraversable="false" layoutY="558.0" prefHeight="85.0" prefWidth="1280.0" text="Press Any Key to Start" textAlignment="CENTER">
+      <Label fx:id="mStartTxt" alignment="CENTER" focusTraversable="false" layoutY="558.0" prefHeight="85.0" prefWidth="1280.0" style="-fx-text-fill: black;" text="Press Any Key to Start" textAlignment="CENTER">
          <font>
             <Font size="38.0" />
          </font>
       </Label>
+      <Label fx:id="mPromptTxt" alignment="CENTER" focusTraversable="false" layoutY="300.0" prefHeight="85.0" prefWidth="1280.0" style="-fx-text-fill: black;" text="Which would you like to do?" textAlignment="CENTER" underline="true" wrapText="true">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Label>
+      <Button fx:id="mLoadBtn" layoutX="346.0" layoutY="469.0" mnemonicParsing="false" onAction="#onLoad" prefHeight="178.0" prefWidth="270.0" style="-fx-border-color: black; -fx-border-width: 7; -fx-background-color: white; -fx-text-fill: black;" text="Load Save">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Button>
+      <Button fx:id="mNewGameBtn" layoutX="673.0" layoutY="469.0" mnemonicParsing="false" onAction="#onNewGame" prefHeight="178.0" prefWidth="270.0" style="-fx-border-color: black; -fx-border-width: 7; -fx-background-color: white; -fx-text-fill: black;" text="New Game">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

@@ -19,7 +19,7 @@ public class SideMenuController
 	@FXML Pane mPane;
 	@FXML GridPane mGrid;
 	@FXML ImageView mBg, mSelectImg;
-	@FXML Label mDexTxt, mAnatureTxt, mBackpackTxt, mSettingsTxt, mSaveTxt, mQuitTxt;
+	@FXML Label mDexTxt, mAnatureTxt, mBackpackTxt, mSettingsTxt, mSaveTxt, mLoadTxt, mQuitTxt;
 	
 	private BooleanProperty mVisabilityProperty;
 	
@@ -88,6 +88,7 @@ public class SideMenuController
 		mBackpackTxt.fontProperty().bind(fontProperty);
 		mSettingsTxt.fontProperty().bind(fontProperty);
 		mSaveTxt.fontProperty().bind(fontProperty);
+		mLoadTxt.fontProperty().bind(fontProperty);
 		mQuitTxt.fontProperty().bind(fontProperty);
 
 		mSelectImg.setVisible(false);
@@ -98,7 +99,8 @@ public class SideMenuController
 		tabAttributes(mBackpackTxt, index++, () -> System.out.println("Backpack"));
 		tabAttributes(mSettingsTxt, index++, () -> System.out.println("Settings"));
 		tabAttributes(mSaveTxt, index++, () -> onSave());
-		tabAttributes(mQuitTxt, index++, () -> onLoad());
+		tabAttributes(mLoadTxt, index++, () -> onLoad());
+		tabAttributes(mQuitTxt, index++, () -> System.out.println("Quit"));
 	}
 	
 	private void tabAttributes(Label txt, int index, Runnable onClick)
