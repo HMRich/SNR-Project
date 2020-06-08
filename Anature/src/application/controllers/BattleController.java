@@ -691,6 +691,14 @@ public class BattleController
 		{
 			event.consume();
 
+			IAnature curr = mFightManager.getPlayerAnature();
+			IAnature toSwitchTo = mPlayer.getAnatures().get(mSwitchIndexSelected);
+
+			if(toSwitchTo.getStats().getCurrentHitPoints() <= 0 || curr.equals(toSwitchTo))
+			{
+				return;
+			}
+
 			if(mShowSwitchBackBtn.get())
 			{
 				activateTurn(BattleChoice.Switch);
@@ -698,11 +706,6 @@ public class BattleController
 
 			else
 			{
-				if(mPlayer.getAnatures().get(mSwitchIndexSelected).getStats().getCurrentHitPoints() <= 0)
-				{
-					return;
-				}
-
 				activateSwitch(null);
 
 				try
