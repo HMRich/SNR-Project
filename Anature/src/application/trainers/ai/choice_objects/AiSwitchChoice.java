@@ -12,7 +12,7 @@ public class AiSwitchChoice extends AiFinalChoice implements AiChoiceObject<IAna
 
 	public AiSwitchChoice(IAnature anatureBase)
 	{
-		super(AiChoice.Item_Consumed);
+		super(AiChoice.Switch_Anature);
 		setAnature(anatureBase);
 	}
 

@@ -551,10 +551,16 @@ public class BattleController
 		{
 			evaluateAnatureExperienceGain();
 
-			afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), () ->
+			Runnable enemySwitch = () ->
 			{
-				System.out.println("Choosing enemy anature yet to be implemented!"); // TODO
-			});
+				IAnature playerAnature = mFightManager.getPlayerAnature();
+				activateEnemySwitch(mEnemyTrainer.chooseAnature(playerAnature), () -> resetGui());
+			};
+
+			if(!afterAllTurnsStatusCheck(true, mFightManager.getPlayerAnature(), enemySwitch))
+			{
+				enemySwitch.run();
+			}
 		}
 
 		else
@@ -565,14 +571,7 @@ public class BattleController
 
 	private void evaluateAnatureExperienceGain()
 	{
-		ArrayList<IAnature> defeatedAnatures = new ArrayList<IAnature>();
-		for(IAnature anature : mFightManager.getEnemyTeam())
-		{
-			if(anature.getStats().getCurrentHitPoints() == 0)
-			{
-				defeatedAnatures.add(anature);
-			}
-		}
+		IAnature enemyAnature = mFightManager.getEnemyAnature();
 
 		ArrayList<IAnature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
 		// TODO we need to gather the Exp gains here or somewhere else
@@ -582,22 +581,18 @@ public class BattleController
 		for(IAnature playerAnature : participatingAnatures)
 		{
 			double playerAnatureLevel = playerAnature.getStats().getLevel();
+			double enemyAnatureLevel = enemyAnature.getStats().getLevel();
 
-			for(IAnature enemyAnature : defeatedAnatures)
-			{
-				double enemyAnatureLevel = enemyAnature.getStats().getLevel();
+			double calculationA = (enemyAnatureLevel * 2) + 10;
+			double calculationB = enemyAnatureLevel + playerAnatureLevel + 10;
+			double calculationC = (enemyAnatureLevel * playerAnatureLevel) / 5.0 * isTrainerCalculation;
 
-				double calculationA = (enemyAnatureLevel * 2) + 10;
-				double calculationB = enemyAnatureLevel + playerAnatureLevel + 10;
-				double calculationC = (enemyAnatureLevel * playerAnatureLevel) / 5.0 * isTrainerCalculation;
+			double finalCalculation = calculationC * (Math.floor(Math.pow(calculationA, 2.5)) / Math.floor(Math.pow(calculationB, 2.5)));
 
-				double finalCalculation = calculationC * (Math.floor(Math.pow(calculationA, 2.5)) / Math.floor(Math.pow(calculationB, 2.5)));
+			int result = ((int) finalCalculation) + 1;
 
-				int result = ((int) finalCalculation) + 1;
-
-				int lvlsGained = playerAnature.getStats().addExperience(result);
-				updateXp(playerAnature, result, lvlsGained);
-			}
+			int lvlsGained = playerAnature.getStats().addExperience(result);
+			updateXp(playerAnature, result, lvlsGained);
 		}
 	}
 
@@ -1002,18 +997,12 @@ public class BattleController
 		IAnature enemyCurr = enemyTrainer.getAnatureParty().get(0);
 		IAnature playerCurr = player.getAnatures().get(0);
 
-		mEnemyName.set(enemyCurr.getName());
-
-		mEnemyHp.set(enemyCurr.getStats().getCurrentHitPoints());
-		mEnemyHpTotal.set(enemyCurr.getStats().getTotalStat(Stat.HitPoints));
-
-		mEnemyLvl.set(enemyCurr.getStats().getLevel());
-
 		mPlayer = player;
 		mEnemyTrainer = enemyTrainer;
 
 		mTrainerImage.setImage(enemyTrainer.getBattleSprite());
 		updatePlayerAnature(playerCurr);
+		updateEnemyAnature(enemyCurr);
 		updateMoves(playerCurr);
 		updateSwitch(player.getAnatures(), player.getSelectedIndex());
 		updateBagMenu();
@@ -1146,6 +1135,7 @@ public class BattleController
 		mEnemyLvl.set(enemyCurr.getStats().getLevel());
 
 		mAnatureFront.setImage(enemyCurr.getFrontSprite());
+		updateStatusIcon(mStatusIconEnemy, enemyCurr);
 	}
 
 	private void updateMoves(IAnature playerCurr)
@@ -1582,17 +1572,7 @@ public class BattleController
 
 		AiChoiceObject<?> enemyTurn = mEnemyTrainer.useTurn(playerCurr);
 
-		int whoGoesFirst = playerCurr.getStats().getTotalStat(Stat.Speed) - enemyCurr.getStats().getTotalStat(Stat.Speed);
-
-		if(whoGoesFirst == 0)
-		{
-			whoGoesFirst += Math.random() > 0.5 ? -1 : 1;
-		}
-
-		if(choice == BattleChoice.Switch || choice == BattleChoice.Item)
-		{
-			whoGoesFirst = 1;
-		}
+		boolean playerGoesFirst = calculateWhoGoesFirst(playerCurr, enemyCurr, choice, enemyTurn);
 
 		Runnable resetGui = new Runnable()
 		{
@@ -1632,13 +1612,13 @@ public class BattleController
 
 		mCanClick.set(false);
 
-		if(whoGoesFirst > 0) // Player goes first
+		if(playerGoesFirst)
 		{
 			activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice,
 					() -> activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn, afterTurns));
 		}
 
-		else // Enemy goes first
+		else
 		{
 			activateEnemyTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), enemyTurn,
 					() -> activatePlayerTurn(mFightManager.getPlayerAnature(), mFightManager.getEnemyAnature(), choice, afterTurns));
@@ -1833,7 +1813,6 @@ public class BattleController
 				mClickQueue.enqueue(() ->
 				{
 					activateEnemySwitch(enemyTurn, nextTurn);
-					activateAfterTurn(nextTurn);
 				}, "Enemy Anature Switch");
 				break;
 
@@ -1903,54 +1882,48 @@ public class BattleController
 
 	private void activateEnemySwitch(AiChoiceObject<?> enemyTurn, Runnable nextTurn)
 	{
-		mClickQueue.enqueue(new Runnable()
+		mPlayerFaintSequenceActive = false;
+
+		IAnature oldAnature = mFightManager.getEnemyAnature();
+		IAnature newAnature = (IAnature) enemyTurn.getChoiceObject();
+		int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
+		mEnemyTrainer.setCurrentAnature(newAnature);
+		mFightManager.setEnemySelectedIndex(newAnatureIndex);
+
+		OpacityAnimation fadeOld = new OpacityAnimation(mAnatureFront, Duration.millis(400), false);
+		fadeOld.setOnFinished(new EventHandler<ActionEvent>()
 		{
 			@Override
-			public void run()
+			public void handle(ActionEvent event)
 			{
-				mPlayerFaintSequenceActive = false;
+				updateEnemyAnature(newAnature);
 
-				IAnature oldAnature = mFightManager.getEnemyAnature();
-				IAnature newAnature = (IAnature) enemyTurn.getChoiceObject();
-				int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
-				mFightManager.setEnemySelectedIndex(newAnatureIndex);
-
-				OpacityAnimation fadeOld = new OpacityAnimation(mAnatureBack, Duration.millis(400), false);
-				fadeOld.setOnFinished(new EventHandler<ActionEvent>()
+				try
 				{
-					@Override
-					public void handle(ActionEvent event)
+					Thread.sleep(500);
+				}
+
+				catch(InterruptedException e)
+				{
+					LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
+				}
+
+				OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureFront, Duration.millis(400), true);
+				fadeInNew.setOnFinished(actionEvent ->
+				{
+					if(nextTurn != null)
 					{
-						updateEnemyAnature(newAnature);
-
-						try
-						{
-							Thread.sleep(500);
-						}
-
-						catch(InterruptedException e)
-						{
-							LoggerController.logEvent(LoggingTypes.Error, e.getMessage());
-						}
-
-						OpacityAnimation fadeInNew = new OpacityAnimation(mAnatureBack, Duration.millis(400), true);
-						fadeInNew.setOnFinished(actionEvent ->
-						{
-							if(nextTurn != null)
-							{
-								activateAfterTurn(nextTurn);
-							}
-
-							mCanClick.set(true);
-						});
-						fadeInNew.play();
+						activateAfterTurn(nextTurn);
 					}
-				});
 
-				fadeOld.play();
-				mDialogueTxt.set(mEnemyTrainer.getName() + " calls back" + oldAnature.getName() + ".");
+					mCanClick.set(true);
+				});
+				fadeInNew.play();
 			}
-		}, "Enemy Activate Switch");
+		});
+
+		fadeOld.play();
+		mDialogueTxt.set(mEnemyTrainer.getName() + " calls back " + oldAnature.getName() + ".");
 	}
 
 	private void activateEntryAbility(boolean isPlayer)
@@ -1961,6 +1934,33 @@ public class BattleController
 		{
 			enqueueDialogue(dialogue, "Entry ability of player: " + isPlayer);
 		}
+	}
+
+	private boolean calculateWhoGoesFirst(IAnature playerCurr, IAnature enemyCurr, BattleChoice choice, AiChoiceObject<?> enemyTurn)
+	{
+		boolean playerWantsToGoFirst = choice == BattleChoice.Switch || choice == BattleChoice.Item;
+		boolean enemyWantsToGoFirst = enemyTurn.getAiChoice() == AiChoice.Switch_Anature || enemyTurn.getAiChoice() == AiChoice.Item_Consumed;
+
+		int compareSpeeds = playerCurr.getStats().getTotalStat(Stat.Speed) - enemyCurr.getStats().getTotalStat(Stat.Speed);
+
+		if((compareSpeeds == 0 && !playerWantsToGoFirst && !enemyWantsToGoFirst) || (playerWantsToGoFirst && enemyWantsToGoFirst))
+		{
+			compareSpeeds += Math.random() > 0.5 ? -1 : 1;
+		}
+		
+		else if(playerWantsToGoFirst)
+		{
+			compareSpeeds = 1;
+		}
+		
+		else if(enemyWantsToGoFirst)
+		{
+			compareSpeeds = -1;
+		}
+
+		boolean playerGoesFirst = compareSpeeds > 0;
+
+		return playerGoesFirst;
 	}
 
 	private void playBattleAnimation(EventHandler<ActionEvent> event, boolean isPlayer, int moveIndex)
@@ -2418,7 +2418,7 @@ public class BattleController
 				mClickQueue.enqueue(() ->
 				{
 					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getStats().getTotalStat(Stat.HitPoints) / 16, isPlayer, nextTurn);
-					mFightManager.applyDamage(isPlayer, 0, anature.getStats().getTotalStat(Stat.HitPoints) / 16);
+					mFightManager.applyDamage(isPlayer, anature.getStats().getTotalStat(Stat.HitPoints) / 16);
 				}, "Burn After All Turns");
 
 				return true;

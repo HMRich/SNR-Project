@@ -259,9 +259,9 @@ class Stats extends StatsBase implements IStats
 	@Override
 	public void applyDamage(int damage)
 	{
-		if(damage <= 0)
+		if(damage < 0)
 		{
-			throw new IllegalArgumentException("Passed value \"damage\" was equal to or below 0.");
+			throw new IllegalArgumentException("Passed value \"damage\" was below 0.");
 		}
 
 		int newCurrentHitPoints = getCurrentHitPoints() - damage;

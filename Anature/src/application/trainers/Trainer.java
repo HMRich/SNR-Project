@@ -99,16 +99,6 @@ class Trainer implements ITrainer, Serializable
 		mHealthPotions = healthPotionBases;
 	}
 
-	void setCurrentAnature(IAnature currentAnature)
-	{
-		if(currentAnature == null)
-		{
-			throw new IllegalArgumentException("Passed value \"anature\" was null.");
-		}
-
-		mCurrentAnature = currentAnature;
-	}
-
 	void setAI(IAI ai)
 	{
 		if(ai == null)
@@ -251,6 +241,25 @@ class Trainer implements ITrainer, Serializable
 		return new AiNoChoice();
 	}
 
+	@Override
+	public AiSwitchChoice chooseAnature(IAnature playerAnature)
+	{
+		IAnature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
+		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
+		return switchChoice;
+	}
+
+	@Override
+	public void setCurrentAnature(IAnature currentAnature)
+	{
+		if(currentAnature == null)
+		{
+			throw new IllegalArgumentException("Passed value \"anature\" was null.");
+		}
+
+		mCurrentAnature = currentAnature;
+	}
+
 	/*
 	 * PACKAGE METHODS
 	 */
@@ -304,13 +313,6 @@ class Trainer implements ITrainer, Serializable
 		IHealthPotion healthPotionToUse = mAI.healthPotionToUse(mHealthPotions, mCurrentAnature);
 		AiHealthPotionChoice healthPotionChoice = new AiHealthPotionChoice(healthPotionToUse);
 		return healthPotionChoice;
-	}
-
-	private AiSwitchChoice chooseAnature(IAnature playerAnature)
-	{
-		IAnature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
-		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
-		return switchChoice;
 	}
 
 	private AiMoveChoice chooseMove(IAnature playerAnature)

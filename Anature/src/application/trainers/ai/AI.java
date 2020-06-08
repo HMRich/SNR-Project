@@ -204,9 +204,22 @@ class AI implements IAI, Serializable
 
 		for(IAnature anatureBase : anatureBases)
 		{
-			if(isAnatureAtThreshold(anatureBase, enemyAnature))
+			if(!anatureBase.equals(currentAnature) && isAnatureAtThreshold(anatureBase, enemyAnature))
 			{
 				anatureToReturn = anatureBase;
+				break;
+			}
+		}
+		
+		if(anatureToReturn.equals(currentAnature))
+		{
+			for(IAnature anatureBase : anatureBases)
+			{
+				if(!anatureBase.equals(currentAnature))
+				{
+					anatureToReturn = anatureBase;
+					break;
+				}
 			}
 		}
 
@@ -247,7 +260,7 @@ class AI implements IAI, Serializable
 	{
 		for(IAnature anatureBase : anatureParty)
 		{
-			if(isAnatureAtThreshold(anatureBase, enemyAnature))
+			if(!anatureBase.equals(currentAnature) && isAnatureAtThreshold(anatureBase, enemyAnature) && anatureBase.getStats().getCurrentHitPoints() > 0)
 			{
 				return true;
 			}
