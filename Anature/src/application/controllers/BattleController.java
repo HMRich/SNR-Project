@@ -110,7 +110,7 @@ public class BattleController
 	private Image mItemPotion, mItemGreatPotion, mItemUltraPotion, mItemMasterPotion;
 	private Image mItemAnacube, mItemSuperAnacube, mItemHyperAnacube, mItemMaxAnacube;
 	private Image mBurnStatusIcon, mParalyzedStatusIcon, mSleepStatusIcon;
-	private Image mMaleIcon, mFemaleIcon;
+	private Image mMaleIcon, mFemaleIcon, mTransIcon;
 	private Image mFistTopRightIcon, mFistBottomLeftIcon, mFistCenterIcon;
 	private Image mSpecialAttackLowerCenterIcon, mSpecialAttackLowerTopRightIcon, mSpecialAttackLowerBottomLeftIcon;
 	private Image mSpecialAttackRaiseBottomLeftIcon, mSpecialAttackRaiseCenterIcon, mSpecialAttackRaiseTopRightIcon;
@@ -251,6 +251,7 @@ public class BattleController
 
 		mMaleIcon = new Image(getClass().getResource("/resources/images/battle/Male_Symbol.png").toExternalForm());
 		mFemaleIcon = new Image(getClass().getResource("/resources/images/battle/Female_Symbol.png").toExternalForm());
+		mTransIcon = new Image(getClass().getResource("/resources/images/battle/Transgender_Symbol.png").toExternalForm());
 
 		mItemAnacube = new Image(getClass().getResource("/resources/images/items/Anacube.png").toExternalForm());
 		mItemSuperAnacube = new Image(getClass().getResource("/resources/images/items/Super_Anacube.png").toExternalForm());
@@ -1430,6 +1431,10 @@ public class BattleController
 				break;
 
 			case Male:
+				break;
+
+			case Trans:
+				toUse = mTransIcon;
 				break;
 
 			default:
