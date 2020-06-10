@@ -479,7 +479,7 @@ public class StatsTests
 		{
 			@DisplayName("with positive integers")
 			@ParameterizedTest(name = "anature takes \"{0}\" damage")
-			@ValueSource(ints = { 1, 34, 57, 90, 150, 250 })
+			@ValueSource(ints = { 0, 1, 34, 57, 90, 150, 250 })
 			void TakeDamage_WithDamage_AnatureTakesDamage(int damage)
 			{
 				// arrange
@@ -519,7 +519,7 @@ public class StatsTests
 
 			@DisplayName("with nonpositive or negative integers")
 			@ParameterizedTest(name = "value \"{0}\" throws IllegalArgumentException")
-			@ValueSource(ints = { 0, -34, -57, -90, -150, -250 })
+			@ValueSource(ints = { -1, -34, -57, -90, -150, -250 })
 			void TakeDamage_WithNegatieValues_ThrowsIllegalArgumentException(int damage)
 			{
 				assertThrows(IllegalArgumentException.class, () ->
