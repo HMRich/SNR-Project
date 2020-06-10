@@ -16,7 +16,7 @@ public class PathOneModel implements Serializable
 	{
 		if(mKelly == null)
 		{
-			mKelly = TrainerBuilder.createTrainer(TrainerIds.Kelly, 1, 13, 17);
+			mKelly = TrainerBuilder.createTrainer(TrainerIds.Kelly, 2, 13, 17);
 		}
 	}
 

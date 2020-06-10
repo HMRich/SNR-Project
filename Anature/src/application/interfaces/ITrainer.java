@@ -3,6 +3,7 @@ package application.interfaces;
 import java.util.ArrayList;
 
 import application.enums.TrainerIds;
+import application.trainers.ai.choice_objects.AiSwitchChoice;
 import javafx.scene.image.Image;
 
 public interface ITrainer
@@ -14,7 +15,7 @@ public interface ITrainer
 	public TrainerIds getId();
 
 	public String getName();
-	
+
 	public int getRewardForDefeat();
 
 	public ArrayList<IAnature> getAnatureParty();
@@ -36,4 +37,8 @@ public interface ITrainer
 	public boolean canBattle();
 
 	public AiChoiceObject<?> useTurn(IAnature playerAnature);
+
+	public AiSwitchChoice chooseAnature(IAnature playerAnature);
+
+	public void setCurrentAnature(IAnature currentAnature);
 }

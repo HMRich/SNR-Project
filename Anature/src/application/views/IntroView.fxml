@@ -1,37 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.IntroController">
-   <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../resources/images/Intro_BG.png" />
-               </image>
-            </ImageView>
-            <Button layoutX="521.0" layoutY="569.0" mnemonicParsing="false" onAction="#startBattle" prefHeight="92.0" prefWidth="239.0" text="Go To Demo!">
-               <font>
-                  <Font size="31.0" />
-               </font>
-            </Button>
-            <ImageView fitHeight="204.0" fitWidth="594.0" layoutX="347.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resources/images/Anature%20Logo.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="565.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../resources/images/Icon.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
-   </center>
-</BorderPane>
+<Pane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.IntroController">
+   <children>
+      <ImageView fx:id="mBgImg" fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../resources/images/Intro_BG.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mTxtLogoImg" fitHeight="204.0" fitWidth="594.0" layoutX="347.0" layoutY="110.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../resources/images/Anature%20Logo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mLogoImg" fitHeight="150.0" fitWidth="150.0" layoutX="565.0" layoutY="360.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../resources/images/Icon.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="mStartTxt" alignment="CENTER" focusTraversable="false" layoutY="558.0" prefHeight="85.0" prefWidth="1280.0" style="-fx-text-fill: black;" text="Press Any Key to Start" textAlignment="CENTER">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Label>
+      <Label fx:id="mPromptTxt" alignment="CENTER" focusTraversable="false" layoutY="300.0" prefHeight="85.0" prefWidth="1280.0" style="-fx-text-fill: black;" text="Which would you like to do?" textAlignment="CENTER" underline="true" wrapText="true">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Label>
+      <Button fx:id="mLoadBtn" layoutX="346.0" layoutY="469.0" mnemonicParsing="false" onAction="#onLoad" prefHeight="178.0" prefWidth="270.0" style="-fx-border-color: black; -fx-border-width: 7; -fx-background-color: white; -fx-text-fill: black;" text="Load Save">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Button>
+      <Button fx:id="mNewGameBtn" layoutX="673.0" layoutY="469.0" mnemonicParsing="false" onAction="#onNewGame" prefHeight="178.0" prefWidth="270.0" style="-fx-border-color: black; -fx-border-width: 7; -fx-background-color: white; -fx-text-fill: black;" text="New Game">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

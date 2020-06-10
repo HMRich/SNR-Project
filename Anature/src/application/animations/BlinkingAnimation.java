@@ -2,16 +2,16 @@ package application.animations;
 
 import javafx.animation.Animation;
 import javafx.animation.Transition;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import javafx.util.Duration;
 
 public class BlinkingAnimation extends Transition
 {
-	private ImageView mImageView;
+	private Node mNode;
 	
-	public BlinkingAnimation(ImageView imageView, Duration pauseDuration)
+	public BlinkingAnimation(Node node, Duration pauseDuration)
 	{
-		mImageView = imageView;
+		mNode = node;
 		setCycleDuration(pauseDuration);
 		setCycleCount(Animation.INDEFINITE);
 	}
@@ -21,12 +21,12 @@ public class BlinkingAnimation extends Transition
 	{
 		if(frac >= 0.8)
 		{
-			mImageView.setOpacity(0);
+			mNode.setOpacity(0);
 		}
 		
 		else
 		{
-			mImageView.setOpacity(100);
+			mNode.setOpacity(100);
 		}
 	}
 }
