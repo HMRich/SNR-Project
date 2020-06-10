@@ -6,15 +6,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
+import application.controllers.IntroController;
 import application.controllers.LoggerController;
 import application.controllers.menus.AnatureSummaryController;
 import application.controllers.menus.EvolutionController;
@@ -43,12 +47,18 @@ import application.views.overworld_cells.PathOneCell;
 import application.views.overworld_cells.RestStationCell;
 import application.views.overworld_cells.StarterTownCell;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class Startup extends Application
@@ -87,7 +97,7 @@ public class Startup extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
-		mPlayer = new Player(null); // TODO Remove Null
+		mPlayer = new Player(null);
 		mKeyListener = new EventHandler<KeyEvent>()
 		{
 			@Override
@@ -147,15 +157,16 @@ public class Startup extends Application
 					FXMLLoader introLoader = new FXMLLoader(Startup.class.getResource("/application/views/IntroView.fxml"));
 					Parent introRoot = introLoader.load();
 					Scene intro = new Scene(introRoot);
-					intro.setOnKeyReleased(mKeyListener);
+
+					IntroController introController = introLoader.getController();
+					introController.updateBinds(intro, mKeyListener);
 
 					LoggerController.logEvent(LoggingTypes.Misc, "Changing Scene to Intro");
 					mStage.setScene(intro);
 					break;
 
 				case Anature_Summary:
-					if(mAnatureSummaryView == null
-							|| mAnatureSummaryController == null)
+					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
 					{
 						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
 						Parent summaryRoot = summaryLoader.load();
@@ -547,69 +558,183 @@ public class Startup extends Application
 
 	public static boolean save()
 	{
+		boolean result = false;
 
-		ArrayList<Object> itemsToSave = new ArrayList<Object>();
+		File saveFile = selectFileToSave();
 
-		for(SaveItem item : SaveItem.values())
+		if(saveFile != null)
 		{
-			itemsToSave.add(item.getItem());
+			ArrayList<Object> itemsToSave = new ArrayList<Object>();
+
+			for(SaveItem item : SaveItem.values())
+			{
+				itemsToSave.add(item.getItem());
+			}
+
+			try
+			{
+				FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
+				ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+
+				out.writeObject(itemsToSave);
+				out.close();
+				fileOutputStream.close();
+
+				result = true;
+			}
+
+			catch(IOException e)
+			{
+				LoggerController.logEvent(LoggingTypes.Error, "Error when saving: " + e.getMessage());
+			}
 		}
-
-		try
-		{
-			FileOutputStream fileOutputStream = new FileOutputStream(new File("./save.save"));
-			ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-
-			out.writeObject(itemsToSave);
-			out.close();
-			fileOutputStream.close();
-		}
-
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-
-		mCurrentController.saveLoadUpdates();
-
-		return true;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static boolean load()
-	{
-		ArrayList<Object> objRead = new ArrayList<Object>();
-		FileInputStream fileInStream;
-		ObjectInputStream in;
 
 		if(mCurrentController != null)
 		{
 			mCurrentController.saveLoadUpdates();
 		}
 
-		try
+		return result;
+	}
+
+	private static File selectFileToSave()
+	{
+		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("MM-dd-yyyy--HH-mm-ss");
+		Date date = new Date();
+		String dateTime = dateTimeFormatter.format(date);
+
+		File saveDir = new File("./Saves");
+
+		if(!saveDir.exists())
 		{
-			fileInStream = new FileInputStream(new File("./save.save"));
-			in = new ObjectInputStream(fileInStream);
+			saveDir.mkdir();
+		}
 
-			objRead = (ArrayList<Object>) in.readObject();
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Save Game File");
+		chooser.setInitialDirectory(saveDir);
+		chooser.setInitialFileName("Save-" + dateTime);
+		chooser.getExtensionFilters().addAll(new ExtensionFilter("Save Files", "*.save"));
 
-			for(SaveItem item : SaveItem.values())
+		return chooser.showSaveDialog(mStage);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static boolean load(boolean showConfirmation)
+	{
+		boolean result = false;
+
+		if(showConfirmation && !showLoadConfirmation())
+		{
+			mCurrentController.saveLoadUpdates();
+			return result;
+		}
+
+		File saveFile = selectFileToLoad();
+
+		if(saveFile != null)
+		{
+			ArrayList<Object> objRead = new ArrayList<Object>();
+			FileInputStream fileInStream;
+			ObjectInputStream in;
+
+			if(mCurrentController != null)
 			{
-				item.setItem(objRead.remove(0));
+				mCurrentController.saveLoadUpdates();
 			}
 
-			in.close();
-			fileInStream.close();
+			try
+			{
+				fileInStream = new FileInputStream(saveFile);
+				in = new ObjectInputStream(fileInStream);
+
+				objRead = (ArrayList<Object>) in.readObject();
+
+				for(SaveItem item : SaveItem.values())
+				{
+					item.setItem(objRead.remove(0));
+				}
+
+				in.close();
+				fileInStream.close();
+
+				result = true;
+			}
+
+			catch(Exception e)
+			{
+				LoggerController.logEvent(LoggingTypes.Error, "Error when loading save: " + e.getMessage());
+			}
 		}
 
-		catch(Exception e)
+		if(mCurrentController != null)
 		{
-			e.printStackTrace();
+			mCurrentController.saveLoadUpdates();
 		}
 
-		mCurrentController.saveLoadUpdates();
+		return result;
+	}
 
-		return true;
+	private static boolean showLoadConfirmation()
+	{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Current progress not saved");
+		alert.setHeaderText("Would you like to save your current progress first?");
+
+		ButtonType buttonTypeYes = new ButtonType("Yes");
+		ButtonType buttonTypeNo = new ButtonType("No");
+
+		alert.getButtonTypes().addAll(buttonTypeYes, buttonTypeNo);
+		ObservableList<ButtonType> btns = alert.getButtonTypes();
+		btns.removeAll(ButtonType.OK);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() == buttonTypeNo)
+		{
+			return true;
+		}
+
+		if(result.get() == buttonTypeYes)
+		{
+			return save();
+		}
+
+		return false;
+	}
+
+	private static File selectFileToLoad()
+	{
+		File saveDir = new File("./Saves");
+
+		if(!saveDir.exists())
+		{
+			saveDir.mkdir();
+		}
+
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Open Save File");
+		chooser.setInitialDirectory(saveDir);
+		chooser.getExtensionFilters().addAll(new ExtensionFilter("Save Files", "*.save"));
+
+		return chooser.showOpenDialog(mStage);
+	}
+
+	public static void newGame()
+	{
+		// TODO remove starter, tokens, and items after professor is added
+		IAnature starter = AnatureBuilder.createAnature(Species.Sardino, 5);
+		mPlayer.addAnatures(starter);
+		mPlayer.addTokens(500);
+
+		for(int i = 0; i < 5; i++)
+		{
+			mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
+			mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
+			mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
+			mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
+		}
+
+		LoggerController.logEvent(LoggingTypes.Misc, "Generated New Game");
+		changeScene(SceneType.Starter_Town, WarpPoints.Starter_Town_House_1);
 	}
 }

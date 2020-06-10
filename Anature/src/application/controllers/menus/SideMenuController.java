@@ -19,7 +19,7 @@ public class SideMenuController
 	@FXML Pane mPane;
 	@FXML GridPane mGrid;
 	@FXML ImageView mBg, mSelectImg;
-	@FXML Label mDexTxt, mAnatureTxt, mBackpackTxt, mSettingsTxt, mSaveTxt, mQuitTxt;
+	@FXML Label mDexTxt, mAnatureTxt, mBackpackTxt, mSettingsTxt, mSaveTxt, mLoadTxt, mQuitTxt;
 	
 	private BooleanProperty mVisabilityProperty;
 	
@@ -88,6 +88,7 @@ public class SideMenuController
 		mBackpackTxt.fontProperty().bind(fontProperty);
 		mSettingsTxt.fontProperty().bind(fontProperty);
 		mSaveTxt.fontProperty().bind(fontProperty);
+		mLoadTxt.fontProperty().bind(fontProperty);
 		mQuitTxt.fontProperty().bind(fontProperty);
 
 		mSelectImg.setVisible(false);
@@ -97,16 +98,9 @@ public class SideMenuController
 		tabAttributes(mAnatureTxt, index++, () -> Startup.changeScene(SceneType.Anature_Summary, null));
 		tabAttributes(mBackpackTxt, index++, () -> System.out.println("Backpack"));
 		tabAttributes(mSettingsTxt, index++, () -> System.out.println("Settings"));
-		tabAttributes(mSaveTxt, index++, () -> 
-		{
-			mVisabilityProperty.set(false);
-			Startup.save();
-		});
-		tabAttributes(mQuitTxt, index++, () -> 
-		{
-			mVisabilityProperty.set(false);
-			Startup.load();
-		});
+		tabAttributes(mSaveTxt, index++, () -> onSave());
+		tabAttributes(mLoadTxt, index++, () -> onLoad());
+		tabAttributes(mQuitTxt, index++, () -> System.out.println("Quit"));
 	}
 	
 	private void tabAttributes(Label txt, int index, Runnable onClick)
@@ -125,5 +119,17 @@ public class SideMenuController
 		txt.setOnMouseClicked(value -> onClick.run());
 		
 		txt.minWidthProperty().bind(mBg.fitWidthProperty().divide(1.4285));
+	}
+	
+	private void onSave()
+	{
+		mVisabilityProperty.set(false);
+		Startup.save();
+	}
+	
+	private void onLoad()
+	{
+		mVisabilityProperty.set(false);
+		Startup.load(true);
 	}
 }
