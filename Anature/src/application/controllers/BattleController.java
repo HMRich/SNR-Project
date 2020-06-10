@@ -138,7 +138,7 @@ public class BattleController
 	private BooleanProperty mSwitchSlotOne, mSwitchSlotTwo, mSwitchSlotThree, mSwitchSlotFour, mSwitchSlotFive, mSwitchSlotSix, mShowSwitchBackBtn;
 	private StringProperty mAttackNameOneTxt, mAttackMpOneTxt, mAttackNameTwoTxt, mAttackMpTwoTxt;
 	private StringProperty mAttackNameThreeTxt, mAttackMpThreeTxt, mAttackNameFourTxt, mAttackMpFourTxt;
-	private ObjectProperty<Font> m55FontProperty, m65FontProperty, m75FontProperty, m85FontProperty, m95FontProperty;
+	private ObjectProperty<Font> m55FontProperty, m65FontProperty, m75FontProperty, m85FontProperty, m115FontProperty;
 
 	private FightManager mFightManager;
 	private ITrainer mEnemyTrainer;
@@ -793,7 +793,7 @@ public class BattleController
 		createBindsTxt(mSwitchSelectedSpDef, scene, 1.4, 1.94, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedSpeed, scene, 1.4, 1.73, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
 		createBindsTxt(mSwitchSelectedAbilityName, scene, 1.4, 1.57, fontTracking, mShowSwitchPageOne.not().and(mShowSwitch));
-		createBindsTxt(mSwitchSelectedAbilityDesc, scene, 1.4, 1.48, 3.71, m95FontProperty, mShowSwitchPageOne.not().and(mShowSwitch));
+		createBindsTxt(mSwitchSelectedAbilityDesc, scene, 1.4, 1.48, 3.71, m115FontProperty, mShowSwitchPageOne.not().and(mShowSwitch));
 	}
 
 	private void setUpAnatureTabs(Scene scene)
@@ -966,7 +966,7 @@ public class BattleController
 		m65FontProperty = createFontProperty(65);
 		m75FontProperty = createFontProperty(75);
 		m85FontProperty = createFontProperty(85);
-		m95FontProperty = createFontProperty(95);
+		m115FontProperty = createFontProperty(115);
 
 		ChangeListener<Number> fontListener = (observableValue, oldWidth, newWidth) ->
 		{
@@ -974,7 +974,7 @@ public class BattleController
 			m65FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 65));
 			m75FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 75));
 			m85FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 85));
-			m95FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 95));
+			m115FontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 115));
 		};
 
 		scene.widthProperty().addListener(fontListener);
