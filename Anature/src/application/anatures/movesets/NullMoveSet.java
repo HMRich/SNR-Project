@@ -26,6 +26,12 @@ public class NullMoveSet extends MoveSet implements Serializable
 	}
 
 	@Override
+	public MoveSet getClone()
+	{
+		return NullMoveSet.getNullMoveSet();
+	}
+
+	@Override
 	public String toString()
 	{
 		return "Null MoveSet";

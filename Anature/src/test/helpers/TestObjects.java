@@ -1,7 +1,9 @@
 package test.helpers;
 
-import application.anatures.AnatureBuilder;
+import application.anatures.Anature;
+import application.anatures.AnatureVariables;
 import application.anatures.abillities.NullAbility;
+import application.anatures.moves.moves.NullMove;
 import application.anatures.moves.moves.Tackle;
 import application.anatures.movesets.MoveSet;
 import application.anatures.stats.StatsBuilder;
@@ -13,7 +15,6 @@ import application.enums.Type;
 import application.enums.stats.LevelingSpeed;
 import application.enums.stats.Natures;
 import application.interfaces.IAbility;
-import application.interfaces.IAnature;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
 import application.pools.AbilityPool;
@@ -46,7 +47,7 @@ public class TestObjects
 	{
 		if(mMoveSet == null)
 		{
-			mMoveSet = new MoveSet(getDefaultTackle(), null, null, null);
+			mMoveSet = new MoveSet(getDefaultTackle(), NullMove.getNullMove(), NullMove.getNullMove(), NullMove.getNullMove());
 		}
 
 		return mMoveSet;
@@ -131,14 +132,35 @@ public class TestObjects
 	private static int mDefaultIndexNumber = 20200529;
 	private static int mDefaultCatchRate = 255;
 
-	private static IAnature mAnature = new AnatureBuilder().withName(getDefaultAnatureName()).withOwnerName(getDefaultOwnerName())
-			.isShiny(getDefaultShinyValue()).withSpecies(getDefaultSpecies()).withGender(getDefaultGender()).withPrimaryType(getDefaultPrimaryType())
-			.withSecondaryType(getDefaultSecondaryType()).withMoveSet(getDefaultMoveSet()).withAbility(getDefaultAbility()).withStatus(getDefaultStatusEffect())
-			.withStats(getDefaultStats()).withIndexNumber(getDefaultIndexNumber()).withCatchRate(getDefaultCatchRate()).create();
+	private static Anature mAnature = new Anature(getDefaultAnatureVariables());
 
-	public static IAnature getAnature()
+	public static Anature getAnature()
 	{
-		return mAnature;
+		return mAnature.getClone();
+	}
+
+	public static AnatureVariables getDefaultAnatureVariables()
+	{
+		return new AnatureVariables()
+		{
+			@Override
+			public void getVariables()
+			{
+				anatureName = getDefaultAnatureName();
+				anatureOwnerName = getDefaultOwnerName();
+				anatureIsShiny = getDefaultShinyValue();
+				anatureSpecies = getDefaultSpecies();
+				anatureGender = getDefaultGender();
+				anaturePrimaryType = getDefaultPrimaryType();
+				anatureSecondaryType = getDefaultSecondaryType();
+				anatureMoveSet = getDefaultMoveSet().getClone();
+				anatureAbility = getDefaultAbility();
+				anatureStatus = getDefaultStatusEffect();
+				anatureStats = getDefaultStats().getClone().create();
+				anatureIndexNumber = getDefaultIndexNumber();
+				anatureCatchRate = getDefaultCatchRate();
+			}
+		};
 	}
 
 	public static String getDefaultAnatureName()

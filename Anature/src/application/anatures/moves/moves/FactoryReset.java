@@ -9,7 +9,7 @@ public class FactoryReset extends Move
 	private static final long serialVersionUID = 4892000699183882732L;
 
 	@Override
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		source.getStats().resetTempStats();
 		source.setStatus(StatusEffects.None);

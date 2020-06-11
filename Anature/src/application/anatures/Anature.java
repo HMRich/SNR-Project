@@ -16,7 +16,7 @@ import application.interfaces.IAbility;
 import application.interfaces.stats.IStats;
 import javafx.scene.image.Image;
 
-class Anature implements IAnature, Serializable
+public class Anature implements Serializable
 {
 	private static final long serialVersionUID = -3387008989524977841L;
 
@@ -242,8 +242,7 @@ class Anature implements IAnature, Serializable
 
 	public Anature setCatchRate(int catchRate)
 	{
-		if(catchRate < 1
-				|| catchRate > 255)
+		if(catchRate < 1 || catchRate > 255)
 		{
 			throw new IllegalArgumentException("Passed value \"catchRate\" was below 1 or above 255.");
 		}
@@ -257,79 +256,66 @@ class Anature implements IAnature, Serializable
 	 * PUBLIC GETS
 	 */
 
-	@Override
 	public String getName()
 	{
 		return mName;
 	}
 
-	@Override
 	public String getOwner()
 	{
 		return mOwnerName;
 	}
 
-	@Override
 	public boolean isShiny()
 	{
 		return mIsShiny;
 	}
 
-	@Override
 	public Species getSpecies()
 	{
 		return mSpecies;
 	}
 
-	@Override
 	public Gender getGender()
 	{
 		return mGender;
 	}
 
-	@Override
 	public Type getPrimaryType()
 	{
 		return mPrimaryType;
 	}
 
-	@Override
 	public Type getSecondaryType()
 	{
 		return mSecondaryType;
 	}
 
-	@Override
 	public MoveSet getMoveSet()
 	{
 		return mMoveSet;
 	}
 
-	@Override
 	public IAbility getAbility()
 	{
 		return mAbility;
 	}
 
-	@Override
 	public StatusEffects getStatus()
 	{
 		return mStatus;
 	}
 
-	@Override
 	public IStats getStats()
 	{
 		return mStats;
 	}
 
-	@Override
 	public int getIndexNumber()
 	{
 		return mIndexNumber;
 	}
 
-	@Override
 	public int getCatchRate()
 	{
 		return mCatchRate;
@@ -339,19 +325,16 @@ class Anature implements IAnature, Serializable
 	 * PUBLIC METHODS
 	 */
 
-	@Override
 	public void updateName(String name)
 	{
 		setName(name);
 	}
 
-	@Override
 	public void updateStatus(StatusEffects status)
 	{
 		setStatus(status);
 	}
 
-	@Override
 	public ArrayList<Type> getTypes()
 	{
 		ArrayList<Type> types = new ArrayList<Type>();
@@ -368,60 +351,68 @@ class Anature implements IAnature, Serializable
 		return types;
 	}
 
-	@Override
 	public void resetTempStats()
 	{
 		getStats().resetTempStats();
 	}
 
-	@Override
 	public void applyDamage(int damage)
 	{
 		getStats().applyDamage(damage);
 	}
 
-	@Override
 	public String applyHeal(int healAmount)
 	{
 		return getName() + getStats().applyHeal(healAmount);
 	}
 
-	@Override
 	public void restore()
 	{
 		getStats().applyHeal(Integer.MAX_VALUE);
 		getMoveSet().refreshAllMovePoints();
 	}
 
-	@Override
 	public double getHitPointsPercent()
 	{
 		return getStats().getHitPointsPercent();
 	}
 
-	@Override
-	public AnatureBuilder getClone()
+	public Anature getClone()
 	{
-		return new AnatureBuilder().withName(getName()).withOwnerName(getOwner()).isShiny(isShiny()).withSpecies(getSpecies()).withGender(getGender())
-				.withPrimaryType(getPrimaryType()).withSecondaryType(getSecondaryType()).withMoveSet(getMoveSet()).withAbility(getAbility())
-				.withStatus(getStatus()).withStats(getStats()).withIndexNumber(getIndexNumber()).withCatchRate(getCatchRate());
+		return new Anature(new AnatureVariables()
+		{
+			@Override
+			public void getVariables()
+			{
+				anatureName = getName();
+				anatureOwnerName = getOwner();
+				anatureIsShiny = isShiny();
+				anatureSpecies = getSpecies();
+				anatureGender = getGender();
+				anaturePrimaryType = getPrimaryType();
+				anatureSecondaryType = getSecondaryType();
+				anatureMoveSet = getMoveSet().getClone();
+				anatureAbility = getAbility();
+				anatureStatus = getStatus();
+				anatureStats = getStats().getClone().create();
+				anatureIndexNumber = getIndexNumber();
+				anatureCatchRate = getCatchRate();
+			}
+		});
 	}
 
-	@Override
 	public Image getFrontSprite()
 	{
 		return new Image(getClass().getResource("/resources/images/anatures/" + getSpecies().toString() + "_Front.png").toExternalForm(), 1000.0, 1000.0, true,
 				false);
 	}
 
-	@Override
 	public Image getBackSprite()
 	{
 		return new Image(getClass().getResource("/resources/images/anatures/" + getSpecies().toString() + "_Back.png").toExternalForm(), 1000.0, 1000.0, true,
 				false);
 	}
 
-	@Override
 	public BattleAnimationType getMoveAnimationType(int moveIndex)
 	{
 		return getMoveSet().getMoveAnimationType(moveIndex);
@@ -438,69 +429,5 @@ class Anature implements IAnature, Serializable
 		}
 
 		return testName;
-	}
-
-	/*
-	 * PACKAGE METHODS
-	 */
-
-	boolean canCreate()
-	{
-		if(getName().isEmpty())
-		{
-			throw new IllegalStateException("The \"name\" variable was never set during construction.");
-		}
-
-		if(getOwner().isEmpty())
-		{
-			throw new IllegalStateException("The \"ownerName\" variable was never set during construction.");
-		}
-
-		if(getSpecies().equals(Species.NotSet))
-		{
-			throw new IllegalStateException("The \"species\" variable was never set during construction.");
-		}
-
-		if(getGender().equals(Gender.NotSet))
-		{
-			throw new IllegalStateException("The \"gender\" variable was never set during construction.");
-		}
-
-		if(getPrimaryType().equals(Type.NotSet))
-		{
-			throw new IllegalStateException("The \"primaryType\" variable was never set during construction.");
-		}
-
-		if(getMoveSet().equals(NullMoveSet.getNullMoveSet()))
-		{
-			throw new IllegalStateException("The \"moveSet\" variable was never set during construction.");
-		}
-
-		if(getAbility().equals(NullAbility.getNullAbility()))
-		{
-			throw new IllegalStateException("The \"ability\" variable was never set during construction.");
-		}
-
-		if(getStatus().equals(StatusEffects.NotSet))
-		{
-			throw new IllegalStateException("The \"status\" variable was never set during construction.");
-		}
-
-		if(getStats().equals(NullStats.getNullStats()))
-		{
-			throw new IllegalStateException("The \"stats\" variable was never set during construction.");
-		}
-
-		if(getIndexNumber() == -1)
-		{
-			throw new IllegalStateException("The \"indexNumber\" variable was never set during construction.");
-		}
-
-		if(getCatchRate() == -1)
-		{
-			throw new IllegalStateException("The \"catchRate\" variable was never set during construction.");
-		}
-
-		return true;
 	}
 }

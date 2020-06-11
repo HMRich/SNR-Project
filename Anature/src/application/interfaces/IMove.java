@@ -2,6 +2,7 @@ package application.interfaces;
 
 import java.io.Serializable;
 
+import application.anatures.Anature;
 import application.enums.MoveIds;
 import application.enums.Type;
 

@@ -8,7 +8,7 @@ public class Pounce extends Move
 	private static final long serialVersionUID = 4946376856133838327L;
 
 	@Override
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		target.applyDamage(calculateDamage(source, target, false));
 	}

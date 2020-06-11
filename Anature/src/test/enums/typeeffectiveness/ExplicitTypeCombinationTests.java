@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import application.anatures.Anature;
 import application.enums.Type;
 import application.enums.TypeEffectiveness;
-import application.interfaces.IAnature;
 import test.helpers.TestObjects;
 import test.helpers.TestTags;
 
@@ -21,7 +21,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Normal\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getNormalCombos")
-	void NormalType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void NormalType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -30,7 +30,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Fire\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getFireCombos")
-	void FireType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void FireType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -39,7 +39,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with all \"Water\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getWaterCombos")
-	void WaterType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void WaterType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -48,7 +48,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Electric\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getElectricCombos")
-	void ElectricType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void ElectricType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -57,7 +57,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Grass\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getGrassCombos")
-	void GrassType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void GrassType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -66,7 +66,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Ice\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getIceCombos")
-	void IceType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void IceType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -75,7 +75,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Fighting\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getFightingCombos")
-	void FightingType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void FightingType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -84,7 +84,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Poison\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getPoisonCombos")
-	void PoisonType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void PoisonType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -93,7 +93,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Ground\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getGroundCombos")
-	void GroundType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void GroundType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -102,7 +102,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Flying\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getFlyingCombos")
-	void FlyingType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void FlyingType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -111,7 +111,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Psychic\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getPsychicCombos")
-	void PsychicType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void PsychicType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -120,7 +120,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Bug\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getBugCombos")
-	void BugType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void BugType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -129,7 +129,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Rock\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getRockCombos")
-	void RockType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void RockType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -138,7 +138,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Ghost\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getGhostCombos")
-	void GhostType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void GhostType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -147,7 +147,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Dragon\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getDragonCombos")
-	void DragonType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void DragonType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -156,7 +156,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Dark\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getDarkCombos")
-	void DarkType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void DarkType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -165,7 +165,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Steel\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getSteelCombos")
-	void SteelType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void SteelType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -174,7 +174,7 @@ public class ExplicitTypeCombinationTests
 	@DisplayName("with \"Fairy\" type against all combinations")
 	@ParameterizedTest(name = "\"{0}\" vs \"{1}\"    returns effectiveness value -> \"{2}\"")
 	@MethodSource("test.enums.typeeffectiveness.ExplicitTypeEffectivenessTestProvider#getFairyCombos")
-	void FairyType_AgainstAllCombinations_ReturnsCorrectValue(IAnature source, IAnature target, TypeEffectiveness expectedResult)
+	void FairyType_AgainstAllCombinations_ReturnsCorrectValue(Anature source, Anature target, TypeEffectiveness expectedResult)
 	{
 		assertTrue(TypeEffectiveness.typeEffectiveness(source, target).equals(expectedResult),
 				"returned \"" + TypeEffectiveness.typeEffectiveness(source, target).toString() + "\" instead.");
@@ -183,22 +183,22 @@ public class ExplicitTypeCombinationTests
 
 class ExplicitTypeEffectivenessTestProvider
 {
-	private static IAnature setAnatureTypes(Type[] types)
+	private static Anature setAnatureTypes(Type[] types)
 	{
-		return TestObjects.getAnature().getClone().withPrimaryType(types[0]).withSecondaryType(types[1]).create();
+		return TestObjects.getAnature().getClone().setPrimaryType(types[0]).setSecondaryType(types[1]);
 	}
 
-	private static IAnature setAnatureTypes(Type type)
+	private static Anature setAnatureTypes(Type type)
 	{
-		return TestObjects.getAnature().getClone().withPrimaryType(type).create();
+		return TestObjects.getAnature().getClone().setPrimaryType(type);
 	}
 
-	static IAnature s(Type sourceType)
+	static Anature s(Type sourceType)
 	{
 		return setAnatureTypes(sourceType);
 	}
 
-	static IAnature t(Type[] targetTypes)
+	static Anature t(Type[] targetTypes)
 	{
 		return setAnatureTypes(targetTypes);
 	}

@@ -10,7 +10,7 @@ public class LittleGuy implements IAbility
 {
 	private static final long serialVersionUID = -332976440197763016L;
 
-	public static String activateAbility(IAnature userAnature)
+	public static String activateAbility(Anature userAnature)
 	{
 		if(userAnature == null)
 		{

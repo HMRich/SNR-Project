@@ -536,7 +536,7 @@ public class BattleController
 
 			Runnable enemySwitch = () ->
 			{
-				IAnature playerAnature = mFightManager.getPlayerAnature();
+				Anature playerAnature = mFightManager.getPlayerAnature();
 				activateEnemySwitch(mEnemyTrainer.chooseAnature(playerAnature), () -> resetGui());
 			};
 
@@ -554,7 +554,7 @@ public class BattleController
 
 	private void evaluateAnatureExperienceGain()
 	{
-		IAnature enemyAnature = mFightManager.getEnemyAnature();
+		Anature enemyAnature = mFightManager.getEnemyAnature();
 
 		ArrayList<Anature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
 		// TODO we need to gather the Exp gains here or somewhere else
@@ -669,8 +669,8 @@ public class BattleController
 		{
 			event.consume();
 
-			IAnature curr = mFightManager.getPlayerAnature();
-			IAnature toSwitchTo = mPlayer.getAnatures().get(mSwitchIndexSelected);
+			Anature curr = mFightManager.getPlayerAnature();
+			Anature toSwitchTo = mPlayer.getAnatures().get(mSwitchIndexSelected);
 
 			if(toSwitchTo.getStats().getCurrentHitPoints() <= 0 || curr.equals(toSwitchTo))
 			{
@@ -780,12 +780,18 @@ public class BattleController
 	{
 		Image anatureImg = new Image(getClass().getResource("/resources/images/anatures/Null_Front.png").toExternalForm());
 
-		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, 100.0, true, StatusEffects.None);
-		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, 100.0, false, StatusEffects.None);
-		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, 100.0, false, StatusEffects.None);
-		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, 100.0, false, StatusEffects.None);
-		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, 100.0, false, StatusEffects.None);
-		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, 100.0, false, StatusEffects.None);
+		mSlotOne = new AnatureSlot(scene, true, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotOne, 100.0, 100.0, true,
+				StatusEffects.None);
+		mSlotTwo = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotTwo, 100.0, 100.0, false,
+				StatusEffects.None);
+		mSlotThree = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotThree, 100.0, 100.0, false,
+				StatusEffects.None);
+		mSlotFour = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFour, 100.0, 100.0, false,
+				StatusEffects.None);
+		mSlotFive = new AnatureSlot(scene, false, anatureImg, Gender.Female, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotFive, 100.0, 100.0, false,
+				StatusEffects.None);
+		mSlotSix = new AnatureSlot(scene, false, anatureImg, Gender.Male, "Null", "Lvl 5", "20/20", mShowSwitch, mSwitchSlotSix, 100.0, 100.0, false,
+				StatusEffects.None);
 
 		createBindsAnatureslot(mSlotOne, scene, 85, 4.2, 3.7, 15.1, 0); // TODO update images and hp bars
 		createBindsAnatureslot(mSlotTwo, scene, 85, 3.157, 3.7, 15.1, 1);
@@ -1874,8 +1880,8 @@ public class BattleController
 	{
 		mPlayerFaintSequenceActive = false;
 
-		IAnature oldAnature = mFightManager.getEnemyAnature();
-		IAnature newAnature = (IAnature) enemyTurn.getChoiceObject();
+		Anature oldAnature = mFightManager.getEnemyAnature();
+		Anature newAnature = (Anature) enemyTurn.getChoiceObject();
 		int newAnatureIndex = mEnemyTrainer.getAnatureIndex(newAnature);
 		mEnemyTrainer.setCurrentAnature(newAnature);
 		mFightManager.setEnemySelectedIndex(newAnatureIndex);
@@ -1926,7 +1932,7 @@ public class BattleController
 		}
 	}
 
-	private boolean calculateWhoGoesFirst(IAnature playerCurr, IAnature enemyCurr, BattleChoice choice, AiChoiceObject<?> enemyTurn)
+	private boolean calculateWhoGoesFirst(Anature playerCurr, Anature enemyCurr, BattleChoice choice, AiChoiceObject<?> enemyTurn)
 	{
 		boolean playerWantsToGoFirst = choice == BattleChoice.Switch || choice == BattleChoice.Item;
 		boolean enemyWantsToGoFirst = enemyTurn.getAiChoice() == AiChoice.Switch_Anature || enemyTurn.getAiChoice() == AiChoice.Item_Consumed;
@@ -1937,12 +1943,12 @@ public class BattleController
 		{
 			compareSpeeds += Math.random() > 0.5 ? -1 : 1;
 		}
-		
+
 		else if(playerWantsToGoFirst)
 		{
 			compareSpeeds = 1;
 		}
-		
+
 		else if(enemyWantsToGoFirst)
 		{
 			compareSpeeds = -1;
@@ -2407,7 +2413,8 @@ public class BattleController
 			case Burn:
 				mClickQueue.enqueue(() ->
 				{
-					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getStats().getTotalStat(Stat.HitPoints) / 16, isPlayer, nextTurn);
+					healthDrainStatus(anature.getName() + " is hurt because it is burned!", anature.getStats().getTotalStat(Stat.HitPoints) / 16, isPlayer,
+							nextTurn);
 					mFightManager.applyDamage(isPlayer, anature.getStats().getTotalStat(Stat.HitPoints) / 16);
 				}, "Burn After All Turns");
 
@@ -2529,7 +2536,7 @@ public class BattleController
 		ArrayList<Anature> participatingAnatures = mFightManager.getPlayerParticipantingAnatures();
 		Stat evToAddTo = mFightManager.getEnemyAnature().getStats().getLargestStat();
 
-		for(IAnature anature : participatingAnatures)
+		for(Anature anature : participatingAnatures)
 		{
 			anature.getStats().addEv(evToAddTo, anature.getStats().getLevel());
 		}
@@ -2573,9 +2580,9 @@ public class BattleController
 
 	private void endBattle(BattleEndMethods endMethod)
 	{
-		HashMap<IAnature, Species> evolutions = new HashMap<IAnature, Species>();
+		HashMap<Anature, Species> evolutions = new HashMap<Anature, Species>();
 
-		for(IAnature toCheck : mPlayer.getAnatures())
+		for(Anature toCheck : mPlayer.getAnatures())
 		{
 			Species canEvolveInto = EvolutionManager.checkEvolution(toCheck);
 

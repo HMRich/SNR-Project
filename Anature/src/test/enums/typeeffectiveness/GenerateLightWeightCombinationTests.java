@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import application.anatures.Anature;
 import application.enums.Type;
 import application.enums.TypeEffectiveness;
-import application.interfaces.IAnature;
 import test.helpers.TestObjects;
 
 public class GenerateLightWeightCombinationTests
@@ -36,8 +36,8 @@ public class GenerateLightWeightCombinationTests
 
 	public static String getTypeEffectiveness(Type source, Type targetPrimary)
 	{
-		IAnature sourceAnature = TestObjects.getAnature().getClone().withPrimaryType(source).create();
-		IAnature targetAnature = TestObjects.getAnature().getClone().withPrimaryType(targetPrimary).create();
+		Anature sourceAnature = TestObjects.getAnature().getClone().setPrimaryType(source);
+		Anature targetAnature = TestObjects.getAnature().getClone().setPrimaryType(targetPrimary);
 
 		return TypeEffectiveness.typeEffectiveness(sourceAnature, targetAnature).toString().replace(" ", "");
 	}

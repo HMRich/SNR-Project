@@ -37,9 +37,9 @@ public interface ITrainer
 
 	public boolean canBattle();
 
-	public AiChoiceObject<?> useTurn(IAnature playerAnature);
+	public AiChoiceObject<?> useTurn(Anature playerAnature);
 
-	public AiSwitchChoice chooseAnature(IAnature playerAnature);
+	public AiSwitchChoice chooseAnature(Anature playerAnature);
 
-	public void setCurrentAnature(IAnature currentAnature);
+	public void setCurrentAnature(Anature currentAnature);
 }

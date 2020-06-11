@@ -11,7 +11,7 @@ public class ToughSkin implements IAbility
 {
 	private static final long serialVersionUID = 8267526863103538413L;
 
-	public static String activateAbility(IAnature userAnature, IMove moveThatAttacked, int userOldHp, boolean attackMissed)
+	public static String activateAbility(Anature userAnature, IMove moveThatAttacked, int userOldHp, boolean attackMissed)
 	{
 		if(userAnature == null)
 		{
@@ -25,9 +25,7 @@ public class ToughSkin implements IAbility
 			return "";
 		}
 
-		else if(moveThatAttacked != null
-				&& moveThatAttacked.isPhysicalAttack()
-				&& !attackMissed)
+		else if(moveThatAttacked != null && moveThatAttacked.isPhysicalAttack() && !attackMissed)
 		{
 			double damageDealt = userOldHp - userAnature.getStats().getCurrentHitPoints();
 			userAnature.getStats().setCurrentHitPoints(userOldHp - (int) (damageDealt * 0.8));

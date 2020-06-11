@@ -39,7 +39,7 @@ public class FightManager
 
 	public void applyDamage(boolean isPlayer, int damage)
 	{
-		ArrayList<IAnature> team = null;
+		ArrayList<Anature> team = null;
 		int index = 0;
 
 		if(isPlayer)
@@ -95,10 +95,8 @@ public class FightManager
 			move = MovePool.getMove(MoveIds.Flail);
 		}
 
-		AbilityIds userAbilityId = userAnature.getAbility()
-				.getAbilityId();
-		AbilityIds targetAbilityId = targetAnature.getAbility()
-				.getAbilityId();
+		AbilityIds userAbilityId = userAnature.getAbility().getAbilityId();
+		AbilityIds targetAbilityId = targetAnature.getAbility().getAbilityId();
 
 		moveSet.useMovePoint(indexOfMove);
 
@@ -179,19 +177,17 @@ public class FightManager
 
 		if(isPlayer)
 		{
-			return AbilityActivation.useEntryAbility(player.getAbility()
-					.getAbilityId(), player, enemy);
+			return AbilityActivation.useEntryAbility(player.getAbility().getAbilityId(), player, enemy);
 		}
 
-		return AbilityActivation.useEntryAbility(enemy.getAbility()
-				.getAbilityId(), enemy, player);
+		return AbilityActivation.useEntryAbility(enemy.getAbility().getAbilityId(), enemy, player);
 	}
-	
+
 	public void switchTrainerAnature(ITrainer enemyTrainer)
 	{
 		AiSwitchChoice switchResult = enemyTrainer.chooseAnature(getPlayerAnature());
-		IAnature toSwitch = switchResult.getChoiceObject();
-		
+		Anature toSwitch = switchResult.getChoiceObject();
+
 		for(int i = 0; i < mEnemyTeam.size(); i++)
 		{
 			if(toSwitch.equals(mEnemyTeam.get(i)))
@@ -244,15 +240,12 @@ public class FightManager
 			throw new NullPointerException("Enemy Anature was null, String or Result Object?");
 		}
 
-		if(team.get(0)
-				.getMoveSet() == null)
+		if(team.get(0).getMoveSet() == null)
 		{
 			throw new NullPointerException("Anature's MoveSet was null, String or Result Object?");
 		}
 
-		if(team.get(0)
-				.getMoveSet()
-				.getMove(indexOfMove) == null)
+		if(team.get(0).getMoveSet().getMove(indexOfMove) == null)
 		{
 			throw new NullPointerException("Anature's Move was null, String or Result Object?");
 		}
@@ -282,12 +275,12 @@ public class FightManager
 	{
 		return mPlayerIndex;
 	}
-	
+
 	public ArrayList<Anature> getPlayerParticipantingAnatures()
 	{
 		return new ArrayList<Anature>(mPlayerParticipatingAnatures);
 	}
-	
+
 	private void addPlayerAnatureParticipant(int index)
 	{
 		if(!mPlayerParticipatingAnatures.contains(mPlayerTeam.get(index)))

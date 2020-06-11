@@ -10,7 +10,7 @@ public class DrySkin implements IAbility
 {
 	private static final long serialVersionUID = -8094396331629552627L;
 
-	public static String activateAbility(IAnature userAnature)
+	public static String activateAbility(Anature userAnature)
 	{
 		if(userAnature == null)
 		{

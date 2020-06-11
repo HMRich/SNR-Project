@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import application.anatures.Anature;
 import application.enums.Type;
 import application.enums.TypeEffectiveness;
-import application.interfaces.IAnature;
 import test.helpers.TestObjects;
 
 public class GenerateExplicitTypeCombinationTests
@@ -34,8 +34,7 @@ public class GenerateExplicitTypeCombinationTests
 				int secondCountcount = 0;
 				for(Type innerTypeSecondary : typesSecondary)
 				{
-					if(secondCountcount == 0
-							|| secondCountcount > firstCount)
+					if(secondCountcount == 0 || secondCountcount > firstCount)
 					{
 						if(innerTypePrimary.equals(innerTypeSecondary))
 						{
@@ -59,8 +58,8 @@ public class GenerateExplicitTypeCombinationTests
 
 	public static String getTypeEffectiveness(Type source, Type targetPrimary, Type targetsecondary)
 	{
-		IAnature sourceAnature = TestObjects.getAnature().getClone().withPrimaryType(source).create();
-		IAnature targetAnature = TestObjects.getAnature().getClone().withPrimaryType(targetPrimary).withSecondaryType(targetsecondary).create();
+		Anature sourceAnature = TestObjects.getAnature().getClone().setPrimaryType(source);
+		Anature targetAnature = TestObjects.getAnature().getClone().setPrimaryType(targetPrimary).setSecondaryType(targetsecondary);
 
 		return TypeEffectiveness.typeEffectiveness(sourceAnature, targetAnature).toString().replace(" ", "");
 	}

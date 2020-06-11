@@ -103,8 +103,7 @@ public class Startup extends Application
 			@Override
 			public void handle(KeyEvent event)
 			{
-				if(event.getText()
-						.compareTo("`") == 0)
+				if(event.getText().compareTo("`") == 0)
 				{
 					mLogger.toggleWindow();
 				}
@@ -112,8 +111,7 @@ public class Startup extends Application
 		};
 
 		mStage = primaryStage;
-		mStage.getIcons()
-				.add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
+		mStage.getIcons().add(new Image(Startup.class.getResourceAsStream("/resources/images/Icon.png")));
 		mStage.setTitle("Anature");
 
 		mStage.setMinWidth(640);
@@ -168,8 +166,7 @@ public class Startup extends Application
 					break;
 
 				case Anature_Summary:
-					if(mAnatureSummaryView == null
-							|| mAnatureSummaryController == null)
+					if(mAnatureSummaryView == null || mAnatureSummaryController == null)
 					{
 						FXMLLoader summaryLoader = new FXMLLoader(Startup.class.getResource("/application/views/AnatureSummaryView.fxml"));
 						Parent summaryRoot = summaryLoader.load();
@@ -374,9 +371,9 @@ public class Startup extends Application
 	{
 		if(result.hasEvolutions())
 		{
-			HashMap<IAnature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
+			HashMap<Anature, Species> anaturesToEvolve = result.getAnaturesToEvolve();
 
-			Iterator<Entry<IAnature, Species>> evolveIterator = anaturesToEvolve.entrySet().iterator();
+			Iterator<Entry<Anature, Species>> evolveIterator = anaturesToEvolve.entrySet().iterator();
 			while(evolveIterator.hasNext())
 			{
 				Entry<Anature, Species> evolveEntry = evolveIterator.next();
@@ -415,39 +412,25 @@ public class Startup extends Application
 		Anature first = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 54);
 		first.setName("Main Null");
 		mPlayer.addAnatures(first);
-		mPlayer.getAnatures()
-				.get(0)
-				.getStats()
-				.addExperience(14601);
+		mPlayer.getAnatures().get(0).getStats().addExperience(14601);
 
 		Anature second = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 12);
 		second.setName("Other Null");
 		mPlayer.addAnatures(second);
 
-		IAnature third = AnatureBuilder.createAnature(Species.Sardino, 14);
+		Anature third = NewAnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 14);
 		mPlayer.addAnatures(third);
-		mPlayer.getAnatures()
-				.get(2)
-				.getStats()
-				.addExperience(630);
+		mPlayer.getAnatures().get(2).getStats().addExperience(630);
 
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Potion));
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
-		mPlayer.getBackpack()
-				.addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Great_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Ultra_Potion));
+		mPlayer.getBackpack().addItem(ItemPool.getHealthPotion(ItemIds.Master_Potion));
 
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
-		mPlayer.getBackpack()
-				.addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Super_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Hyper_Anacube));
+		mPlayer.getBackpack().addItem((Anacube) ItemPool.getItem(ItemIds.Max_Anacube));
 
 		LoggerController.logEvent(LoggingTypes.Misc, "Generated Demo Player");
 
@@ -769,7 +752,7 @@ public class Startup extends Application
 	public static void newGame()
 	{
 		// TODO remove starter, tokens, and items after professor is added
-		IAnature starter = AnatureBuilder.createAnature(Species.Sardino, 5);
+		Anature starter = NewAnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 5);
 		mPlayer.addAnatures(starter);
 		mPlayer.addTokens(500);
 

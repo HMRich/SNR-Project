@@ -99,15 +99,6 @@ class Trainer implements ITrainer, Serializable
 		mHealthPotions = healthPotionBases;
 	}
 
-	void setCurrentAnature(Anature currentAnature)
-	{
-		if(currentAnature == null)
-		{
-			throw new IllegalArgumentException("Passed value \"anature\" was null.");
-		}
-		mCurrentAnature = currentAnature;
-	}
-
 	void setAI(IAI ai)
 	{
 		if(ai == null)
@@ -141,7 +132,7 @@ class Trainer implements ITrainer, Serializable
 	}
 
 	@Override
-	public ArrayList<IAnature> getAnatureParty()
+	public ArrayList<Anature> getAnatureParty()
 	{
 		return mAnatures;
 	}
@@ -153,7 +144,7 @@ class Trainer implements ITrainer, Serializable
 	}
 
 	@Override
-	public IAnature getCurrentAnature()
+	public Anature getCurrentAnature()
 	{
 		return mCurrentAnature;
 	}
@@ -195,7 +186,7 @@ class Trainer implements ITrainer, Serializable
 
 	// TODO We need to move this method. It most likely does not belong here
 	@Override
-	public int getAnatureIndex(IAnature anatureBase)
+	public int getAnatureIndex(Anature anatureBase)
 	{
 		int index = 0;
 		for(Anature currentAnature : mAnatures)
@@ -231,7 +222,7 @@ class Trainer implements ITrainer, Serializable
 	}
 
 	@Override
-	public AiChoiceObject<?> useTurn(IAnature playerAnature)
+	public AiChoiceObject<?> useTurn(Anature playerAnature)
 	{
 		boolean willUseHealthPotion = mAI.willUseHealthPotion(mHealthPotions, mCurrentAnature);
 
@@ -251,15 +242,15 @@ class Trainer implements ITrainer, Serializable
 	}
 
 	@Override
-	public AiSwitchChoice chooseAnature(IAnature playerAnature)
+	public AiSwitchChoice chooseAnature(Anature playerAnature)
 	{
-		IAnature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
+		Anature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
 		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
 		return switchChoice;
 	}
 
 	@Override
-	public void setCurrentAnature(IAnature currentAnature)
+	public void setCurrentAnature(Anature currentAnature)
 	{
 		if(currentAnature == null)
 		{
@@ -324,7 +315,7 @@ class Trainer implements ITrainer, Serializable
 		return healthPotionChoice;
 	}
 
-	private AiMoveChoice chooseMove(IAnature playerAnature)
+	private AiMoveChoice chooseMove(Anature playerAnature)
 	{
 		AiMoveChoice moveChoice = mAI.chooseMove(mCurrentAnature, playerAnature);
 		return moveChoice;

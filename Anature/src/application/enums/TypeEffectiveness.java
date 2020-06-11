@@ -47,7 +47,7 @@ public enum TypeEffectiveness
 		return getEffectiveness() >= threshold.getEffectiveness();
 	}
 
-	public static TypeEffectiveness typeEffectiveness(IAnature source, IAnature target)
+	public static TypeEffectiveness typeEffectiveness(Anature source, Anature target)
 	{
 		if(source.getPrimaryType() == Type.NotSet)
 		{

@@ -14,7 +14,7 @@ public class Overclocked implements IAbility
 {
 	private static final long serialVersionUID = -3207815575987072866L;
 
-	public static String activateAbility(IAnature source, IMove moveThatAttacked)
+	public static String activateAbility(Anature source, IMove moveThatAttacked)
 	{
 		if(hasNull(source, moveThatAttacked))
 		{
@@ -31,8 +31,7 @@ public class Overclocked implements IAbility
 			stats.increaseTempAttack();
 			stats.increaseTempSpecialAttack();
 
-			if(attackStage != stats.getTempAttack()
-					|| specialAttackStage != stats.getTempSpecialAttack())
+			if(attackStage != stats.getTempAttack() || specialAttackStage != stats.getTempSpecialAttack())
 			{
 				return source.getName() + " became overclocked by the attack!";
 			}
@@ -41,7 +40,7 @@ public class Overclocked implements IAbility
 		return "";
 	}
 
-	private static boolean hasNull(IAnature source, IMove moveThatAttacked)
+	private static boolean hasNull(Anature source, IMove moveThatAttacked)
 	{
 		if(source == null)
 		{

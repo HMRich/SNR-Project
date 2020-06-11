@@ -11,7 +11,7 @@ public class SleepDeprived implements IAbility
 {
 	private static final long serialVersionUID = 6256924311685034417L;
 
-	public static String activateAbility(IAnature userAnature)
+	public static String activateAbility(Anature userAnature)
 	{
 		if(userAnature == null)
 		{

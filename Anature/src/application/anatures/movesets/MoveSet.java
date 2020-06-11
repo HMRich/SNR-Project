@@ -26,24 +26,29 @@ public class MoveSet implements Serializable
 		setMove(4, move4);
 	}
 
-	public boolean setMove(int moveNumber, IMove moveCore)
+	public boolean setMove(int moveNumber, IMove move)
 	{
+		if(move == null)
+		{
+			throw new IllegalArgumentException("Passed value \"move\" was null.");
+		}
+
 		switch(moveNumber)
 		{
 			case 1:
-				mMove1 = moveCore;
+				mMove1 = move;
 				return setMovePoints(moveNumber);
 
 			case 2:
-				mMove2 = moveCore;
+				mMove2 = move;
 				return setMovePoints(moveNumber);
 
 			case 3:
-				mMove3 = moveCore;
+				mMove3 = move;
 				return setMovePoints(moveNumber);
 
 			case 4:
-				mMove4 = moveCore;
+				mMove4 = move;
 				return setMovePoints(moveNumber);
 
 			case -1:
@@ -196,26 +201,22 @@ public class MoveSet implements Serializable
 
 	public int getMoveIndex(IMove move)
 	{
-		if(mMove1.getName()
-				.compareTo(move.getName()) == 0)
+		if(mMove1.getName().compareTo(move.getName()) == 0)
 		{
 			return 1;
 		}
 
-		else if(mMove2.getName()
-				.compareTo(move.getName()) == 0)
+		else if(mMove2.getName().compareTo(move.getName()) == 0)
 		{
 			return 2;
 		}
 
-		else if(mMove3.getName()
-				.compareTo(move.getName()) == 0)
+		else if(mMove3.getName().compareTo(move.getName()) == 0)
 		{
 			return 3;
 		}
 
-		else if(mMove4.getName()
-				.compareTo(move.getName()) == 0)
+		else if(mMove4.getName().compareTo(move.getName()) == 0)
 		{
 			return 4;
 		}
@@ -297,8 +298,7 @@ public class MoveSet implements Serializable
 	{
 		for(int index = 1; index != 5; index++)
 		{
-			if(!this.getMove(index)
-					.equals(moveSet.getMove(index)))
+			if(!this.getMove(index).equals(moveSet.getMove(index)))
 				return false;
 		}
 

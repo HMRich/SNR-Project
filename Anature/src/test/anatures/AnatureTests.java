@@ -38,6 +38,7 @@ import application.interfaces.stats.IStats;
 import application.pools.AbilityPool;
 import test.helpers.TestObjects;
 import test.helpers.TestTags;
+import test.testableObjects.AnatureTestable;
 
 @DisplayName("Anature Tests")
 @Tag(TestTags.UnitTest)
@@ -101,7 +102,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withName(testString);
+					TestObjects.getAnature().getClone().setName(testString);
 				});
 			}
 
@@ -111,7 +112,7 @@ public class AnatureTests
 			void SetName_WithRealName_SetsTheName(String testString)
 			{
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withName(testString).create();
+				Anature sut = TestObjects.getAnature().getClone().setName(testString);
 
 				// assert
 				assertTrue(sut.getName().equals(testString));
@@ -131,7 +132,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withOwnerName(testString);
+					TestObjects.getAnature().getClone().setOwnerName(testString);
 				});
 			}
 
@@ -141,7 +142,7 @@ public class AnatureTests
 			void SetOwnerName_WithRealName_SetsTheOwnerName(String testString)
 			{
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withOwnerName(testString).create();
+				Anature sut = TestObjects.getAnature().getClone().setOwnerName(testString);
 
 				// assert
 				assertTrue(sut.getOwner().equals(testString));
@@ -158,7 +159,7 @@ public class AnatureTests
 			void SetIsShiny_WithTrueOrFalse_SetsIsShinyValue(boolean testBoolean)
 			{
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().isShiny(testBoolean).create();
+				Anature sut = TestObjects.getAnature().getClone().setIsShiny(testBoolean);
 
 				// assert
 				assertTrue(sut.isShiny() == testBoolean);
@@ -180,7 +181,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withSpecies(testSpecies);
+					TestObjects.getAnature().getClone().setSpecies(testSpecies);
 				});
 			}
 
@@ -196,7 +197,7 @@ public class AnatureTests
 					Assert.fail("Null equivalent Species value was not excluded from test.");
 
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withSpecies(testSpecies).create();
+				Anature sut = TestObjects.getAnature().getClone().setSpecies(testSpecies);
 
 				// assert
 				assertTrue(sut.getSpecies().equals(testSpecies));
@@ -219,7 +220,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withGender(testGender);
+					TestObjects.getAnature().getClone().setGender(testGender);
 				});
 			}
 
@@ -235,7 +236,7 @@ public class AnatureTests
 					Assert.fail("Null equivalent Gender value was not excluded from test.");
 
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withGender(testGender).create();
+				Anature sut = TestObjects.getAnature().getClone().setGender(testGender);
 
 				// assert
 				assertTrue(sut.getGender().equals(testGender));
@@ -257,7 +258,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withPrimaryType(testType);
+					TestObjects.getAnature().getClone().setPrimaryType(testType);
 				});
 			}
 
@@ -273,7 +274,7 @@ public class AnatureTests
 					Assert.fail("Null equivalent Type value was not excluded from test.");
 
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withPrimaryType(testType).create();
+				Anature sut = TestObjects.getAnature().getClone().setPrimaryType(testType);
 
 				// assert
 				assertTrue(sut.getPrimaryType().equals(testType));
@@ -291,7 +292,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withSecondaryType(null);
+					TestObjects.getAnature().getClone().setSecondaryType(null);
 				});
 			}
 
@@ -301,7 +302,7 @@ public class AnatureTests
 			void SetSecondaryType_WithEachType_SetsEachType(Type testType)
 			{
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withSecondaryType(testType).create();
+				Anature sut = TestObjects.getAnature().getClone().setSecondaryType(testType);
 
 				// assert
 				assertTrue(sut.getSecondaryType().equals(testType));
@@ -321,7 +322,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withMoveSet(null);
+					TestObjects.getAnature().getClone().setMoveSet(null);
 				});
 			}
 
@@ -334,7 +335,7 @@ public class AnatureTests
 				realMoveSet.setMove(1, TestObjects.getDefaultTackle());
 
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withMoveSet(realMoveSet).create();
+				Anature sut = TestObjects.getAnature().getClone().setMoveSet(realMoveSet);
 
 				// assert
 				assertTrue(sut.getMoveSet().equals(realMoveSet));
@@ -354,7 +355,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withAbility(testAbility);
+					TestObjects.getAnature().getClone().setAbility(testAbility);
 				});
 			}
 
@@ -364,7 +365,7 @@ public class AnatureTests
 			void SetAbility_WithRealAbility_SetsAbility(IAbility testAbility)
 			{
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withAbility(testAbility).create();
+				Anature sut = TestObjects.getAnature().getClone().setAbility(testAbility);
 
 				// assert
 				assertTrue(sut.getAbility().equals(testAbility));
@@ -383,7 +384,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withStatus(StatusEffects.NotSet);
+					TestObjects.getAnature().getClone().setStatus(testStatusEffect);
 				});
 			}
 
@@ -393,7 +394,7 @@ public class AnatureTests
 			void SetStatus_WithEachStatus_SetsEachStatus(StatusEffects testStatus)
 			{
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withStatus(testStatus).create();
+				Anature sut = TestObjects.getAnature().getClone().setStatus(testStatus);
 
 				// assert
 				assertTrue(sut.getStatus().equals(testStatus));
@@ -413,7 +414,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withStats(testStats);
+					TestObjects.getAnature().getClone().setStats(testStats);
 				});
 			}
 
@@ -425,7 +426,7 @@ public class AnatureTests
 				IStats newStats = TestObjects.getDefaultStats().getClone().create();
 
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withStats(newStats).create();
+				Anature sut = TestObjects.getAnature().getClone().setStats(newStats);
 
 				// assert
 				assertTrue(sut.getStats().equals(newStats));
@@ -444,7 +445,7 @@ public class AnatureTests
 				// assert
 				assertThrows(IllegalArgumentException.class, () ->
 				{
-					TestObjects.getAnature().getClone().withIndexNumber(testNumber);
+					TestObjects.getAnature().getClone().setIndexNumber(testNumber);
 				});
 			}
 
@@ -454,7 +455,7 @@ public class AnatureTests
 			void SetIndexNumber_WithValueEqualToOrGreaterThanZero_SetsIndexNumber(int testNumber)
 			{
 				// act
-				IAnature sut = TestObjects.getAnature().getClone().withIndexNumber(testNumber).create();
+				Anature sut = TestObjects.getAnature().getClone().setIndexNumber(testNumber);
 
 				// assert
 				assertTrue(sut.getIndexNumber() == testNumber);
@@ -527,7 +528,7 @@ public class AnatureTests
 		void GetMoveSet_FromDefaultAnature_ReturnsDefaultValue()
 		{
 			// assert
-			assertTrue(TestObjects.getAnature().getMoveSet().equals(TestObjects.getDefaultMoveSet()));
+			assertTrue(TestObjects.getAnature().getMoveSet().deepEquals(TestObjects.getDefaultMoveSet()));
 		}
 
 		@DisplayName("getAbility()")
@@ -551,7 +552,7 @@ public class AnatureTests
 		void GetStats_FromDefaultAnature_ReturnsDefaultValue()
 		{
 			// assert
-			assertTrue(TestObjects.getAnature().getStats().equals(TestObjects.getDefaultStats()));
+			assertTrue(TestObjects.getAnature().getStats().deepEquals(TestObjects.getDefaultStats()));
 		}
 
 		@DisplayName("getIndexNumber()")
@@ -612,6 +613,11 @@ public class AnatureTests
 
 		class MockAnature extends AnatureTestable
 		{
+			public MockAnature(AnatureVariables context)
+			{
+				super(context);
+			}
+
 			private static final long serialVersionUID = 5562999580260106159L;
 
 			private boolean mGetStatsCalled;
@@ -687,13 +693,12 @@ public class AnatureTests
 			void GetTypes_CallsGetTypes_ReturnsAnatureTypes()
 			{
 				// arrange
-				IAnature sut = TestObjects.getAnature().getClone().withPrimaryType(Type.Fire).withSecondaryType(Type.Fighting).create();
+				Anature sut = TestObjects.getAnature().getClone().setPrimaryType(Type.Fire).setSecondaryType(Type.Fighting);
 
 				ArrayList<Type> sutTypes = sut.getTypes();
 
 				// assert
-				assertTrue(sutTypes.contains(Type.Fire)
-						&& sutTypes.contains(Type.Fighting));
+				assertTrue(sutTypes.contains(Type.Fire) && sutTypes.contains(Type.Fighting));
 			}
 
 			@DisplayName("with Types Water, NotSet")
@@ -701,13 +706,12 @@ public class AnatureTests
 			void GetTypes_CallsGetTypes_ReturnsOnlyWater()
 			{
 				// arrange
-				IAnature sut = TestObjects.getAnature().getClone().withPrimaryType(Type.Water).withSecondaryType(Type.NotSet).create();
+				Anature sut = TestObjects.getAnature().getClone().setPrimaryType(Type.Water).setSecondaryType(Type.NotSet);
 
 				ArrayList<Type> sutTypes = sut.getTypes();
 
 				// assert
-				assertTrue(sutTypes.contains(Type.Water)
-						&& !sutTypes.contains(Type.NotSet));
+				assertTrue(sutTypes.contains(Type.Water) && !sutTypes.contains(Type.NotSet));
 			}
 
 		}
@@ -780,8 +784,7 @@ public class AnatureTests
 			getMockAnature().restore();
 
 			// assert
-			assertTrue(mMockAnatureStats.applyHealWasCalledWithMaxIntValue()
-					&& mMockAnatureMoveSet.refreshAllMovePointsWasCalled());
+			assertTrue(mMockAnatureStats.applyHealWasCalledWithMaxIntValue() && mMockAnatureMoveSet.refreshAllMovePointsWasCalled());
 		}
 
 		@DisplayName("getHitPointsPercent()")
@@ -960,7 +963,7 @@ public class AnatureTests
 //					Anature sut = (Anature) TestObjects.getAnature()
 //							.getClone()
 //							.setSpecies(species)
-//							.create();
+//							;
 //
 //					// act
 //					sut.getFrontSprite();
@@ -978,7 +981,7 @@ public class AnatureTests
 //				Anature sut = (Anature) TestObjects.getAnature()
 //						.getClone()
 //						.setSpecies(species)
-//						.create();
+//						;
 //
 //				// assert
 //				assertTrue(sut.getFrontSprite() instanceof Image);
@@ -1002,7 +1005,7 @@ public class AnatureTests
 //					Anature sut = (Anature) TestObjects.getAnature()
 //							.getClone()
 //							.setSpecies(species)
-//							.create();
+//							;
 //
 //					// act
 //					sut.getFrontSprite();
@@ -1020,7 +1023,7 @@ public class AnatureTests
 //				Anature sut = (Anature) TestObjects.getAnature()
 //						.getClone()
 //						.setSpecies(species)
-//						.create();
+//						;
 //
 //				// assert
 //				assertTrue(sut.getFrontSprite() instanceof Image);

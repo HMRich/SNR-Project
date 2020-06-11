@@ -9,7 +9,7 @@ public class Upgrade extends Move
 	private static final long serialVersionUID = -6248044979167831318L;
 
 	@Override
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		IStats stats = source.getStats();
 		double maxStageValue = calculateMaxStageValue(stats);

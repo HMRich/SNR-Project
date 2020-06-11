@@ -12,15 +12,14 @@ public class Determination implements IAbility
 {
 	private static final long serialVersionUID = 1L;
 
-	public static String activateAbility(IAnature userAnature, IMove move, double userOldHp)
+	public static String activateAbility(Anature userAnature, IMove move, double userOldHp)
 	{
 		if(hasNull(userAnature, move, userOldHp))
 		{
 			return "";
 		}
 
-		if(move.doesDamage()
-				&& (userOldHp == userAnature.getStats().getTotalStat(Stat.HitPoints)))
+		if(move.doesDamage() && (userOldHp == userAnature.getStats().getTotalStat(Stat.HitPoints)))
 		{
 			userAnature.getStats().setCurrentHitPoints(1);
 			return userAnature.getName() + " survived on 1 hp thanks to their Determination!";

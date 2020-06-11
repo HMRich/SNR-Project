@@ -11,7 +11,7 @@ public class WiredMess extends Move
 	private static final long serialVersionUID = 214846540864140820L;
 
 	@Override
-	public void activateMove(IAnature source, IAnature target)
+	public void activateMove(Anature source, Anature target)
 	{
 		Random rng = new Random();
 		int firstToDecrease = rng.nextInt(4) + 1;

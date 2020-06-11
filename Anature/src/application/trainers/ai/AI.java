@@ -38,8 +38,7 @@ class AI implements IAI, Serializable
 
 	void setHealthThreshold(double healthThreshold)
 	{
-		if(healthThreshold < 0
-				|| healthThreshold > 1)
+		if(healthThreshold < 0 || healthThreshold > 1)
 		{
 			throw new IllegalArgumentException("Passed value \"healthThreshold\" needs to be a value between 0 and 1.");
 		}
@@ -78,6 +77,7 @@ class AI implements IAI, Serializable
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public boolean willUseHealthPotion(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
 	{
 		if(healthPotionBases == null)
@@ -97,10 +97,10 @@ class AI implements IAI, Serializable
 		boolean currentAnatureAtThreshold = anatureHpPercent <= mHealthThreshold;
 		boolean trainerHasHealthPotion = !healthPotionBases.isEmpty();
 
-		return trainerHasHealthPotion
-				&& currentAnatureAtThreshold;
+		return trainerHasHealthPotion && currentAnatureAtThreshold;
 	}
 
+	@Override
 	public IHealthPotion healthPotionToUse(ArrayList<IHealthPotion> healthPotionBases, Anature currentAnature)
 	{
 		if(healthPotionBases == null)
@@ -122,10 +122,8 @@ class AI implements IAI, Serializable
 
 		for(IHealthPotion healthPotionBase : healthPotionBases)
 		{
-			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId())
-					.getHealAmount();
-			double healPercent = itemHealAmount / currentAnature.getStats()
-					.getTotalStat(Stat.HitPoints);
+			int itemHealAmount = ItemPool.getHealthPotion(healthPotionBase.getItemId()).getHealAmount();
+			double healPercent = itemHealAmount / currentAnature.getStats().getTotalStat(Stat.HitPoints);
 
 			double anatureHpPercentIfItemUsed = currentAnatureHpPercent + healPercent;
 			boolean willOverheal = willHealthPotionOverheal(anatureHpPercentIfItemUsed);
@@ -133,9 +131,7 @@ class AI implements IAI, Serializable
 			// TODO there is some logic here that allows trainers to use master potion even
 			// if there may be a better option that allows for less over healing.
 
-			if(anaturePercentAfterItemUse == 0
-					|| anatureHpPercentIfItemUsed > anaturePercentAfterItemUse
-							&& !willOverheal)
+			if(anaturePercentAfterItemUse == 0 || anatureHpPercentIfItemUsed > anaturePercentAfterItemUse && !willOverheal)
 			{
 				anaturePercentAfterItemUse = anatureHpPercentIfItemUsed;
 				healthPotionToUse = healthPotionBase;
@@ -151,6 +147,7 @@ class AI implements IAI, Serializable
 		return healthPotionToUse;
 	}
 
+	@Override
 	public boolean willSwitchAnature(ArrayList<Anature> anatureBases, Anature enemyAnature, Anature currentAnature)
 	{
 		if(anatureBases == null)
@@ -175,11 +172,10 @@ class AI implements IAI, Serializable
 		boolean currentAnatureNotAtThreshold = !isAnatureAtThreshold(currentAnature, enemyAnature);
 		boolean hasAnatureAtThreshold = hasAnAnatureAtThreshold(anatureBases, currentAnature, enemyAnature);
 
-		return hasAnotherAnature
-				&& currentAnatureNotAtThreshold
-				&& hasAnatureAtThreshold;
+		return hasAnotherAnature && currentAnatureNotAtThreshold && hasAnatureAtThreshold;
 	}
 
+	@Override
 	public AiMoveChoice chooseMove(Anature source, Anature target)
 	{
 		if(source == null)
@@ -206,6 +202,7 @@ class AI implements IAI, Serializable
 		return randomAiMoveChoice;
 	}
 
+	@Override
 	public Anature chooseNewAnature(ArrayList<Anature> anatureBases, Anature currentAnature, Anature enemyAnature)
 	{
 		Anature anatureToReturn = currentAnature;
@@ -218,10 +215,10 @@ class AI implements IAI, Serializable
 				break;
 			}
 		}
-		
+
 		if(anatureToReturn.equals(currentAnature))
 		{
-			for(IAnature anatureBase : anatureBases)
+			for(Anature anatureBase : anatureBases)
 			{
 				if(!anatureBase.equals(currentAnature))
 				{
@@ -240,9 +237,7 @@ class AI implements IAI, Serializable
 
 	boolean canCreate()
 	{
-		return mHealthThreshold != -1
-				&& !mSwitchThreshold.equals(TypeEffectiveness.NotSet)
-				&& !mMoveThreshold.equals(TypeEffectiveness.NotSet);
+		return mHealthThreshold != -1 && !mSwitchThreshold.equals(TypeEffectiveness.NotSet) && !mMoveThreshold.equals(TypeEffectiveness.NotSet);
 	}
 
 	/*
@@ -285,13 +280,11 @@ class AI implements IAI, Serializable
 		do
 		{
 			choices = moveChoiceListAtThreshold(source, target, moveThreshold);
-			if(choices == null
-					|| choices.isEmpty())
+			if(choices == null || choices.isEmpty())
 			{
 				moveThreshold = TypeEffectiveness.decrementEffectiveness(moveThreshold);
 			}
-		} while(!moveThreshold.equals(TypeEffectiveness.NoEffect)
-				&& choices.isEmpty());
+		} while(!moveThreshold.equals(TypeEffectiveness.NoEffect) && choices.isEmpty());
 
 		return choices;
 	}
@@ -302,29 +295,25 @@ class AI implements IAI, Serializable
 
 		MoveSet moveSet = source.getMoveSet();
 
-		if(moveSet.hasMove(1)
-				&& moveIsAtThreshold(moveSet.getMove(1), target))
+		if(moveSet.hasMove(1) && moveIsAtThreshold(moveSet.getMove(1), target))
 		{
 			AiMoveChoice moveChoice1 = new AiMoveChoice(AiChoice.Move1, moveSet.getMove(1));
 			choices.add(moveChoice1);
 		}
 
-		if(moveSet.hasMove(2)
-				&& moveIsAtThreshold(moveSet.getMove(2), target))
+		if(moveSet.hasMove(2) && moveIsAtThreshold(moveSet.getMove(2), target))
 		{
 			AiMoveChoice moveChoice2 = new AiMoveChoice(AiChoice.Move2, moveSet.getMove(2));
 			choices.add(moveChoice2);
 		}
 
-		if(moveSet.hasMove(3)
-				&& moveIsAtThreshold(moveSet.getMove(3), target))
+		if(moveSet.hasMove(3) && moveIsAtThreshold(moveSet.getMove(3), target))
 		{
 			AiMoveChoice moveChoice3 = new AiMoveChoice(AiChoice.Move3, moveSet.getMove(3));
 			choices.add(moveChoice3);
 		}
 
-		if(moveSet.hasMove(4)
-				&& moveIsAtThreshold(moveSet.getMove(4), target))
+		if(moveSet.hasMove(4) && moveIsAtThreshold(moveSet.getMove(4), target))
 		{
 			AiMoveChoice moveChoice4 = new AiMoveChoice(AiChoice.Move4, moveSet.getMove(4));
 			choices.add(moveChoice4);

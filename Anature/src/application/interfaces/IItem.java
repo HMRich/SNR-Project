@@ -2,6 +2,7 @@ package application.interfaces;
 
 import java.io.Serializable;
 
+import application.anatures.Anature;
 import application.controllers.results.ItemResult;
 import application.enums.ItemIds;
 

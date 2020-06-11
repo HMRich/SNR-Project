@@ -12,14 +12,11 @@ public class Spiky implements IAbility
 {
 	private static final long serialVersionUID = -6679381514412927390L;
 
-	public static String activateAbility(IAnature source, IAnature target, IMove sourceMove, boolean isSourceAttacking, boolean attackMissed)
+	public static String activateAbility(Anature source, Anature target, IMove sourceMove, boolean isSourceAttacking, boolean attackMissed)
 	{
 		String result = "";
 
-		if(!hasNull(source, target, sourceMove)
-				&& sourceMove.isPhysicalAttack()
-				&& !isSourceAttacking
-				&& !attackMissed)
+		if(!hasNull(source, target, sourceMove) && sourceMove.isPhysicalAttack() && !isSourceAttacking && !attackMissed)
 		{
 			int newHp = target.getStats().getCurrentHitPoints() - (target.getStats().getTotalStat(Stat.HitPoints) / 8);
 
