@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.menus.AnatureSummaryController">
+   <children>
+      <ImageView fx:id="mBg" fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../resources/images/menus/summary/Anature_Summary_Bg.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mPageOneBtn" fitHeight="85.0" fitWidth="105.0" layoutX="1576.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/menus/summary/Anature_Summary_Page_1_Selected.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mPageTwoBtn" fitHeight="85.0" fitWidth="105.0" layoutX="1693.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/menus/summary/Anature_Summary_Page_2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mPageThreeBtn" fitHeight="85.0" fitWidth="105.0" layoutX="1811.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/menus/summary/Anature_Summary_Page_3.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mReleaseBtn" fitHeight="57.0" fitWidth="237.0" layoutX="188.0" layoutY="925.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../resources/images/menus/summary/Anature_Summary_Release_Btn.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mBackBtn" fitHeight="76.0" fitWidth="369.0" layoutX="835.0" layoutY="1004.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../resources/images/menus/summary/Anature_Summary_Back_Btn.png" />
+         </image>
+      </ImageView>
+      <GridPane fx:id="mAnatureTabGrid" hgap="51.0" layoutX="44.0" prefHeight="186.0" prefWidth="1821.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <Label fx:id="mLvlTxt" layoutX="99.0" layoutY="329.0" prefHeight="63.0" prefWidth="168.0" text="Lvl. 12" textFill="WHITE">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="mNameTxt" layoutX="279.0" layoutY="329.0" prefHeight="63.0" prefWidth="307.0" text="Null" textFill="WHITE">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="mGenderImg" fitHeight="44.0" fitWidth="43.0" layoutX="35.0" layoutY="339.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/battle/Male_Symbol.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mAnatureImg" fitHeight="386.0" fitWidth="386.0" layoutX="116.0" layoutY="514.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../resources/images/anatures/Null_Front.png" />
+         </image>
+      </ImageView>
+      <GridPane fx:id="mPageOneGrid" layoutX="811.0" layoutY="382.0" prefHeight="344.0" prefWidth="886.0" vgap="6.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.3333740234375" minWidth="10.0" prefWidth="315.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="599.0" minWidth="10.0" prefWidth="571.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="mTitleNameTxt" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="427.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Name">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailNameTxt" prefHeight="834.0" prefWidth="1032.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Null" wrapText="true" GridPane.columnIndex="1">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleTypeTxt" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="427.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Type" GridPane.rowIndex="1">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailsTypeBgTxt" layoutX="325.0" layoutY="10.0" prefHeight="765.0" prefWidth="1335.0" style="-fx-background-color: white;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="mDetailTypeOneImg" fitHeight="68.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../resources/images/types/Electric_Type.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="mDetailTypeTwoImg" fitHeight="68.0" fitWidth="200.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../resources/images/types/Ghost_Type.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <Label fx:id="mTitleOwnerTxt" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="427.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Owner" GridPane.rowIndex="2">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailOwnerTxt" layoutX="325.0" layoutY="10.0" prefHeight="834.0" prefWidth="1032.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Kelly" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleXpTxt" alignment="CENTER" layoutX="10.0" layoutY="150.0" prefHeight="260.0" prefWidth="427.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Exp. Points" GridPane.rowIndex="3">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailsXpBgTxt" layoutX="325.0" layoutY="150.0" prefHeight="834.0" prefWidth="1032.0" style="-fx-background-color: white;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <children>
+                  <ProgressBar fx:id="mDetailXpBar" prefHeight="31.0" prefWidth="334.0" progress="0.75" />
+                  <Text fx:id="mDetailXpTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="75 / 100">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <Label fx:id="mTitleCurrHpTxt" alignment="CENTER" prefHeight="260.0" prefWidth="427.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Hp" GridPane.rowIndex="4">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailsCurrHpBgTxt" layoutX="325.0" layoutY="220.0" prefHeight="834.0" prefWidth="1032.0" style="-fx-background-color: white;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Label>
+            <HBox fx:id="mDetailsCurrHpBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <Text fx:id="mDetailCurrHpTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="75 / 100">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+      <GridPane fx:id="mPageTwoGrid" layoutX="811.0" layoutY="335.0" prefHeight="631.0" prefWidth="886.0" vgap="6.0" visible="false">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="438.0" minWidth="10.0" prefWidth="278.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="609.0" minWidth="10.0" prefWidth="608.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="mDetailKeyTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Base + IV + EV + Lvl (+ Nature) = Total" GridPane.columnIndex="1">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleHpTxt" alignment="CENTER" layoutX="288.0" layoutY="10.0" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Hp" GridPane.rowIndex="1">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailHpTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Base + IV + EV + Lvl = Total" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailAtkTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Base + IV + EV + Lvl (+ Nature) = Total" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailDefTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Base + IV + EV + Lvl (+ Nature) = Total" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailSpecialAtkTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Base + IV + EV + Lvl (+ Nature) = Total" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailSpecialDefTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Base + IV + EV + Lvl (+ Nature) = Total" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailSpeedTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Base + IV + EV + Lvl (+ Nature) = Total" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailNatureTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Quirky" GridPane.columnIndex="1" GridPane.rowIndex="7">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailAbilityNameTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Ability Name" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailAbilityDescTxt" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="Ability Desc." wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="9">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleAtkTxt" alignment="CENTER" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Attack" GridPane.rowIndex="2">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleDefTxt" alignment="CENTER" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Defense" GridPane.rowIndex="3">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleSpecialAtkTxt" alignment="CENTER" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Special Atk" GridPane.rowIndex="4">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleSpecialDefTxt" alignment="CENTER" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Special Def" GridPane.rowIndex="5">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleSpeedTxt" alignment="CENTER" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Speed" GridPane.rowIndex="6">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleNatureTxt" alignment="CENTER" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Nature" GridPane.rowIndex="7">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleAbilityTxt" alignment="CENTER" prefHeight="613.0" prefWidth="1079.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Ability" GridPane.rowIndex="8">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <GridPane fx:id="mPageThreeGrid" layoutX="811.0" layoutY="344.0" prefHeight="626.0" prefWidth="886.0" vgap="6.0" visible="false">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="554.0" minWidth="10.0" prefWidth="275.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="502.0" minWidth="10.0" prefWidth="429.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="285.0" minWidth="10.0" prefWidth="177.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="mMoveNameOneTxt" layoutX="10.0" layoutY="362.0" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Move Name" GridPane.columnSpan="2">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="mMoveTypeOneImg" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+               <image>
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="mMoveMpOneTxt" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="20 / 20" GridPane.columnIndex="2">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mMoveNameTwoTxt" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Move Name" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="mMoveTypeTwoImg" fitHeight="150.0" fitWidth="200.0" layoutX="519.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="mMoveMpTwoTxt" alignment="CENTER" layoutX="719.0" layoutY="10.0" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="20 / 20" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mMoveNameThreeTxt" layoutX="10.0" layoutY="81.0" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Move Name" GridPane.columnSpan="2" GridPane.rowIndex="2">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="mMoveTypeThreeImg" fitHeight="150.0" fitWidth="200.0" layoutX="519.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="mMoveMpThreeTxt" alignment="CENTER" layoutX="719.0" layoutY="81.0" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="20 / 20" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mMoveNameFourTxt" layoutX="10.0" layoutY="152.0" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Move Name" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="mMoveTypeFourImg" fitHeight="150.0" fitWidth="200.0" layoutX="519.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="mMoveMpFourTxt" alignment="CENTER" layoutX="719.0" layoutY="152.0" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="20 / 20" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailsTxt" alignment="CENTER" layoutX="10.0" layoutY="222.0" prefHeight="844.0" prefWidth="3908.0" stylesheets="@../../resources/css/AnatureSummary.css" text="Details" underline="true" GridPane.columnSpan="3" GridPane.rowIndex="4">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleMoveNameTxt" alignment="CENTER" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Name" GridPane.rowIndex="5">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailMoveNameTxt" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   Tackle" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleMovePowerTxt" alignment="CENTER" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Power" GridPane.rowIndex="6">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailMovePowerTxt" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   20" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleMoveAccTxt" alignment="CENTER" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Accuracy" GridPane.rowIndex="7">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailMoveAccTxt" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" stylesheets="@../../resources/css/AnatureSummary.css" text="   100%" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mTitleMoveTypeTxt" alignment="CENTER" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: c6c6c6;" stylesheets="@../../resources/css/AnatureSummary.css" text="Type" GridPane.rowIndex="8">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="mDetailMoveTypeBgTxt" prefHeight="844.0" prefWidth="3908.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="mDetailMoveTypeImg" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <image>
+                  <Image url="@../../resources/images/types/Normal_Type.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </ImageView>
+         </children>
+      </GridPane>
+   </children>
+</Pane>
