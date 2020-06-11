@@ -5,12 +5,15 @@ public class ClickQueue
 	private class Node
 	{
 		private Runnable mData;
+		@SuppressWarnings("unused")
+		private String mName; // Used to identify what a runnable is during Debug mode
 		private Node mNext;
 
-		public Node(Runnable toRun)
+		public Node(Runnable toRun, String name)
 		{
-			this.mData = toRun;
-			this.mNext = null;
+			mData = toRun;
+			mName = name;
+			mNext = null;
 		}
 	}
 
@@ -31,17 +34,10 @@ public class ClickQueue
 
 		return false;
 	}
-	
-	public void emptyQueue()
-	{
-		mHead = null;
-		mTail = null;
-		mSize = 0;
-	}
 
-	public void enqueue(Runnable val)
+	public void enqueue(Runnable val, String name)
 	{
-		Node node = new Node(val);
+		Node node = new Node(val, name);
 		
 		if(mSize == 0)
 		{
@@ -73,11 +69,45 @@ public class ClickQueue
 		
 		return val;
 	}
+	
+	public void enqueueToFront(Runnable val, String name)
+	{
+		Node node = new Node(val, name);
+		
+		if(mSize == 0)
+		{
+			mHead = node;
+			mTail = node; 
+		}
+		
+		else
+		{
+			node.mNext = mHead;
+			mHead = node;
+		}
+
+		mSize++;
+	}
 
 	public void clear()
 	{
 		mSize = 0;
 		mHead = null;
 		mTail = null;	
+	}
+	
+	public int size()
+	{
+		return mSize;
+	}
+	
+	public String upNextName()
+	{
+		if(mHead == null)
+		{
+			return null;
+		}
+		
+		return mHead.mName;
 	}
 }

@@ -1,120 +1,163 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import application.abillities.Determination;
-import application.abillities.Grumble;
-import application.abillities.SleepDeprived;
-import application.abillities.Spiky;
-import application.abillities.ToughSkin;
-import application.abillities.Tyrannize;
+import application.anatures.movesets.MoveSet;
+import application.controllers.results.AbilityResult;
+import application.controllers.results.ItemResult;
+import application.controllers.results.MoveResult;
 import application.enums.AbilityIds;
-import application.items.Item;
-import application.moves.Move;
+import application.enums.MoveIds;
+import application.enums.Stat;
+import application.interfaces.IAnature;
+import application.interfaces.IItem;
+import application.interfaces.IMove;
+import application.interfaces.ITrainer;
+import application.pools.MovePool;
+import application.trainers.ai.choice_objects.AiSwitchChoice;
 
 public class FightManager
 {
-	private ArrayList<Anature> mPlayerTeam, mEnemyTeam;
-	private String mPlayerName, mEnemyName;
+	private ArrayList<IAnature> mPlayerTeam, mEnemyTeam, mPlayerParticipatingAnatures;
 	private int mPlayerIndex, mEnemyIndex, mTurnCount;
 
-	public FightManager(ArrayList<Anature> playerTeam, ArrayList<Anature> enemyTeam, String playerName, String enemyName)
+	public FightManager(ArrayList<IAnature> playerTeam, ArrayList<IAnature> enemyTeam)
 	{
-		if(playerTeam == null || enemyTeam == null || playerName == null || enemyName == null)
+		if(playerTeam == null || enemyTeam == null)
 			throw new IllegalArgumentException("Passed in parameter was null.");
 
 		mPlayerTeam = playerTeam;
 		mEnemyTeam = enemyTeam;
-		mPlayerName = playerName;
-		mEnemyName = enemyName;
+		mPlayerParticipatingAnatures = new ArrayList<IAnature>();
 
 		mPlayerIndex = 0;
+		addPlayerAnatureParticipant(0);
 		mEnemyIndex = 0;
 		mTurnCount = 0;
 	}
 
-	public MoveResult attackEnemy(int indexOfMove)
+	public void applyDamage(boolean isPlayer, int damage)
 	{
-		mTurnCount++;
-		checkNulls(mPlayerTeam, indexOfMove);
-		Anature playerAnature = mPlayerTeam.get(mPlayerIndex);
-		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
-		double oldHp = enemyAnature.getCurrHp();
+		ArrayList<IAnature> team = null;
+		int index = 0;
 
-		MoveSet moves = mPlayerTeam.get(mPlayerIndex).getMoves();
-		if(moves.getMovePoints(indexOfMove) <= 0) // TODO Fully implement Struggle
+		if(isPlayer)
 		{
-			playerAnature.takeDamage(10);
-			enemyAnature.takeDamage(20);
-
-			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " Flaied at " + mEnemyName + "'s " + enemyAnature.getName() + "!", -1, "1", true);
+			team = mPlayerTeam;
+			index = mPlayerIndex;
 		}
 
-		Move playerAnatureMove = moves.getMove(indexOfMove);
-		// This if statement checks if the move is going to miss
-		if((playerAnatureMove.getAccuracy() / playerAnature.getTempAccuracy()) > (Math.random() + .1))
-		{
-			playerAnatureMove.activateMove(playerAnature, enemyAnature);
-			moves.useMp(indexOfMove);
-
-			abilityUse(enemyAnature.getAbility().getAbilityId(), playerAnature, enemyAnature, playerAnatureMove, oldHp);
-
-			return new MoveResult(oldHp - enemyAnature.getCurrHp(),
-					mPlayerName + "'s " + playerAnature.getName() + " attacked " + mEnemyName + "'s " + enemyAnature.getName() + "!", indexOfMove,
-					moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
-		}
-		
 		else
 		{
-			return new MoveResult(0, mPlayerName + "'s " + playerAnature.getName() + " missed " + mEnemyName + "'s " + enemyAnature.getName() + "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + playerAnatureMove.getTotalMovePoints(), true);
+			team = mEnemyTeam;
+			index = mEnemyIndex;
 		}
 
+		IAnature selected = team.get(index);
+		selected.applyDamage(damage);
 	}
 
-	public MoveResult attackPlayer(int indexOfMove)
+	public void useStruggle(boolean isPlayerAttacking)
 	{
-		mTurnCount++;
-		checkNulls(mEnemyTeam, indexOfMove);
-		Anature playerAnature = mPlayerTeam.get(mPlayerIndex);
-		Anature enemyAnature = mEnemyTeam.get(mEnemyIndex);
-		double oldHp = playerAnature.getCurrHp();
+		attack(isPlayerAttacking, -1);
+	}
 
-		MoveSet moves = mEnemyTeam.get(mEnemyIndex).getMoves();
-		if(moves.getMovePoints(indexOfMove) <= 0) // TODO Fully implement Struggle
+	public MoveResult attack(boolean isPlayerAttacking, int indexOfMove)
+	{
+		IAnature userAnature = null;
+		IAnature targetAnature = null;
+
+		if(isPlayerAttacking)
 		{
-			enemyAnature.takeDamage(10);
-			playerAnature.takeDamage(20);
+			checkNulls(mPlayerTeam, indexOfMove);
 
-			return new MoveResult(oldHp - playerAnature.getCurrHp(),
-					mEnemyName + "'s " + enemyAnature.getName() + " Flaied at " + mPlayerName + "'s " + playerAnature.getName() + "!", -1, "1", false);
+			userAnature = mPlayerTeam.get(mPlayerIndex);
+			targetAnature = mEnemyTeam.get(mEnemyIndex);
 		}
 
-		Move enemyAnatureMove = moves.getMove(indexOfMove);
-		if((enemyAnatureMove.getAccuracy() / enemyAnature.getTempAccuracy()) > (Math.random() + .1))
-		{
-			enemyAnatureMove.activateMove(enemyAnature, playerAnature);
-			moves.useMp(indexOfMove);
-
-			abilityUse(playerAnature.getAbility().getAbilityId(), enemyAnature, playerAnature, enemyAnatureMove, oldHp);
-
-			return new MoveResult(oldHp - playerAnature.getCurrHp(),
-					mEnemyName + "'s " + enemyAnature.getName() + " attacked " + mPlayerName + "'s " + playerAnature.getName() + "!", indexOfMove,
-					moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
-		}
-		
 		else
 		{
-			return new MoveResult(0, mEnemyName + "'s " + enemyAnature.getName() + " missed " + mPlayerName + "'s " + playerAnature.getName() + "!",
-					indexOfMove, moves.getMovePoints(indexOfMove) + "/" + enemyAnatureMove.getTotalMovePoints(), false);
+			checkNulls(mEnemyTeam, indexOfMove);
+
+			userAnature = mEnemyTeam.get(mEnemyIndex);
+			targetAnature = mPlayerTeam.get(mPlayerIndex);
 		}
+
+		int oldUserHp = userAnature.getStats().getCurrentHitPoints();
+		int oldTargetHp = targetAnature.getStats().getCurrentHitPoints();
+		ArrayList<String> dialogue = new ArrayList<String>();
+		MoveSet moveSet = userAnature.getMoveSet();
+		IMove move = moveSet.getMove(indexOfMove);
+
+		if(indexOfMove <= 0)
+		{
+			move = MovePool.getMove(MoveIds.Flail);
+		}
+
+		AbilityIds userAbilityId = userAnature.getAbility()
+				.getAbilityId();
+		AbilityIds targetAbilityId = targetAnature.getAbility()
+				.getAbilityId();
+
+		moveSet.useMovePoint(indexOfMove);
+
+		AbilityResult canAttackAbilityResult = AbilityActivation.useAbilityCanAttack(userAbilityId, userAnature, targetAnature, move);
+		boolean landedTheAttack = landedAttack(userAnature, move);
+
+		if(landedTheAttack)
+		{
+			dialogue.add(userAnature.getName() + " used " + move.getName() + " on " + targetAnature.getName());
+
+			if(!canAttackAbilityResult.isActiviated())
+			{
+				move.activateMove(userAnature, targetAnature);
+			}
+		}
+
+		else
+		{
+			dialogue.add(userAnature.getName() + " used " + move.getName() + " but missed!");
+		}
+
+		AbilityResult targetAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(targetAbilityId, targetAnature, userAnature, move, oldTargetHp,
+				false, !landedTheAttack);
+		AbilityResult userAfterTurnAbilityResult = AbilityActivation.useAbilityAfterAttack(userAbilityId, userAnature, targetAnature, move, oldUserHp, true,
+				!landedTheAttack);
+
+		ArrayList<String> afterTurnDialogue = new ArrayList<String>();
+		afterTurnDialogue.addAll(canAttackAbilityResult.getDialogue());
+		afterTurnDialogue.addAll(targetAfterTurnAbilityResult.getDialogue());
+		afterTurnDialogue.addAll(userAfterTurnAbilityResult.getDialogue());
+
+		boolean abilitiesWereActivated = false;
+		if(canAttackAbilityResult.isActiviated() || targetAfterTurnAbilityResult.isActiviated() || userAfterTurnAbilityResult.isActiviated())
+		{
+			abilitiesWereActivated = true;
+		}
+
+		AbilityResult afterTurn = new AbilityResult(afterTurnDialogue, abilitiesWereActivated);
+
+		return new MoveResult(dialogue, afterTurn, indexOfMove, isPlayerAttacking, move);
 	}
 
-	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, Item item)
+	private boolean landedAttack(IAnature userAnature, IMove move)
+	{
+		Random rng = new Random();
+		double anatureAccuracy = userAnature.getStats().getTotalStat(Stat.Accuracy);
+		if(anatureAccuracy >= 1.0)
+		{
+			anatureAccuracy = 1.0;
+		}
+
+		double totalAccuracy = move.getAccuracy() * anatureAccuracy;
+		return rng.nextInt(101) < totalAccuracy * 100;
+	}
+
+	public ItemResult itemUse(boolean isPlayer, int indexOfTeam, IItem item)
 	{
 		mTurnCount++;
-		Anature target;
+		IAnature target;
 
 		if(isPlayer)
 		{
@@ -129,59 +172,67 @@ public class FightManager
 		}
 	}
 
-	public void abilityUse(AbilityIds abilityId, Anature attackingAnature, Anature targetAnature, Move move, double oldHp)
+	public AbilityResult activateEntryAbility(boolean isPlayer)
 	{
-		switch(abilityId)
+		IAnature player = getPlayerAnature();
+		IAnature enemy = getEnemyAnature();
+
+		if(isPlayer)
 		{
-			case Determination:
-				Determination.activateAbility(targetAnature, move, oldHp);
-				break;
+			return AbilityActivation.useEntryAbility(player.getAbility()
+					.getAbilityId(), player, enemy);
+		}
 
-			case Dry_Skin:
-
+		return AbilityActivation.useEntryAbility(enemy.getAbility()
+				.getAbilityId(), enemy, player);
+	}
+	
+	public void switchTrainerAnature(ITrainer enemyTrainer)
+	{
+		AiSwitchChoice switchResult = enemyTrainer.chooseAnature(getPlayerAnature());
+		IAnature toSwitch = switchResult.getChoiceObject();
+		
+		for(int i = 0; i < mEnemyTeam.size(); i++)
+		{
+			if(toSwitch.equals(mEnemyTeam.get(i)))
+			{
+				mEnemyIndex = i;
 				break;
-
-			case Tyrannize:
-				Tyrannize.activateAbility(targetAnature);
-				break;
-
-			case Iron_Barbs:
-
-				break;
-
-			case SleepDeprived:
-				SleepDeprived.activateAbility(); // TODO add functionality
-				break;
-
-			case ToughSkin:
-				ToughSkin.activateAbility(attackingAnature, targetAnature, move, oldHp);
-				break;
-
-			case Grumble:
-				Grumble.activateAbility(targetAnature, getTurnNumber());
-				break;
-			case Spiky:
-				Spiky.activateAbility(attackingAnature, targetAnature, move);
-				break;
+			}
 		}
 	}
 
-	public ArrayList<Anature> getPlayerTeam()
+	public ArrayList<IAnature> getPlayerTeam()
 	{
 		return mPlayerTeam;
 	}
 
-	public ArrayList<Anature> getEnemyTeam()
+	public IAnature getPlayerAnature()
+	{
+		return mPlayerTeam.get(mPlayerIndex);
+	}
+
+	public ArrayList<IAnature> getEnemyTeam()
 	{
 		return mEnemyTeam;
 	}
 
-	private int getTurnNumber()
+	public IAnature getEnemyAnature()
 	{
-		return mTurnCount % 2;
+		return mEnemyTeam.get(mEnemyIndex);
 	}
 
-	private void checkNulls(ArrayList<Anature> team, int indexOfMove)
+	public int getTurnNumber()
+	{
+		return mTurnCount;
+	}
+
+	public void increaseTurnNumber()
+	{
+		mTurnCount++;
+	}
+
+	private void checkNulls(ArrayList<IAnature> team, int indexOfMove)
 	{
 		if(mPlayerTeam.get(0) == null)
 		{
@@ -193,12 +244,15 @@ public class FightManager
 			throw new NullPointerException("Enemy Anature was null, String or Result Object?");
 		}
 
-		if(team.get(0).getMoves() == null)
+		if(team.get(0)
+				.getMoveSet() == null)
 		{
 			throw new NullPointerException("Anature's MoveSet was null, String or Result Object?");
 		}
 
-		if(team.get(0).getMoves().getMove(indexOfMove) == null)
+		if(team.get(0)
+				.getMoveSet()
+				.getMove(indexOfMove) == null)
 		{
 			throw new NullPointerException("Anature's Move was null, String or Result Object?");
 		}
@@ -207,7 +261,10 @@ public class FightManager
 	public void setPlayerSelectedIndex(int index)
 	{
 		if(index > -1 && index < 7)
+		{
 			mPlayerIndex = index;
+			addPlayerAnatureParticipant(index);
+		}
 	}
 
 	public void setEnemySelectedIndex(int index)
@@ -216,4 +273,26 @@ public class FightManager
 			mEnemyIndex = index;
 	}
 
+	public int getEnemyIndex()
+	{
+		return mEnemyIndex;
+	}
+
+	public int getPlayerIndex()
+	{
+		return mPlayerIndex;
+	}
+	
+	public ArrayList<IAnature> getPlayerParticipantingAnatures()
+	{
+		return new ArrayList<IAnature>(mPlayerParticipatingAnatures);
+	}
+	
+	private void addPlayerAnatureParticipant(int index)
+	{
+		if(!mPlayerParticipatingAnatures.contains(mPlayerTeam.get(index)))
+		{
+			mPlayerParticipatingAnatures.add(mPlayerTeam.get(index));
+		}
+	}
 }

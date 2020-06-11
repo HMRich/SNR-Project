@@ -2,5 +2,5 @@ package application.enums;
 
 public enum AbilityIds
 {
-	Tyrannize, Dry_Skin, Iron_Barbs, Determination, Spiky, SleepDeprived, ToughSkin, Grumble
+	NullAbility, Tyrannize, DrySkin, Determination, Spiky, SleepDeprived, ToughSkin, LittleGuy, Toxic, Overclocked,
 }

@@ -8,30 +8,111 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import application.AiPool;
-import application.Anature;
-import application.AnatureBuilder;
-import application.BaseAI;
 import application.DatabaseConnection;
+import application.anatures.AnatureBuilder;
 import application.controllers.LoggerController;
-import application.enums.AiIds;
 import application.enums.DatabaseType;
 import application.enums.ItemIds;
 import application.enums.LoggingTypes;
 import application.enums.Species;
 import application.enums.TrainerIds;
-import application.items.Item;
-import application.items.ItemPool;
+import application.enums.TypeEffectiveness;
+import application.interfaces.IAI;
+import application.interfaces.IAnature;
+import application.interfaces.IBuilder;
+import application.interfaces.IHealthPotion;
+import application.interfaces.ITrainer;
+import application.pools.ItemPool;
+import application.trainers.ai.AIBuilder;
 
-public class TrainerBuilder
+public class TrainerBuilder implements IBuilder<ITrainer>
 {
-	public static Trainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
+	private Trainer mTrainer;
+
+	public TrainerBuilder()
 	{
-		ArrayList<Item> items = new ArrayList<Item>();
-		ArrayList<Anature> party = new ArrayList<Anature>();
-		BaseAI ai = null;
-		int switchThreshold = 0, healthThreshold = 0;
-		String name = "";
+		genertaeNewTrainer();
+	}
+
+	/*
+	 * PUBLIC SETS
+	 */
+
+	public TrainerBuilder withTrainerId(TrainerIds trainerId)
+	{
+		mTrainer.setTrainerId(trainerId);
+		return this;
+	}
+
+	public TrainerBuilder withTrainerName(String name)
+	{
+		mTrainer.setTrainerName(name);
+		return this;
+	}
+	
+	public TrainerBuilder withRewardAmount(int rewardAmount)
+	{
+		mTrainer.setRewardForDefeat(rewardAmount);
+		return this;
+	}
+
+	public TrainerBuilder withAnatureParty(ArrayList<IAnature> anatureParty)
+	{
+		mTrainer.setAnatureParty(anatureParty);
+		return this;
+	}
+
+	public TrainerBuilder withHealthPotions(ArrayList<IHealthPotion> healthPotionBases)
+	{
+		mTrainer.setHealthPotions(healthPotionBases);
+		return this;
+	}
+
+	public TrainerBuilder withCurrentAnature(IAnature currentAnature)
+	{
+		mTrainer.setCurrentAnature(currentAnature);
+		return this;
+	}
+
+	public TrainerBuilder withAI(IAI ai)
+	{
+		mTrainer.setAI(ai);
+		return this;
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
+	public ITrainer create()
+	{
+		if(!buildIsComplete())
+		{
+			throw new IllegalStateException("All the builder variables need to have a value before you create a Trainer.");
+		}
+
+		Trainer trainerToReturn = mTrainer;
+
+		genertaeNewTrainer();
+
+		return trainerToReturn;
+	}
+
+	/*
+	 * STATIC PUBLIC METHODS
+	 */
+
+	public static ITrainer createTrainer(TrainerIds id, int anatureCount, int minLevel, int maxLevel)
+	{
+		// TODO Fully implement the column moveThreshold in the database
+
+		String trainerName = "";
+		String rewardAmountString = "";
+		String partyList = "";
+		String itemsList = "";
+		String aiHealthThreshold = "";
+		String aiSwitchThreshold = "";
+		String aiMoveThreshold = "";
 
 		try
 		{
@@ -44,54 +125,13 @@ public class TrainerBuilder
 			ResultSet results = pst.executeQuery();
 			if(results.next())
 			{
-				String itemsStr = results.getString("ItemList");
-				String partyStr = results.getString("Anatures");
-				String aiStr = results.getString("AI_ID");
-				String switchStr = results.getString("SwitchThreshold");
-				String healthStr = results.getString("HealthThreshold");
-				name = results.getString("Name");
-
-				if(itemsStr.length() != 0)
-				{
-					ArrayList<String> itemsStrAra = new ArrayList<String>(Arrays.asList(itemsStr.split(",")));
-
-					for(String itemId : itemsStrAra)
-					{
-						try
-						{
-							Item toAdd = ItemPool.getItems(ItemIds.valueOf(itemId));
-
-							if(toAdd == null)
-							{
-								LoggerController.logEvent(LoggingTypes.Default, "Trainer Builder tried to retrieve an item with an invalid Id.");
-							}
-
-							else
-							{
-								items.add(toAdd);
-							}
-						}
-
-						catch(Exception e)
-						{
-							LoggerController.logEvent(LoggingTypes.Default, "Trainer Builder tried to retrieve an item with an invalid Id.");
-						}
-					}
-				}
-
-				ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyStr.split(",")));
-				Random levelGen = new Random();
-
-				for(String anatureStr : partyStrAra)
-				{
-					int level = levelGen.nextInt(maxLevel - minLevel) + minLevel;
-					party.add(AnatureBuilder.createAnature(Species.valueOf(anatureStr), level));
-				}
-
-				ai = AiPool.getAi(AiIds.valueOf(aiStr));
-
-				switchThreshold = Integer.parseInt(switchStr);
-				healthThreshold = Integer.parseInt(healthStr);
+				trainerName = results.getString("Name");
+				rewardAmountString = results.getString("RewardAmount");
+				partyList = results.getString("Anatures");
+				itemsList = results.getString("ItemList");
+				aiHealthThreshold = results.getString("HealthThreshold");
+				aiSwitchThreshold = results.getString("SwitchThreshold");
+				aiMoveThreshold = results.getString("MoveThreshold");
 			}
 
 			results.close();
@@ -104,6 +144,105 @@ public class TrainerBuilder
 			return null;
 		}
 
-		return new Trainer(id, name, party, items, party.get(0), ai, healthThreshold, switchThreshold);
+		int rewardAmount = Integer.parseInt(rewardAmountString);
+		ArrayList<IAnature> party = parsePartyList(partyList, anatureCount, minLevel, maxLevel);
+		ArrayList<IHealthPotion> potions = parsePotionList(itemsList);
+		IAI ai = parseAi(aiHealthThreshold, aiSwitchThreshold, aiMoveThreshold);
+
+		return new TrainerBuilder().withTrainerId(id)
+				.withTrainerName(trainerName)
+				.withRewardAmount(rewardAmount)
+				.withAnatureParty(party)
+				.withHealthPotions(potions)
+				.withCurrentAnature(party.get(0))
+				.withAI(ai)
+				.create();
 	}
+
+	/*
+	 * PRIVATE METHODS
+	 */
+
+	private void genertaeNewTrainer()
+	{
+		mTrainer = new Trainer();
+	}
+
+	private boolean buildIsComplete()
+	{
+		return mTrainer.canComplete();
+	}
+
+	/*
+	 * STATIC PRIVATE METHODS
+	 */
+
+	private static ArrayList<IHealthPotion> parsePotionList(String itemsString)
+	{
+		ArrayList<IHealthPotion> items = new ArrayList<IHealthPotion>();
+
+		if(itemsString.length() != 0)
+		{
+			ArrayList<String> itemsStrAra = new ArrayList<String>(Arrays.asList(itemsString.split(",")));
+
+			for(String itemId : itemsStrAra)
+			{
+				try
+				{
+					IHealthPotion toAdd = ItemPool.getHealthPotion(ItemIds.valueOf(itemId)); // TODO redo ItemPool.java file to decouple
+
+					if(toAdd == null)
+					{
+						LoggerController.logEvent(LoggingTypes.Error, "Trainer Builder tried to retrieve an item with an invalid Id.");
+					}
+
+					else
+					{
+						items.add(toAdd);
+					}
+				}
+
+				catch(Exception e)
+				{
+					LoggerController.logEvent(LoggingTypes.Error, "Trainer Builder tried to retrieve an item with an invalid Id.");
+				}
+			}
+		}
+
+		return items;
+	}
+
+	private static ArrayList<IAnature> parsePartyList(String partyString, int anatureCount, int anatureMinLevel, int anatureMaxLevel)
+	{
+		ArrayList<IAnature> party = new ArrayList<IAnature>();
+
+		ArrayList<String> partyStrAra = new ArrayList<String>(Arrays.asList(partyString.split(",")));
+		Random rng = new Random();
+
+		for(String anatureStr : partyStrAra)
+		{
+			int level = rng.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
+			party.add(AnatureBuilder.createAnature(Species.valueOf(anatureStr), level));
+		}
+
+		while(party.size() > anatureCount)
+		{
+			party.remove(rng.nextInt(party.size()));
+		}
+		
+		return party;
+	}
+
+	private static IAI parseAi(String aiHealthThreshold, String aiSwitchThreshold, String aiMoveThreshold)
+	{
+		double healthThreshold = Double.parseDouble(aiHealthThreshold);
+		TypeEffectiveness switchThreshold = TypeEffectiveness.valueOf(aiSwitchThreshold);
+		TypeEffectiveness moveThreshold = TypeEffectiveness.valueOf(aiMoveThreshold);
+
+		return new AIBuilder().withHealthThreshold(healthThreshold)
+				.withSwitchThreshold(switchThreshold)
+				.withMoveThreshold(moveThreshold)
+				.create();
+	}
+
 }
