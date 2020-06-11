@@ -10,14 +10,17 @@ import application.interfaces.IMove;
 
 public class Determination implements IAbility
 {
-	public static String activateAbility(Anature userAnature, IMove move, double userOldHp)
+	private static final long serialVersionUID = 1L;
+
+	public static String activateAbility(IAnature userAnature, IMove move, double userOldHp)
 	{
 		if(hasNull(userAnature, move, userOldHp))
 		{
 			return "";
 		}
 
-		if(move.doesDamage() && (userOldHp == userAnature.getStats().getTotalStat(Stat.HitPoints)))
+		if(move.doesDamage()
+				&& (userOldHp == userAnature.getStats().getTotalStat(Stat.HitPoints)))
 		{
 			userAnature.getStats().setCurrentHitPoints(1);
 			return userAnature.getName() + " survived on 1 hp thanks to their Determination!";
@@ -43,21 +46,25 @@ public class Determination implements IAbility
 		return false;
 	}
 
+	@Override
 	public AbilityIds getAbilityId()
 	{
 		return AbilityIds.Determination;
 	}
 
+	@Override
 	public String toString()
 	{
 		return "Determination";
 	}
 
+	@Override
 	public String getAbilityDescription()
 	{
 		return "Makes the Anature unable to be defeated in a single attack.";
 	}
 
+	@Override
 	public boolean happensEveryTurn()
 	{
 		return false;

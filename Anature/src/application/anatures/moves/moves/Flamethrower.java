@@ -6,6 +6,8 @@ import application.enums.StatusEffects;
 
 public class Flamethrower extends Move
 {
+	private static final long serialVersionUID = 1699431073094715789L;
+
 	@Override
 	public void activateMove(Anature source, Anature target)
 	{

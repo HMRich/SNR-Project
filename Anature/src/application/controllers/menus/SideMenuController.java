@@ -19,7 +19,9 @@ public class SideMenuController
 	@FXML Pane mPane;
 	@FXML GridPane mGrid;
 	@FXML ImageView mBg, mSelectImg;
-	@FXML Label mDexTxt, mAnatureTxt, mBackpackTxt, mSettingsTxt, mSaveTxt, mQuitTxt;
+	@FXML Label mDexTxt, mAnatureTxt, mBackpackTxt, mSettingsTxt, mSaveTxt, mLoadTxt, mQuitTxt;
+	
+	private BooleanProperty mVisabilityProperty;
 	
 	public void updateBinds(Scene scene, ObjectProperty<Font> fontProperty, BooleanProperty visibilityProperty)
 	{
@@ -30,6 +32,8 @@ public class SideMenuController
 		mGrid.prefHeightProperty().bind(mBg.fitHeightProperty().divide(1.043));
 		mGrid.layoutXProperty().bind(mBg.fitWidthProperty().divide(22.857));
 		mGrid.layoutYProperty().bind(mBg.fitHeightProperty().divide(44.142));
+		
+		mVisabilityProperty = visibilityProperty;
 		
 		ChangeListener<Number> selectedImgSize = new ChangeListener<Number>()
 		{
@@ -84,6 +88,7 @@ public class SideMenuController
 		mBackpackTxt.fontProperty().bind(fontProperty);
 		mSettingsTxt.fontProperty().bind(fontProperty);
 		mSaveTxt.fontProperty().bind(fontProperty);
+		mLoadTxt.fontProperty().bind(fontProperty);
 		mQuitTxt.fontProperty().bind(fontProperty);
 
 		mSelectImg.setVisible(false);
@@ -93,7 +98,8 @@ public class SideMenuController
 		tabAttributes(mAnatureTxt, index++, () -> Startup.changeScene(SceneType.Anature_Summary, null));
 		tabAttributes(mBackpackTxt, index++, () -> System.out.println("Backpack"));
 		tabAttributes(mSettingsTxt, index++, () -> System.out.println("Settings"));
-		tabAttributes(mSaveTxt, index++, () -> System.out.println("Save"));
+		tabAttributes(mSaveTxt, index++, () -> onSave());
+		tabAttributes(mLoadTxt, index++, () -> onLoad());
 		tabAttributes(mQuitTxt, index++, () -> System.out.println("Quit"));
 	}
 	
@@ -113,5 +119,17 @@ public class SideMenuController
 		txt.setOnMouseClicked(value -> onClick.run());
 		
 		txt.minWidthProperty().bind(mBg.fitWidthProperty().divide(1.4285));
+	}
+	
+	private void onSave()
+	{
+		mVisabilityProperty.set(false);
+		Startup.save();
+	}
+	
+	private void onLoad()
+	{
+		mVisabilityProperty.set(false);
+		Startup.load(true);
 	}
 }

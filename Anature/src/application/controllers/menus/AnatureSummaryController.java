@@ -11,7 +11,10 @@ import application.enums.Stat;
 import application.enums.Type;
 import application.interfaces.IMove;
 import application.interfaces.stats.IStats;
+import application.views.elements.HpBar;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -38,11 +42,13 @@ public class AnatureSummaryController
 	@FXML ImageView mGenderImg, mAnatureImg;
 
 	@FXML GridPane mPageOneGrid;
-	@FXML Label mTitleNameTxt, mTitleTypeTxt, mTitleOwnerTxt, mTitleXpTxt;
-	@FXML Label mDetailNameTxt, mDetailsTypeBgTxt, mDetailOwnerTxt, mDetailsXpBgTxt;
-	@FXML Text mDetailXpTxt;
+	@FXML Label mTitleNameTxt, mTitleTypeTxt, mTitleOwnerTxt, mTitleXpTxt, mTitleCurrHpTxt;
+	@FXML Label mDetailNameTxt, mDetailsTypeBgTxt, mDetailOwnerTxt, mDetailsXpBgTxt, mDetailsCurrHpBgTxt;
+	@FXML Text mDetailXpTxt, mDetailCurrHpTxt;
 	@FXML ImageView mDetailTypeOneImg, mDetailTypeTwoImg;
 	@FXML ProgressBar mDetailXpBar;
+	@FXML HBox mDetailsCurrHpBox;
+	private HpBar mCurrHpBar;
 
 	@FXML GridPane mPageTwoGrid;
 	@FXML Label mTitleHpTxt, mTitleAtkTxt, mTitleDefTxt, mTitleSpecialAtkTxt, mTitleSpecialDefTxt, mTitleSpeedTxt, mTitleNatureTxt, mTitleAbilityTxt;
@@ -63,6 +69,7 @@ public class AnatureSummaryController
 	private Image mMaleImg, mFemaleImg;
 	private int mCurrPageNum, mSelectedMoveIndex;
 	private ObjectProperty<Font> mMediumFontProperty;
+	private DoubleProperty mCurrHpProperty, mTotalHpProperty;
 	private Scene mScene;
 	private ArrayList<Anature> mParty;
 	private Anature mCurrAnature;
@@ -90,6 +97,9 @@ public class AnatureSummaryController
 
 		mMaleImg = new Image(getClass().getResource("/resources/images/battle/Male_Symbol.png").toExternalForm());
 		mFemaleImg = new Image(getClass().getResource("/resources/images/battle/Female_Symbol.png").toExternalForm());
+
+		mCurrHpProperty = new SimpleDoubleProperty(100);
+		mTotalHpProperty = new SimpleDoubleProperty(100);
 	}
 
 	public void displayParty(ArrayList<Anature> party)
@@ -157,8 +167,7 @@ public class AnatureSummaryController
 
 		if(anature.getSecondaryType() != Type.NotSet)
 		{
-			mDetailTypeTwoImg
-					.setImage(new Image(getClass().getResource("/resources/images/types/" + anature.getSecondaryType() + "_Type.png").toExternalForm()));
+			mDetailTypeTwoImg.setImage(new Image(getClass().getResource("/resources/images/types/" + anature.getSecondaryType() + "_Type.png").toExternalForm()));
 		}
 
 		else
@@ -170,6 +179,10 @@ public class AnatureSummaryController
 
 		mDetailXpBar.setProgress(stats.getExperienceProgression() / (stats.getRequiredExperience() * 1.0));
 		mDetailXpTxt.setText(stats.getExperienceProgression() + " / " + stats.getRequiredExperience());
+
+		mCurrHpProperty.set(anature.getStats().getCurrentHitPoints());
+		mTotalHpProperty.set(anature.getStats().getTotalStat(Stat.HitPoints));
+		mDetailCurrHpTxt.setText(anature.getStats().getCurrentHitPoints() + " / " + anature.getStats().getTotalStat(Stat.HitPoints));
 	}
 
 	private void displayPageTwoInfo(Anature anature, IStats stats)
@@ -418,27 +431,35 @@ public class AnatureSummaryController
 		mPageOneGrid.layoutXProperty().bind(mScene.widthProperty().divide(calculateValue(1920, 811)));
 		mPageOneGrid.layoutYProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 382)));
 		mPageOneGrid.prefWidthProperty().bind(mScene.widthProperty().divide(calculateValue(1920, 886)));
-		mPageOneGrid.prefHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 274)));
+		mPageOneGrid.prefHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 344)));
 
 		mTitleNameTxt.fontProperty().bind(largeFontProperty);
 		mTitleTypeTxt.fontProperty().bind(largeFontProperty);
 		mTitleOwnerTxt.fontProperty().bind(largeFontProperty);
 		mTitleXpTxt.fontProperty().bind(largeFontProperty);
+		mTitleCurrHpTxt.fontProperty().bind(largeFontProperty);
 
 		mDetailNameTxt.fontProperty().bind(mMediumFontProperty);
 		mDetailOwnerTxt.fontProperty().bind(mMediumFontProperty);
 		mDetailXpTxt.fontProperty().bind(mMediumFontProperty);
 		mDetailsTypeBgTxt.fontProperty().bind(mMediumFontProperty);
 		mDetailsXpBgTxt.fontProperty().bind(mMediumFontProperty);
+		mDetailCurrHpTxt.fontProperty().bind(mMediumFontProperty);
+		mDetailsCurrHpBgTxt.fontProperty().bind(mMediumFontProperty);
 
 		mDetailTypeOneImg.fitWidthProperty().bind(mScene.widthProperty().divide(calculateValue(1920, 200)));
-		mDetailTypeOneImg.fitHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 150)));
+		mDetailTypeOneImg.fitHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 68)));
 
 		mDetailTypeTwoImg.fitWidthProperty().bind(mScene.widthProperty().divide(calculateValue(1920, 200)));
-		mDetailTypeTwoImg.fitHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 150)));
+		mDetailTypeTwoImg.fitHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 68)));
 
 		mDetailXpBar.prefWidthProperty().bind(mScene.widthProperty().divide(calculateValue(1920, 334)));
 		mDetailXpBar.prefHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 31)));
+
+		mCurrHpBar = new HpBar(mCurrHpProperty, mTotalHpProperty, mScene);
+		mCurrHpBar.prefWidthProperty().bind(mScene.widthProperty().divide(calculateValue(1920, 334)));
+		mCurrHpBar.prefHeightProperty().bind(mScene.heightProperty().divide(calculateValue(1080, 31)));
+		mDetailsCurrHpBox.getChildren().add(0, mCurrHpBar);
 	}
 
 	private void setUpPageTwo(ObjectProperty<Font> verySmallFontProperty)

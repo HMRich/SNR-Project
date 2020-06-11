@@ -13,7 +13,9 @@ import application.enums.MoveIds;
 import application.enums.Stat;
 import application.interfaces.IItem;
 import application.interfaces.IMove;
+import application.interfaces.ITrainer;
 import application.pools.MovePool;
+import application.trainers.ai.choice_objects.AiSwitchChoice;
 
 public class FightManager
 {
@@ -35,18 +37,21 @@ public class FightManager
 		mTurnCount = 0;
 	}
 
-	public void applyDamage(boolean isPlayer, int index, int damage)
+	public void applyDamage(boolean isPlayer, int damage)
 	{
-		ArrayList<Anature> team = null;
+		ArrayList<IAnature> team = null;
+		int index = 0;
 
 		if(isPlayer)
 		{
 			team = mPlayerTeam;
+			index = mPlayerIndex;
 		}
 
 		else
 		{
 			team = mEnemyTeam;
+			index = mEnemyIndex;
 		}
 
 		Anature selected = team.get(index);
@@ -180,6 +185,21 @@ public class FightManager
 
 		return AbilityActivation.useEntryAbility(enemy.getAbility()
 				.getAbilityId(), enemy, player);
+	}
+	
+	public void switchTrainerAnature(ITrainer enemyTrainer)
+	{
+		AiSwitchChoice switchResult = enemyTrainer.chooseAnature(getPlayerAnature());
+		IAnature toSwitch = switchResult.getChoiceObject();
+		
+		for(int i = 0; i < mEnemyTeam.size(); i++)
+		{
+			if(toSwitch.equals(mEnemyTeam.get(i)))
+			{
+				mEnemyIndex = i;
+				break;
+			}
+		}
 	}
 
 	public ArrayList<Anature> getPlayerTeam()

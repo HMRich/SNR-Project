@@ -8,12 +8,15 @@ import application.interfaces.stats.IStats;
 
 public class WiredMess extends Move
 {
-	public void activateMove(Anature source, Anature target)
+	private static final long serialVersionUID = 214846540864140820L;
+
+	@Override
+	public void activateMove(IAnature source, IAnature target)
 	{
 		Random rng = new Random();
 		int firstToDecrease = rng.nextInt(4) + 1;
 		int secondToDecrease = findUnique(firstToDecrease, rng);
-		
+
 		decreaseStat(firstToDecrease, target);
 		decreaseStat(secondToDecrease, target);
 	}
@@ -21,19 +24,19 @@ public class WiredMess extends Move
 	private int findUnique(int firstToDecrease, Random rng)
 	{
 		int toReturn = rng.nextInt(4) + 1;
-		
+
 		while(toReturn == firstToDecrease)
 		{
 			toReturn = rng.nextInt(4) + 1;
 		}
-		
+
 		return toReturn;
 	}
 
 	private void decreaseStat(int statNumber, Anature toLower)
 	{
 		IStats stats = toLower.getStats();
-		
+
 		switch(statNumber)
 		{
 			case 1:

@@ -1,5 +1,6 @@
 package application.anatures.stats;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import application.controllers.LoggerController;
@@ -9,8 +10,12 @@ import application.interfaces.stats.IStatsEV;
 
 class StatsEV extends StatsLevel implements IStatsEV
 {
-	class EvChanged
+	private static final long serialVersionUID = 4637798147526196467L;
+
+	class EvChanged implements Serializable
 	{
+		private static final long serialVersionUID = -4033860935333791810L;
+
 		private int mHp, mAtk, nDef, mSpAtk, mSpDef, mSpd;
 
 		public int getStatAmount(Stat stat)
@@ -34,7 +39,7 @@ class StatsEV extends StatsLevel implements IStatsEV
 
 				case Speed:
 					return mSpd;
-					
+
 				default:
 					break;
 			}
@@ -222,10 +227,47 @@ class StatsEV extends StatsLevel implements IStatsEV
 		mEVSpeed = EVSpeed;
 	}
 
+	void setEvRoadMap(HashMap<Integer, EvChanged> eVRoadMap)
+	{
+		mEvRoadmap = new HashMap<Integer, EvChanged>(eVRoadMap);
+	}
+
+	/*
+	 * PUBLIC METHODS
+	 */
+
+	public boolean addEv(Stat statToAdd, int level)
+	{
+		switch(statToAdd)
+		{
+			case HitPoints:
+				return addEVHitPoint(level);
+
+			case Attack:
+				return addEVAttack(level);
+
+			case Defense:
+				return addEVDefense(level);
+
+			case SpecialAttack:
+				return addEVSpecialAttack(level);
+
+			case SpecialDefense:
+				return addEVSpecialDefense(level);
+
+			case Speed:
+				return addEVSpeed(level);
+
+			default:
+				return false;
+		}
+	}
+
 	/*
 	 * PACKAGE METHODS
 	 */
-	
+
+	@Override
 	public int getEvStat(Stat stat)
 	{
 		switch(stat)
@@ -235,25 +277,26 @@ class StatsEV extends StatsLevel implements IStatsEV
 
 			case Attack:
 				return mEVAttack;
-				
+
 			case Defense:
 				return mEVDefense;
 
 			case SpecialAttack:
 				return mEVSpecialAttack;
-				
+
 			case SpecialDefense:
 				return mEVSpecialDefense;
-				
+
 			case Speed:
 				return mEVSpeed;
-				
+
 			default:
 				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Ev Stat with non applicable enum.");
 				return -1;
 		}
 	}
-	
+
+	@Override
 	public int getEvReducedStat(Stat stat)
 	{
 		switch(stat)
@@ -263,19 +306,19 @@ class StatsEV extends StatsLevel implements IStatsEV
 
 			case Attack:
 				return mEVAttack / 4;
-				
+
 			case Defense:
 				return mEVDefense / 4;
 
 			case SpecialAttack:
 				return mEVSpecialAttack / 4;
-				
+
 			case SpecialDefense:
 				return mEVSpecialDefense / 4;
-				
+
 			case Speed:
 				return mEVSpeed / 4;
-				
+
 			default:
 				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Ev Stat with non applicable enum.");
 				return -1;

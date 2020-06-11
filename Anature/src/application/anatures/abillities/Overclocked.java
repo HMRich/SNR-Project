@@ -12,33 +12,36 @@ import application.interfaces.stats.IStats;
 
 public class Overclocked implements IAbility
 {
-	public static String activateAbility(Anature source, IMove moveThatAttacked)
+	private static final long serialVersionUID = -3207815575987072866L;
+
+	public static String activateAbility(IAnature source, IMove moveThatAttacked)
 	{
-		if(hasNull(source, moveThatAttacked)) 
+		if(hasNull(source, moveThatAttacked))
 		{
 			return "";
 		}
-		
+
 		if(moveThatAttacked.getType() == Type.Electric)
 		{
 			IStats stats = source.getStats();
-			
+
 			TempStatsStages attackStage = stats.getTempAttack();
 			TempStatsStages specialAttackStage = stats.getTempSpecialAttack();
-			
+
 			stats.increaseTempAttack();
 			stats.increaseTempSpecialAttack();
-			
-			if(attackStage != stats.getTempAttack() || specialAttackStage != stats.getTempSpecialAttack())
+
+			if(attackStage != stats.getTempAttack()
+					|| specialAttackStage != stats.getTempSpecialAttack())
 			{
 				return source.getName() + " became overclocked by the attack!";
 			}
 		}
-		
+
 		return "";
 	}
-	
-	private static boolean hasNull(Anature source, IMove moveThatAttacked)
+
+	private static boolean hasNull(IAnature source, IMove moveThatAttacked)
 	{
 		if(source == null)
 		{

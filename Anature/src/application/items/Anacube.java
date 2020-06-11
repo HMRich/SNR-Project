@@ -1,5 +1,6 @@
 package application.items;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import application.anatures.Anature;
@@ -9,8 +10,10 @@ import application.enums.Gender;
 import application.enums.ItemIds;
 import application.enums.Stat;
 
-public class Anacube extends ItemBase
+public class Anacube extends ItemBase implements Serializable
 {
+	private static final long serialVersionUID = 993885612208779369L;
+
 	private double mCatchRateModifier;
 
 	public Anacube(double catchRateModifier)
@@ -154,11 +157,13 @@ public class Anacube extends ItemBase
 		}
 	}
 
+	@Override
 	public void setItemId(ItemIds id)
 	{
 		super.setItemId(id);
 	}
 
+	@Override
 	public void setItemName(String name)
 	{
 		super.setItemName(name);

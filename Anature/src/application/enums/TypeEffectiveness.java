@@ -27,26 +27,27 @@ public enum TypeEffectiveness
 	 * PUBLIC GETS
 	 */
 
+	@Override
 	public String toString()
 	{
 		return mName;
 	}
 
-	public double getEffectivenes()
+	public double getEffectiveness()
 	{
 		return mEffectiveness;
-	}
-
-	public boolean isAtOrAboveThreshold(TypeEffectiveness threshold)
-	{
-		return getEffectivenes() >= threshold.getEffectivenes();
 	}
 
 	/*
 	 * PUBLIC METHDOS
 	 */
 
-	public static TypeEffectiveness typeEffectiveness(Anature source, Anature target)
+	public boolean isAtOrAboveThreshold(TypeEffectiveness threshold)
+	{
+		return getEffectiveness() >= threshold.getEffectiveness();
+	}
+
+	public static TypeEffectiveness typeEffectiveness(IAnature source, IAnature target)
 	{
 		if(source.getPrimaryType() == Type.NotSet)
 		{
@@ -92,6 +93,16 @@ public enum TypeEffectiveness
 
 	public static TypeEffectiveness decrementEffectiveness(TypeEffectiveness typeEffectiveness)
 	{
+		if(typeEffectiveness == null)
+		{
+			throw new IllegalArgumentException("Passed value was \"" + typeEffectiveness + "\".");
+		}
+
+		if(typeEffectiveness.equals(TypeEffectiveness.NotSet))
+		{
+			throw new IllegalArgumentException("Passed value \"" + typeEffectiveness.toString() + "\" is not supported.");
+		}
+
 		switch(typeEffectiveness)
 		{
 			case ExtremelyEffective:
@@ -120,7 +131,7 @@ public enum TypeEffectiveness
 
 	private static TypeEffectiveness meshEffectiveness(TypeEffectiveness primaryResult, TypeEffectiveness secondaryResult)
 	{
-		return parseDouble(primaryResult.getEffectivenes() * secondaryResult.getEffectivenes());
+		return parseDouble(primaryResult.getEffectiveness() * secondaryResult.getEffectiveness());
 	}
 
 	private static TypeEffectiveness parseDouble(double number)

@@ -10,22 +10,26 @@ import application.interfaces.IAbility;
 
 public class Toxic implements IAbility
 {
-	public static String activateAbility(Anature source, Anature target)
+	private static final long serialVersionUID = -6475201304776311502L;
+
+	public static String activateAbility(IAnature source, IAnature target)
 	{
-		if(hasNull(source, target)) 
+		if(hasNull(source, target))
 		{
 			return "";
 		}
-		
-		if(target.getStatus() == StatusEffects.None && (target.getPrimaryType() == Type.Poison || target.getSecondaryType() == Type.Poison))
+
+		if(target.getStatus() == StatusEffects.None
+				&& (target.getPrimaryType() == Type.Poison
+						|| target.getSecondaryType() == Type.Poison))
 		{
 			return target.getName() + " was poisoned by " + source.getName() + "'s ability!";
 		}
-		
+
 		return "";
 	}
-	
-	private static boolean hasNull(Anature source, Anature target)
+
+	private static boolean hasNull(IAnature source, IAnature target)
 	{
 		if(source == null)
 		{

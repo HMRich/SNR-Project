@@ -1,13 +1,16 @@
 package application.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.anatures.Anature;
 import application.enums.Gender;
 import javafx.scene.image.Image;
 
-public class Player
+public class Player implements Serializable
 {
+	private static final long serialVersionUID = 5593077253162163360L;
+	
 	private String mName;
 	private Gender mGender;
 	private int mTokens;

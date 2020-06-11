@@ -7,6 +7,8 @@ import application.interfaces.stats.IStatsLevel;
 
 class StatsLevel extends StatsTemp implements IStatsLevel
 {
+	private static final long serialVersionUID = 1801636159245227092L;
+
 	private int mLevelHitPoints;
 	private int mLevelAttack;
 	private int mLevelDefense;
@@ -27,7 +29,7 @@ class StatsLevel extends StatsTemp implements IStatsLevel
 	/*
 	 * PUBLIC GETS
 	 */
-	
+
 	public int getLevelStat(Stat stat)
 	{
 		switch(stat)
@@ -37,19 +39,19 @@ class StatsLevel extends StatsTemp implements IStatsLevel
 
 			case Attack:
 				return mLevelAttack;
-				
+
 			case Defense:
 				return mLevelDefense;
 
 			case SpecialAttack:
 				return mLevelSpecialAttack;
-				
+
 			case SpecialDefense:
 				return mLevelSpecialDefense;
-				
+
 			case Speed:
 				return mLevelSpeed;
-				
+
 			default:
 				LoggerController.logEvent(LoggingTypes.Error, "Tried getting Ev Stat with non applicable enum.");
 				return -1;

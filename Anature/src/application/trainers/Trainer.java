@@ -1,5 +1,6 @@
 package application.trainers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.anatures.Anature;
@@ -14,8 +15,10 @@ import application.trainers.ai.choice_objects.AiNoChoice;
 import application.trainers.ai.choice_objects.AiSwitchChoice;
 import javafx.scene.image.Image;
 
-class Trainer implements ITrainer
+class Trainer implements ITrainer, Serializable
 {
+	private static final long serialVersionUID = 5701627089126907149L;
+
 	private TrainerIds mId;
 	private String mName;
 	private int mRewardForDefeat;
@@ -45,6 +48,7 @@ class Trainer implements ITrainer
 		{
 			throw new IllegalArgumentException("Passed value \"trainerId\" was null.");
 		}
+
 		mId = trainerId;
 	}
 
@@ -55,11 +59,11 @@ class Trainer implements ITrainer
 			throw new IllegalArgumentException("Passed value \"name\" was null.");
 		}
 
-		if(name.trim()
-				.isEmpty())
+		if(name.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("Passed value \"name\" was an empty string.");
 		}
+
 		mName = name;
 	}
 
@@ -81,6 +85,7 @@ class Trainer implements ITrainer
 		{
 			throw new IllegalArgumentException("Passed value \"anatures\" was null.");
 		}
+
 		mAnatures = anatureBases;
 	}
 
@@ -90,6 +95,7 @@ class Trainer implements ITrainer
 		{
 			throw new IllegalArgumentException("Passed value \"potions\" was null.");
 		}
+
 		mHealthPotions = healthPotionBases;
 	}
 
@@ -108,6 +114,7 @@ class Trainer implements ITrainer
 		{
 			throw new IllegalArgumentException("Passed value \"ai\" was null.");
 		}
+
 		mAI = ai;
 	}
 
@@ -115,32 +122,38 @@ class Trainer implements ITrainer
 	 * PUBLIC GETS
 	 */
 
+	@Override
 	public TrainerIds getId()
 	{
 		return mId;
 	}
 
+	@Override
 	public String getName()
 	{
 		return mName;
 	}
 
+	@Override
 	public int getRewardForDefeat()
 	{
 		return mRewardForDefeat;
 	}
 
-	public ArrayList<Anature> getAnatureParty()
+	@Override
+	public ArrayList<IAnature> getAnatureParty()
 	{
 		return mAnatures;
 	}
 
+	@Override
 	public ArrayList<IHealthPotion> getHealthPotions()
 	{
 		return mHealthPotions;
 	}
 
-	public Anature getCurrentAnature()
+	@Override
+	public IAnature getCurrentAnature()
 	{
 		return mCurrentAnature;
 	}
@@ -158,17 +171,18 @@ class Trainer implements ITrainer
 	 * PUBLIC METHODS
 	 */
 
+	@Override
 	public Image getBattleSprite()
 	{
 		if(mId == TrainerIds.Wild)
 			return null;
 
-		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString()
-				.toLowerCase() + "/" + mId.toString() + ".png")
-				.toExternalForm(), 1000.0, 1000.0, true, false);
+		return new Image(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase() + "/" + mId.toString() + ".png").toExternalForm(),
+				1000.0, 1000.0, true, false);
 	}
 
 	// TODO We need to get rid of this method
+	@Override
 	public int getNextAnature(int index)
 	{
 		index++;
@@ -180,7 +194,8 @@ class Trainer implements ITrainer
 	}
 
 	// TODO We need to move this method. It most likely does not belong here
-	public int getAnatureIndex(Anature anatureBase)
+	@Override
+	public int getAnatureIndex(IAnature anatureBase)
 	{
 		int index = 0;
 		for(Anature currentAnature : mAnatures)
@@ -194,6 +209,7 @@ class Trainer implements ITrainer
 		return -1;
 	}
 
+	@Override
 	public boolean canBattle()
 	{
 		if(mAnatures.size() == 0)
@@ -204,8 +220,7 @@ class Trainer implements ITrainer
 		boolean result = false;
 		for(Anature anatureBase : mAnatures)
 		{
-			if(anatureBase.getStats()
-					.getCurrentHitPoints() == 0)
+			if(anatureBase.getStats().getCurrentHitPoints() == 0)
 			{
 				result = true;
 				break;
@@ -215,7 +230,8 @@ class Trainer implements ITrainer
 		return !result;
 	}
 
-	public AiChoiceObject<?> useTurn(Anature playerAnature)
+	@Override
+	public AiChoiceObject<?> useTurn(IAnature playerAnature)
 	{
 		boolean willUseHealthPotion = mAI.willUseHealthPotion(mHealthPotions, mCurrentAnature);
 
@@ -232,6 +248,25 @@ class Trainer implements ITrainer
 			return moveChoice;
 
 		return new AiNoChoice();
+	}
+
+	@Override
+	public AiSwitchChoice chooseAnature(IAnature playerAnature)
+	{
+		IAnature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
+		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
+		return switchChoice;
+	}
+
+	@Override
+	public void setCurrentAnature(IAnature currentAnature)
+	{
+		if(currentAnature == null)
+		{
+			throw new IllegalArgumentException("Passed value \"anature\" was null.");
+		}
+
+		mCurrentAnature = currentAnature;
 	}
 
 	/*
@@ -289,14 +324,7 @@ class Trainer implements ITrainer
 		return healthPotionChoice;
 	}
 
-	private AiSwitchChoice chooseAnature(Anature playerAnature)
-	{
-		Anature anatureToSwitchTo = mAI.chooseNewAnature(mAnatures, mCurrentAnature, playerAnature);
-		AiSwitchChoice switchChoice = new AiSwitchChoice(anatureToSwitchTo);
-		return switchChoice;
-	}
-
-	private AiMoveChoice chooseMove(Anature playerAnature)
+	private AiMoveChoice chooseMove(IAnature playerAnature)
 	{
 		AiMoveChoice moveChoice = mAI.chooseMove(mCurrentAnature, playerAnature);
 		return moveChoice;

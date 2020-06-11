@@ -1,5 +1,6 @@
 package application.trainers.ai;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,8 +17,10 @@ import application.interfaces.IMove;
 import application.pools.ItemPool;
 import application.trainers.ai.choice_objects.AiMoveChoice;
 
-class AI implements IAI
+class AI implements IAI, Serializable
 {
+	private static final long serialVersionUID = 1525307911637962246L;
+
 	private double mHealthThreshold;
 	private TypeEffectiveness mSwitchThreshold;
 	private TypeEffectiveness mMoveThreshold;
@@ -209,9 +212,22 @@ class AI implements IAI
 
 		for(Anature anatureBase : anatureBases)
 		{
-			if(isAnatureAtThreshold(anatureBase, enemyAnature))
+			if(!anatureBase.equals(currentAnature) && isAnatureAtThreshold(anatureBase, enemyAnature))
 			{
 				anatureToReturn = anatureBase;
+				break;
+			}
+		}
+		
+		if(anatureToReturn.equals(currentAnature))
+		{
+			for(IAnature anatureBase : anatureBases)
+			{
+				if(!anatureBase.equals(currentAnature))
+				{
+					anatureToReturn = anatureBase;
+					break;
+				}
 			}
 		}
 
@@ -254,7 +270,7 @@ class AI implements IAI
 	{
 		for(Anature anatureBase : anatureParty)
 		{
-			if(isAnatureAtThreshold(anatureBase, enemyAnature))
+			if(!anatureBase.equals(currentAnature) && isAnatureAtThreshold(anatureBase, enemyAnature) && anatureBase.getStats().getCurrentHitPoints() > 0)
 			{
 				return true;
 			}

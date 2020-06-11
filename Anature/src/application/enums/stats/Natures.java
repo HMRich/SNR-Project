@@ -52,7 +52,7 @@ public enum Natures
 		return mDecreasedStat;
 	}
 
-	public double getModifier()
+	public static double modifier()
 	{
 		return 0.10;
 	}

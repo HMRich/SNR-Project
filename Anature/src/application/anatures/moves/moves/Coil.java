@@ -5,7 +5,10 @@ import application.anatures.moves.Move;
 
 public class Coil extends Move
 {
-	public void activateMove(Anature source, Anature target)
+	private static final long serialVersionUID = -9080529416887418112L;
+
+	@Override
+	public void activateMove(IAnature source, IAnature target)
 	{
 		target.applyDamage(calculateDamage(source, target, false));
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import application.anatures.Anature;
 import application.enums.TrainerIds;
+import application.trainers.ai.choice_objects.AiSwitchChoice;
 import javafx.scene.image.Image;
 
 public interface ITrainer
@@ -36,5 +37,9 @@ public interface ITrainer
 
 	public boolean canBattle();
 
-	public AiChoiceObject<?> useTurn(Anature playerAnature);
+	public AiChoiceObject<?> useTurn(IAnature playerAnature);
+
+	public AiSwitchChoice chooseAnature(IAnature playerAnature);
+
+	public void setCurrentAnature(IAnature currentAnature);
 }

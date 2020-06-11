@@ -5,7 +5,10 @@ import application.anatures.moves.Move;
 
 public class FiberOptic extends Move
 {
-	public void activateMove(Anature source, Anature target)
+	private static final long serialVersionUID = -6301795800419974978L;
+
+	@Override
+	public void activateMove(IAnature source, IAnature target)
 	{
 		source.getStats().increaseTempSpeed();
 	}

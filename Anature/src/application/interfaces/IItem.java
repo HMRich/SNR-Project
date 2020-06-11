@@ -1,10 +1,11 @@
 package application.interfaces;
 
-import application.anatures.Anature;
+import java.io.Serializable;
+
 import application.controllers.results.ItemResult;
 import application.enums.ItemIds;
 
-public interface IItem
+public interface IItem extends Serializable
 {
 	public ItemIds getItemId();
 

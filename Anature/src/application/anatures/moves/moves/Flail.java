@@ -6,6 +6,8 @@ import application.enums.Stat;
 
 public class Flail extends Move
 {
+	private static final long serialVersionUID = -7249214592980230469L;
+
 	@Override
 	public void activateMove(Anature source, Anature target)
 	{

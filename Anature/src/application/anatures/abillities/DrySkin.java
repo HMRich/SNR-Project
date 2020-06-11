@@ -8,7 +8,9 @@ import application.interfaces.IAbility;
 
 public class DrySkin implements IAbility
 {
-	public static String activateAbility(Anature userAnature)
+	private static final long serialVersionUID = -8094396331629552627L;
+
+	public static String activateAbility(IAnature userAnature)
 	{
 		if(userAnature == null)
 		{

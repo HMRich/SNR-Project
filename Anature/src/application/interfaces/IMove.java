@@ -1,10 +1,11 @@
 package application.interfaces;
 
-import application.anatures.Anature;
+import java.io.Serializable;
+
 import application.enums.MoveIds;
 import application.enums.Type;
 
-public interface IMove
+public interface IMove extends Serializable
 {
 	public void activateMove(Anature source, Anature target);
 
