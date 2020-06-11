@@ -41,7 +41,7 @@ public class IntroController
 			fontProperty.set(Font.loadFont(getClass().getResourceAsStream("/resources/font/pixelFJ8pt1__.TTF"), getFontSize(scene) / 50));
 		};
 
-		EventHandler<KeyEvent> onKeyPress = keyEvent ->
+		EventHandler<KeyEvent> onKeyReleased = keyEvent ->
 		{
 			if(keyEvent.getText().compareTo("`") == 0)
 			{
@@ -55,33 +55,33 @@ public class IntroController
 		scene.widthProperty().addListener(fontListener);
 		scene.heightProperty().addListener(fontListener);
 		scene.setOnMouseClicked(mouseEvent -> useGameSelectPositions(scene));
-		scene.setOnKeyPressed(onKeyPress);
+		scene.setOnKeyReleased(onKeyReleased);
 
 		mBgImg.fitWidthProperty().bind(scene.widthProperty());
 		mBgImg.fitHeightProperty().bind(scene.heightProperty());
 
-		updateIntroBinds(scene, onKeyPress, fontProperty);
+		updateIntroBinds(scene, onKeyReleased, fontProperty);
 		updateGameSelectBinds(scene, fontProperty);
 
-		BlinkingAnimation blinkAnaimation = new BlinkingAnimation(mStartTxt, Duration.seconds(2));
-		blinkAnaimation.play();
+		BlinkingAnimation blinkAnimation = new BlinkingAnimation(mStartTxt, Duration.seconds(2));
+		blinkAnimation.play();
 	}
 
-	private void updateIntroBinds(Scene scene, EventHandler<KeyEvent> onKeyPress, ObservableValue<Font> fontProperty)
+	private void updateIntroBinds(Scene scene, EventHandler<KeyEvent> onKeyReleased, ObservableValue<Font> fontProperty)
 	{
 		mTxtLogoImg.fitWidthProperty().bind(scene.widthProperty().divide(calculateValue(1280, 594)));
 		mTxtLogoImg.fitHeightProperty().bind(scene.heightProperty().divide(calculateValue(720, 204)));
 
 		mLogoImg.fitWidthProperty().bind(scene.widthProperty().divide(calculateValue(1280, 150)));
 		mLogoImg.fitHeightProperty().bind(scene.heightProperty().divide(calculateValue(720, 150)));
-		useIntroPositions(scene, onKeyPress);
+		useIntroPositions(scene, onKeyReleased);
 
 		mStartTxt.prefWidthProperty().bind(scene.widthProperty());
 		mStartTxt.prefHeightProperty().bind(scene.heightProperty().divide(calculateValue(720, 85)));
 		mStartTxt.layoutYProperty().bind(scene.heightProperty().divide(calculateValue(720, 558)));
 		mStartTxt.fontProperty().bind(fontProperty);
 		mStartTxt.setOnMouseClicked(mouseEvent -> useGameSelectPositions(scene));
-		mStartTxt.setOnKeyPressed(onKeyPress);
+		mStartTxt.setOnKeyPressed(onKeyReleased);
 		mStartTxt.visibleProperty().bind(mShowIntroProperty);
 	}
 
@@ -108,17 +108,17 @@ public class IntroController
 		mPromptTxt.visibleProperty().bind(mShowIntroProperty.not());
 	}
 
-	private void useIntroPositions(Scene scene, EventHandler<KeyEvent> onKeyPress)
+	private void useIntroPositions(Scene scene, EventHandler<KeyEvent> onKeyReleased)
 	{
 		mTxtLogoImg.layoutXProperty().bind(scene.widthProperty().divide(calculateValue(1280, 347)));
 		mTxtLogoImg.layoutYProperty().bind(scene.heightProperty().divide(calculateValue(720, 110)));
 		mTxtLogoImg.setOnMouseClicked(mouseEvent -> useGameSelectPositions(scene));
-		mTxtLogoImg.setOnKeyPressed(onKeyPress);
+		mTxtLogoImg.setOnKeyReleased(onKeyReleased);
 
 		mLogoImg.layoutXProperty().bind(scene.widthProperty().divide(calculateValue(1280, 565)));
 		mLogoImg.layoutYProperty().bind(scene.heightProperty().divide(calculateValue(720, 360)));
 		mLogoImg.setOnMouseClicked(mouseEvent -> useGameSelectPositions(scene));
-		mLogoImg.setOnKeyPressed(onKeyPress);
+		mLogoImg.setOnKeyReleased(onKeyReleased);
 
 		mShowIntroProperty.set(true);
 	}

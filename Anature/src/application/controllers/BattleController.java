@@ -70,7 +70,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.ColorAdjust;
@@ -96,7 +95,6 @@ public class BattleController
 	@FXML private ImageView mPlayerGender, mEnemyGender;
 	@FXML private TextArea mDialogueTxtArea;
 	@FXML private ImageView mClickIndicatorImg, mThrownAnacubeImg;
-	@FXML private Button mTestBtn;
 
 	@FXML private ImageView mSwitchSelection, mSwitchDialogue, mSwitchBtn, mSwitchBackBtn, mSwitchSelectedImg;
 	@FXML private ImageView mSwitchSelectedTypeOne, mSwitchSelectedTypeTwo, mSwitchPageLeft, mSwitchPageRight;
@@ -253,10 +251,10 @@ public class BattleController
 		mFemaleIcon = new Image(getClass().getResource("/resources/images/battle/Female_Symbol.png").toExternalForm());
 		mTransIcon = new Image(getClass().getResource("/resources/images/battle/Transgender_Symbol.png").toExternalForm());
 
-		mItemAnacube = new Image(getClass().getResource("/resources/images/items/Anacube.png").toExternalForm());
-		mItemSuperAnacube = new Image(getClass().getResource("/resources/images/items/Super_Anacube.png").toExternalForm());
-		mItemHyperAnacube = new Image(getClass().getResource("/resources/images/items/Hyper_Anacube.png").toExternalForm());
-		mItemMaxAnacube = new Image(getClass().getResource("/resources/images/items/Max_Anacube.png").toExternalForm());
+		mItemAnacube = new Image(getClass().getResource("/resources/images/items/AnaCube.png").toExternalForm());
+		mItemSuperAnacube = new Image(getClass().getResource("/resources/images/items/Super_AnaCube.png").toExternalForm());
+		mItemHyperAnacube = new Image(getClass().getResource("/resources/images/items/Hyper_AnaCube.png").toExternalForm());
+		mItemMaxAnacube = new Image(getClass().getResource("/resources/images/items/Max_AnaCube.png").toExternalForm());
 
 		initializeBattleAnimationImgs();
 	}
@@ -292,7 +290,6 @@ public class BattleController
 		setUpAnatureGenders(scene);
 		setUpBtnGrid(scene);
 		setUpDialogue(scene);
-		setUpTestBtn(scene);
 
 		setUpClickTracker(scene);
 
@@ -456,21 +453,6 @@ public class BattleController
 		grid.add(escapeImage, 1, 1);
 
 		grid.visibleProperty().bind(mShowBtns);
-	}
-
-	private void setUpTestBtn(Scene scene)
-	{
-		mTestBtn.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent event)
-			{
-				int experienceToEarn = mFightManager.getPlayerAnature().getStats().getRequiredExperience() / 10;
-				mFightManager.getPlayerAnature().getStats().addExperience(experienceToEarn);
-
-				mPlayerXp.set(mFightManager.getPlayerAnature().getStats().getExperienceProgression());
-			}
-		});
 	}
 
 	private void setUpDialogue(Scene scene)

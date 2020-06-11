@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
@@ -92,7 +91,6 @@
                   <Image url="@../../resources/images/battle/FistBottomLeft.png" />
                </image>
             </ImageView>
-            <Button fx:id="mTestBtn" layoutX="38.0" layoutY="309.0" mnemonicParsing="false" text="Test Button" />
             <ImageView fx:id="mItemSelectionBg" fitHeight="237.0" fitWidth="399.0" pickOnBounds="true">
                <image>
                   <Image url="@../../resources/images/battle/items/Item_View_Panel.png" />

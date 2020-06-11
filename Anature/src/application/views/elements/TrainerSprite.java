@@ -120,33 +120,36 @@ public class TrainerSprite
 	
 	private void createSprites()
 	{
-		File currDir = new File(getClass().getResource("/resources/images/trainers/" + mId.toString().toLowerCase()).toExternalForm());
-		String corePath = currDir.getPath().replace("file:\\", "");
-		mWalkUpImg = createImage(corePath + "/up_walk.gif");
-		mWalkDownImg = createImage(corePath + "/down_walk.gif");
-		mWalkRightImg = createImage(corePath + "/right_walk.gif");
-		mWalkLeftImg = createImage(corePath + "/left_walk.gif");
+		String name = mId.toString().toLowerCase();
+		mWalkUpImg = createImage(name + "/up_walk.gif");
+		mWalkDownImg = createImage(name + "/down_walk.gif");
+		mWalkRightImg = createImage(name + "/right_walk.gif");
+		mWalkLeftImg = createImage(name + "/left_walk.gif");
 
-		mStandUpImg = createImage(corePath + "/up_stand.png");
-		mStandDownImg = createImage(corePath + "/down_stand.png");
-		mStandRightImg = createImage(corePath + "/right_stand.png");
-		mStandLeftImg = createImage(corePath + "/left_stand.png");
+		mStandUpImg = createImage(name + "/up_stand.png");
+		mStandDownImg = createImage(name + "/down_stand.png");
+		mStandRightImg = createImage(name + "/right_stand.png");
+		mStandLeftImg = createImage(name + "/left_stand.png");
 		
 		mSprite = new ImageView(mStandDownImg);
 	}
 	
-	private Image createImage(String path)
+	private Image createImage(String filename)
 	{
-		File toCheck = new File(path);
+		String path = "/resources/images/trainers/" + filename;
 		Image toReturn = null;
-		
-		if(!toCheck.exists())
+
+		try
 		{
-			path = getClass().getResource("/resources/images/trainers/kelly/down_walk.gif").toExternalForm().replace("file:/", "");
-			toCheck = new File(path);
+			new File(getClass().getResource(path).toExternalForm());
 		}
 		
-		toReturn = new Image(toCheck.toURI().toString(), 100.0, 100.0, true, false);
+		catch(NullPointerException e)
+		{
+			path = "/resources/images/trainers/kelly/down_walk.gif";
+		}
+
+		toReturn = new Image(getClass().getResource(path).toExternalForm(), 100.0, 100.0, true, false);
 		
 		return toReturn;
 	}
