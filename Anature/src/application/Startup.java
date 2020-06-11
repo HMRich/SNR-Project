@@ -363,7 +363,7 @@ public class Startup extends Application
 
 		catch(IOException e)
 		{
-			LoggerController.logEvent(LoggingTypes.Error, "Exception when starting battle. \n" + e.getStackTrace());
+			LoggerController.logEvent(LoggingTypes.Error, "Exception when starting battle. \n" + e.getMessage());
 		}
 	}
 
@@ -634,6 +634,8 @@ public class Startup extends Application
 
 		if(saveFile != null)
 		{
+			LoggerController.logEvent(LoggingTypes.Misc, "Loading save file.");
+
 			ArrayList<Object> objRead = new ArrayList<Object>();
 			FileInputStream fileInStream;
 			ObjectInputStream in;
@@ -677,6 +679,8 @@ public class Startup extends Application
 
 	private static boolean showLoadConfirmation()
 	{
+		LoggerController.logEvent(LoggingTypes.Misc, "Asking if user wants to save before loading.");
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Current progress not saved");
 		alert.setHeaderText("Would you like to save your current progress first?");
@@ -704,11 +708,37 @@ public class Startup extends Application
 
 	private static File selectFileToLoad()
 	{
-		File saveDir = new File("./Saves");
+		LoggerController.logEvent(LoggingTypes.Misc, "Selecting file to load.");
+		File saveDir = new File(System.getProperty("user.dir") + "/Saves");
+		LoggerController.logEvent(LoggingTypes.Misc, "Making saves folder at: " + saveDir.getAbsolutePath());
 
 		if(!saveDir.exists())
 		{
-			saveDir.mkdir();
+
+			try
+			{
+				if(saveDir.mkdir())
+				{
+					LoggerController.logEvent(LoggingTypes.Misc, "Maked saves folder at: " + saveDir.getAbsolutePath());
+				}
+
+				else
+				{
+					throw new Exception("Making of Save Directory returned as false.");
+				}
+			}
+
+			catch(Exception e)
+			{
+				LoggerController.logEvent(LoggingTypes.Error, "Something went wrong when making the Saves Directory. " + e.toString());
+
+				for(StackTraceElement element : e.getStackTrace())
+				{
+					LoggerController.logEvent(LoggingTypes.Error, element.toString());
+				}
+
+				saveDir = null;
+			}
 		}
 
 		FileChooser chooser = new FileChooser();
