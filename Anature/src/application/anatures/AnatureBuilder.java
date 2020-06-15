@@ -24,7 +24,7 @@ import application.interfaces.IMove;
 import application.pools.AbilityPool;
 import application.pools.MovePool;
 
-public class NewAnatureBuilder
+public class AnatureBuilder
 {
 	private static Random randomObject = new Random();
 

@@ -11,7 +11,7 @@ import java.util.Random;
 import application.DatabaseConnection;
 import application.Startup;
 import application.anatures.Anature;
-import application.anatures.NewAnatureBuilder;
+import application.anatures.AnatureBuilder;
 import application.controllers.LoggerController;
 import application.enums.DatabaseType;
 import application.enums.ItemIds;
@@ -223,7 +223,7 @@ public class TrainerBuilder implements IBuilder<ITrainer>
 		for(String anatureStr : partyStrAra)
 		{
 			int level = rng.nextInt(anatureMaxLevel - anatureMinLevel) + anatureMinLevel;
-			party.add(NewAnatureBuilder.createAnature(Startup.getPlayerName(), Species.valueOf(anatureStr), level));
+			party.add(AnatureBuilder.createAnature(Startup.getPlayerName(), Species.valueOf(anatureStr), level));
 		}
 
 		while(party.size() > anatureCount)

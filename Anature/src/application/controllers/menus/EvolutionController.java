@@ -3,7 +3,7 @@ package application.controllers.menus;
 import java.util.ArrayList;
 
 import application.anatures.Anature;
-import application.anatures.NewAnatureBuilder;
+import application.anatures.AnatureBuilder;
 import application.animations.BlinkingAnimation;
 import application.animations.EvolutionAnimation;
 import application.controllers.ClickQueue;
@@ -175,7 +175,7 @@ public class EvolutionController
 			mAnatureImg.setImage(new Image(getClass().getResource(imgPath).toExternalForm(), 1000.0, 1000.0, true, false));
 
 			mDialogueTxt.setText(toEvolve.getName() + " evolved into a " + evolveInto + "!");
-			Anature evolved = NewAnatureBuilder.createEvolvedAnature(toEvolve, evolveInto);
+			Anature evolved = AnatureBuilder.createEvolvedAnature(toEvolve, evolveInto);
 			int indexToReplace = party.indexOf(toEvolve);
 			party.remove(indexToReplace);
 			party.add(indexToReplace, evolved);

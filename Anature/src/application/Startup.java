@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 import application.anatures.Anature;
-import application.anatures.NewAnatureBuilder;
+import application.anatures.AnatureBuilder;
 import application.controllers.BattleController;
 import application.controllers.IntroController;
 import application.controllers.LoggerController;
@@ -409,16 +409,16 @@ public class Startup extends Application
 
 	public static void createDemo()
 	{
-		Anature first = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 54);
+		Anature first = AnatureBuilder.createAnature(getPlayerName(), Species.Null, 54);
 		first.setName("Main Null");
 		mPlayer.addAnatures(first);
 		mPlayer.getAnatures().get(0).getStats().addExperience(14601);
 
-		Anature second = NewAnatureBuilder.createAnature(getPlayerName(), Species.Null, 12);
+		Anature second = AnatureBuilder.createAnature(getPlayerName(), Species.Null, 12);
 		second.setName("Other Null");
 		mPlayer.addAnatures(second);
 
-		Anature third = NewAnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 14);
+		Anature third = AnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 14);
 		mPlayer.addAnatures(third);
 		mPlayer.getAnatures().get(2).getStats().addExperience(630);
 
@@ -752,7 +752,7 @@ public class Startup extends Application
 	public static void newGame()
 	{
 		// TODO remove starter, tokens, and items after professor is added
-		Anature starter = NewAnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 5);
+		Anature starter = AnatureBuilder.createAnature(getPlayerName(), Species.Sardino, 5);
 		mPlayer.addAnatures(starter);
 		mPlayer.addTokens(500);
 
